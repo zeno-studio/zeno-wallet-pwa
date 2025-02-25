@@ -1,0 +1,20 @@
+{
+  "llm": {
+    "enabled": true,
+    "model": "gpt-4-turbo",
+    "systemPrompt": "You are a Svelte 5 expert assistant, specializing in the latest runes system and reactivity patterns.",
+    "temperature": 0.3,
+    "filePatterns": {
+      "include": ["**/*.svelte", "**/*.ts", "**/*.js"],
+      "exclude": ["**/node_modules/**", "**/.git/**"]
+    },
+    "systemPromptFile": "./llms/svelte-runes.txt"
+  },
+  "editor": {
+    "formatOnSave": true,
+    "autoSave": {
+      "enabled": true,
+      "delay": 1000
+    }
+  }
+}

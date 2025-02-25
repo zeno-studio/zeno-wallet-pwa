@@ -1,0 +1,337 @@
+/* Sakura.css v1.5.0
+ * ================
+ * Minimal css theme.
+ * Project: https://github.com/oxalorg/sakura/
+ * 
+ * This has been adapted to use CSS variables for theming.
+ */
+
+/* Theme Setup */
+:root {
+	--font-size-base: 1.8rem;
+	--font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+	  'Noto Sans', sans-serif;
+	--color-green:#21c95e;
+	--color-pink:#ff0069;
+	--green1: #effaf8;
+	--green2: #cdf2ec;
+	--green3: #9de7da;
+	--green4: #05c4a2;
+	--purple1: #f4f0fb;
+	--purple2: #e5d3fd;
+	--purple3: #cbaaff;
+	--purple4: #9e62ff;
+	--pink1: #feedfd;
+	--pink2: #fec6ff;
+	--pink3: #fca2fe;
+	--pink4: #fc72ff;
+	--blue1: #f4f6fc;
+	--blue2: #b4e8ff;
+	--blue3: #7dd5fc;
+	--blue4: #2abdff;
+  }
+
+ 
+  
+  [data-theme="light"] {
+	--color-shadow:#efeded;
+	--color-border:#e9e8e8;
+	--color-bg:#fff;
+	--color-bg1:#f9f9f9;
+	--color-bg2: #f4f4f4;
+	--color-bg3: #c4c4c4;
+	--color-text: #7d7d7d;
+	--color:#222222;
+  }
+  
+  [data-theme="dark"] {
+	--color-shadow:#4d4c4c;
+	--color-border:#3c3c3c;
+	--color-bg:#141414;
+	--color-bg1:#1b1b1b;
+	--color-bg2:#252525;
+	--color-bg3: #5e5e5e;
+	--color-text: #9b9b9b;
+	--color:#fff;
+  }
+
+
+ 
+  @media (max-width: 684px) {
+	body {
+	  font-size: calc(var(--font-size-base) * 0.85);
+	}
+  }
+  
+  @media (max-width: 382px) {
+	body {
+	  font-size: calc(var(--font-size-base) * 0.75);
+	}
+  }
+
+  /* Body */
+  html {
+	font-size: 62.5%;
+	font-family: var(--font-family-base);
+  }
+  
+  body {
+	font-size: var(--font-size-base);
+	line-height: 1.618;
+	color: var(--color-text);
+	background-color: var(--color-bg);
+	margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  
+  
+  a {
+	display: flex;
+	color: var(--color-text);
+	text-decoration: none;
+	align-items: center;
+  }
+  
+  a:hover {
+	color: var(--color);
+  }
+
+  .avatar {
+    border-radius: 100%;
+    height: 38px;
+    width: 38px;
+}
+  
+
+  ul {
+	padding-left: 1.4em;
+	margin-top: 0px;
+	margin-bottom: 2.5rem;
+  }
+  
+  li {
+	margin-bottom: 0.4em;
+  }
+  
+
+
+  table {
+	text-align: justify;
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 2rem;
+
+  }
+  
+  td,
+  th {
+	padding: 0.5em;
+
+  }
+  
+ 
+
+  textarea {
+	width: 100%;
+  }
+  
+  textarea,
+  input {
+	font-size: 1em;
+	background: none;
+	border: none;
+	color: var(--color-text);
+  
+	&:focus {
+	color: var(--color);
+	  outline:0
+	}
+
+	&:hover {
+		color: var(--color);
+	}
+
+  }
+
+
+  div{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+  }
+
+
+  .logo {
+		height: 32px;
+		width: 32px;
+		color: var(--color);
+		fill:rgb(255, 0, 105)
+	}
+	.icon24 {
+		height: 24px;
+		width: 24px;
+		overflow: visible;
+		transition: all 0.2s ease-in;
+		cursor: pointer;
+	}
+	.icon24:hover {
+		transform: scale(1.1);
+	}
+	.icon2rem {
+		height: 2rem;
+		width: 2rem;
+		color: var(--color-text);
+		margin-right: 1rem;
+		cursor: pointer;
+
+	}
+	.icon2rem:hover {
+		transform: scale(1.1);
+		color: var(--color);
+	}
+	.icon16px {
+		height: 16px;
+		width: 16px;
+		color: var(--color-text);
+		margin-right: 16px;
+		cursor: pointer;
+
+	}
+	.icon16px:hover {
+		transform: scale(1.1);
+		color: var(--green4);
+	}
+
+
+
+.appContainer {
+	color: var(--color);
+	display: flex;
+	background-color: var(--color-bg);
+	box-sizing: border-box;
+	border:none;
+	padding: 64px 8px 0px;
+}
+.appBody {
+	flex-direction: column;
+	height: 100%;
+	width: 96%;
+	max-width: 480px;
+	padding: 0px;
+	margin: 0px;
+}
+
+.item-container {
+	box-sizing: border-box;
+	width: 100%;
+	flex-direction: column;
+	background: var(--color-bg1);
+	border-radius: 16px;
+	padding: 1rem;
+}
+.item-container2 {
+	box-sizing: border-box;
+	width: 100%;
+	height: 100%;
+	flex-direction: column;
+	padding: 1rem;
+}
+.item-container3 {
+	box-sizing: border-box;
+	width: 100%;
+	height: 100%;
+	flex-direction: column;
+	padding: 1rem;
+	border-radius: 16px;
+	background: var(--color-bg);
+	border: 1px solid var(--color-border);
+}
+
+
+
+.item {
+	display: flex;
+	flex-direction: row;
+	justify-items: center;
+	align-items: center;
+	width: 100%;
+	font-size: 1.6rem;
+	font-weight: 700;
+	margin: 0px;
+	padding: 0px;
+	background: none;
+	border: none;
+	color:var(--color)
+}
+
+.item-l {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+	align-items: center;
+    margin-right: auto;
+  }
+
+.item-r {
+    display: flex;
+	align-items: center;
+	flex-direction: row;
+    justify-content: flex-end;
+    margin-left: auto;
+}
+
+.toast {
+	display: flex;
+	position: fixed;
+	z-index: 100;
+	right: 2rem;
+	bottom: 60px;
+	padding: 0.5rem;
+	flex-direction: row;
+	justify-content: center;
+	border-radius: 1rem;
+	border-width: 1px;
+	height: 4rem;
+	background-color: var(--color-blossom1);
+}
+
+.check {
+	width: 2rem;
+	height: 2rem;
+	stroke:rgba(0, 0, 0, 0);
+}
+
+.button-label {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 72px;
+	height: 34px;
+	margin-right: 4px;
+	border-radius: 16px;
+	border: none;
+	background: none;
+	cursor: pointer;
+}
+
+.copyIcon {
+	height: 2rem;
+	width: 2rem;
+	color: var(--color-text);
+	cursor: pointer;
+}
+
+.button-full {
+	width: 100%;
+	background: var(--blue4);
+	border-radius: 16px;
+	padding: 1.4rem;
+	border: none;
+	margin: 0px;
+	cursor: pointer;
+	font-size: 1.6rem;
+	font-weight: 700;
+	color: var(--color);
+}
