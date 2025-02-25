@@ -1,16 +1,40 @@
 import { VERSION} from "$lib/wallet/common";
 import { ProviderName,
- type ProviderOptions,
   ProviderType,
-  type SendMessageHandler,
-  type EthereumRequest,
-  type EthereumResponse,
-  type JsonRpcRequest,
-  type CallbackFunction,
   InternalMethods,
-  type SettingsType,
+  type ProviderOptions,
+  type SendMessageHandler,
 } from "$lib/wallet/provider/type";
 
+import { 
+  type AddEthereumChainParameter,
+  type EIP1193Provider,
+  type JsonRpcRequest,
+  type JsonRpcResponse,
+  
+  type MetaMaskProvider,
+  type ProviderConnectInfo,
+  type ProviderMessage,
+  type ProviderRpcError,
+  type RequestArguments,
+  type SwitchEthereumChainParameter,
+  type WatchAssetParams,
+  type Web3WalletPermission,
+  type Address,
+  type EIP1102,
+  type EIP3085,
+  type EIP3326,
+  type EIP747,
+
+
+ } from "eip1193-types";
+
+ import * as EIP1193 from "eip1193-types";
+
+ export type RequestReponse = {
+  result?: any;
+  error?: EIP1193.ProviderRpcError
+ }
 
 export class Provider  {
     chainId: string | null;
@@ -36,7 +60,7 @@ export class Provider  {
       this.version = VERSION;
       this.sendMessageHandler = options.sendMessageHandler;
     }
-    async request(request: EthereumRequest): Promise<EthereumResponse> {
+    async request(request: EIP1193.RequestArguments): Promise<RequestReponse> {
       if (this.chainId === null) {
         await this.sendMessageHandler(
           this.name,
