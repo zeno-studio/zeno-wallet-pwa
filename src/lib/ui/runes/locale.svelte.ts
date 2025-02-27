@@ -1,17 +1,26 @@
-class Locale {
-	locale: string | null = $state('en');
-	setLocale(locale: string) {
-		this.locale = locale;
-		localStorage.setItem('locale', this.locale);
-	}
-}
+import {type Settings } from "$lib/wallet/common";
 
-export const userlocale = new Locale();
+export const userlocale = () => {
+	let locale: string | null = $state('en');
+	return{
+		locale,
+		setLocale(setlocale: string) {
+			locale = setlocale;
+			const saved = localStorage.getItem('settings'); 
+			if (saved) {
+				const settings = JSON.parse(saved) as Settings;
+				const newSettings = {...settings, locale: locale};
+				localStorage.setItem('settings', JSON.stringify(newSettings));
+			}
+		}
+
+	}
+	
+}
 
 export const availableLanguages = new Map<string, string>([
 	['en', 'English'],
 	['zh', '中文繁體'],
-
 	['zh-CN', '中文简体'],
 	['ja', '日本語'],
 	['de', 'Deutsch'],
@@ -46,22 +55,11 @@ export function getLanguage(): string {
 	let language = window.navigator.languages
 		? window.navigator.languages[0]
 		: window.navigator.language || window.navigator.userLanguage;
-	if (language === 'zh-CN') {
+	if (language === 'zh-CN'|| language === 'zh-SG') {
 		language = 'zh-CN';
-	} else {
-		language = language.substr(0, 2);
+	} 
+	if (language === 'zh-TW'|| language === 'zh-HK') {
+		language = "zh"
 	}
 	return language;
-}
-
-export function initLocale() {
-	const systemLanguage = getLanguage();
-	const initialLocale = localStorage.getItem('locale');
-	if (initialLocale) {
-		userlocale.locale = initialLocale;
-	} else if (availableLanguages.has(systemLanguage)) {
-		userlocale.setLocale(systemLanguage);
-	} else if (!availableLanguages.has(systemLanguage)) {
-		userlocale.setLocale('en');
-	}
 }

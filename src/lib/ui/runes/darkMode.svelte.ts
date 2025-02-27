@@ -1,4 +1,5 @@
 import { untrack } from "svelte";
+import {type Settings} from "$lib/wallet/common";
 const COLOR_SCHEME_QUERY = "(prefers-color-scheme: dark)";
 
 type CreateDarkModeOutput = () => {
@@ -8,8 +9,10 @@ type CreateDarkModeOutput = () => {
   disable: () => void;
 };
 
+const LOCAL_STORAGE_THEME_KEY = "darkMode";
+
 // WHEN CHANGING THIS, REMEMBER TO CHANGE /src/app.html
-const LOCAL_STORAGE_THEME_KEY = "dark-mode";
+
 
 const createMediaQuery = (query: string) => {
   const mediaQuery = window.matchMedia(query);
@@ -28,15 +31,15 @@ export function createDarkMode(defaultValue?: boolean): CreateDarkModeOutput {
 
   const isDarkOS = createMediaQuery(COLOR_SCHEME_QUERY);
   const prevIsDarkOs = $state({ matches: isDarkOS.matches });
-
-  const initialStorageValue: boolean | null = localStorage.getItem(LOCAL_STORAGE_THEME_KEY) === "true";
+  const savedSettings = JSON.parse(localStorage.getItem('settings') || '{}') as Settings;
+  const initialStorageValue: boolean | null = savedSettings.darkMode ?? null;
   let isDarkMode = $state(Boolean(defaultValue ?? initialStorageValue));
 
   $effect(() => {
     isDarkMode;
 
     untrack(() => {
-      localStorage.setItem(LOCAL_STORAGE_THEME_KEY, isDarkMode.toString());
+      localStorage.setItem("settings", JSON.stringify({...savedSettings, darkMode: isDarkMode}));
       window.dispatchEvent(
         new StorageEvent("storage", {
           key: LOCAL_STORAGE_THEME_KEY,
@@ -75,11 +78,3 @@ export function createDarkMode(defaultValue?: boolean): CreateDarkModeOutput {
   });
 }
 
-export function initTheme() {
-	const initialTheme = localStorage.getItem('dark-mode');
-	if (initialTheme === 'true') {
-		document.body.setAttribute('data-theme', 'dark');
-	} else if (initialTheme === 'false') {
-		document.body.setAttribute('data-theme', 'light');
-	}
-}

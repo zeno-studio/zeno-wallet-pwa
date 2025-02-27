@@ -93,8 +93,10 @@ export const deriveEvm = (index: number, addressIndex: number, mn: string) => {
 			address: addr.fromPublicKey(hdKey.publicKey),
 			addressType: 'evm',
 			derivePath: `m/44'/60'/0'/0/${addressIndex}`,
+			keyringType: 'secp256k1',
 			isHidden: false,
-			keyringType: 'secp256k1'
+			isWatchOnly: false,
+
 		};
 		addElement('accountList', newAccount);
 	}
@@ -139,8 +141,9 @@ export const derivePolkadot = async (
 		address: ss58Address(pub, 0),
 		addressType: 'polkadot',
 		derivePath: path,
+		keyringType: type,
 		isHidden: false,
-		keyringType: type
+		isWatchOnly: false,
 	};
 	addElement('accountList', newAccount);
 };

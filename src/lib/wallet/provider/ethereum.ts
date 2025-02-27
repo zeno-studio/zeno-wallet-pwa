@@ -6,28 +6,7 @@ import { ProviderName,
   type SendMessageHandler,
 } from "$lib/wallet/provider/type";
 
-import { 
-  type AddEthereumChainParameter,
-  type EIP1193Provider,
-  type JsonRpcRequest,
-  type JsonRpcResponse,
-  
-  type MetaMaskProvider,
-  type ProviderConnectInfo,
-  type ProviderMessage,
-  type ProviderRpcError,
-  type RequestArguments,
-  type SwitchEthereumChainParameter,
-  type WatchAssetParams,
-  type Web3WalletPermission,
-  type Address,
-  type EIP1102,
-  type EIP3085,
-  type EIP3326,
-  type EIP747,
 
-
- } from "eip1193-types";
 
  import * as EIP1193 from "eip1193-types";
 

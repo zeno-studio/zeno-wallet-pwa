@@ -1,82 +1,66 @@
-import { type Chain } from '$lib/wallet/common';
-import { getElement, addElement, editElement } from '$lib/wallet/common';
-import {
-	westend,
-	base,
-	bsc,
-	ethereum,
-	optimism,
-	polygon,
-	sonic,
-} from '$lib/wallet/common';
+import { type Chain, type chainStore, type chainStoreType } from '$lib/wallet/common';
+import { getElement,addElement, editElement } from '$lib/wallet/common';
+import { westend, base, bsc, ethereum, optimism, polygon, sonic } from '$lib/wallet/common';
 
-export const defaultChains = new Map<number, Chain>([
+export const DefaultChains = new Map<number, Chain>([
 	[base.id, base],
 	[bsc.id, bsc],
 	[ethereum.id, ethereum],
 	[optimism.id, optimism],
 	[polygon.id, polygon],
-	[sonic.id, sonic],
-	[westend.id, westend],
+	[sonic.id, sonic]
 ]);
 
-export type chainStore = {
-	id: number;
-	chains: Map<number, Chain>;
-}
+export const AddedChains = new Map<number, Chain>([[westend.id, westend]]);
 
-class ChainState {
-	currentChain = $state(westend);
-	chains = $state(defaultChains);
-	constructor() {}
+export const chainState = () => {
+	let currentChain = $state(westend);
+	const defaultChains = $state(DefaultChains);
+	const addedChains = $state(AddedChains);
+	return {
+		currentChain,
+		defaultChains,
+		addedChains,
+		setCurrentChain(chain: Chain) {
+			currentChain = chain;
+			return true;
+		},
+		async initChainStore() {
+			const d = await getElement('chains', "defaultChains") ;
+			if (!d) {
+				addElement('chains', { name: 'defaultChains', chains: DefaultChains });
+			}
 
-	async initChains() {
-		const storedChains = await getElement('chains', 1) 
-        if (!storedChains) {
-			const data = {id: 1, chains: defaultChains};
-            addElement('chains', data);
-        }
-		const storedCurrentChain = localStorage.getItem('currentChain');
-        if (!storedCurrentChain) {
-            localStorage.setItem('currentChain', JSON.stringify(this.currentChain));
-        }
-		if (storedCurrentChain) {
-			this.currentChain = JSON.parse(storedCurrentChain) as Chain;
+			const a = await getElement('chains', "addedChains");
+			if (!a) {
+				addElement('chains', { name: 'addedChains', chains: AddedChains });
+			}
+		},
+		async addChain(chain: Chain, type: chainStoreType) {
+			const storedChains = (await getElement('chains', type)) as chainStore | null;
+			if (storedChains) {
+				const newChains = { name: type, chains: storedChains.chains.set(chain.id, chain) };
+				editElement('chains', newChains);
+			} else {
+				if (type === 'defaultChains') {
+					editElement('defaultChains', { name: type, chains:DefaultChains.set(chain.id, chain) });
+				}
+				if (type === 'addedChains') {
+					editElement('chains', { name: type, chains: AddedChains.set(chain.id, chain) });
+				}
+			}
+		},
+
+		async removeChain(chain: Chain, type: chainStoreType) {
+			const storedChains = (await getElement('chains', type)) as chainStore | null;
+			if (storedChains) {
+				if (storedChains.chains.delete(chain.id)) {
+					editElement('chains', storedChains);
+					console.log('Chain removed successfully');
+				} else {
+					console.error('Failed to remove chain');
+				}
+			}
 		}
-	}
-
-	setCurrentChain(chain: Chain) {
-		this.currentChain = chain;
-		localStorage.setItem('currentChain', JSON.stringify(chain));
-	}
-
-	async addChain(chain: Chain) {
-        try {
-            const storedChains = await getElement('chains', 1) as chainStore | null;
-            if (storedChains) {
-             const newChains = {id:1, chains:  storedChains.chains.set(chain.id, chain)};
-                editElement('chains', newChains );
-            } else {
-				editElement('chains', {id:1,chains:defaultChains.set(chain.id, chain)});
-            }
-        } catch (error) {
-            console.error('Failed to add chain:', error);
-        }
-    }
-
-	async removeChain(chain: Chain) {
-	const storedChains = await getElement('chains', 1) as chainStore | null;
-	if (storedChains) {
-		if (storedChains.chains.delete(chain.id)) {
-			editElement('chains', storedChains);
-			console.log('Chain removed successfully');
-		} 
-		else {	
-			console.error('Failed to remove chain');
-		}
-	}
-
-	}
-}
-
-export const chainState = new ChainState();
+	};
+};

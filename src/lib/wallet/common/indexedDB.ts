@@ -11,11 +11,14 @@ export function initDB() {
 			db.createObjectStore('accountList', { keyPath: 'accountIndex' });
 		}
         if (!db.objectStoreNames.contains('chains')) {
-            db.createObjectStore('chains', {keyPath: 'id' });
+            db.createObjectStore('chains', {keyPath: 'name' });
         }
         if (!db.objectStoreNames.contains('historyRecords')) {
 			db.createObjectStore('historyRecords', { keyPath: 'address' });
 		}
+        if (!db.objectStoreNames.contains('addressBook')) {
+            db.createObjectStore('addressBook', {keyPath: 'name' });
+        }
 	};
 	request.onsuccess = () => db = request.result;
 	request.onerror = (err) => console.error(`IndexedDB error: ${request.error}`, err);

@@ -1,3 +1,22 @@
+export type Settings = {
+  darkMode: boolean;
+  locale: string;
+  currentAccountIndex:number;
+  nextAccountIndex: number;
+  nextWatchAccountIndex: number;
+  nextEvmAddressIndex: number;
+  nextPolkadotAddressIndex: number;
+}
+
+export const defaultSettings: Settings = {
+  darkMode: false,
+  locale: "en",
+  currentAccountIndex:0,
+  nextAccountIndex: 1,
+  nextWatchAccountIndex: 1,    
+  nextEvmAddressIndex: 0,
+  nextPolkadotAddressIndex: 0,
+}
 
 export enum AccessStatus {
     APPROVED = 'APPROVED',
@@ -16,6 +35,13 @@ export interface Time {
     milliseconds: number;
   }
 
+export type chainStore = {
+    name: string;
+    chains: Map<number, Chain>;
+}
+
+export type chainStoreType = "defaultChains" | "addedChains";
+
 export interface Account {
     accountIndex: number;
     accountName: string;
@@ -23,9 +49,12 @@ export interface Account {
     address: string;
     addressType: addressType;
     derivePath: string;
-    isHidden: boolean;
     keyringType: keyringType;
+    isHidden: boolean;
+    isWatchOnly: boolean;
 }
+
+
 
 export interface LegacyVault {
     vaultId: number;
@@ -62,13 +91,6 @@ export interface Chain {
     testnet: boolean;
     logoPath?: string
 }
-
-export interface BaseAsset {
-    chainId: number
-    type: AssetType
-    symbol: string
-    name: string
-  }
 
   export interface Fiat {
     name: string

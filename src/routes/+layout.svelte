@@ -2,16 +2,13 @@
 	import '../app.css';
 	import { Header, Footer, Toaster } from '$lib/ui/components';
 	import { MediaQuery } from 'svelte/reactivity';
-	import { initLocale, initTheme } from '$lib/ui/runes';
+	import { createSettings} from '$lib/ui/runes';
 	import { initDB,ethereum,moonbeam} from '$lib/wallet/common';
-	import { accountState,chainState } from '$lib/wallet/runes';
-
-	initLocale();
-	initTheme();
+	import { accountState,chainState} from '$lib/wallet/runes';
+	
 	initDB();
-	accountState.initAccountConfig();
-	chainState.initChains();
-
+	createSettings();
+	chainState().initChainStore();
 	let { children } = $props();
 
 
@@ -29,9 +26,6 @@
 
 <noscript>You need to enable JavaScript to run this app.</noscript>
 
-{#if isSmallScreen.current}
-	<div></div>
-{/if}
 
 <svelte:head>
 	<title>{metadata.title}</title>
