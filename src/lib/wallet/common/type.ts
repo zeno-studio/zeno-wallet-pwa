@@ -1,3 +1,7 @@
+import { TimeLocks } from "$lib/wallet/common";
+import { base, bsc,ethereum, optimism, polygon, sonic,westend } from "$lib/wallet/common";
+
+
 export type Settings = {
   darkMode: boolean;
   locale: string;
@@ -6,6 +10,10 @@ export type Settings = {
   nextWatchAccountIndex: number;
   nextEvmAddressIndex: number;
   nextPolkadotAddressIndex: number;
+  timeLock: number
+  defaultChains: number[];
+  additionalChains: number[];
+  fiat: string
 }
 
 export const defaultSettings: Settings = {
@@ -16,25 +24,17 @@ export const defaultSettings: Settings = {
   nextWatchAccountIndex: 1,    
   nextEvmAddressIndex: 0,
   nextPolkadotAddressIndex: 0,
+  timeLock: TimeLocks.short,
+  defaultChains: [base.id, bsc.id, ethereum.id, optimism.id, polygon.id, sonic.id],
+  additionalChains: [westend.id],
+  fiat: 'USD'
 }
 
-export enum AccessStatus {
-    APPROVED = 'APPROVED',
-    DENIED = 'DENIED',
-}
-
+export type AccessStatus ='APPROVED'|'DENIED';
 export type HexString = `0x${string}`;
 export type addressType = 'evm' | 'polkadot';
 export type keyringType = 'secp256k1' | 'ed25519' | 'sr25519';
 export type accountType = 'legacy' | 'passkey' | 'hardware';
-export interface Time {
-    days: number;
-    hours: number;
-    minutes: number;
-    seconds: number;
-    milliseconds: number;
-  }
-
 export type chainStore = {
     name: string;
     chains: Map<number, Chain>;
@@ -51,9 +51,15 @@ export interface Account {
     derivePath: string;
     keyringType: keyringType;
     isHidden: boolean;
-    isWatchOnly: boolean;
 }
 
+export interface WatchAccount {
+  accountIndex: number;
+  accountName: string;
+  address: string;
+  addressType: addressType;
+  isHidden: boolean;
+}
 
 
 export interface LegacyVault {
@@ -152,10 +158,3 @@ export interface Chain {
     txError?: Array<string>;
   }
   
-
-  export interface TxHistoryData {
-    className: string;
-    typeName: string;
-    name: string;
-    title: string;
-}

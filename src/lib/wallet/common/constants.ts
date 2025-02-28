@@ -12,3 +12,40 @@ export const MIN_AUTO_SLIPPAGE_TOLERANCE = 0.5
 export const MAX_AUTO_SLIPPAGE_TOLERANCE = 5.5
 export const MAX_CUSTOM_SLIPPAGE_TOLERANCE = 20
 
+export const TimeLocks = {
+    appOpen: 0,
+    appClose: 1,
+    short: 1000 * 60 * 5,
+    medium: 1000 * 60 * 15,
+    long: 1000 * 60 * 30,
+    hour: 1000 * 60 * 60,
+}
+
+export const dbStore = {
+  Vault:{
+    name: 'Vault',
+    keypath: 'vaultName'
+  },
+  Account: {
+    name: 'Account',
+    keypath: 'accountIndex'
+  },
+  WatchAccount: {
+    name: 'WatchAccount',
+    keypath: 'address'
+  },
+  AdditionalChain: {
+    name: 'AdditionalChain',
+    keypath: 'name'
+  },
+  History: {
+    name: 'HistoryRecords',
+    keypath: 'address'
+  },
+  AddressBook: {
+    name: 'AddressBook',
+    keypath: 'address'
+  }
+  
+}
+

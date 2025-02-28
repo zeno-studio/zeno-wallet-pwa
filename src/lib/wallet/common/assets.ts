@@ -1,58 +1,4 @@
-import {type ERC20Asset,type CurrencyAsset,type Fiat} from '$lib/wallet/common';
-
-const usd :Fiat = {
-    name: "USD",
-    symbol: "$",
-    iconPath: "/fiat/usd.svg",
-}
-
-const eur :Fiat = {
-    name: "EUR",
-    symbol: "€",
-    iconPath: "/fiat/eur.svg",
-}
-
-const gbp :Fiat = {
-    name: "GBP",
-    symbol: "£",
-    iconPath: "/fiat/gbp.svg",
-}
-
-const jpy :Fiat = {
-    name: "JPY",
-    symbol: "¥",
-    iconPath: "/fiat/jpy.svg",
-}
-
-const cny :Fiat = {
-    name: "CNY",
-    symbol: "¥",
-    iconPath: "/fiat/cny.svg",
-}
-
-const krw :Fiat = {
-    name: "KRW",
-    symbol: "₩",
-    iconPath: "/fiat/krw.svg",
-}
-
-const rub :Fiat = {
-    name: "RUB",
-    symbol: "₽",
-    iconPath: "/fiat/rub.svg",
-}
-
-export const fiats = new Set<Fiat> ([
-    usd,
-    eur,
-    gbp,    
-    jpy,
-    cny,
-    krw,
-    rub,
-])
-
-
+import {type ERC20Asset,type CurrencyAsset} from '$lib/wallet/common';
 
 export const wnd:CurrencyAsset = {  
     chainId: 420420421,
@@ -186,8 +132,6 @@ export const baseTonkens = new Map<string, ERC20Asset> ([
 
 ]);
 
-
-
 export const Currencies = new Map<number, CurrencyAsset> ([
     [420420421, wnd],
     [1, eth],
@@ -198,3 +142,5 @@ export const Currencies = new Map<number, CurrencyAsset> ([
     [8453, eth_base],
 ]
 );
+
+

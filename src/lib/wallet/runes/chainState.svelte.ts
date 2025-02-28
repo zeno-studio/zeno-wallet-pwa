@@ -26,36 +26,36 @@ export const chainState = () => {
 			return true;
 		},
 		async initChainStore() {
-			const d = await getElement('chains', "defaultChains") ;
+			const d = await getElement('chainList', "defaultChains") ;
 			if (!d) {
-				addElement('chains', { name: 'defaultChains', chains: DefaultChains });
+				addElement('chainList', { name: 'defaultChains', chains: DefaultChains });
 			}
 
-			const a = await getElement('chains', "addedChains");
+			const a = await getElement('chainList', "addedChains");
 			if (!a) {
-				addElement('chains', { name: 'addedChains', chains: AddedChains });
+				addElement('chainList', { name: 'addedChains', chains: AddedChains });
 			}
 		},
 		async addChain(chain: Chain, type: chainStoreType) {
-			const storedChains = (await getElement('chains', type)) as chainStore | null;
+			const storedChains = (await getElement('chainList', type)) as chainStore | null;
 			if (storedChains) {
 				const newChains = { name: type, chains: storedChains.chains.set(chain.id, chain) };
-				editElement('chains', newChains);
+				editElement('chainList', newChains);
 			} else {
 				if (type === 'defaultChains') {
 					editElement('defaultChains', { name: type, chains:DefaultChains.set(chain.id, chain) });
 				}
 				if (type === 'addedChains') {
-					editElement('chains', { name: type, chains: AddedChains.set(chain.id, chain) });
+					editElement('chainList', { name: type, chains: AddedChains.set(chain.id, chain) });
 				}
 			}
 		},
 
 		async removeChain(chain: Chain, type: chainStoreType) {
-			const storedChains = (await getElement('chains', type)) as chainStore | null;
+			const storedChains = (await getElement('chainList', type)) as chainStore | null;
 			if (storedChains) {
 				if (storedChains.chains.delete(chain.id)) {
-					editElement('chains', storedChains);
+					editElement('chainList', storedChains);
 					console.log('Chain removed successfully');
 				} else {
 					console.error('Failed to remove chain');

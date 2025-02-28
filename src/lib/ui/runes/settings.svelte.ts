@@ -2,7 +2,6 @@ import {type Settings, defaultSettings } from "$lib/wallet/common";
 import { accountState} from "$lib/wallet/runes";
 import  {userlocale,getLanguage,availableLanguages} from "$lib/ui/runes";    
 
-
 export const createSettings = async () =>{
      const settings  = localStorage.getItem('settings')
     if (settings !== null) {

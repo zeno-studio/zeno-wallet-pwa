@@ -1,23 +1,27 @@
+import { dbStore } from '$lib/wallet/common';
 
 let db: IDBDatabase;
 export function initDB() {
 	const request = indexedDB.open('userData', 1);
 	request.onupgradeneeded = () => {
 		const db = request.result;
-		if (!db.objectStoreNames.contains('legacyVault')) {
-			db.createObjectStore('legacyVault', { keyPath: 'vaultId' });
+		if (!db.objectStoreNames.contains(dbStore.Vault.name)) {
+			db.createObjectStore(dbStore.Vault.name, { keyPath: dbStore.Vault.keypath });
 		}
-        if (!db.objectStoreNames.contains('accountList')) {
-			db.createObjectStore('accountList', { keyPath: 'accountIndex' });
+        if (!db.objectStoreNames.contains(dbStore.Account.name)) {
+			db.createObjectStore(dbStore.Account.name, { keyPath: dbStore.Account.keypath });
 		}
-        if (!db.objectStoreNames.contains('chains')) {
-            db.createObjectStore('chains', {keyPath: 'name' });
+        if (!db.objectStoreNames.contains(dbStore.WatchAccount.name)) {
+			db.createObjectStore(dbStore.WatchAccount.name, { keyPath: dbStore.WatchAccount.keypath });
+		}
+        if (!db.objectStoreNames.contains(dbStore.AdditionalChain.name)) {
+            db.createObjectStore(dbStore.AdditionalChain.name, {keyPath: dbStore.AdditionalChain.keypath}); 
         }
-        if (!db.objectStoreNames.contains('historyRecords')) {
-			db.createObjectStore('historyRecords', { keyPath: 'address' });
+        if (!db.objectStoreNames.contains(dbStore.History.name)) {
+			db.createObjectStore(dbStore.History.name, { keyPath: dbStore.History.keypath });
 		}
-        if (!db.objectStoreNames.contains('addressBook')) {
-            db.createObjectStore('addressBook', {keyPath: 'name' });
+        if (!db.objectStoreNames.contains(dbStore.AddressBook.name)) {
+            db.createObjectStore(dbStore.AddressBook.name, {keyPath: dbStore.AddressBook.keypath});
         }
 	};
 	request.onsuccess = () => db = request.result;
