@@ -1,4 +1,5 @@
-import { dbStore } from '$lib/wallet/common';
+import { dbStore} from '$lib/wallet/common';
+
 
 let db: IDBDatabase;
 export function initDB() {
@@ -55,7 +56,7 @@ export const editElement =(store: string, data:object) => {
 
 export const getElement = (store: string, key: string | number) => {
     const open = indexedDB.open('userData', 1);
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         open.onsuccess = () => {
             let request!: IDBRequest;
             db = open.result;
@@ -63,7 +64,7 @@ export const getElement = (store: string, key: string | number) => {
                 const objectStore = transaction.objectStore(store);
                 if (key === 'all') request = objectStore.getAll();
                 else request = objectStore.get(key);
-                request.onerror = () => reject(request.error);
+                request.onerror = () => resolve(null);
                 request.onsuccess = () => resolve(request.result);       
         };
     });

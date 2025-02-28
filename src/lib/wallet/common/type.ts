@@ -6,6 +6,7 @@ export type Settings = {
   darkMode: boolean;
   locale: string;
   currentAccountIndex:number;
+  currentWatchAccountIndex: number;
   nextAccountIndex: number;
   nextWatchAccountIndex: number;
   nextEvmAddressIndex: number;
@@ -13,6 +14,9 @@ export type Settings = {
   timeLock: number
   defaultChains: number[];
   additionalChains: number[];
+  accountList: number[];
+  hiddenAccounts: number[];
+  vaultList: string[];
   fiat: string
 }
 
@@ -20,6 +24,7 @@ export const defaultSettings: Settings = {
   darkMode: false,
   locale: "en",
   currentAccountIndex:0,
+  currentWatchAccountIndex:0,
   nextAccountIndex: 1,
   nextWatchAccountIndex: 1,    
   nextEvmAddressIndex: 0,
@@ -27,6 +32,9 @@ export const defaultSettings: Settings = {
   timeLock: TimeLocks.short,
   defaultChains: [base.id, bsc.id, ethereum.id, optimism.id, polygon.id, sonic.id],
   additionalChains: [westend.id],
+  accountList: [],
+  hiddenAccounts: [],
+  vaultList: [],
   fiat: 'USD'
 }
 
@@ -50,7 +58,7 @@ export interface Account {
     addressType: addressType;
     derivePath: string;
     keyringType: keyringType;
-    isHidden: boolean;
+    publicKey: string;
 }
 
 export interface WatchAccount {
@@ -61,9 +69,13 @@ export interface WatchAccount {
   isHidden: boolean;
 }
 
+export interface AddressBook {
+    name: string;
+    address: string;
+}
 
 export interface LegacyVault {
-    vaultId: number;
+    vaultName: string;
     salt: string;
     ciphertext: string;
     cryptoVersion: number;
@@ -74,7 +86,7 @@ export interface LegacyVault {
 // symmetric: 'XChaCha20-Poly1305-managedNonce'
 
 export interface Chain {
-    id: number;
+    chainId: number;
     name: string;
     nativeCurrency: {
         name: string;
@@ -156,5 +168,15 @@ export interface Chain {
     isShowTxResult: boolean;
     isTxSuccess: boolean;
     txError?: Array<string>;
+  }
+
+  export type WalletBackupData = {
+    vaults: LegacyVault[];
+    accounts: Account[];
+    watchAccount: WatchAccount[];
+    additionalChains: Chain[];
+    addressBook: AddressBook[];
+    History: History[];
+    settings: Settings;
   }
   
