@@ -1,7 +1,7 @@
 import { type Chain } from '$lib/wallet/common';
 
 export const westend: Chain = {
-	id: 420420421,
+	chainId: 420420421,
 	name: 'Westend',
 	nativeCurrency: { name: 'wnd', symbol: 'WND', decimals: 18 },
 	rpcUrls: {
@@ -14,7 +14,7 @@ export const westend: Chain = {
 };
 
 export const base: Chain = {
-	id: 8453,
+	chainId: 8453,
 	name: 'Base',
 	nativeCurrency: { name: 'eth_base', symbol: 'ETH', decimals: 18 },
 	rpcUrls: {
@@ -35,7 +35,7 @@ export const base: Chain = {
 
 
 export const ethereum: Chain = {
-    id: 1,
+    chainId: 1,
     name: 'Ethereum',
     nativeCurrency: { name: 'eth', symbol: 'ETH', decimals: 18 },
     rpcUrls: {
@@ -56,7 +56,7 @@ export const ethereum: Chain = {
 };
 
   export const optimism : Chain = {
-    id: 10,
+    chainId: 10,
     name: 'OP Mainnet',
     nativeCurrency: { name: 'eth_op', symbol: 'ETH', decimals: 18 },
     rpcUrls: {
@@ -77,7 +77,7 @@ export const ethereum: Chain = {
   }
 
   export const bsc : Chain = {
-    id: 56,
+    chainId: 56,
     name: 'BNB Smart Chain',
     nativeCurrency: { decimals: 18,name: 'bnb',symbol: 'BNB',},
     rpcUrls: {
@@ -97,7 +97,7 @@ export const ethereum: Chain = {
   }
 
   export const polygon : Chain ={
-    id: 137,
+    chainId: 137,
     name: 'Polygon',
     nativeCurrency: { name: 'pol', symbol: 'POL', decimals: 18 },
     rpcUrls: {
@@ -117,7 +117,7 @@ export const ethereum: Chain = {
   }
 
   export const sonic : Chain = {
-    id: 146,
+    chainId: 146,
     name: 'Sonic',
     nativeCurrency: {
       decimals: 18,
@@ -141,7 +141,7 @@ export const ethereum: Chain = {
   }
 
   export const arbitrum : Chain = {
-    id: 42161,
+    chainId: 42161,
     name: 'Arbitrum One',
     nativeCurrency: { name: 'eth_arbitrum', symbol: 'ETH', decimals: 18 },
     rpcUrls: {
@@ -162,7 +162,7 @@ export const ethereum: Chain = {
   }
 
   export const moonbeam : Chain = {
-    id: 1284,
+    chainId: 1284,
     name: 'Moonbeam',
     nativeCurrency: { name: 'glmr', symbol: 'GLMR', decimals: 18 },
     rpcUrls: {
