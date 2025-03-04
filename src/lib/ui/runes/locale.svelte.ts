@@ -1,20 +1,18 @@
 import {type Settings } from "$lib/wallet/common";
 
-export const userlocale = () => {
-	let locale: string | null = $state('en');
-	return{
-		locale,
-		setLocale(setlocale: string) {
-			locale = setlocale;
+class Userlocale {
+	locale: string | null = $state('en');
+	setLocale(setlocale: string) {
+			this.locale = setlocale;
 			const saved = localStorage.getItem('settings'); 
 			if (saved) {
 				const settings = JSON.parse(saved) as Settings;
-				const newSettings = {...settings, locale: locale};
+				const newSettings = {...settings, locale: this.locale};
 				localStorage.setItem('settings', JSON.stringify(newSettings));
 			}
 		}
 
-	}
+
 	
 }
 
@@ -63,3 +61,5 @@ export function getLanguage(): string {
 	}
 	return language;
 }
+
+export const userlocale = new Userlocale();

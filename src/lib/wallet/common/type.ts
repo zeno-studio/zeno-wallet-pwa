@@ -1,5 +1,13 @@
-import { TimeLocks } from "$lib/wallet/common";
 import { base, bsc,ethereum, optimism, polygon, sonic,westend } from "$lib/wallet/common";
+
+export const TimeLocks = {
+  appOpen: 0,
+  appClose: 1,
+  short: 1000 * 60 * 5,
+  medium: 1000 * 60 * 15,
+  long: 1000 * 60 * 30,
+  hour: 1000 * 60 * 60,
+}
 
 
 export type Settings = {
@@ -30,8 +38,8 @@ export const defaultSettings: Settings = {
   nextEvmAddressIndex: 0,
   nextPolkadotAddressIndex: 0,
   timeLock: TimeLocks.short,
-  defaultChains: [base.id, bsc.id, ethereum.id, optimism.id, polygon.id, sonic.id],
-  additionalChains: [westend.id],
+  defaultChains: [base.chainId, bsc.chainId, ethereum.chainId, optimism.chainId, polygon.chainId, sonic.chainId],
+  additionalChains: [westend.chainId],
   accountList: [],
   hiddenAccounts: [],
   vaultList: [],

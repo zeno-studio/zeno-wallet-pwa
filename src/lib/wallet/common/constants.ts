@@ -1,5 +1,3 @@
-import { type Account} from '$lib/wallet/common';
-
 export const VERSION = "1.0.0";
 export const MNEMONIC_LENGTH_MIN = 12
 export const MNEMONIC_LENGTH_MAX = 24
@@ -14,14 +12,6 @@ export const MAX_AUTO_SLIPPAGE_TOLERANCE = 5.5
 export const MAX_CUSTOM_SLIPPAGE_TOLERANCE = 20
 export const PVM_ADDRESSID20_SUFFIX = "eeeeeeeeeeeeeeeeeeeeeeee"
 
-export const TimeLocks = {
-    appOpen: 0,
-    appClose: 1,
-    short: 1000 * 60 * 5,
-    medium: 1000 * 60 * 15,
-    long: 1000 * 60 * 30,
-    hour: 1000 * 60 * 60,
-}
 
 export const dbStore = {
   Vault:{

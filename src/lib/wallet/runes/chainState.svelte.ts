@@ -3,15 +3,15 @@ import { getElement,addElement, editElement } from '$lib/wallet/common';
 import { westend, base, bsc, ethereum, optimism, polygon, sonic } from '$lib/wallet/common';
 
 export const DefaultChains = new Map<number, Chain>([
-	[base.id, base],
-	[bsc.id, bsc],
-	[ethereum.id, ethereum],
-	[optimism.id, optimism],
-	[polygon.id, polygon],
-	[sonic.id, sonic]
+	[base.chainId, base],
+	[bsc.chainId, bsc],
+	[ethereum.chainId, ethereum],
+	[optimism.chainId, optimism],
+	[polygon.chainId, polygon],
+	[sonic.chainId, sonic]
 ]);
 
-export const AddedChains = new Map<number, Chain>([[westend.id, westend]]);
+export const AddedChains = new Map<number, Chain>([[westend.chainId, westend]]);
 
 export const chainState = () => {
 	let currentChain = $state(westend);
@@ -39,14 +39,14 @@ export const chainState = () => {
 		async addChain(chain: Chain, type: chainStoreType) {
 			const storedChains = (await getElement('chainList', type)) as chainStore | null;
 			if (storedChains) {
-				const newChains = { name: type, chains: storedChains.chains.set(chain.id, chain) };
+				const newChains = { name: type, chains: storedChains.chains.set(chain.chainId, chain) };
 				editElement('chainList', newChains);
 			} else {
 				if (type === 'defaultChains') {
-					editElement('defaultChains', { name: type, chains:DefaultChains.set(chain.id, chain) });
+					editElement('defaultChains', { name: type, chains:DefaultChains.set(chain.chainId, chain) });
 				}
 				if (type === 'addedChains') {
-					editElement('chainList', { name: type, chains: AddedChains.set(chain.id, chain) });
+					editElement('chainList', { name: type, chains: AddedChains.set(chain.chainId, chain) });
 				}
 			}
 		},
@@ -54,7 +54,7 @@ export const chainState = () => {
 		async removeChain(chain: Chain, type: chainStoreType) {
 			const storedChains = (await getElement('chainList', type)) as chainStore | null;
 			if (storedChains) {
-				if (storedChains.chains.delete(chain.id)) {
+				if (storedChains.chains.delete(chain.chainId)) {
 					editElement('chainList', storedChains);
 					console.log('Chain removed successfully');
 				} else {
