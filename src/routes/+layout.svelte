@@ -4,11 +4,9 @@
 	import { MediaQuery } from 'svelte/reactivity';
 	import { createSettings} from '$lib/ui/runes';
 	import { initDB,ethereum,moonbeam} from '$lib/wallet/common';
-	import { accountState,chainState} from '$lib/wallet/runes';
 	
 	initDB();
 	createSettings();
-	chainState().initChainStore();
 	let { children } = $props();
 
 

@@ -14,7 +14,7 @@ const translated = $derived.by(async () => {
 });
 
 $effect(() => {
-	console.log(translated)
+	translated
 })
 
 

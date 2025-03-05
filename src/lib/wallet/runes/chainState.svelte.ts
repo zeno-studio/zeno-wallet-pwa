@@ -1,5 +1,5 @@
-import { type Chain, type chainStore, type chainStoreType } from '$lib/wallet/common';
-import { getElement,addElement, editElement } from '$lib/wallet/common';
+import { dbStore, type Chain, type Settings } from '$lib/wallet/common';
+import {  addElement, editElement } from '$lib/wallet/common';
 import { westend, base, bsc, ethereum, optimism, polygon, sonic } from '$lib/wallet/common';
 
 export const DefaultChains = new Map<number, Chain>([
@@ -11,56 +11,36 @@ export const DefaultChains = new Map<number, Chain>([
 	[sonic.chainId, sonic]
 ]);
 
-export const AddedChains = new Map<number, Chain>([[westend.chainId, westend]]);
+export const AdditionalChains = new Map<number, Chain>([]);
 
-export const chainState = () => {
-	let currentChain = $state(westend);
-	const defaultChains = $state(DefaultChains);
-	const addedChains = $state(AddedChains);
-	return {
-		currentChain,
-		defaultChains,
-		addedChains,
-		setCurrentChain(chain: Chain) {
-			currentChain = chain;
-			return true;
-		},
-		async initChainStore() {
-			const d = await getElement('chainList', "defaultChains") ;
-			if (!d) {
-				addElement('chainList', { name: 'defaultChains', chains: DefaultChains });
-			}
+class ChainState {
+	currentChain = $state(westend);
+	additionalChains = $state(AdditionalChains);
 
-			const a = await getElement('chainList', "addedChains");
-			if (!a) {
-				addElement('chainList', { name: 'addedChains', chains: AddedChains });
-			}
-		},
-		async addChain(chain: Chain, type: chainStoreType) {
-			const storedChains = (await getElement('chainList', type)) as chainStore | null;
-			if (storedChains) {
-				const newChains = { name: type, chains: storedChains.chains.set(chain.chainId, chain) };
-				editElement('chainList', newChains);
-			} else {
-				if (type === 'defaultChains') {
-					editElement('defaultChains', { name: type, chains:DefaultChains.set(chain.chainId, chain) });
-				}
-				if (type === 'addedChains') {
-					editElement('chainList', { name: type, chains: AddedChains.set(chain.chainId, chain) });
-				}
-			}
-		},
-
-		async removeChain(chain: Chain, type: chainStoreType) {
-			const storedChains = (await getElement('chainList', type)) as chainStore | null;
-			if (storedChains) {
-				if (storedChains.chains.delete(chain.chainId)) {
-					editElement('chainList', storedChains);
-					console.log('Chain removed successfully');
-				} else {
-					console.error('Failed to remove chain');
-				}
-			}
+	async addChain(chain: Chain) {
+		addElement(dbStore.AdditionalChain.name, chain);
+		this.additionalChains.set(chain.chainId, chain);
+		const settings = localStorage.getItem('settings');
+		if (settings) {
+			const data = JSON.parse(settings) as Settings;
+			data.additionalChains.push(chain.chainId);
+			localStorage.setItem('settings', JSON.stringify(data));
 		}
-	};
-};
+	}
+	async removeChain(chain: Chain) {
+		this.additionalChains.delete(chain.chainId);
+		const settings = localStorage.getItem('settings');
+		if (settings) {
+			const data = JSON.parse(settings) as Settings;
+			data.additionalChains = data.additionalChains.filter((id) => id !== chain.chainId);
+			localStorage.setItem('settings', JSON.stringify(data));
+		}
+	}
+
+	async editChain(chain: Chain) {
+		editElement(dbStore.AdditionalChain.name, chain);
+		this.additionalChains.set(chain.chainId, chain);
+	}
+}
+
+export const chainState = new ChainState();

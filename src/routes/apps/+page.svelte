@@ -3,7 +3,7 @@ import {jsonP1} from "$lib/wallet/provider/jsonProvider"
 
 import { createClient } from "polkadot-api"
 import { getSmProvider } from "polkadot-api/sm-provider"
-import { smoldot } from "$lib/wallet/common"
+
 import { AnkrProvider, type GetAccountBalanceReply } from '@ankr.com/ankr.js';
  
 const provider = new AnkrProvider('https://rpc.ankr.com/multichain/a1cc506b1783ef5d0cbee73d4997f21996d1624933c09155f6e5990028f3ee7a');

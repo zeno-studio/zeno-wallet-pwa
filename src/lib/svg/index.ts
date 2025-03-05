@@ -70,7 +70,6 @@ export { default as ReceiveFilled} from "./receive-filled.svelte";
 export { default as SwitchCheck } from "./switch.svelte";
 export { default as SafeGuardIcon } from "./safeGuard.svelte";
 export { default as SendFilled } from "./send-filled.svelte";
-
 export { default as ScanIcon } from "./scan.svelte";
 export { default as ScanAlt } from "./scan-alt.svelte";
 export { default as SearchIcon } from "./search.svelte";
@@ -80,6 +79,7 @@ export { default as ShareIcon } from "./share.svelte";
 export { default as ShieldFilled} from "./shield-filled.svelte";
 export { default as ShieldQuestion} from "./shield-question.svelte";
 export { default as SparkleIcon} from "./sparkle.svelte";
+export { default as SpinnerIcon} from "./spinner.svelte";
 export { default as StarIcon} from "./star.svelte";
 export { default as SwapIcon} from "./swap-action.svelte";
 export { default as TelegramIcon} from "./telegram.svelte";
