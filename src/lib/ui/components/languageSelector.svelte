@@ -9,7 +9,7 @@
 	let drawer = false;
 </script>
 
-<div class="item-container">
+<div class="setting-medium">
 	<button class="item-button" aria-label="Select Language" onclick={() => (drawer = !drawer)}>
 		<div class="item-l">
 			<LanguageIcon class="icon2rem" /> Select Language
@@ -20,7 +20,7 @@
 	</button>
 </div>
 {#if drawer}
-	<div class="item-container" transition:slide>
+	<div class="setting-medium" transition:slide>
 		{#each langs as lang}
 			<button class="item-button" onclick={() => setLanguage(lang)}>
 				<div class="item-l">
@@ -51,5 +51,26 @@
 	.active {
 		stroke:var(--color-text);
 	}
+	.setting-medium {
+	box-sizing: border-box;
+	width: 100%;
+	flex-direction: column;
+	background: var(--color-bg1);
+	padding: 1rem;
+	cursor: pointer;
+	margin-bottom: 8px;
+	display: flex;
+	flex-direction: row;
+	justify-items: center;
+	align-items: center;
+
+	font-size: 2rem;
+	font-weight: 500;
+	border: none;
+}
+
+.setting-medium:hover {
+	background: var(--color-bg2);
+}
 
 </style>

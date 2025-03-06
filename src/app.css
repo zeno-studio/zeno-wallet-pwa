@@ -188,7 +188,12 @@
 		color: var(--color-text);
 		margin-right: 1rem;
 		cursor: pointer;
-
+	}
+	.icon2A {
+		height: 2rem;
+		width: 2rem;
+		color: var(--color-text);
+		margin: 0px;
 	}
 	.icon2rem:hover {
 		transform: scale(1.1);
@@ -200,7 +205,6 @@
 		color: var(--color-text);
 		margin-right: 16px;
 		cursor: pointer;
-
 	}
 	.icon16px:hover {
 		transform: scale(1.1);
@@ -261,7 +265,7 @@
 	align-items: center;
 	width: 100%;
 	font-size: 1.6rem;
-	font-weight: 700;
+	font-weight: 500;
 	margin: 0px;
 	padding: 0px;
 	background: none;
@@ -338,3 +342,4 @@
 	font-weight: 700;
 	color: var(--color);
 }
+
