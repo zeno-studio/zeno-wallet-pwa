@@ -1,4 +1,4 @@
-import { base, bsc,ethereum, optimism, polygon, sonic,westend } from "$lib/wallet/common";
+import { base, bsc,ethereum, optimism, polygon, sonic,usd} from "$lib/wallet/common";
 
 export const TimeLocks = {
   appOpen: 0,
@@ -39,11 +39,11 @@ export const defaultSettings: Settings = {
   nextPolkadotAddressIndex: 0,
   timeLock: TimeLocks.short,
   defaultChains: [base.chainId, bsc.chainId, ethereum.chainId, optimism.chainId, polygon.chainId, sonic.chainId],
-  additionalChains: [westend.chainId],
+  additionalChains: [],
   accountList: [],
   hiddenAccounts: [],
   vaultList: [],
-  fiat: 'USD'
+  fiat: "USD",
 }
 
 export type AccessStatus ='APPROVED'|'DENIED';
@@ -51,12 +51,6 @@ export type HexString = `0x${string}`;
 export type addressType = 'evm' | 'polkadot';
 export type keyringType = 'secp256k1' | 'ed25519' | 'sr25519';
 export type accountType = 'legacy' | 'passkey' | 'hardware';
-export type chainStore = {
-    name: string;
-    chains: Map<number, Chain>;
-}
-
-export type chainStoreType = "defaultChains" | "addedChains";
 
 export interface Account {
     accountIndex: number;

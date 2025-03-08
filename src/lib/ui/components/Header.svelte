@@ -1,43 +1,36 @@
 <script lang="ts">
-	import { LogoIcon,ArrowDown,} from '$lib/svg';
-	import { NavPanel, NavLeft, Submenu } from '$lib/ui/components';
-	import { clickOutside,isSmallScreen} from '$lib/ui/ts';
-
-	let isSubmenu = $state(false);
+	import { LogoIcon, ArrowDown } from '$lib/svg';
+	import { NavPanel, NavLeft } from '$lib/ui/components';
+	import { clickOutside, isSmallScreen } from '$lib/ui/ts';
 	let accountName = $state('have no account');
 	let accountPanel = $state(false);
 	let Panel = $state(false);
 	let networkPanel = $state(false);
-
 </script>
 
 <div class="nav">
 	<div class="nav-wrapper">
 		<div class="icon">
-			<button
-				class="logoButton"
-				onclick={() => (isSubmenu = !isSubmenu)}>
+			<button class="logoButton">
 				<LogoIcon class="logo" />
 			</button>
-
 		</div>
 		{#if isSmallScreen.current}
-		<div class="accountLeft">
-			<button class="accountButton" onclick={() => accountPanel = !accountPanel}>{accountName}
-				<ArrowDown class="icon2rem" />
-			</button>
-		</div>	
+			<div class="accountLeft">
+				<button class="accountButton" onclick={() => (accountPanel = !accountPanel)}
+					>{accountName}
+					<ArrowDown class="icon2rem" />
+				</button>
+			</div>
 		{/if}
 		<NavLeft />
 
-
 		<div class="navRight">
-			<button class="networkButton" onclick={() => networkPanel = !networkPanel}>
-				<img class="networkImage" src="/network/ethereum.svg" alt="ethereum">	
+			<button class="networkButton" onclick={() => (networkPanel = !networkPanel)}>
+				<img class="networkImage" src="/network/ethereum.svg" alt="ethereum" />
 			</button>
-			{#if !isSmallScreen.current}		
-			<button class="accountButtonRight" onclick={() => Panel = !Panel}>	
-			{accountName}</button>
+			{#if !isSmallScreen.current}
+				<button class="accountButtonRight" onclick={() => (Panel = !Panel)}> {accountName}</button>
 			{/if}
 		</div>
 	</div>
@@ -45,32 +38,18 @@
 <NavPanel bind:Panel />
 
 
-{#if isSubmenu}
-	<div
-		class="subMenu"
-		use:clickOutside 
-		onoutclick={() => (isSubmenu = !isSubmenu)}>
-		<Submenu />
-	</div>
-{/if}
-
 {#if accountPanel}
-	<div class="subMenu"
-		use:clickOutside 
-		onoutclick={() => (accountPanel = !accountPanel)}>
+	<div class="subMenu" use:clickOutside onoutclick={() => (accountPanel = !accountPanel)}>
 		<div>
 			{accountName}
 		</div>
-
 	</div>
 {/if}
 
 {#if networkPanel}
-	<div class="subMenu"
-		use:clickOutside 
-		onoutclick={() => (networkPanel = !networkPanel)}>
+	<div class="subMenu" use:clickOutside onoutclick={() => (networkPanel = !networkPanel)}>
 		<div>
-			<img class="networkImage" src="/network/ethereum.svg" alt="ethereum">	
+			<img class="networkImage" src="/network/ethereum.svg" alt="ethereum" />
 		</div>
 	</div>
 {/if}
@@ -165,7 +144,7 @@
 	.accountLeft {
 		width: 100%;
 	}
-	.networkImage{
+	.networkImage {
 		width: 24px;
 		height: 24px;
 		border-radius: 50%;
@@ -179,5 +158,4 @@
 		border: none;
 		cursor: pointer;
 	}
-
 </style>

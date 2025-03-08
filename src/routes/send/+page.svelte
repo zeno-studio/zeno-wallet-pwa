@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { type AccountInfo } from '$lib/wallet/common';
 	import { isSmallScreen } from '$lib/ui/ts';
 	import { PinIcon, ArrowDown, CloseIcon, SearchIcon, ClockIcon, StarIcon } from '$lib/svg';
 	import { page } from '$app/state';
@@ -64,6 +63,9 @@
 			<div class="modal">
 				<div class="modal-header">
 					<div class="modal-title">Select Token</div>
+					<div class="search">
+						<input type="text" placeholder="Search">
+					</div>
 					<button class="button-open" onclick={() => (modalClose = !modalClose)}>
 						<CloseIcon class="icon2rem" />
 					</button>

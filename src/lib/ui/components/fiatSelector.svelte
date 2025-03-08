@@ -1,27 +1,23 @@
 <script lang="ts">
-	import { userlocale, availableLanguages } from '$lib/ui/runes';
-	import { CheckIcon, ArrowBack } from '$lib/svg';
-	import { slide } from 'svelte/transition';
-	import Check from '$lib/svg/check.svelte';
-	const langs = [...availableLanguages.keys()];
-	function setLanguage(lang: string) {
-		userlocale.setLocale(lang);
-	}
+    import { DefaultFiats } from '$lib/wallet/common';
+    import { chainState } from '$lib/wallet/runes';
+    import { CheckIcon} from '$lib/svg';
 </script>
 
-<div class="container" transition:slide>
-	{#each langs as lang}
-		<button class="item-button" onclick={() => setLanguage(lang)}>
-			<div class="item-l">
-				{availableLanguages.get(lang)}
+<div class="container">
+    {#each [...DefaultFiats] as fiat}
+        <button class="item-button" onclick={() => chainState.setFiat(fiat.name)}>
+            <img class="img24" src={fiat.iconPath} alt="">
+            <div class="item-l">
+                {fiat.name}
 			</div>
-
-			<div class="item-r" class:active={lang === userlocale.locale}>
+            <div class="item-r" class:active={fiat.name === chainState.currentFiat}>
 				<CheckIcon class="icon15A" />
 			</div>
-		</button>
-	{/each}
+        </button>
+    {/each}
 </div>
+
 
 <style lang="postcss">
 	.item-button {
@@ -53,5 +49,4 @@
 		background: var(--color-bg2);
 		border-radius: 8px;
 	}
-	
 </style>

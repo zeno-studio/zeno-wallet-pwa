@@ -81,11 +81,10 @@ export const createEvmAccount = (
 	index: number,
 	addressIndex: number,
 	password: string,
-	keypath: string,
 	mn?: string
 ) => {
 	mn = mn ?? bip39.generateMnemonic(wordlist, 128);
-	packMn(password, mn, keypath);
+	packMn(password, mn, `m/44'/60'/0'/0/${addressIndex}`);
 	deriveEvm(index, addressIndex, mn);
 };
 
@@ -93,9 +92,8 @@ export const deriveEvmAccount = async (
 	index: number,
 	addressIndex: number,
 	password: string,
-	keypath: string
 ) => {
-	const mn = await restoreMn(password, keypath);
+	const mn = await restoreMn(password, `m/44'/60'/0'/0/${addressIndex}`);
 	deriveEvm(index, addressIndex, mn);
 };
 
