@@ -37,6 +37,7 @@ export { default as DollarIcon } from "./dollar.svelte";
 export { default as EyeIcon } from "./eye.svelte";
 export { default as EyeOffIcon } from "./eye-off.svelte";
 export { default as EditIcon } from "./edit.svelte";
+export { default as EditFilled} from "./edit-filled.svelte";
 export { default as ExplorerIcon } from "./explorer.svelte";
 export { default as ExplorerFilled } from "./explorer-filled.svelte";
 export { default as GasIcon } from "./gas.svelte";

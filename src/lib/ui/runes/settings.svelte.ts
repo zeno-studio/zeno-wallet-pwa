@@ -30,6 +30,9 @@ export const createSettings = async () => {
 			chainState.additionalChains = new Map(Chains.map((chain) => [chain.chainId, chain]));
 		}
 
+		// intialize fiat
+		chainState.currentFiat = data.fiat;
+
 		// intialize locale
 		userlocale.locale = data.locale;
 	}

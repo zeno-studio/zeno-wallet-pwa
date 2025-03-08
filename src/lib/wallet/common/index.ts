@@ -4,4 +4,5 @@ export * from "./chains";
 export * from "./indexedDB";
 export * from "./type";
 export * from "./constants";
+export * from "./fiat";
 

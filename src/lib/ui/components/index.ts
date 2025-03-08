@@ -1,7 +1,6 @@
 export { default as Footer } from "./footer.svelte";
 export { default as Header } from "./header.svelte";
 export { default as SwitchTheme } from "./switchTheme.svelte";
-export { default as Submenu } from "./submenu.svelte";
 export { default as NavPanel } from "./navPanel.svelte";
 export { default as NavLeft } from "./navLeft.svelte";
 export { default as Toaster } from "./toaster.svelte";
@@ -9,3 +8,4 @@ export { default as LanguageSelector } from "./languageSelector.svelte";
 export { default as Tabs } from "./tabs.svelte";
 export { default as InputPass } from "./inputPass.svelte";
 export { default as TokenSelector } from "./tokenSelector.svelte";
+export { default as FiatSelector } from "./fiatSelector.svelte";

@@ -1,11 +1,8 @@
 <script>
 	import { page } from '$app/state';
 	import { MediaQuery } from 'svelte/reactivity';
-	import { clickOutside } from '$lib/ui/ts';
-	import { Submenu } from '$lib/ui/components';
 	import { WalletIcon, NftIcon, AppsIcon, SettingIcon } from '$lib/svg';
 
-	let bottomMenuOpen = $state(false);
 	const isSmallScreen = new MediaQuery('(max-width: 768px)');
 </script>
 
@@ -42,11 +39,7 @@
 	</div>
 {/if}
 
-{#if bottomMenuOpen}
-	<div class="bottomMenu" use:clickOutside onoutclick={() => (bottomMenuOpen = false)}>
-		<Submenu />
-	</div>
-{/if}
+
 
 <style lang="postcss">
 	.footer {

@@ -1,15 +1,14 @@
 <script lang="ts">
-	import { SwitchTheme, LanguageSelector } from '$lib/ui/components';
+	import { isSmallScreen } from '$lib/ui/ts';
+	import { SwitchTheme, LanguageSelector, FiatSelector } from '$lib/ui/components';
 	import {
 		CameraIcon,
 		WalletIcon,
-		AddIcon,
 		ArrowForward,
 		DollarIcon,
-		LanguageIcon
+		LanguageIcon,
+		CloseIcon
 	} from '$lib/svg';
-
-
 </script>
 
 <div class="appContainer">
@@ -19,10 +18,10 @@
 			<div class="item">
 				<div class="item-l">
 					<div class="avatar">1</div>
-					<span class="title">Account 1</span>
+					<span class="title">Account 1 </span>
 				</div>
 
-				<div class="item-r"><ArrowForward class="icon2A" /></div>
+				<div class="item-r"><ArrowForward class="icon17A" /></div>
 			</div>
 		</a>
 		<!-- Theme -->
@@ -32,22 +31,22 @@
 					<span class="title"> <CameraIcon class="icon2A" /></span>
 					<span class="title">Theme</span>
 				</div>
-				<div class="item-r"><SwitchTheme class="icon2A" /></div>
+				<div class="item-r"><SwitchTheme /></div>
 			</div>
 		</div>
 		<!-- Language -->
-		<button class="setting-medium">
+		<button class="setting-medium" popovertarget="language">
 			<div class="item">
 				<div class="item-l">
 					<span class="title"> <LanguageIcon class="icon2A" /></span>
 
 					<span class="title">Language</span>
 				</div>
-				<div class="item-r"><ArrowForward class="icon2A" /></div>
+				<div class="item-r"><ArrowForward class="icon17A" /></div>
 			</div>
 		</button>
 		<!-- Currency -->
-		<a class="setting-bottom" href="/#/setting/currency">
+		<button class="setting-bottom" popovertarget="fiat">
 			<div class="item">
 				<div class="item-l">
 					<span class="title"> <DollarIcon class="icon2A" /></span>
@@ -55,9 +54,9 @@
 					<span class="title">Currency</span>
 				</div>
 
-				<div class="item-r"><ArrowForward class="icon2A" /></div>
+				<div class="item-r"><ArrowForward class="icon17A" /></div>
 			</div>
-		</a>
+		</button>
 		<!-- manage account -->
 		<a class="setting-top" href="/#/setting/account_manage">
 			<div class="item">
@@ -67,7 +66,7 @@
 					<span class="title">Manage Account</span>
 				</div>
 
-				<div class="item-r"><ArrowForward class="icon2A" /></div>
+				<div class="item-r"><ArrowForward class="icon17A" /></div>
 			</div>
 		</a>
 		<!-- Security & Privacy -->
@@ -79,7 +78,7 @@
 					<span class="title">Security & Privacy</span>
 				</div>
 
-				<div class="item-r"><ArrowForward class="icon2A" /></div>
+				<div class="item-r"><ArrowForward class="icon17A" /></div>
 			</div>
 		</a>
 		<!-- Security & Privacy -->
@@ -91,7 +90,7 @@
 					<span class="title">Backup Wallet</span>
 				</div>
 
-				<div class="item-r"><ArrowForward class="icon2A" /></div>
+				<div class="item-r"><ArrowForward class="icon17A" /></div>
 			</div>
 		</a>
 		<!--Active Network -->
@@ -103,7 +102,7 @@
 					<span class="title">Active Network</span>
 				</div>
 
-				<div class="item-r"><ArrowForward class="icon2A" /></div>
+				<div class="item-r"><ArrowForward class="icon17A" /></div>
 			</div>
 		</a>
 		<!--Address Book -->
@@ -115,7 +114,7 @@
 					<span class="title">Address Book</span>
 				</div>
 
-				<div class="item-r"><ArrowForward class="icon2A" /></div>
+				<div class="item-r"><ArrowForward class="icon17A" /></div>
 			</div>
 		</a>
 		<!--Active App -->
@@ -127,19 +126,49 @@
 					<span class="title">Active App</span>
 				</div>
 
-				<div class="item-r"><ArrowForward class="icon2A" /></div>
+				<div class="item-r"><ArrowForward class="icon17A" /></div>
 			</div>
 		</a>
 
+		<a class="setting1" href="/#/setting/about">
+			<div class="item">
+				<div class="item-l">
+					<span class="title"> <WalletIcon class="icon2A" /></span>
+
+					<span class="title">About</span>
+				</div>
+
+				<div class="item-r"><ArrowForward class="icon17A" /></div>
+			</div>
+		</a>
+		<a class="setting" href="/#/setting/dev">
+			<div class="item">
+				<div class="item-l">
+					<span class="title"> <WalletIcon class="icon2A" /></span>
+
+					<span class="title">DEV</span>
+				</div>
+
+				<div class="item-r"><ArrowForward class="icon17A" /></div>
+			</div>
+		</a>
 	</div>
 </div>
 
+<div id="language" popover class:active={isSmallScreen.current}>
+	<button class="close" popovertarget="language" popovertargetaction="hide"
+		><CloseIcon class="icon17A" /></button
+	>
+	<LanguageSelector />
+</div>
+<div id="fiat" popover class:active={isSmallScreen.current}>
+	<button class="close" popovertarget="fiat" popovertargetaction="hide"
+		><CloseIcon class="icon17A" /></button
+	>
+	<FiatSelector />
+</div>
+
 <style lang="postcss">
-	.title {
-		display: flex;
-		justify-content: flex-start;
-		margin-left: 1rem;
-	}
 	.avatar {
 		width: 40px;
 		height: 40px;
@@ -147,57 +176,38 @@
 		justify-content: center;
 		margin-left: 1rem;
 		border-radius: 20px;
-		background-color: var(--color-bg3);
+		background-color: var(--color-pink);
+		color: #fff;
 	}
 
-	.setting {
+	:popover-open {
+	box-sizing: border-box;
+	flex-direction: column;
+	justify-content: flex-start;
+	position: fixed;
+	top: 20px;
+	height: 100vh;
+	width: 384px;
+	padding: 16px;
+	background: var(--color-bg1);
+	border-radius: 16px;
+	border: 1px solid var(--color-border);
+}
+
+	.active {
+		position: fixed;
+		top: 48px;
 		box-sizing: border-box;
-		width: 100%;
 		flex-direction: column;
+		justify-content: flex-start;
+		height: 100vh;
+		width: 100vw;
+		padding: 20px;
 		background: var(--color-bg1);
 		border-radius: 16px;
-		padding: 1rem;
-		cursor: pointer;
-		margin-bottom: 8px;
-	}
-	.setting:hover,
-	.setting-medium:hover,
-	.setting-top:hover,
-	.setting-bottom:hover {
-		background: var(--color-bg2);
+		border: 1px solid var(--color-border);
+		z-index: 1001;
 	}
 
-	.setting-top {
-		box-sizing: border-box;
-		width: 100%;
-		flex-direction: column;
-		background: var(--color-bg1);
-		border-top-left-radius: 16px;
-		border-top-right-radius: 16px;
-		padding: 1rem;
-		cursor: pointer;
-		margin-bottom: 2px;
-	}
-	.setting-medium {
-		box-sizing: border-box;
-		width: 100%;
-		flex-direction: column;
-		background: var(--color-bg1);
-		padding: 1rem;
-		cursor: pointer;
-		margin-bottom: 2px;
-		border: none;
-	}
 
-	.setting-bottom {
-		box-sizing: border-box;
-		width: 100%;
-		flex-direction: column;
-		background: var(--color-bg1);
-		border-bottom-left-radius: 16px;
-		border-bottom-right-radius: 16px;
-		padding: 1rem;
-		cursor: pointer;
-		margin-bottom: 8px;
-	}
 </style>

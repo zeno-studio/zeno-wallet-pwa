@@ -1,4 +1,4 @@
-import { base, bsc,ethereum, optimism, polygon, sonic,westend } from "$lib/wallet/common";
+import { base, bsc,ethereum, optimism, polygon, sonic,usd} from "$lib/wallet/common";
 
 export const TimeLocks = {
   appOpen: 0,
@@ -43,7 +43,7 @@ export const defaultSettings: Settings = {
   accountList: [],
   hiddenAccounts: [],
   vaultList: [],
-  fiat: 'USD'
+  fiat: "USD",
 }
 
 export type AccessStatus ='APPROVED'|'DENIED';
