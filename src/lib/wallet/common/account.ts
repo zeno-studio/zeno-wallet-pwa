@@ -31,10 +31,13 @@ import {
 	type DeriveFn
 } from '@polkadot-labs/hdkd-helpers';
 
+
 export const packLegacyVaultToJson = async (): Promise<string> => {
 	const vault = (await getElement(dbStore.Vault.name, 'all')) as LegacyVault[];
 	return JSON.stringify(vault);
 };
+
+
 
 export const packMn = (password: string, mn: string, Keypath: string) => {
 	const salt = randomBytes(32);
