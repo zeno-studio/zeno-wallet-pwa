@@ -5,7 +5,7 @@ import {
 	getElement,
 	type Chain
 } from '$lib/wallet/common';
-import { accountState, chainState } from '$lib/wallet/runes';
+import { accountState, chainState,signer } from '$lib/wallet/runes';
 import { userlocale, getLanguage, availableLanguages } from '$lib/ui/runes';
 
 export const createSettings = async () => {
@@ -20,9 +20,14 @@ export const createSettings = async () => {
 			document.body.setAttribute('data-theme', 'light');
 		}
 		// intialize account
-		accountState.currentAccountIndex = data.currentAccountIndex;
+		accountState.autoLock = data.autoLock;
 		accountState.timeLock = data.timeLock;
+		signer.postMessage({ method: 'setTime', argus: {time:data.timeLock} });
+		accountState.currentAccountIndex = data.currentAccountIndex;
 		accountState.currentWatchAccountIndex = data.currentWatchAccountIndex;
+		accountState.nextAccountIndex = data.nextAccountIndex;
+		accountState.nextWatchAccountIndex = data.nextWatchAccountIndex;
+		
 
 		// intialize additionalChains
 		const Chains = ((await getElement(dbStore.AdditionalChain.name, 'all')) as Chain[]) || [];
@@ -35,6 +40,7 @@ export const createSettings = async () => {
 
 		// intialize locale
 		userlocale.locale = data.locale;
+
 	}
 	if (!settings) {
 		const systemLanguage = getLanguage();
@@ -47,5 +53,6 @@ export const createSettings = async () => {
 			const newSettings = { ...defaultSettings, locale: 'en' };
 			localStorage.setItem('settings', JSON.stringify(newSettings));
 		}
+
 	}
 };

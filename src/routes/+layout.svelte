@@ -3,11 +3,14 @@
 	import { Header, Footer, Toaster } from '$lib/ui/components';
 	import { MediaQuery } from 'svelte/reactivity';
 	import { createSettings} from '$lib/ui/runes';
-	import { initDB,ethereum,moonbeam} from '$lib/wallet/common';
+	import { initDB} from '$lib/wallet/common';
+	import { signer} from '$lib/wallet/runes';
 	
 	initDB();
 	createSettings();
 	let { children } = $props();
+	signer
+
 
 
 	const isSmallScreen = new MediaQuery('(max-width: 768px)');
@@ -18,7 +21,6 @@
 		thumbnail: '/favicon.png',
 		favicon: '/favicon.png'
 	};
-
 	
 </script>
 

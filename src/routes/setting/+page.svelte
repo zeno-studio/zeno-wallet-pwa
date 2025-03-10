@@ -9,6 +9,7 @@
 		LanguageIcon,
 		CloseIcon
 	} from '$lib/svg';
+	import { fade, fly } from 'svelte/transition';
 </script>
 
 <div class="appContainer">
@@ -181,18 +182,38 @@
 	}
 
 	:popover-open {
-	box-sizing: border-box;
-	flex-direction: column;
-	justify-content: flex-start;
-	position: fixed;
-	top: 20px;
-	height: 100vh;
-	width: 384px;
-	padding: 16px;
-	background: var(--color-bg1);
-	border-radius: 16px;
-	border: 1px solid var(--color-border);
-}
+		box-sizing: border-box;
+		flex-direction: column;
+		justify-content: flex-start;
+		position: fixed;
+		top: 20px;
+		height: 100vh;
+		width: 384px;
+		padding: 16px;
+		background: var(--color-bg1);
+		border-radius: 16px;
+		border: 1px solid var(--color-border);
+		z-index: 1001;
+	}
+
+	[popover]:popover-open {
+		translate: 0 0;
+	}
+
+	/*   EXIT STATE   */
+	[popover] {
+		transition:
+			translate 0.3s ease-out,
+			overlay 0.3s ease-out;
+		translate: 0 1rem;
+	}
+
+	/*   0. BEFORE-OPEN STATE   */
+	@starting-style {
+		[popover]:popover-open {
+			translate: 0 1rem;
+		}
+	}
 
 	.active {
 		position: fixed;
@@ -208,6 +229,4 @@
 		border: 1px solid var(--color-border);
 		z-index: 1001;
 	}
-
-
 </style>

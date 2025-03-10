@@ -1,14 +1,5 @@
 import { base, bsc,ethereum, optimism, polygon, sonic,usd} from "$lib/wallet/common";
 
-export const TimeLocks = {
-  appOpen: 0,
-  appClose: 1,
-  short: 1000 * 60 * 5,
-  medium: 1000 * 60 * 15,
-  long: 1000 * 60 * 30,
-  hour: 1000 * 60 * 60,
-}
-
 
 export type Settings = {
   darkMode: boolean;
@@ -19,6 +10,7 @@ export type Settings = {
   nextWatchAccountIndex: number;
   nextEvmAddressIndex: number;
   nextPolkadotAddressIndex: number;
+  autoLock: boolean
   timeLock: number
   defaultChains: number[];
   additionalChains: number[];
@@ -37,7 +29,8 @@ export const defaultSettings: Settings = {
   nextWatchAccountIndex: 1,    
   nextEvmAddressIndex: 0,
   nextPolkadotAddressIndex: 0,
-  timeLock: TimeLocks.short,
+  autoLock: true,
+  timeLock: 15, // in minutes
   defaultChains: [base.chainId, bsc.chainId, ethereum.chainId, optimism.chainId, polygon.chainId, sonic.chainId],
   additionalChains: [],
   accountList: [],
