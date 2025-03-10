@@ -1,6 +1,7 @@
 import { type Settings, getElement, dbStore } from '$lib/wallet/common';
 
 class AccountState {
+	autoLock = $state(true);
 	timeLock = $state(1000 * 60 * 5);
 	currentAccountIndex = $state(0);
 	currentWatchAccountIndex = $state(0);
@@ -16,6 +17,16 @@ class AccountState {
 		else return await getElement(dbStore.Account.name, this.currentWatchAccountIndex);
 	});
 
+	setAutoLock(lock: boolean) {
+		this.autoLock = lock;
+		const savedSettings = localStorage.getItem('settings');
+		if (savedSettings) {			
+			const settings = JSON.parse(savedSettings) as Settings;
+			const newSettings = { ...settings, autoLock: lock };
+			localStorage.setItem('settings', JSON.stringify(newSettings));
+		} 
+	}
+
 	setTimeLock(lock: number) {
 		this.timeLock = lock;
 		const savedSettings = localStorage.getItem('settings');
@@ -23,9 +34,7 @@ class AccountState {
 			const settings = JSON.parse(savedSettings) as Settings;
 			const newSettings = { ...settings, timeLock: lock };
 			localStorage.setItem('settings', JSON.stringify(newSettings));
-		} else {
-			throw new Error('No settings found');
-		}
+		} 
 	}
 	setCurrentAccountIndex(accountIndex: number) {
 		this.currentAccountIndex = accountIndex;
