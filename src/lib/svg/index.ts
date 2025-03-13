@@ -54,6 +54,7 @@ export { default as LinkIcon } from "./link.svelte";
 export { default as LogoIcon } from "./logo.svelte";
 export { default as LockedIcon } from "./locked.svelte";
 export { default as LanguageIcon } from "./lang.svelte";
+export { default as Loading} from "./loading.svelte";
 export { default as MoreIcon } from "./more.svelte";
 export { default as NftIcon } from "./nft.svelte";
 export { default as PasswordIcon } from "./password.svelte";

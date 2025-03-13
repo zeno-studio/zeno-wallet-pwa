@@ -154,17 +154,13 @@
   
  
 
-  textarea {
-	width: 100%;
-  }
-  
   textarea,
   input {
-	font-size: 1em;
-	background: none;
-	border: none;
+	box-sizing: border-box;
 	color: var(--color-text);
-  
+	padding: 1rem 1rem 1rem 2rem;
+	margin: 0px;
+
 	&:focus {
 	color: var(--color);
 	  outline:0
@@ -200,6 +196,7 @@
 	.icon24:hover {
 		transform: scale(1.1);
 	}
+
 	.icon2rem {
 		height: 2rem;
 		width: 2rem;
@@ -219,6 +216,12 @@
 		width: 1.7rem;
 		color: var(--color-text);
 		margin: 0px;
+	}
+	.icon17B {
+		height: 1.7rem;
+		width: 1.7rem;
+		color: var(--color-text);
+		margin: -24;
 	}
 	.icon15A {
 		height: 1.7rem;

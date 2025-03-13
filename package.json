@@ -47,8 +47,6 @@
 		"eip1193-types": "^0.2.2",
 		"micro-eth-signer": "^0.13.3",
 		"micro-ftch": "^0.4.2",
-		"micro-key-producer": "^0.7.5",
-		"nanoevents": "^9.1.0",
 		"polkadot-api": "^1.9.1"
 	}
 }
