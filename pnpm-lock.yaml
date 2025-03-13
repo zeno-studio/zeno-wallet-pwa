@@ -53,12 +53,6 @@ importers:
       micro-ftch:
         specifier: ^0.4.2
         version: 0.4.2
-      micro-key-producer:
-        specifier: ^0.7.5
-        version: 0.7.5
-      nanoevents:
-        specifier: ^9.1.0
-        version: 9.1.0
       polkadot-api:
         specifier: ^1.9.1
         version: 1.9.1(jiti@2.4.1)(postcss@8.5.3)(rxjs@7.8.2)
@@ -1277,9 +1271,6 @@ packages:
   micro-ftch@0.4.2:
     resolution: {integrity: sha512-7gXEYECF4DAoDUOViftg/rhUg/1R5n7tGHv/9Lc7xp9e32+FnLNcA6hMV+c2/gEnP+35CQVe09RWf6l4j7K6vA==}
 
-  micro-key-producer@0.7.5:
-    resolution: {integrity: sha512-pFVPJVr3yrxr03qeplzPEfIsiBgBTJiffx75jFKESAl9kyGWE7hx4B348znT8Ey1e/K1Z+WzQLjUay90yVVQGA==}
-
   micro-packed@0.7.2:
     resolution: {integrity: sha512-HJ/u8+tMzgrJVAl6P/4l8KGjJSA3SCZaRb1m4wpbovNScCSmVOGUYbkkcoPPcknCHWPpRAdjy+yqXqyQWf+k8g==}
 
@@ -1318,10 +1309,6 @@ packages:
 
   mz@2.7.0:
     resolution: {integrity: sha512-z81GNO7nnYMEhrGh9LeymoE4+Yr0Wn5McHIZMK5cfQCl+NDX08sCZgUc9/6MHni9IWuFLm1Z3HTCXu2z9fN62Q==}
-
-  nanoevents@9.1.0:
-    resolution: {integrity: sha512-Jd0fILWG44a9luj8v5kED4WI+zfkkgwKyRQKItTtlPfEsh7Lznfi1kr8/iZ+XAIss4Qq5GqRB0qtWbaz9ceO/A==}
-    engines: {node: ^18.0.0 || >=20.0.0}
 
   nanoid@3.3.8:
     resolution: {integrity: sha512-WNLf5Sd8oZxOm+TzppcYk8gVOgP+l58xNy58D0nbUnOxOWRWvlcCV4kUF7ltmI6PsrLl/BgKEyS4mqsGChFN0w==}
@@ -3010,14 +2997,6 @@ snapshots:
 
   micro-ftch@0.4.2: {}
 
-  micro-key-producer@0.7.5:
-    dependencies:
-      '@noble/ciphers': 1.2.1
-      '@noble/curves': 1.8.1
-      '@noble/hashes': 1.7.1
-      '@scure/base': 1.2.4
-      micro-packed: 0.7.2
-
   micro-packed@0.7.2:
     dependencies:
       '@scure/base': 1.2.4
@@ -3055,8 +3034,6 @@ snapshots:
       any-promise: 1.3.0
       object-assign: 4.1.1
       thenify-all: 1.6.0
-
-  nanoevents@9.1.0: {}
 
   nanoid@3.3.8: {}
 
