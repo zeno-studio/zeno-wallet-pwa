@@ -1,51 +1,92 @@
 <script lang="ts">
 	import { isSmallScreen } from '$lib/ui/ts';
 	import { accountState } from '$lib/wallet/runes';
-	import { createEvmAccount } from '$lib/wallet/common';
+	import { createEvmAccount, getElement, dbStore, type Account } from '$lib/wallet/common';
 	import { WalletIcon, ArrowForward, EditFilled, CloseIcon, EyeIcon, EyeOffIcon } from '$lib/svg';
 	import { passwordStrength } from 'check-password-strength';
 
 	let createSuccess = $state(false);
 	let terms = $state(false);
-	let addSuccess = $state(false);
-	let importSuccess = $state(false);
-	let passwordValid = $state(false);
 	let password = $state('');
 	let password2 = $state('');
 	let passwordShow = $state(false);
 	let psStrength = $derived(passwordStrength(password).value);
+	let accounts = $state<Account[]>();
 
-	function handleCreateEvmAccount(password: string) {
+	function handleCreateEvmAccount(ps: string) {
 		const data = localStorage.getItem('settings');
 		if (data) {
 			const settings = JSON.parse(data);
-			createEvmAccount(0, 0, password);
+			createEvmAccount(1, 0, ps);
 			settings.nextEvmAddressIndex++;
-			settings.currentAccountIndex++;
-			settings.currentAccount = 1;
+			settings.nextAccountIndex++;
+			settings.currentAccountIndex = 1;
+			localStorage.setItem('settings', JSON.stringify(settings));
+			accountState.currentAccountIndex = 1;
+			const popover = document.getElementById('create');
+		if (popover) {
+			popover.hidePopover();
+			password = '';
+			password2 = '';
+			terms = false;
+			passwordShow = false;
+		}
+		}
+
+	}
+	
+	function handleAddEvmAccount(ps: string) {
+		const data = localStorage.getItem('settings');
+		if (data) {
+			const settings = JSON.parse(data);
+			createEvmAccount(settings.nextAccountIndex, settings.nextEvmAddressIndex, ps);
+			settings.nextEvmAddressIndex++;
+			settings.nextAccountIndex++;
 			localStorage.setItem('settings', JSON.stringify(settings));
 		}
 		createSuccess = true;
 	}
 
-	console.log(passwordStrength('A@2asdF2020!!*').value);
+	async function getAccounts() {
+		const data = (await getElement(dbStore.Account.name, 'all')) as Account[] | null;
+		if (data) {
+			accounts = data;
+		}
+	}
+
 </script>
 
 <div class="appContainer">
 	<div class="appBody">
 		<!-- currentAccount -->
-		<a class="setting1" href="/#/setting/account_detail">
-			<div class="item">
-				<div class="item-l">
-					<div class="avatar">1</div>
-					<span class="title">Account 1 </span>
-				</div>
-
-				<button class="item-r"><EditFilled class="icon2rem" /></button>
+		{#if accountState.currentAccountIndex === 0}
+			<div class="item-container3">
+				<h5>Please Create or Import a Account</h5>
 			</div>
-		</a>
+		{:else}
+			{#await getAccounts() then value}
+				{#if accounts}
+					{#each accounts as account}
+	
+							<button class="accountList" class:selected={account.accountIndex === accountState.currentAccountIndex}	 >
+								<div class="item">
+									<div class="item-l">
+										<div class="avatar">{account.accountIndex}</div>
+										<span class="title">{account.accountName} </span>
+									</div>
+								</div>
+								<a class="edit" href="/#/setting/account_detail"><EditFilled class="icon2rem" /></a>
+							</button>
+
+					{/each}
+				{/if}
+			{/await}
+		{/if}
 
 		<!-- add/import -->
+		{#if accounts}
+		<div>{accounts[0].address}</div>
+	{/if}
 
 		<div class="bottom">
 			{#if accountState.currentAccountIndex === 0}
@@ -84,9 +125,9 @@
 		{/if}
 		<button class="eye" onclick={() => (passwordShow = !passwordShow)}>
 			{#if passwordShow}
-			<EyeIcon class="icon17B" />
+				<EyeIcon class="icon17B" />
 			{:else}
-			<EyeOffIcon class="icon17B" />
+				<EyeOffIcon class="icon17B" />
 			{/if}
 		</button>
 	</div>
@@ -129,9 +170,7 @@
 	{:else if password === password2 && !createSuccess && !terms}
 		<button class="start"> Please agree to the terms</button>
 	{:else if password === password2 && !createSuccess && terms}
-		<button class="start"> Submit</button>
-	{:else if createSuccess}
-		<button class="finish" popovertarget="create" popovertargetaction="hide"> Finish </button>
+		<button class="start" onclick={() => handleCreateEvmAccount(password)}> Submit</button>
 	{/if}
 </div>
 
@@ -293,9 +332,33 @@
 			border: none;
 			outline: none;
 		}
-	
 	}
 	.container {
 		width: 100%;
+	}
+	.edit {
+		padding: 0px;
+		cursor: pointer;
+		background: none;
+		border: none;
+	}
+	.accountList {
+	display: flex;
+	box-sizing: border-box;
+	width: 100%;
+	flex-direction: row;
+	background: var(--color-bg1);
+	border-radius: 16px;
+	padding: 1rem;
+	cursor: pointer;
+	margin-bottom: 8px;
+	border: none;
+	&:hover {
+		background: var(--green3);
+	}
+	
+}
+.selected {
+		background: var(--green3)
 	}
 </style>

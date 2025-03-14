@@ -27,7 +27,7 @@
 
 		<div class="navRight">
 			<button class="networkButton" onclick={() => (networkPanel = !networkPanel)}>
-				<img class="networkImage" src="/network/ethereum.svg" alt="ethereum" />
+				<img class="networkImage" src="/chain/ethereum.svg" alt="ethereum" />
 			</button>
 			{#if !isSmallScreen.current}
 				<button class="accountButtonRight" onclick={() => (Panel = !Panel)}> {accountName}</button>

@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { Toaster,Tabs  } from '$lib/ui/components';
+	import { Toaster, Tabs } from '$lib/ui/components';
 	import { toastState } from '$lib/ui/runes';
 	import { ReceiveIcon, SendFilled, SwapIcon, BuyIcon } from '$lib/svg';
-
 </script>
 
 <Toaster />
@@ -16,55 +15,36 @@
 
 			<button onclick={() => toastState.add('title', 'message')}>sdf</button>
 		</div>
-		
+
 		<div class="item-container">
 			<div class="menu1">
-				<div>
-					<button class="button1">
-						<div>
-							<ReceiveIcon class="icon24" />
-						</div>
-						<div class="text1">Receive</div>
-					</button>
-				</div>
-				<div>
-					<button class="button1">
-						<div>
-							<SendFilled class="icon24" />
-						</div>
-						<div class="text1">Send</div>
-					</button>
-				</div>
-
-				<div>
-					<button class="button1">
-						<div>
-							<SwapIcon class="icon24" />
-						</div>
-						<div class="text1">Swap</div>
-					</button>
-				</div>
-				<div>
-					<button class="button1">
-						<div>
-							<BuyIcon class="icon24" />
-						</div>
-						<div class="text1">Buy</div>
-					</button>
-				</div>
+				<a class="text1" href="/#/receive">
+					<ReceiveIcon class="icon24" />
+					Receive
+				</a>
+				<a class="text1" href="/#/send">
+					<SendFilled class="icon24" />
+					Send
+				</a>
+				<a class="text1" href="/#/swap">
+					<SwapIcon class="icon24" />
+					Swap
+				</a>
+				<a class="text1" href="/#/swap">
+					<BuyIcon class="icon24" />
+					Buy
+				</a>
 			</div>
 		</div>
 
 		<div class="item-container2">
 			<div class="menu2">
 				<button class="button2">Create Account</button>
-				<button class="button2">Import Account</button>
+				<button class="button3">Import Account</button>
 			</div>
 		</div>
 
 		<Tabs />
-
-		
 	</div>
 </div>
 
@@ -74,17 +54,20 @@
 		display: grid;
 		justify-items: center;
 		grid-template-columns: 1fr 1fr 1fr 1fr;
-		gap: 12px;
 	}
-	.button1 {
+	.text1 {
 		min-width: 60px;
-		flex-direction: column;
+		height: 48px;
 		border-radius: 12px;
 		border: 0px;
 		padding: 4px 0px;
-	}
-	.text1 {
+		color: var(--color);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
 		font-size: 1rem;
+		background: var(--color-bg2);
 	}
 	.menu2 {
 		width: 100%;
@@ -93,11 +76,21 @@
 		gap: 12px;
 	}
 	.button2 {
+		color: #fff;
 		min-width: 160px;
 		flex-direction: column;
 		border-radius: 12px;
 		border: 0px;
 		padding: 12px 0px;
+		background: var(--color-blue);
 	}
-
+	.button3 {
+		color: #fff;
+		min-width: 160px;
+		flex-direction: column;
+		border-radius: 12px;
+		border: 0px;
+		padding: 12px 0px;
+		background: var(--color-pink);
+	}
 </style>
