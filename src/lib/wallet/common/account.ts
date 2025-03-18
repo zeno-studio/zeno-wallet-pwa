@@ -87,7 +87,7 @@ export const createEvmAccount = (
 	mn?: string
 ) => {
 	mn = mn ?? bip39.generateMnemonic(wordlist, 128);
-	packMn(password, mn, `m/44'/60'/0'/0/${addressIndex}`);
+	packMn(password, mn, "default");
 	deriveEvm(index, addressIndex, mn);
 };
 

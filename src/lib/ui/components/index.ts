@@ -9,3 +9,5 @@ export { default as Tabs } from "./tabs.svelte";
 export { default as InputPass } from "./inputPass.svelte";
 export { default as TokenSelector } from "./tokenSelector.svelte";
 export { default as FiatSelector } from "./fiatSelector.svelte";
+export { default as CreateAccount } from "./createAccount.svelte";
+export { default as AddAccount} from "./addAccount.svelte";

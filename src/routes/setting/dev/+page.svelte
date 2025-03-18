@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { signer,setTime, isLockedNow, autoLock, type signerResponseType } from '$lib/wallet/runes';
+	import { signer,setTime, queryTime, isLocked, isAutoLock,queryMid,saveMidPass,type signerResponseType } from '$lib/wallet/runes';
 	let result = $state<signerResponseType | null>(null);
 	signer.onmessage = (event) => {
 		result = event.data;
@@ -7,10 +7,12 @@
 </script>
 
 <div class="appContainer">
-	<div class="appBody">
-		<button onclick={isLockedNow}>test{result?.data}</button>
+	<div>
+		{result?.data}
 	</div>
-	<div class="appBody">
-		<button onclick={() => setTime(1)}>test{result?.data}</button>
-	</div>
+	<button onclick={queryMid} >mid</button>
+		<button onclick={isLocked} >isLocked</button>
+		<button onclick={isAutoLock}>isautoLock</button>
+		<button onclick={queryTime}>time</button>
+		<button onclick={() => setTime(1)}>settime</button>
 </div>

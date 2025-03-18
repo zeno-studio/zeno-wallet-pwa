@@ -3,7 +3,7 @@ import { dbStore} from '$lib/wallet/common';
 
 let db: IDBDatabase;
 export function initDB() {
-	const request = indexedDB.open('userData', 1);
+	const request = indexedDB.open('ZenoDB', 1);
 	request.onupgradeneeded = () => {
 		const db = request.result;
 		if (!db.objectStoreNames.contains(dbStore.Vault.name)) {
@@ -30,7 +30,7 @@ export function initDB() {
 }
 
 export const addElement = (store: string, data:object) => {
-    const open = indexedDB.open('userData', 1);
+    const open = indexedDB.open('ZenoDB', 1);
     open.onsuccess = () => {
         db = open.result;
             const transaction = db.transaction(store, 'readwrite');
@@ -42,7 +42,7 @@ export const addElement = (store: string, data:object) => {
 };
 
 export const editElement =(store: string, data:object) => {
-    const open = indexedDB.open('userData', 1);
+    const open = indexedDB.open('ZenoDB', 1);
     open.onsuccess = () => {
         db = open.result;
             const transaction = db.transaction(store, 'readwrite');
@@ -55,7 +55,7 @@ export const editElement =(store: string, data:object) => {
 
 
 export const getElement = (store: string, key: string | number) => {
-    const open = indexedDB.open('userData', 1);
+    const open = indexedDB.open('ZenoDB', 1);
     return new Promise((resolve) => {
         open.onsuccess = () => {
             let request!: IDBRequest;
@@ -72,7 +72,7 @@ export const getElement = (store: string, key: string | number) => {
 
 
 export const removeElement = (store: string, key: string|number) => {
-    const open = indexedDB.open('userData', 1);
+    const open = indexedDB.open('ZenoDB', 1);
     open.onsuccess = () => {
         let request: IDBRequest;
         db = open.result;
