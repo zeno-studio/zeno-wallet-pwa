@@ -5,8 +5,9 @@ import {
 	getElement,
 	type Chain
 } from '$lib/wallet/common';
-import { accountState, chainState,signer } from '$lib/wallet/runes';
+import { accountState, chainState, setAutoLock,setTime} from '$lib/wallet/runes';
 import { userlocale, getLanguage, availableLanguages } from '$lib/ui/runes';
+import { } from '$lib/wallet/runes';
 
 export const createSettings = async () => {
 	const settings = localStorage.getItem('settings');
@@ -22,7 +23,8 @@ export const createSettings = async () => {
 		// intialize account
 		accountState.autoLock = data.autoLock;
 		accountState.timeLock = data.timeLock;
-		signer.postMessage({ method: 'setTime', argus: {time:data.timeLock} });
+		setTime(data.timeLock);
+		setAutoLock(data.autoLock);
 		accountState.currentAccountIndex = data.currentAccountIndex;
 		accountState.currentWatchAccountIndex = data.currentWatchAccountIndex;
 		accountState.nextAccountIndex = data.nextAccountIndex;

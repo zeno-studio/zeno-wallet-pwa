@@ -4,12 +4,12 @@
 	import { MediaQuery } from 'svelte/reactivity';
 	import { createSettings} from '$lib/ui/runes';
 	import { initDB} from '$lib/wallet/common';
-	import { signer} from '$lib/wallet/runes';
+
 	
 	initDB();
 	createSettings();
 	let { children } = $props();
-	signer
+
 
 
 
@@ -21,6 +21,8 @@
 		thumbnail: '/favicon.png',
 		favicon: '/favicon.png'
 	};
+
+
 	
 </script>
 
