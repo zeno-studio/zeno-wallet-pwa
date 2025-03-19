@@ -6,7 +6,6 @@ export { default as NavLeft } from "./navLeft.svelte";
 export { default as Toaster } from "./toaster.svelte";
 export { default as LanguageSelector } from "./languageSelector.svelte";
 export { default as Tabs } from "./tabs.svelte";
-export { default as InputPass } from "./inputPass.svelte";
 export { default as TokenSelector } from "./tokenSelector.svelte";
 export { default as FiatSelector } from "./fiatSelector.svelte";
 export { default as CreateAccount } from "./createAccount.svelte";

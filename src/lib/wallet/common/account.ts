@@ -3,7 +3,6 @@ import {
 	getElement,
 	editElement,
 	removeElement,
-	type WatchAccount,
 	type AddressBook
 } from '$lib/wallet/common';
 import {
@@ -13,7 +12,7 @@ import {
 	type keyringType,
 	type Settings,
 	type Chain,
-	type WalletBackupData,
+	type WalletBackupData
 } from '$lib/wallet/common';
 import { HDKey } from '@scure/bip32';
 import * as bip39 from '@scure/bip39';
@@ -31,13 +30,10 @@ import {
 	type DeriveFn
 } from '@polkadot-labs/hdkd-helpers';
 
-
 export const packLegacyVaultToJson = async (): Promise<string> => {
 	const vault = (await getElement(dbStore.Vault.name, 'all')) as LegacyVault[];
 	return JSON.stringify(vault);
 };
-
-
 
 export const packMn = (password: string, mn: string, Keypath: string) => {
 	const salt = randomBytes(32);
@@ -70,14 +66,9 @@ export const restoreMn = async (password: string, keypath: string): Promise<stri
 };
 
 export const isValidPassword = async (password: string, keypath: string): Promise<boolean> => {
-	try {
-		const mn = await restoreMn(password, keypath);
-		if (!bip39.validateMnemonic(mn, wordlist)) return false;
-		return true;
-	} catch (error) {
-		return false;
-		console.log(error);
-	}
+	const mn = await restoreMn(password, keypath);
+	if (!bip39.validateMnemonic(mn, wordlist)) return false;
+	return true;
 };
 
 export const createEvmAccount = (
@@ -87,45 +78,44 @@ export const createEvmAccount = (
 	mn?: string
 ) => {
 	mn = mn ?? bip39.generateMnemonic(wordlist, 128);
-	packMn(password, mn, "default");
+	packMn(password, mn, 'default');
 	deriveEvm(index, addressIndex, mn);
 };
 
-
-
-export const deriveEvmAccount = async (
-	index: number,
-	addressIndex: number,
-	password: string,
-) => {
+export const deriveEvmAccount = async (index: number, addressIndex: number, password: string) => {
 	const mn = await restoreMn(password, `m/44'/60'/0'/0/${addressIndex}`);
 	deriveEvm(index, addressIndex, mn);
 };
 
-export const deriveEvm = (index: number, addressIndex: number, mn: string) => {
-	const hdKey_ = HDKey.fromMasterSeed(bip39.mnemonicToSeedSync(mn));
-	const hdKey = hdKey_.derive(`m/44'/60'/0'/0/${addressIndex}`);
-	if (hdKey.publicKey) {
-		const newAccount: Account = {
-			accountIndex: index,
-			accountName: `Account${index}`,
-			accountType: 'legacy',
-			address: addr.fromPublicKey(hdKey.publicKey),
-			addressType: 'evm',
-			derivePath: `m/44'/60'/0'/0/${addressIndex}`,
-			keyringType: 'secp256k1',
-			publicKey: bytesToHex(hdKey.publicKey)
-		};
-		addElement(dbStore.Account.name, newAccount);
-		const settings = localStorage.getItem('settings');
-		if (settings) {
-			const parsedSettings = JSON.parse(settings) as Settings;
-			parsedSettings.nextAccountIndex++;
-			parsedSettings.nextEvmAddressIndex++;
-			parsedSettings.accountList.push(index);
-			localStorage.setItem('settings', JSON.stringify(parsedSettings));
+export const deriveEvm = (index: number, addressIndex: number, mn: string): boolean => {
+	if (!bip39.validateMnemonic(mn, wordlist) || !mn) return false;
+	else {
+		const hdKey_ = HDKey.fromMasterSeed(bip39.mnemonicToSeedSync(mn));
+		const hdKey = hdKey_.derive(`m/44'/60'/0'/0/${addressIndex}`);
+		if (hdKey.publicKey) {
+			const newAccount: Account = {
+				accountIndex: index,
+				accountName: `Account${index}`,
+				accountType: 'legacy',
+				isHidden: false,
+				address: addr.fromPublicKey(hdKey.publicKey),
+				addressType: 'evm',
+				derivePath: `m/44'/60'/0'/0/${addressIndex}`,
+				keyringType: 'secp256k1',
+				publicKey: bytesToHex(hdKey.publicKey)
+			};
+			addElement(dbStore.Account.name, newAccount);
+			const data= localStorage.getItem('settings');
+			if (data) {
+				const Settings = JSON.parse(data) as Settings;
+				Settings.nextAccountIndex++;
+				Settings.nextEvmAddressIndex++;
+				Settings.accountList.push(index);
+				localStorage.setItem('settings', JSON.stringify(Settings));
+			}
 		}
 	}
+	return true;
 };
 
 export const createPolkadotAccount = (
@@ -166,6 +156,7 @@ export const derivePolkadot = async (
 		accountName: `Account${index}`,
 		accountType: 'legacy',
 		address: ss58Address(pub, 0),
+		isHidden: false,
 		addressType: 'polkadot',
 		derivePath: path,
 		keyringType: type,
@@ -271,16 +262,20 @@ export const resetWallet = async (): Promise<void> => {
 export const backupWallet = async (): Promise<void> => {
 	const vaults = (await getElement(dbStore.Vault.name, 'all')) as LegacyVault[];
 	const accounts = (await getElement(dbStore.Account.name, 'all')) as Account[];
-	const watchAccount = (await getElement(dbStore.WatchAccount.name, 'all')) as WatchAccount[];
 	const additionalChains = (await getElement(dbStore.AdditionalChain.name, 'all')) as Chain[];
 	const addressBook = (await getElement(dbStore.AddressBook.name, 'all')) as AddressBook[];
 	const History = (await getElement(dbStore.History.name, 'all')) as History[];
 	const settings = localStorage.getItem('settings');
-	const backup = JSON.stringify({ vaults, accounts, watchAccount, additionalChains, addressBook, History, settings });
+	const backup = JSON.stringify({
+		vaults,
+		accounts,
+		additionalChains,
+		addressBook,
+		History,
+		settings
+	});
 	console.log(backup);
 };
-
-
 
 export const restoreWallet = async (backup: string) => {
 	const data = JSON.parse(backup) as WalletBackupData;
@@ -289,9 +284,6 @@ export const restoreWallet = async (backup: string) => {
 	}
 	for (const account of data.accounts) {
 		addElement(dbStore.Account.name, account);
-	}
-	for (const watchAccount of data.watchAccount) {
-		addElement(dbStore.WatchAccount.name, watchAccount);
 	}
 	for (const additionalChain of data.additionalChains) {
 		addElement(dbStore.AdditionalChain.name, additionalChain);
@@ -302,7 +294,7 @@ export const restoreWallet = async (backup: string) => {
 	for (const history of data.History) {
 		addElement(dbStore.History.name, history);
 	}
-	localStorage.setItem('settings', JSON.stringify(data.settings));	
+	localStorage.setItem('settings', JSON.stringify(data.settings));
 };
 
 // need  to be implemented
