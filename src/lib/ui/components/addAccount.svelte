@@ -1,17 +1,12 @@
 <script lang="ts">
 	import { isSmallScreen } from '$lib/ui/ts';
-	import { accountState, addAccount} from '$lib/wallet/runes';
-	import {
-		restoreMn,
-		deriveEvm,
-	} from '$lib/wallet/common';
+	import { signer, addEvmAccount,checkPassword, isLocked, type signerResponseType,AddEvmAccountWithPassword, accountState } from '$lib/wallet/runes';
 	import { Loading, CloseIcon, EyeIcon, EyeOffIcon } from '$lib/svg';
-	import { signer, isLocked, queryTime, type signerResponseType } from '$lib/wallet/runes';
-	import * as bip39 from '@scure/bip39';
-	import { wordlist } from '@scure/bip39/wordlists/english';
-	let result = $state<signerResponseType | null>(null);
+
+
+	let signerResponse =$state<signerResponseType | null>(null);
 	signer.onmessage = (event) => {
-		result = event.data;
+		signerResponse = event.data;
 	};
 
 	let password = $state<string | null>(null);
@@ -21,53 +16,39 @@
 
 	async function handleAddEvmAccount() {
 		isLocked();
-		if (result?.data === false) {
-	
-				addAccount();
-			} else {
-				const popover = document.getElementById('add');
-				if (popover) popover.showPopover();
-			
+		if (signerResponse?.data === false) {
+			addEvmAccount();
+		} else {
+			const popover = document.getElementById('add');
+			if (popover) popover.showPopover();
 		}
 	}
 
 	async function checkPasswordAndAdd(ps: string) {
-		const mn = await restoreMn(ps, 'default');
-		const valid = bip39.validateMnemonic(mn, wordlist);
-		if (valid) {
-            isValidPs = true;
-            handleAddEvmAccountWithPassword(ps);
+		checkPassword(ps);
+		if (signerResponse?.data === true) {
+			isValidPs = true;
+			handleAddEvmAccountWithPassword(ps);
 		} else {
 			isValidPs = false;
-            setTimeout(() => {
-                isValidPs = null;
-                password = null;
-            },3000);
+			setTimeout(() => {
+				isValidPs = null;
+				password = null;
+			}, 3000);
 		}
 	}
 
-    async function handleAddEvmAccountWithPassword(ps: string) {
-        const data = localStorage.getItem('settings');
-			if (data) {
-				const settings = JSON.parse(data);
-				deriveEvm(settings.nextAccountIndex, settings.nextEvmAddressIndex, ps);
-				settings.nextEvmAddressIndex++;
-				settings.nextAccountIndex++;
-				localStorage.setItem('settings', JSON.stringify(settings));
-                accountState.nextAccountIndex += 1;
-			}
-			const popover = document.getElementById('add');
-			if (popover) popover.hidePopover();
-			password = null;
-			passwordShow = false;
-            isValidPs = null;
-    }
-
+	async function handleAddEvmAccountWithPassword(ps: string) {
+		AddEvmAccountWithPassword(ps);
+		const popover = document.getElementById('add');
+		if (popover) popover.hidePopover();
+		password = null;
+		passwordShow = false;
+		isValidPs = null;
+	}
 </script>
 
-<button class="bottom-button" onclick={handleAddEvmAccount}>
-	Add new account
-</button>
+<button class="bottom-button" onclick={handleAddEvmAccount}> Add new account </button>
 
 <div id="add" popover="manual" class:active={isSmallScreen.current}>
 	<button class="close" popovertarget="add" popovertargetaction="hide">
@@ -99,18 +80,25 @@
 		</button>
 	</div>
 
-    <div class="form-label">
+	<div class="form-label">
 		{#if isValidPs === false}
-          Invalid password
-		{:else if password === null}
-			<span></span>
+			Invalid password
+		{:else if isValidPs === true}
+			<span> password is valid</span>
+		{:else}
+			<span> password is empty</span>
 		{/if}
+		<div>
+			{signerResponse?.data}
+		</div>
 	</div>
 
 	{#if password === null}
 		<button class="start"> input your password</button>
-        {:else if password !== null}
-		<button class="start" onclick={() => checkPasswordAndAdd(password!.toString())}> Submit </button> 
+	{:else if password !== null}
+		<button class="start" onclick={() => checkPasswordAndAdd(password!.toString())}>
+			Submit
+		</button>
 	{:else if isLoading}
 		<button class="start"> <Loading class="icon17A" /> </button>
 	{/if}

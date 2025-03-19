@@ -1,14 +1,9 @@
 <script lang="ts">
 	import { isSmallScreen } from '$lib/ui/ts';
-	import { accountState } from '$lib/wallet/runes';
 	import { createEvmAccount, getElement, dbStore, type LegacyVault } from '$lib/wallet/common';
 	import { Loading, CloseIcon, EyeIcon, EyeOffIcon } from '$lib/svg';
 	import { passwordStrength } from 'check-password-strength';
-	import { signer, saveMidPass, type signerResponseType } from '$lib/wallet/runes';
-	let result = $state<signerResponseType | null>(null);
-	signer.onmessage = (event) => {
-		result = event.data;
-	};
+	import { accountState,saveMidPass } from '$lib/wallet/runes';
 
 	let terms = $state(false);
 	let password = $state<string | null>(null);
@@ -34,8 +29,7 @@
 			settings.currentAccountIndex = 1;
 			localStorage.setItem('settings', JSON.stringify(settings));
 			accountState.currentAccountIndex = 1;
-			const vault = (await getElement(dbStore.Vault.name, 'default')) as LegacyVault;
-			saveMidPass(ps, vault.salt);
+			saveMidPass(ps);
 			const popover = document.getElementById('create');
 			if (popover) {
 				popover.hidePopover();
@@ -109,7 +103,7 @@
 			<span class="weak">{psStrength}</span>
 		{:else if password === null}
 			<span class="weak"></span>
-		{:else if psStrength !== "empty" && psStrength !== 'Too weak'}
+		{:else if psStrength !== 'empty' && psStrength !== 'Too weak'}
 			<span class="normal">{psStrength}</span>
 		{/if}
 	</div>
@@ -121,7 +115,9 @@
 	{:else if password === password2 && !terms}
 		<button class="start"> Please agree to the terms</button>
 	{:else if password === password2 && terms}
-		<button class="start" onclick={() => handleCreateEvmAccount(password!.toString())}> Submit</button>
+		<button class="start" onclick={() => handleCreateEvmAccount(password as string)}>
+			Submit</button
+		>
 	{:else if isLoading}
 		<button class="start"> <Loading class="icon17A" /> </button>
 	{/if}
@@ -167,7 +163,7 @@
 	}
 	.active {
 		position: fixed;
-		top: calc(100vh - 400px);
+		top: calc(100vh - 500px);
 		flex-direction: column;
 		justify-content: flex-start;
 		height: 100vh;

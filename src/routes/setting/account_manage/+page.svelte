@@ -4,30 +4,37 @@
 	import { getElement, dbStore, type Account } from '$lib/wallet/common';
 	import { EditFilled } from '$lib/svg';
 
-	let accounts = $state<Account[]>();
+	let accounts = $derived.by(async () =>{
+		if (accountState.currentAccountIndex === 0 ) return null;
+		else return (await getElement(dbStore.Account.name, 'all')) as Account[];
+	});
+		
+	$effect(() => {
+		console.log(accounts);
+	});
 
-	async function getAccounts() {
-		const data = (await getElement(dbStore.Account.name, 'all')) as Account[] | null;
-		if (data) {
-			accounts = data;
-		}
+
+
+	function selectedAccount(index: number) {
+		accountState.setCurrentAccountIndex(index);
 	}
 </script>
 
 <div class="appContainer">
 	<div class="appBody">
 		<!-- currentAccount -->
-		{#if accountState.currentAccountIndex === 0}
+		{#if accountState.currentAccountIndex === 0 }
 			<div class="item-container3">
 				<h5>Please Create or Import a Account</h5>
 			</div>
-		{:else}
-			{#await getAccounts() then value}
+		{:else }
+			{#await accounts then accounts}
 				{#if accounts}
 					{#each accounts as account}
 						<button
 							class="accountList"
 							class:selected={account.accountIndex === accountState.currentAccountIndex}
+							onclick={() => selectedAccount(account.accountIndex)}
 						>
 							<div class="item">
 								<div class="item-l">
@@ -38,24 +45,39 @@
 							<a class="edit" href="/#/setting/account_detail"><EditFilled class="icon2rem" /></a>
 						</button>
 					{/each}
+					{:else }
+			
+						<h5>No Account</h5>
 				{/if}
+
 			{/await}
+
 		{/if}
 
 		<!-- add/import -->
-		{#if accounts}
-			<div>{accounts[0].address}</div>
-		{/if}
+			<div>{accountState.nextAccountIndex}</div>
+			
+		
+		{#await accountState.currentAccount then account}
+			{#if account}
+				<div>{account.address}</div>
+			{/if}
+		{/await}
 
-		<div class="bottom">
+
+	
 			{#if accountState.currentAccountIndex === 0}
-				<CreateAccount />
+			<div class="bottom2"><CreateAccount />
 				<button class="bottom-button2"> Import account </button>
+			</div>
+				
 			{/if}
+
 			{#if accountState.currentAccountIndex !== 0}
-				<AddAccount />
+			<div class="bottom">	<AddAccount /></div>
+			
 			{/if}
-		</div>
+	
 	</div>
 </div>
 
@@ -104,11 +126,23 @@
 	.bottom {
 		gap: 1rem;
 		position: fixed;
-		bottom: 100px;
+		bottom: 64px;
 		width: 100%;
-		height: 48px;
+		height: 80px;
 		flex-direction: column;
 		max-width: 480px;
+		background-color: var(--color-bg);
+	}
+
+	.bottom2 {
+		gap: 1rem;
+		position: fixed;
+		bottom: 64px;
+		width: 100%;
+		height: 120px;
+		flex-direction: column;
+		max-width: 480px;
+		background-color: var(--color-bg);
 	}
 
 	.edit {

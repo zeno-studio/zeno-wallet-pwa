@@ -1,18 +1,24 @@
 <script lang="ts">
-	import { signer,setTime, queryTime, isLocked, isAutoLock,queryMid,saveMidPass,type signerResponseType } from '$lib/wallet/runes';
-	let result = $state<signerResponseType | null>(null);
+	import { signer, type signerResponseType,reBuildMn,saveMidPass,setTime,setAutoLock, queryTime, isLocked, isAutoLock,queryMid} from '$lib/wallet/runes';
+	
+	let signerResponse : signerResponseType | null = null;
 	signer.onmessage = (event) => {
-		result = event.data;
+		signerResponse = event.data;
 	};
 </script>
 
 <div class="appContainer">
 	<div>
-		{result?.data}
+		{signerResponse?.data}
 	</div>
 	<button onclick={queryMid} >mid</button>
 		<button onclick={isLocked} >isLocked</button>
 		<button onclick={isAutoLock}>isautoLock</button>
 		<button onclick={queryTime}>time</button>
-		<button onclick={() => setTime(1)}>settime</button>
+		<button onclick={() => setTime(3)}>settime</button>
+		<button onclick={() => setAutoLock(false)}>setauto</button>
+		<button onclick={() => saveMidPass("Qian7855")}>saveMidPass</button>
+		<button onclick={reBuildMn}>reBuildMn</button>
+
+
 </div>

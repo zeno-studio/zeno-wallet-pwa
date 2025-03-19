@@ -5,9 +5,9 @@ import {
 	getElement,
 	type Chain
 } from '$lib/wallet/common';
-import { accountState, chainState, setAutoLock,setTime} from '$lib/wallet/runes';
+import { accountState, chainState, setAutoLock, setTime } from '$lib/wallet/runes';
 import { userlocale, getLanguage, availableLanguages } from '$lib/ui/runes';
-import { } from '$lib/wallet/runes';
+import {} from '$lib/wallet/runes';
 
 export const createSettings = async () => {
 	const settings = localStorage.getItem('settings');
@@ -21,15 +21,12 @@ export const createSettings = async () => {
 			document.body.setAttribute('data-theme', 'light');
 		}
 		// intialize account
-		accountState.autoLock = data.autoLock;
-		accountState.timeLock = data.timeLock;
 		setTime(data.timeLock);
 		setAutoLock(data.autoLock);
 		accountState.currentAccountIndex = data.currentAccountIndex;
-		accountState.currentWatchAccountIndex = data.currentWatchAccountIndex;
 		accountState.nextAccountIndex = data.nextAccountIndex;
+		accountState.nextPolkadotIndex = data.nextPolkadotIndex;
 		accountState.nextWatchAccountIndex = data.nextWatchAccountIndex;
-		
 
 		// intialize additionalChains
 		const Chains = ((await getElement(dbStore.AdditionalChain.name, 'all')) as Chain[]) || [];
@@ -42,7 +39,6 @@ export const createSettings = async () => {
 
 		// intialize locale
 		userlocale.locale = data.locale;
-
 	}
 	if (!settings) {
 		const systemLanguage = getLanguage();
@@ -55,6 +51,5 @@ export const createSettings = async () => {
 			const newSettings = { ...defaultSettings, locale: 'en' };
 			localStorage.setItem('settings', JSON.stringify(newSettings));
 		}
-
 	}
 };

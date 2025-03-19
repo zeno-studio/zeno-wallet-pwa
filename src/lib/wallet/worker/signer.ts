@@ -1,22 +1,26 @@
-import { getElement, dbStore, deriveEvm, type LegacyVault, type Account } from '$lib/wallet/common';
+import { getElement, dbStore, deriveEvm,isValidPassword, type LegacyVault, type Account } from '$lib/wallet/common';
 import { scrypt } from '@noble/hashes/scrypt';
-import { bytesToHex, hexToBytes } from '@noble/ciphers/utils';
+import { hexToBytes } from '@noble/ciphers/utils';
 import { managedNonce } from '@noble/ciphers/webcrypto';
 import { xchacha20poly1305 as xchacha } from '@noble/ciphers/chacha';
 import * as bip39 from '@scure/bip39';
 import { wordlist } from '@scure/bip39/wordlists/english';
 import { HDKey } from '@scure/bip32';
 import { Transaction, addr } from 'micro-eth-signer';
-import { accountState} from '$lib/wallet/runes';
+
 
 let isLocked = true;
 let isAutoLock = true;
-let timeout = 1000 * 60 * 15;
+let timeout = 1000 * 60 * 30;
 const psReplacer = hexToBytes('0000000000000000000000000000000000000000000000000000000000000000');
 let midpass = psReplacer;
 onmessage = ({ data }) => {
 	switch (data.method) {
 		case 'isLocked':
+			postMessage({ success: true, data: isLocked });
+			break;
+		case 'lockSigner':
+			isLocked = true;
 			postMessage({ success: true, data: isLocked });
 			break;
 		case 'isAutoLock':
@@ -36,12 +40,21 @@ onmessage = ({ data }) => {
 		case 'saveMidPass':
 			saveMidPass(data.argus.password, data.argus.salt);
 			break;
-		case 'addAccount':
-			addAccount(data.argus.index, data.argus.addressIndex);
+		case 'addEvmAccount':
+			addEvmAccount(data.argus.index, data.argus.addressIndex);
+			break;
+		case 'addEvmAccountWithPassword':
+			addEvmAccountWithPassword(data.argus.index, data.argus.accountIndex, data.argus.password);
+			break;
+		case 'checkPassword':
+			checkPassword(data.argus.password);
 			break;
 		// testing function need delete
 		case 'queryMid':
 			postMessage({ success: true, data: midpass });
+			break;
+		case 'reBuildMn':
+			reBuildMn();
 			break;
 		case 'signEvmTx':
 			signEvmTx(data.argus.tx, data.argus.account, data.argus.password);
@@ -52,21 +65,21 @@ onmessage = ({ data }) => {
 };
 
 function saveMidPass(password: string, salt: string) {
-	midpass = scrypt(password, salt, { N: 2 ** 16, r: 8, p: 1, dkLen: 32 });
+	midpass = scrypt(password, hexToBytes(salt), { N: 2 ** 16, r: 8, p: 1, dkLen: 32 })
 	isLocked = false;
 	if (isAutoLock) {
 		setTimeout(() => {
 			isLocked = true;
-			midpass = psReplacer;
 		}, timeout);
+		setTimeout(() => {
+			midpass = psReplacer;
+		}, timeout + 60000);
 		postMessage({
-			success: true,
-			data: { isLocked: isLocked, time: timeout / (60 * 1000), ps: bytesToHex(midpass) }
+			success: true
 		});
 	} else {
 		postMessage({
-			success: true,
-			data: { isLocked: isLocked, time: timeout / (60 * 1000), ps: bytesToHex(midpass) }
+			success: true
 		});
 	}
 }
@@ -75,7 +88,7 @@ async function signEvmTx(tx: any, account: Account, password?: string, salt?: st
 	const ps = password ?? password;
 	const s = salt ?? salt;
 	// if wallet is locked
-	if ( isLocked && (ps === undefined || s === undefined)) {
+	if (isLocked && (ps === undefined || s === undefined)) {
 		postMessage({
 			success: false,
 			error: 'Wallet is locked and password or salt is empty'
@@ -120,7 +133,7 @@ async function reBuildMn(): Promise<string> {
 
 function signEvmTransaction(tx: any, account: Account, mn: string) {
 	const hdKey_ = HDKey.fromMasterSeed(bip39.mnemonicToSeedSync(mn));
-	const hdKey = hdKey_.derive(account.derivePath);
+	const hdKey = hdKey_.derive(account.derivePath as string);
 	const privateKey = hdKey.privateKey;
 	const publicKey = hdKey.publicKey;
 	if (privateKey && publicKey && account.address === addr.fromPublicKey(publicKey)) {
@@ -138,8 +151,20 @@ function signEvmTransaction(tx: any, account: Account, mn: string) {
 	}
 }
 
-async function addAccount(index: number, addressIndex: number) {
+async function addEvmAccount(index: number, addressIndex: number) {
 	const mn = await reBuildMn();
 	deriveEvm(index, addressIndex, mn);
+}
 
+async function addEvmAccountWithPassword(index: number, addressIndex: number, password: string) {
+	const vault = (await getElement(dbStore.Vault.name, 'default')) as LegacyVault;
+	saveMidPass(password, vault.salt);
+	const mn = await reBuildMn();
+	deriveEvm(index, addressIndex, mn);
+	postMessage({ success: true });
+}
+
+async function checkPassword(password: string) {
+	const isValid = await isValidPassword(password, 'default');
+	postMessage({ success: true, isValid });
 }
