@@ -75,10 +75,13 @@ export function addEvmAccount() {
 			method: 'addEvmAccount',
 			argus: { index: settings.nextAccountIndex, addressIndex: settings.nextEvmAddressIndex }
 		});
+		accountState.nextAccountIndex += 1;
+		accountState.currentAccountIndex = settings.nextAccountIndex;
+		settings.currentAccountIndex = settings.nextAccountIndex;
+		settings.accountList.push(settings.nextAccountIndex);
 		settings.nextEvmAddressIndex++;
 		settings.nextAccountIndex++;
 		localStorage.setItem('settings', JSON.stringify(settings));
-		accountState.nextAccountIndex += 1;
 	}
 }
 
@@ -94,10 +97,13 @@ export function AddEvmAccountWithPassword(password: string) {
 				password: password
 			}
 		});
+		accountState.nextAccountIndex += 1;
+		accountState.currentAccountIndex = settings.nextAccountIndex;
+		settings.currentAccountIndex = settings.nextAccountIndex;
+		settings.accountList.push(settings.nextAccountIndex);
 		settings.nextEvmAddressIndex++;
 		settings.nextAccountIndex++;
 		localStorage.setItem('settings', JSON.stringify(settings));
-		accountState.nextAccountIndex += 1;
 	}
 }
 

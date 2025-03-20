@@ -10,3 +10,4 @@ export { default as TokenSelector } from "./tokenSelector.svelte";
 export { default as FiatSelector } from "./fiatSelector.svelte";
 export { default as CreateAccount } from "./createAccount.svelte";
 export { default as AddAccount} from "./addAccount.svelte";
+export { default as AccountList } from "./accountList.svelte";

@@ -40,6 +40,7 @@
 	<meta property="twitter:title" content={metadata.title} />
 	<meta property="twitter:description" content={metadata.description} />
 	<link rel="icon" type="image/png" href={metadata.favicon} sizes="32x32" />
+
 </svelte:head>
 
 <Toaster />

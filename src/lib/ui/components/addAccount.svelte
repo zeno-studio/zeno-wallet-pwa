@@ -16,12 +16,14 @@
 
 	async function handleAddEvmAccount() {
 		isLocked();
-		if (signerResponse?.data === false) {
-			addEvmAccount();
-		} else {
-			const popover = document.getElementById('add');
-			if (popover) popover.showPopover();
-		}
+		setTimeout(() => {
+			if (signerResponse?.data === false) {
+				addEvmAccount();
+			} else {
+				const popover = document.getElementById('add');
+				if (popover) popover.showPopover();
+			}
+		}, 300);
 	}
 
 	async function checkPasswordAndAdd(ps: string) {
@@ -48,7 +50,7 @@
 	}
 </script>
 
-<button class="bottom-button" onclick={handleAddEvmAccount}> Add new account </button>
+<button class="bottom-button" onclick={handleAddEvmAccount}> Add new account &#x1F923</button>
 
 <div id="add" popover="manual" class:active={isSmallScreen.current}>
 	<button class="close" popovertarget="add" popovertargetaction="hide">
