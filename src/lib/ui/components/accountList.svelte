@@ -10,20 +10,20 @@
 
 
 
-	let accounts = $derived.by(async () => {
+	let accounts = async () => {
 		const data = await getElement(dbStore.Account.name, 'all') as Account[];
-		return {data, Index: accountState.currentAccountIndex};
-	});
+		return data;
+	};
 
 
 </script>
 
-{#await accounts then accounts}
-	{#if accounts.data}
-		{#each accounts.data as account}
+{#await accounts() then accounts}
+	{#if accounts}
+		{#each accounts as account}
 			<button
 				class="accountList"
-				class:selected={account.accountIndex === accounts.Index}
+				class:selected={account.accountIndex === accountState.currentAccountIndex}
 				onclick={() => selectedAccount(account.accountIndex)}
 
 			>
