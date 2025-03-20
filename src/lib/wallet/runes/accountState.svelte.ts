@@ -12,7 +12,7 @@ class AccountState {
 
 
 	setCurrentAccountIndex(accountIndex: number) {
-		if (accountIndex>23) throw new Error('Exceeds the maximum number of accounts');
+		if (accountIndex>33) throw new Error('Exceeds the maximum number of accounts');
 		this.currentAccountIndex = accountIndex;
 		const data = localStorage.getItem('settings');
 		if (data) {

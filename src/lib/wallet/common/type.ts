@@ -24,8 +24,8 @@ export const defaultSettings: Settings = {
 	locale: 'en',
 	currentAccountIndex: 0,
 	nextAccountIndex: 1,
-	nextPolkadotIndex: 11,
-	nextWatchAccountIndex: 21,
+	nextPolkadotIndex: 21,
+	nextWatchAccountIndex: 31,
 	nextEvmAddressIndex: 0,
 	nextPolkadotAddressIndex: 0,
 	autoLock: true,
@@ -43,6 +43,14 @@ export const defaultSettings: Settings = {
 	hiddenAccounts: [],
 	vaultList: [],
 	fiat: 'USD'
+};
+export type backupData = {
+	vaults: LegacyVault[];
+	accounts: Account[];
+	additionalChains: Chain[];
+	addressBook: AddressBook[];
+	history: History[];
+	settings: Settings;
 };
 
 export type AccessStatus = 'APPROVED' | 'DENIED';

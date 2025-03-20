@@ -48,12 +48,6 @@ export const packMn = (password: string, mn: string, Keypath: string) => {
 		cryptoVersion: 1
 	};
 	addElement(dbStore.Vault.name, store);
-	const settings = localStorage.getItem('settings');
-	if (settings) {
-		const parsedSettings = JSON.parse(settings) as Settings;
-		parsedSettings.vaultList.push(Keypath);
-		localStorage.setItem('settings', JSON.stringify(parsedSettings));
-	}
 };
 
 export const restoreMn = async (password: string, keypath: string): Promise<string> => {
@@ -105,14 +99,6 @@ export const deriveEvm = (index: number, addressIndex: number, mn: string): bool
 				publicKey: bytesToHex(hdKey.publicKey)
 			};
 			addElement(dbStore.Account.name, newAccount);
-			const data= localStorage.getItem('settings');
-			if (data) {
-				const Settings = JSON.parse(data) as Settings;
-				Settings.nextAccountIndex++;
-				Settings.nextEvmAddressIndex++;
-				Settings.accountList.push(index);
-				localStorage.setItem('settings', JSON.stringify(Settings));
-			}
 		}
 	}
 	return true;
@@ -163,14 +149,6 @@ export const derivePolkadot = async (
 		publicKey: pub
 	};
 	addElement(dbStore.Account.name, newAccount);
-	const settings = localStorage.getItem('settings');
-	if (settings) {
-		const parsedSettings = JSON.parse(settings) as Settings;
-		parsedSettings.nextAccountIndex++;
-		parsedSettings.nextPolkadotAddressIndex++;
-		parsedSettings.accountList.push(index);
-		localStorage.setItem('settings', JSON.stringify(parsedSettings));
-	}
 };
 
 export const derivePolkadotAccount = async (
@@ -255,8 +233,8 @@ export const changePassword = async (oldPassword: string, newPassword: string): 
 };
 
 export const resetWallet = async (): Promise<void> => {
-	removeElement('accountList', 'all');
-	removeElement('legacyVault', 'all');
+	removeElement(dbStore.Account.name, 'all');
+	removeElement(dbStore.Vault.name, 'all');
 };
 
 export const backupWallet = async (): Promise<void> => {

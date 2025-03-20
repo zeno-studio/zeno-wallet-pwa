@@ -27,6 +27,8 @@
 			settings.nextEvmAddressIndex++;
 			settings.nextAccountIndex++;
 			settings.currentAccountIndex = 1;
+			settings.accountList.push(1);
+			settings.vaultList.push('default');
 			localStorage.setItem('settings', JSON.stringify(settings));
 			accountState.currentAccountIndex = 1;
 			saveMidPass(ps);
@@ -108,14 +110,18 @@
 		{/if}
 	</div>
 
+
+
 	{#if password === null && password2 === null}
-		<button class="start"> Setting your password</button>
+		<button class="start"> Setting your password &#x1F923</button>
 	{:else if password !== password2}
 		<button class="start"> Password not match</button>
 	{:else if password === password2 && !terms}
 		<button class="start"> Please agree to the terms</button>
-	{:else if password === password2 && terms}
-		<button class="start" onclick={() => handleCreateEvmAccount(password as string)}>
+	{:else if password === password2 && terms && psStrength === "Too weak"}
+		<button class="start"> Password too weak</button>
+	{:else if password === password2 && terms && psStrength !== "Too weak"}
+		<button class="ok" onclick={() => handleCreateEvmAccount(password as string)}>
 			Submit</button
 		>
 	{:else if isLoading}
@@ -193,6 +199,21 @@
 		border: none;
 		border-radius: 16px;
 		background: var(--color-pink);
+		box-sizing: border-box;
+		width: 80%;
+		margin-top: 32px;
+		padding: 1rem;
+		cursor: pointer;
+	}
+	.ok {
+		flex-direction: column;
+		color: #fff;
+		font-size: 1.7rem;
+		font-weight: 600;
+		height: 48px;
+		border: none;
+		border-radius: 16px;
+		background: var(--color-blue);
 		box-sizing: border-box;
 		width: 80%;
 		margin-top: 32px;
