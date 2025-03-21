@@ -1,45 +1,43 @@
 <script lang="ts">
 	import { accountState } from '$lib/wallet/runes';
-	import { getElement, dbStore, type Account } from '$lib/wallet/common';
 	import { EditFilled } from '$lib/svg';
 
-
-	function selectedAccount(index: number) {
-		accountState.setCurrentAccountIndex(index);
+	function selectedAccount(i: number) {
+		accountState.setCurrentAccountIndex(i);
 	}
 
-
-
-	let accounts = async () => {
-		const data = await getElement(dbStore.Account.name, 'all') as Account[];
-		return data;
-	};
-
+	$effect(() => {
+	console.log(accountState.accountListDetail)
+});
 
 </script>
-
-{#await accounts() then accounts}
-	{#if accounts}
-		{#each accounts as account}
-			<button
-				class="accountList"
-				class:selected={account.accountIndex === accountState.currentAccountIndex}
-				onclick={() => selectedAccount(account.accountIndex)}
-
-			>
-				<div class="item">
-					<div class="item-l">
-						<div class="avatar">{account.accountIndex}</div>
-						<span class="title">{account.accountName} </span>
-					</div>
-				</div>
-				<a class="edit" href="/#/setting/account_detail"><EditFilled class="icon2rem" /></a>
-			</button>
-		{/each}
-	{:else}
-		<h5>No Account</h5>
-	{/if}
+{#key accountState.accountList}
+{#await accountState.accountListDetail }
+<h5>waiting</h5>
+{:then accounts}
+{#each accounts as account}
+	<button
+		class="accountList"
+		class:selected={account.accountIndex === accountState.currentAccountIndex}
+		onclick={() => selectedAccount(account.accountIndex)}
+	>
+		<div class="item">
+			<div class="item-l">
+				<div class="avatar">{account.accountIndex}</div>
+				<span class="title">{account.accountName} </span>
+			</div>
+		</div>
+		<a class="edit" href="/#/setting/account_detail"><EditFilled class="icon2rem" /></a>
+	</button>
+{/each}
 {/await}
+
+	
+{/key}
+
+
+
+
 
 
 <style lang="postcss">

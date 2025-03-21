@@ -24,13 +24,15 @@
 		if (data) {
 			const settings = JSON.parse(data);
 			createEvmAccount(1, 0, ps);
+			accountState.currentAccountIndex = 1;
+			accountState.accountList = [1];
 			settings.nextEvmAddressIndex++;
 			settings.nextAccountIndex++;
 			settings.currentAccountIndex = 1;
 			settings.accountList.push(1);
 			settings.vaultList.push('default');
 			localStorage.setItem('settings', JSON.stringify(settings));
-			accountState.currentAccountIndex = 1;
+
 			saveMidPass(ps);
 			const popover = document.getElementById('create');
 			if (popover) {

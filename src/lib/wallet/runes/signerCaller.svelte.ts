@@ -1,6 +1,6 @@
 import Signer from '$lib/wallet/worker/signer.ts?worker';
 import { accountState } from '$lib/wallet/runes';
-import { getElement, dbStore, deriveEvm,isValidPassword, type LegacyVault, type Account } from '$lib/wallet/common';
+import { getElement, dbStore, type LegacyVault} from '$lib/wallet/common';
 
 export const signer = new Signer();
 
@@ -77,6 +77,7 @@ export function addEvmAccount() {
 		});
 		accountState.nextAccountIndex += 1;
 		accountState.currentAccountIndex = settings.nextAccountIndex;
+		accountState.accountList.push(settings.nextAccountIndex);
 		settings.currentAccountIndex = settings.nextAccountIndex;
 		settings.accountList.push(settings.nextAccountIndex);
 		settings.nextEvmAddressIndex++;
@@ -99,6 +100,7 @@ export function AddEvmAccountWithPassword(password: string) {
 		});
 		accountState.nextAccountIndex += 1;
 		accountState.currentAccountIndex = settings.nextAccountIndex;
+		accountState.accountList.push(settings.nextAccountIndex);
 		settings.currentAccountIndex = settings.nextAccountIndex;
 		settings.accountList.push(settings.nextAccountIndex);
 		settings.nextEvmAddressIndex++;

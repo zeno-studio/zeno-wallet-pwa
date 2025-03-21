@@ -69,6 +69,9 @@ export interface Account {
 	derivePath?: string;
 	keyringType?: keyringType;
 	publicKey?: string;
+	ens?: string;
+	avatar?: string;
+	nft?: string;
 }
 
 
@@ -176,7 +179,6 @@ export interface TransferResult {
 export type WalletBackupData = {
 	vaults: LegacyVault[];
 	accounts: Account[];
-	watchAccount: WatchAccount[];
 	additionalChains: Chain[];
 	addressBook: AddressBook[];
 	History: History[];
