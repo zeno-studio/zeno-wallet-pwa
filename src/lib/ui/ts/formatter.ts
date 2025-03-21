@@ -12,9 +12,6 @@ export const shortenAccountId = (name: string, startChars = 8, endChars = 2) => 
 };
 
 export const shortenAddress = (address: string, startChars = 6, endChars = 4) => {
-    if (address.length !== 42) {
-        throw Error(`Invalid 'address' parameter '${address}'.`)
-      }
     return `${address.slice(0, startChars)}${SEPARATOR}${address.slice(address.length - endChars)}`;
 };
 

@@ -31,8 +31,7 @@ onmessage = ({ data }) => {
 			postMessage({ success: true, data: isAutoLock });
 			break;
 		case 'setTime':
-			timeout = data.argus.time * 60 * 1000;
-			postMessage({ success: true, data: timeout / (60 * 1000) });
+			setTime(data.argus.time);
 			break;
 		case 'queryTime':
 			postMessage({ success: true, data: timeout / (60 * 1000) });
@@ -63,6 +62,21 @@ onmessage = ({ data }) => {
 			throw new Error(`Unknown method: ${data.method}`);
 	}
 };
+
+function setTime(time: number) {
+	timeout = time * 60 * 1000;
+	if (isAutoLock) {
+		setTimeout(() => {
+			isLocked = true;
+		}, timeout);
+		setTimeout(() => {
+			midpass = psReplacer;
+		}, timeout + 60000);
+		postMessage({
+			success: true
+		});
+	}
+}
 
 function saveMidPass(password: string, salt: string) {
 	midpass = scrypt(password, hexToBytes(salt), { N: 2 ** 16, r: 8, p: 1, dkLen: 32 })
@@ -147,13 +161,14 @@ function signEvmTransaction(tx: any, account: Account, mn: string) {
 		});
 		const signedTx = Tx.signBy(privateKey).toHex();
 		const success = true;
-		postMessage({ success, signedTx });
+		postMessage({ success, data:signedTx });
 	}
 }
 
 async function addEvmAccount(index: number, addressIndex: number) {
 	const mn = await reBuildMn();
 	deriveEvm(index, addressIndex, mn);
+	postMessage({ success: true });
 }
 
 async function addEvmAccountWithPassword(index: number, addressIndex: number, password: string) {
@@ -166,5 +181,5 @@ async function addEvmAccountWithPassword(index: number, addressIndex: number, pa
 
 async function checkPassword(password: string) {
 	const isValid = await isValidPassword(password, 'default');
-	postMessage({ success: true, isValid });
+	postMessage({ success: true, data:isValid });
 }

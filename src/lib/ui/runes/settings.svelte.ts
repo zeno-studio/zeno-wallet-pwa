@@ -5,7 +5,7 @@ import {
 	getElement,
 	type Chain
 } from '$lib/wallet/common';
-import { accountState, chainState, setAutoLock, setTime } from '$lib/wallet/runes';
+import { accountState, chainState,setAutoLock,setTime, } from '$lib/wallet/runes';
 import { userlocale, getLanguage, availableLanguages } from '$lib/ui/runes';
 import {} from '$lib/wallet/runes';
 
@@ -28,6 +28,8 @@ export const createSettings = async () => {
 		accountState.nextAccountIndex = data.nextAccountIndex;
 		accountState.nextPolkadotIndex = data.nextPolkadotIndex;
 		accountState.nextWatchAccountIndex = data.nextWatchAccountIndex;
+		accountState.nextEvmAddressIndex = data.nextEvmAddressIndex;
+		accountState.nextPolkadotAddressIndex = data.nextPolkadotAddressIndex;
 
 		// intialize additionalChains
 		const Chains = ((await getElement(dbStore.AdditionalChain.name, 'all')) as Chain[]) || [];

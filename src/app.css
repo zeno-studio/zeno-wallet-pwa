@@ -186,16 +186,6 @@
 		color: var(--color);
 		fill:rgb(255, 0, 105)
 	}
-	.icon24 {
-		height: 24px;
-		width: 24px;
-		overflow: visible;
-		transition: all 0.2s ease-in;
-		cursor: pointer;
-	}
-	.icon24:hover {
-		transform: scale(1.1);
-	}
 
 	.icon2rem {
 		height: 2rem;
@@ -203,6 +193,11 @@
 		color: var(--color-text);
 		margin-right: 1rem;
 		cursor: pointer;
+
+		&:hover {
+		transform: scale(1.1);
+		color: var(--color);
+		}
 	}
 	.icon2A {
 		height: 2rem;
@@ -223,30 +218,20 @@
 		color: var(--color-text);
 		margin: -24;
 	}
-	.icon15A {
-		height: 1.7rem;
-		width: 1.7rem;
+	.icon25rem {
+		height: 2.5rem;
+		width: 2.5rem;
 		color: var(--color-text);
-		margin: 0px;
-	}
+		margin-right: 1rem;
+		cursor: pointer;
 
-	.icon2rem:hover {
+		&:hover {
 		transform: scale(1.1);
 		color: var(--color);
-	}
-	.icon16px {
-		height: 16px;
-		width: 16px;
-		color: var(--color-text);
-		margin-right: 16px;
-		cursor: pointer;
-	}
-	.icon16px:hover {
-		transform: scale(1.1);
-		color: var(--green4);
+		}
 	}
 
-
+	
 
 .appContainer {
 	color: var(--color);

@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { CreateAccount, AddAccount, AccountList } from '$lib/ui/components';
 	import { accountState } from '$lib/wallet/runes';
-
-
 </script>
 
 <div class="appContainer">
@@ -19,19 +17,13 @@
 
 		{/if}
 
-		<!-- add/import -->
-			<div>{accountState.currentAccountIndex}</div>
-			<div>{accountState.accountList}</div>
-
-
+	
 		{#if accountState.currentAccountIndex === 0}
 			<div class="bottom2">
 				<CreateAccount />
 				<button class="bottom-button2"> Import account </button>
 			</div>
-		{/if}
-
-		{#if accountState.currentAccountIndex !== 0}
+		{:else if accountState.currentAccountIndex > 0 && accountState.nextAccountIndex < 21}
 			<div class="bottom"><AddAccount /></div>
 		{/if}
 	</div>

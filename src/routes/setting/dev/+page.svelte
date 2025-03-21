@@ -16,7 +16,7 @@
 		<button onclick={isLocked} >isLocked</button>
 		<button onclick={isAutoLock}>isautoLock</button>
 		<button onclick={queryTime}>time</button>
-		<button onclick={() => setTime(3)}>settime</button>
+		<button onclick={() => setTime(1)}>settime</button>
 		<button onclick={() => setAutoLock(false)}>setauto</button>
 		<button onclick={() => saveMidPass("Qian7855")}>saveMidPass</button>
 </div>

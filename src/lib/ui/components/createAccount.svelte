@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { isSmallScreen } from '$lib/ui/ts';
-	import { createEvmAccount, getElement, dbStore, type LegacyVault } from '$lib/wallet/common';
+	import { createEvmAccount} from '$lib/wallet/common';
 	import { Loading, CloseIcon, EyeIcon, EyeOffIcon } from '$lib/svg';
 	import { passwordStrength } from 'check-password-strength';
 	import { accountState,saveMidPass } from '$lib/wallet/runes';
@@ -18,14 +18,16 @@
 	});
 	let isLoading = $state(false);
 
-	async function handleCreateEvmAccount(ps: string) {
+	function handleCreateEvmAccount(ps: string) {
 		isLoading = true;
 		const data = localStorage.getItem('settings');
 		if (data) {
 			const settings = JSON.parse(data);
 			createEvmAccount(1, 0, ps);
-			accountState.currentAccountIndex = 1;
-			accountState.accountList = [1];
+			accountState.nextAccountIndex ++;
+			accountState.currentAccountIndex =1;
+			accountState.accountList.push(1);
+			accountState.nextEvmAddressIndex ++;
 			settings.nextEvmAddressIndex++;
 			settings.nextAccountIndex++;
 			settings.currentAccountIndex = 1;
@@ -97,11 +99,11 @@
 		/>
 	{/if}
 
-	<label class="form-label" for="">
+	<div class="label" >
 		<input type="checkbox" bind:checked={terms} />
-		&nbsp I agree to the &nbsp<a href="/#/setting/about/terms"> Terms of Service </a></label
+		&nbsp I agree to the &nbsp<a href="/#/setting/about/terms"> Terms of Service </a></div
 	>
-	<div class="form-label">
+	<div class="label">
 		Password strength:&nbsp
 		{#if psStrength === 'Too weak' && password !== null}
 			<span class="weak">{psStrength}</span>
@@ -132,7 +134,7 @@
 </div>
 
 <style lang="postcss">
-	.form-label {
+	.label{
 		display: flex;
 		justify-content: flex-start;
 		padding: 0px;
