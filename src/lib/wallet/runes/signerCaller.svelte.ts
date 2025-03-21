@@ -1,6 +1,6 @@
 import Signer from '$lib/wallet/worker/signer.ts?worker';
 import { accountState } from '$lib/wallet/runes';
-import { getElement, dbStore, type LegacyVault} from '$lib/wallet/common';
+import { getElement, dbStore, type LegacyVault } from '$lib/wallet/common';
 
 export const signer = new Signer();
 
@@ -67,54 +67,88 @@ export function queryMid() {
 	signer.postMessage({ method: 'queryMid' });
 }
 
-export function addEvmAccount() {
-	const data = localStorage.getItem('settings');
-	if (data) {
-		const settings = JSON.parse(data);
-		signer.postMessage({
-			method: 'addEvmAccount',
-			argus: { index: settings.nextAccountIndex, addressIndex: settings.nextEvmAddressIndex }
-		});
-		accountState.nextAccountIndex += 1;
-		accountState.currentAccountIndex = settings.nextAccountIndex;
-		accountState.accountList.push(settings.nextAccountIndex);
-		settings.currentAccountIndex = settings.nextAccountIndex;
-		settings.accountList.push(settings.nextAccountIndex);
-		settings.nextEvmAddressIndex++;
-		settings.nextAccountIndex++;
-		localStorage.setItem('settings', JSON.stringify(settings));
+export async function addEvmAccount() {
+	const result = (await addEvmAccountWorker()) as signerResponseType | null;
+	if (result?.success === true) {
+		const data = localStorage.getItem('settings');
+		if (data) {
+			const settings = JSON.parse(data);
+			accountState.nextAccountIndex ++;
+			accountState.currentAccountIndex = settings.nextAccountIndex;
+			accountState.accountList.push(settings.nextAccountIndex);
+			accountState.nextEvmAddressIndex ++;
+			settings.currentAccountIndex = settings.nextAccountIndex;
+			settings.accountList.push(settings.nextAccountIndex);
+			settings.nextEvmAddressIndex++;
+			settings.nextAccountIndex++;
+			localStorage.setItem('settings', JSON.stringify(settings));
+		}
 	}
 }
 
-export function AddEvmAccountWithPassword(password: string) {
-	const data = localStorage.getItem('settings');
-	if (data) {
-		const settings = JSON.parse(data);
+function addEvmAccountWorker() {
+	return new Promise((resolve) => {
+		signer.onmessage = (event) => {
+			resolve(event.data); 
+		};
+		
+		signer.postMessage({
+				method: 'addEvmAccount',
+				argus: { index: accountState.nextAccountIndex, addressIndex: accountState.nextEvmAddressIndex }
+			});
+	});
+}
+
+export async function AddEvmAccountWithPassword(password: string) {
+	const result = (await addEvmAccountPasswordWorker(password)) as signerResponseType | null;
+	if (result?.success === true) {
+		const data = localStorage.getItem('settings');
+		if (data) {
+			const settings = JSON.parse(data);
+			accountState.nextAccountIndex ++;
+			accountState.currentAccountIndex = settings.nextAccountIndex;
+			accountState.accountList.push(settings.nextAccountIndex);
+			accountState.nextEvmAddressIndex ++;
+			settings.currentAccountIndex = settings.nextAccountIndex;
+			settings.accountList.push(settings.nextAccountIndex);
+			settings.nextEvmAddressIndex++;
+			settings.nextAccountIndex++;
+			localStorage.setItem('settings', JSON.stringify(settings));
+		}
+	}
+}
+
+function addEvmAccountPasswordWorker(password: string) {
+	return new Promise((resolve) => {
+		signer.onmessage = (event) => {
+			resolve(event.data); // 接收 Worker 返回的结果
+		};
+
 		signer.postMessage({
 			method: 'addEvmAccountWithPassword',
 			argus: {
-				index: settings.nextAccountIndex,
-				accountIndex: settings.nextEvmAddressIndex,
+				index: accountState.nextAccountIndex,
+				accountIndex: accountState.nextEvmAddressIndex,
 				password: password
 			}
 		});
-		accountState.nextAccountIndex += 1;
-		accountState.currentAccountIndex = settings.nextAccountIndex;
-		accountState.accountList.push(settings.nextAccountIndex);
-		settings.currentAccountIndex = settings.nextAccountIndex;
-		settings.accountList.push(settings.nextAccountIndex);
-		settings.nextEvmAddressIndex++;
-		settings.nextAccountIndex++;
-		localStorage.setItem('settings', JSON.stringify(settings));
-	}
+	});
 }
 
 export function checkPassword(password: string) {
-	signer.postMessage({ method: 'checkPassword', argus: { password: password } });
+	return new Promise((resolve) => {
+		signer.onmessage = (event) => {
+			resolve(event.data);
+		};
+		signer.postMessage({ method: 'checkPassword', argus: { password: password } });
+	});
 }
 
-// testing function
-export function reBuildMn() {
-	signer.postMessage({ method: 'reBuildMn' });
+export function checkIsLocked() {
+	return new Promise((resolve) => {
+		signer.onmessage = (event) => {
+			resolve(event.data);
+		};
+		isLocked();
+	});
 }
-

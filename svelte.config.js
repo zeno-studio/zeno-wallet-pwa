@@ -15,7 +15,7 @@ const config = {
 		adapter: adapter(),
 		csp: {
 			mode: 'hash',
-			directives: {"script-src": ["self"]},
+			directives: {"script-src": ["self"],"object-src": ["self"]},
 		  },
 		router: {
 			type: 'hash'

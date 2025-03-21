@@ -1,56 +1,48 @@
 <script lang="ts">
 	import { isSmallScreen } from '$lib/ui/ts';
-	import { signer, addEvmAccount,checkPassword, isLocked, type signerResponseType,AddEvmAccountWithPassword, accountState } from '$lib/wallet/runes';
-	import { Loading, CloseIcon, EyeIcon, EyeOffIcon } from '$lib/svg';
-
-
-	let signerResponse =$state<signerResponseType | null>(null);
-	signer.onmessage = (event) => {
-		signerResponse = event.data;
-	};
+	import {
+		checkIsLocked,
+		addEvmAccount,
+		checkPassword,
+		type signerResponseType,
+		AddEvmAccountWithPassword
+	} from '$lib/wallet/runes';
+	import { CloseIcon, EyeIcon, EyeOffIcon } from '$lib/svg';
 
 	let password = $state<string | null>(null);
 	let passwordShow = $state(false);
-	let isLoading = $state(false);
 	let isValidPs = $state<boolean | null>(null);
 
 	async function handleAddEvmAccount() {
-		isLocked();
-		setTimeout(() => {
-			if (signerResponse?.data === false) {
-				addEvmAccount();
-			} else {
-				const popover = document.getElementById('add');
-				if (popover) popover.showPopover();
-			}
-		}, 300);
+		const result = (await checkIsLocked()) as signerResponseType | null;
+		if (result?.data === false) {
+			addEvmAccount();
+		} else {
+			const popover = document.getElementById('add');
+			if (popover) popover.showPopover();
+		}
 	}
 
 	async function checkPasswordAndAdd(ps: string) {
-		checkPassword(ps);
-		if (signerResponse?.data === true) {
+		const result = (await checkPassword(ps)) as signerResponseType | null;
+		if (result?.data === true) {
 			isValidPs = true;
-			handleAddEvmAccountWithPassword(ps);
+			AddEvmAccountWithPassword(ps);
+			const popover = document.getElementById('add');
+			if (popover) popover.hidePopover();
+			password = null;
+			passwordShow = false;
+			isValidPs = null;
 		} else {
 			isValidPs = false;
 			setTimeout(() => {
 				isValidPs = null;
-				password = null;
 			}, 3000);
 		}
 	}
-
-	async function handleAddEvmAccountWithPassword(ps: string) {
-		AddEvmAccountWithPassword(ps);
-		const popover = document.getElementById('add');
-		if (popover) popover.hidePopover();
-		password = null;
-		passwordShow = false;
-		isValidPs = null;
-	}
 </script>
 
-<button class="bottom-button" onclick={handleAddEvmAccount}> Add new account &#x1F923</button>
+<button class="bottom-button" onclick={handleAddEvmAccount}> Add new account </button>
 
 <div id="add" popover="manual" class:active={isSmallScreen.current}>
 	<button class="close" popovertarget="add" popovertargetaction="hide">
@@ -60,6 +52,7 @@
 	<div class="container">
 		{#if passwordShow}
 			<input
+				id="password"
 				class="input"
 				type="text"
 				placeholder="Please input your password"
@@ -67,6 +60,7 @@
 			/>
 		{:else}
 			<input
+				id="password"
 				class="input"
 				type="password"
 				placeholder="Please input your password"
@@ -85,14 +79,9 @@
 	<div class="form-label">
 		{#if isValidPs === false}
 			Invalid password
-		{:else if isValidPs === true}
-			<span> password is valid</span>
 		{:else}
-			<span> password is empty</span>
+			<span> </span>
 		{/if}
-		<div>
-			{signerResponse?.data}
-		</div>
 	</div>
 
 	{#if password === null}
@@ -101,8 +90,6 @@
 		<button class="start" onclick={() => checkPasswordAndAdd(password!.toString())}>
 			Submit
 		</button>
-	{:else if isLoading}
-		<button class="start"> <Loading class="icon17A" /> </button>
 	{/if}
 </div>
 
