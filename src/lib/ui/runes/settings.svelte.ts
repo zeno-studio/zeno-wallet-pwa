@@ -24,6 +24,7 @@ export const createSettings = async () => {
 		setTime(data.timeLock);
 		setAutoLock(data.autoLock);
 		accountState.currentAccountIndex = data.currentAccountIndex;
+		accountState.accountList = data.accountList;
 		accountState.nextAccountIndex = data.nextAccountIndex;
 		accountState.nextPolkadotIndex = data.nextPolkadotIndex;
 		accountState.nextWatchAccountIndex = data.nextWatchAccountIndex;

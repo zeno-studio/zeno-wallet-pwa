@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { CreateAccount, AddAccount, AccountList } from '$lib/ui/components';
 	import { accountState } from '$lib/wallet/runes';
-	$effect(() => {
-		console.log(accountState.currentAccountIndex);
-	});
+
+
 </script>
 
 <div class="appContainer">
@@ -15,19 +14,15 @@
 				<h5>Please Create or Import a Account</h5>
 			</div>
 		{:else}
-		{#key accountState.currentAccountIndex}
+
 		<AccountList />
-		{/key}
+
 		{/if}
 
 		<!-- add/import -->
 			<div>{accountState.currentAccountIndex}</div>
+			<div>{accountState.accountList}</div>
 
-		{#await accountState.currentAccount then account}
-			{#if account}
-				<div>{account.address}</div>
-			{/if}
-		{/await}
 
 		{#if accountState.currentAccountIndex === 0}
 			<div class="bottom2">
