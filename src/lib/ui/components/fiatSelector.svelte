@@ -12,7 +12,7 @@
                 {fiat.name}
 			</div>
             <div class="item-r" class:active={fiat.name === chainState.currentFiat}>
-				<CheckIcon class="icon15A" />
+				<CheckIcon class="icon17A" />
 			</div>
         </button>
     {/each}
@@ -33,7 +33,7 @@
 	}
 
 	.active {
-		fill: var(--color-green);
+		fill: var(--green4);
 	}
 
 	.container {

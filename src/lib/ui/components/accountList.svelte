@@ -8,15 +8,19 @@
 	}
 
 	async function getAccountDetail(i: number) {
-		return (await getElement(dbStore.Account.name, i)) as Account;
+		return (await getElement(dbStore.Account.name, i)) as Account|null;
 	}
+
+
 
 
 </script>
 
+<div class="container">
 
 {#each accountState.accountList as i}
-	{#await getAccountDetail(i) then account}
+{#await getAccountDetail(i) then account}
+	{#if account}
 		<button
 			class="accountList"
 			class:selected={account.accountIndex === accountState.currentAccountIndex}
@@ -32,9 +36,13 @@
 			</div>
 			<a class="edit" href="/#/setting/account_detail"><EditFilled class="icon25rem" /></a>
 		</button>
-	{/await}
+	{/if}
+{/await}
 {/each}
-	
+
+</div>
+
+
 
 
 
@@ -43,6 +51,13 @@
 
 
 <style lang="postcss">
+	.container {
+		margin-bottom: 64px;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		width: 100%;
+	}
 	.content {
 		display: flex;
 		flex-direction: column;
@@ -79,11 +94,11 @@
 		margin-bottom: 8px;
 		border: none;
 		&:hover {
-			background: var(--green3);
+			background: var(--color-bg3);
 		}
 	}
 	.selected {
-		background: var(--green3);
+		background: var(--green4);
 	}
 	.label {
 		margin: 0px;

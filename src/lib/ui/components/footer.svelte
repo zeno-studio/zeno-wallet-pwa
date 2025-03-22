@@ -1,7 +1,7 @@
 <script>
 	import { page } from '$app/state';
 	import { MediaQuery } from 'svelte/reactivity';
-	import { WalletIcon, NftIcon, AppsIcon, SettingIcon } from '$lib/svg';
+	import { AssetFilled,AppsFilled,HeartFilled,SettingFilled  } from '$lib/svg';
 
 	const isSmallScreen = new MediaQuery('(max-width: 768px)');
 </script>
@@ -11,27 +11,27 @@
 		<div class="menu">
 			<a href="/" class:active={page.route.id == '/'} aria-label="Asset">
 				<div class="set">
-					<WalletIcon class="icon24" />
+					<AssetFilled class="icon24" />
 					Asset
 				</div>
 			</a>
 
 			<a href="/#/apps" class:active={page.route.id == '/apps'} aria-label="Apps">
 				<div class="set">
-					<AppsIcon class="icon24" />
+					<AppsFilled class="icon24" />
 					Apps
 				</div>
 			</a>
 			<a href="/#/nft" class:active={page.route.id == '/nft'} aria-label="NFT">
 				<div class="set">
-					<NftIcon class="icon24" />
+					<HeartFilled class="icon24" />
 					NFT
 				</div>
 			</a>
 
 			<a href="/#/setting" class:active={page.route.id == '/setting'} aria-label="Setting">
 				<div class="set">
-					<SettingIcon class="icon24" />
+					<SettingFilled class="icon24" />
 					Setting
 				</div>
 			</a>
@@ -51,7 +51,8 @@
 		left: 0px;
 		width: 100vw;
 		padding: 12px;
-		z-index: 10;
+		z-index: 100;
+		height: 64px;
 		background: transparent;
 		backdrop-filter: blur(30px);
 		border-top: 1px solid var(--color-border);

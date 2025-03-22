@@ -88,9 +88,7 @@
 		width: 48px;
 		height: 24px;
 	}
-	.space {
-		width: 1rem;
-	}
+
 
 </style>
 

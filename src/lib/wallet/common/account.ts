@@ -50,17 +50,23 @@ export const packMn = (password: string, mn: string, Keypath: string) => {
 	addElement(dbStore.Vault.name, store);
 };
 
-export const restoreMn = async (password: string, keypath: string): Promise<string> => {
+export const restoreMn = async (password: string, keypath: string): Promise<string|null> => {
 	const vault = (await getElement(dbStore.Vault.name, keypath)) as LegacyVault;
 	const phrase = scrypt(password, hexToBytes(vault.salt), { N: 2 ** 16, r: 8, p: 1, dkLen: 32 }); // vault.salt, { N: 2 ** 16, r: 8, p: 1, dkLen: 32 });
 	const chacha = managedNonce(xchacha)(phrase);
-	const ent = chacha.decrypt(hexToBytes(vault.ciphertext));
-	const mn = bip39.entropyToMnemonic(ent, wordlist);
-	return mn;
+	try {
+		const ent = chacha.decrypt(hexToBytes(vault.ciphertext));
+		const mn = bip39.entropyToMnemonic(ent, wordlist);
+		return mn;
+	}
+	catch (e) {
+		return null;
+	}
 };
 
 export const isValidPassword = async (password: string, keypath: string): Promise<boolean> => {
 	const mn = await restoreMn(password, keypath);
+	if (mn === null) return false;
 	if (!bip39.validateMnemonic(mn, wordlist)) return false;
 	return true;
 };

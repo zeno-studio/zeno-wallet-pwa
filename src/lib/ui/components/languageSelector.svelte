@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { userlocale, availableLanguages } from '$lib/ui/runes';
-	import { CheckIcon, ArrowBack } from '$lib/svg';
+	import { CheckIcon} from '$lib/svg';
 	import { slide } from 'svelte/transition';
-	import Check from '$lib/svg/check.svelte';
 	const langs = [...availableLanguages.keys()];
 	function setLanguage(lang: string) {
 		userlocale.setLocale(lang);
@@ -17,7 +16,7 @@
 			</div>
 
 			<div class="item-r" class:active={lang === userlocale.locale}>
-				<CheckIcon class="icon15A" />
+				<CheckIcon class="icon17A" />
 			</div>
 		</button>
 	{/each}
@@ -37,7 +36,7 @@
 	}
 
 	.active {
-		fill: var(--color-green);
+		fill: var(--green4);
 	}
 
 	.container {

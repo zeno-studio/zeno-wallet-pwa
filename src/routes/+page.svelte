@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Toaster, Tabs } from '$lib/ui/components';
 	import { toastState } from '$lib/ui/runes';
-	import { ReceiveIcon, SendFilled, SwapIcon, BuyIcon } from '$lib/svg';
+	import { ReceiveIcon, SendFilled, SwapIcon, BuyIcon,PlugFilled} from '$lib/svg';
 </script>
 
 <Toaster />
@@ -16,22 +16,26 @@
 			<button onclick={() => toastState.add('title', 'message')}>sdf</button>
 		</div>
 
-		<div class="item-container">
+		<div class="item-container2">
 			<div class="menu1">
 				<a class="text1" href="/#/receive">
-					<ReceiveIcon class="icon24" />
+					<ReceiveIcon class="icon3rem" />
 					Receive
 				</a>
 				<a class="text1" href="/#/send">
-					<SendFilled class="icon24" />
+					<SendFilled class="icon3rem" />
 					Send
 				</a>
 				<a class="text1" href="/#/swap">
-					<SwapIcon class="icon24" />
+					<SwapIcon class="icon3rem" />
 					Swap
 				</a>
 				<a class="text1" href="/#/swap">
-					<BuyIcon class="icon24" />
+					<PlugFilled class="icon3rem" />
+					Bridge
+				</a>
+				<a class="text1" href="/#/swap">
+					<BuyIcon class="icon3rem" />
 					Buy
 				</a>
 			</div>
@@ -51,16 +55,16 @@
 <style lang="postcss">
 	.menu1 {
 		width: 100%;
-		display: grid;
-		justify-items: center;
-		grid-template-columns: 1fr 1fr 1fr 1fr;
+		display: flex;
+		justify-content: space-around;
+
 	}
 	.text1 {
-		min-width: 60px;
-		height: 48px;
+		width: 54px;
+		height: 54px;
 		border-radius: 12px;
 		border: 0px;
-		padding: 4px 0px;
+		padding: 4px;
 		color: var(--color);
 		display: flex;
 		justify-content: center;
