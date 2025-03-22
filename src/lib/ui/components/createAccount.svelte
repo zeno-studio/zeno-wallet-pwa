@@ -49,9 +49,16 @@
 	}
 </script>
 
-<button class="bottom-button" popovertarget="create" popovertargetaction="show">
+
+
+<button class="bottom-button2" popovertarget="create" popovertargetaction="show">
 	Create account
 </button>
+<button class="bottom-button" popovertarget="import" popovertargetaction="show">
+	Import account
+</button>
+
+
 
 <div id="create" popover="manual" class:active={isSmallScreen.current}>
 	<button class="close" popovertarget="create" popovertargetaction="hide">
@@ -149,13 +156,27 @@
 		height: 48px;
 		border: none;
 		border-radius: 16px;
-		background: var(--color-blue);
+		background: var(--color-purple);
+		box-sizing: border-box;
+		width: 100%;
+		padding: 1rem;
+		cursor: pointer;
+	}
+	.bottom-button2 {
+		color: #fff;
+		font-size: 1.7rem;
+		font-weight: 600;
+		height: 48px;
+		border: none;
+		border-radius: 16px;
+		background: var(--color-pink);
 		box-sizing: border-box;
 		width: 100%;
 		padding: 1rem;
 		cursor: pointer;
 	}
 
+	
 	:popover-open {
 		gap: 1rem;
 		box-sizing: border-box;
@@ -164,17 +185,16 @@
 		align-items: center;
 		position: fixed;
 		color: var(--color-text);
-		height: 80%;
+		height: 75%;
 		width: 384px;
 		padding: 16px;
 		background: var(--color-bg1);
 		border-radius: 16px;
 		border: 1px solid var(--color-border);
-	}
+}
 	.active {
 		position: fixed;
-		top: calc(100vh - 500px);
-		flex-direction: column;
+		top: calc(100vh - 500px);		flex-direction: column;
 		justify-content: flex-start;
 		height: 100vh;
 		width: 100vw;

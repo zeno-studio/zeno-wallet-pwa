@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { CreateAccount, AddAccount, AccountList } from '$lib/ui/components';
 	import { accountState } from '$lib/wallet/runes';
+	import { isSmallScreen } from '$lib/ui/ts';
 </script>
 
 <div class="appContainer">
@@ -12,58 +13,88 @@
 				<h5>Please Create or Import a Account</h5>
 			</div>
 		{:else}
-
-		<AccountList />
-
+			<AccountList />
 		{/if}
 
-	
-		{#if accountState.currentAccountIndex === 0}
-			<div class="bottom2">
-				<CreateAccount />
-				<button class="bottom-button2"> Import account </button>
-			</div>
-		{:else if accountState.currentAccountIndex > 0 && accountState.nextAccountIndex < 21}
-			<div class="bottom"><AddAccount /></div>
+		{#if isSmallScreen.current}
+			{#if accountState.currentAccountIndex === 0}
+				<div class="bottomB-s">
+					<CreateAccount />
+				</div>
+			{:else if accountState.currentAccountIndex > 0 && accountState.nextAccountIndex < 21}
+				<div class="bottomA-s"><AddAccount /></div>
+			{/if}
+		{/if}
+
+		{#if !isSmallScreen.current}
+			{#if accountState.currentAccountIndex === 0}
+				<div class="bottomB">
+					<CreateAccount />
+				</div>
+			{:else if accountState.currentAccountIndex > 0 && accountState.nextAccountIndex < 21}
+				<div class="bottomA"><AddAccount /></div>
+			{/if}
 		{/if}
 	</div>
 </div>
 
 <style lang="postcss">
-	.bottom-button2 {
-		color: #fff;
-		font-size: 1.7rem;
-		font-weight: 600;
-		height: 48px;
-		border: none;
-		border-radius: 16px;
-		background: var(--color-purple);
-		box-sizing: border-box;
-		width: 100%;
-		justify-content: center;
-		padding: 1rem;
-		cursor: pointer;
-	}
 
-	.bottom {
+	.bottomA {
 		gap: 1rem;
 		position: fixed;
-		bottom: 64px;
+		bottom: 0px;
 		width: 100%;
 		height: 80px;
 		flex-direction: column;
 		max-width: 480px;
 		background-color: var(--color-bg);
+		padding-bottom: 16px;
 	}
 
-	.bottom2 {
+	.bottomA-s {
+		box-sizing: border-box;
+		gap: 1rem;
+		padding: 8px;
+		position: fixed;
+		bottom:64px;
+		width: 100%;
+		height: 60px;
+		flex-direction: column;
+		justify-content: flex-end;
+		align-items: center;
+		max-width: 480px;
+		width: 96%;
+		background-color: var(--color-bg);
+	}
+
+	.bottomB {
 		gap: 1rem;
 		position: fixed;
-		bottom: 64px;
+		bottom: 0px;
 		width: 100%;
-		height: 120px;
+		height: 130px;
 		flex-direction: column;
 		max-width: 480px;
 		background-color: var(--color-bg);
+		padding-bottom: 16px;
 	}
+
+	.bottomB-s {
+		box-sizing: border-box;
+		gap: 1rem;
+		padding: 8px;
+		position: fixed;
+		bottom:64px;
+		width: 100%;
+		height:120px;
+		flex-direction: column;
+		justify-content: flex-end;
+		align-items: center;
+		max-width: 480px;
+		width: 96%;
+		background-color: var(--color-bg);
+	}
+
+
 </style>

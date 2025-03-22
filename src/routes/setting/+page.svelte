@@ -2,14 +2,19 @@
 	import { isSmallScreen } from '$lib/ui/ts';
 	import { SwitchTheme, LanguageSelector, FiatSelector } from '$lib/ui/components';
 	import {
-		CameraIcon,
-		WalletIcon,
 		ArrowForward,
 		DollarIcon,
 		LanguageIcon,
-		CloseIcon
+		CloseIcon,
+		Darkmode,
+		SafeGuardIcon,
+		CloudIcon,
+		BookIcon,
+		ExplorerIcon,
+		AppsIcon,
+		QuestionIcon,
+		AccountIcon,
 	} from '$lib/svg';
-	import { fade, fly } from 'svelte/transition';
 </script>
 
 <div class="appContainer">
@@ -29,7 +34,7 @@
 		<div class="setting-top">
 			<div class="item">
 				<div class="item-l">
-					<span class="title"> <CameraIcon class="icon2A" /></span>
+					<span class="icon"> <Darkmode class="icon17A" /></span>
 					<span class="title">Theme</span>
 				</div>
 				<div class="item-r"><SwitchTheme /></div>
@@ -39,7 +44,7 @@
 		<button class="setting-medium" popovertarget="language">
 			<div class="item">
 				<div class="item-l">
-					<span class="title"> <LanguageIcon class="icon2A" /></span>
+					<span class="icon"> <LanguageIcon class="icon17A" /></span>
 
 					<span class="title">Language</span>
 				</div>
@@ -50,7 +55,7 @@
 		<button class="setting-bottom" popovertarget="fiat">
 			<div class="item">
 				<div class="item-l">
-					<span class="title"> <DollarIcon class="icon2A" /></span>
+					<span class="icon"> <DollarIcon class="icon17A" /></span>
 
 					<span class="title">Currency</span>
 				</div>
@@ -62,7 +67,7 @@
 		<a class="setting-top" href="/#/setting/account_manage">
 			<div class="item">
 				<div class="item-l">
-					<span class="title"> <WalletIcon class="icon2A" /></span>
+					<span class="icon"> <AccountIcon class="icon17A" /></span>
 
 					<span class="title">Manage Account</span>
 				</div>
@@ -74,7 +79,7 @@
 		<a class="setting-medium" href="/#/setting/security">
 			<div class="item">
 				<div class="item-l">
-					<span class="title"> <WalletIcon class="icon2A" /></span>
+					<span class="icon"> <SafeGuardIcon class="icon17A" /></span>
 
 					<span class="title">Security & Privacy</span>
 				</div>
@@ -82,11 +87,11 @@
 				<div class="item-r"><ArrowForward class="icon17A" /></div>
 			</div>
 		</a>
-		<!-- Security & Privacy -->
+		<!-- Backup Wallet -->
 		<a class="setting-bottom" href="/#/setting/backup">
 			<div class="item">
 				<div class="item-l">
-					<span class="title"> <WalletIcon class="icon2A" /></span>
+					<span class="icon"> <CloudIcon class="icon17A" /></span>
 
 					<span class="title">Backup Wallet</span>
 				</div>
@@ -98,7 +103,7 @@
 		<a class="setting-top" href="/#/setting/security">
 			<div class="item">
 				<div class="item-l">
-					<span class="title"> <WalletIcon class="icon2A" /></span>
+					<span class="icon"> <ExplorerIcon class="icon17A" /></span>
 
 					<span class="title">Active Network</span>
 				</div>
@@ -110,7 +115,7 @@
 		<a class="setting-medium" href="/#/setting/security">
 			<div class="item">
 				<div class="item-l">
-					<span class="title"> <WalletIcon class="icon2A" /></span>
+					<span class="icon"> <BookIcon class="icon17A" /></span>
 
 					<span class="title">Address Book</span>
 				</div>
@@ -122,9 +127,9 @@
 		<a class="setting-bottom" href="/#/setting/security">
 			<div class="item">
 				<div class="item-l">
-					<span class="title"> <WalletIcon class="icon2A" /></span>
+					<span class="icon"> <AppsIcon class="icon17A" /></span>
 
-					<span class="title">Active App</span>
+					<span class="title">Active Apps</span>
 				</div>
 
 				<div class="item-r"><ArrowForward class="icon17A" /></div>
@@ -134,7 +139,7 @@
 		<a class="setting1" href="/#/setting/about">
 			<div class="item">
 				<div class="item-l">
-					<span class="title"> <WalletIcon class="icon2A" /></span>
+					<span class="icon"> <QuestionIcon class="icon17A" /></span>
 
 					<span class="title">About</span>
 				</div>
@@ -145,7 +150,7 @@
 		<a class="setting" href="/#/setting/dev">
 			<div class="item">
 				<div class="item-l">
-					<span class="title"> <WalletIcon class="icon2A" /></span>
+					<span class="icon"> <QuestionIcon class="icon17A" /></span>
 
 					<span class="title">DEV</span>
 				</div>
@@ -176,6 +181,7 @@
 		display: flex;
 		justify-content: center;
 		margin-left: 1rem;
+		margin-right: 2rem;
 		border-radius: 20px;
 		background-color: var(--color-pink);
 		color: #fff;
@@ -228,5 +234,18 @@
 		border-radius: 16px;
 		border: 1px solid var(--color-border);
 		z-index: 1001;
+	}
+	.icon{
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-left: 1rem;
+		margin-right: 2rem;
+
+	}
+	.title{
+		display: flex;
+		color: var(--color);
+
 	}
 </style>

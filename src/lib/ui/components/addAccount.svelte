@@ -33,16 +33,21 @@
 			password = null;
 			passwordShow = false;
 			isValidPs = null;
-		} else {
+		} else  {
 			isValidPs = false;
 			setTimeout(() => {
 				isValidPs = null;
 			}, 3000);
 		}
 	}
+	
 </script>
 
+
 <button class="bottom-button" onclick={handleAddEvmAccount}> Add new account </button>
+
+
+
 
 <div id="add" popover="manual" class:active={isSmallScreen.current}>
 	<button class="close" popovertarget="add" popovertargetaction="hide">
@@ -52,7 +57,7 @@
 	<div class="container">
 		{#if passwordShow}
 			<input
-				id="password"
+	
 				class="input"
 				type="text"
 				placeholder="Please input your password"
@@ -60,7 +65,7 @@
 			/>
 		{:else}
 			<input
-				id="password"
+	
 				class="input"
 				type="password"
 				placeholder="Please input your password"
@@ -94,6 +99,10 @@
 </div>
 
 <style lang="postcss">
+	.container {
+		width: 96%;
+		padding: 8px;
+	}
 	.bottom-button {
 		color: #fff;
 		font-size: 1.7rem;
@@ -107,7 +116,6 @@
 		padding: 1rem;
 		cursor: pointer;
 	}
-
 	:popover-open {
 		gap: 1rem;
 		box-sizing: border-box;
@@ -116,12 +124,14 @@
 		align-items: center;
 		position: fixed;
 		color: var(--color-text);
-		height: 80%;
+		height: 70%;
 		width: 384px;
 		padding: 16px;
 		background: var(--color-bg1);
 		border-radius: 16px;
 		border: 1px solid var(--color-border);
+		overflow: hidden;
+
 	}
 	.active {
 		position: fixed;

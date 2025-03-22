@@ -52,7 +52,7 @@
 	--color-border:#3c3c3c;
 	--color-bg:#141414;
 	--color-bg1:#272727;
-	--color-bg2:#252525;
+	--color-bg2:#313131;
 	--color-bg3: #5e5e5e;
 	--color-text: #9b9b9b;
 	--color:#fff;
@@ -86,6 +86,7 @@
 	margin: 0;
     padding: 0;
     border: 0;
+
   }
 
   a,button,div,input,select,textarea,span {
@@ -218,6 +219,11 @@
 		color: var(--color-text);
 		margin: -24;
 	}
+	.icon17C {
+		height: 1.7rem;
+		width: 1.7rem;
+		color: var(--color-pink);
+	}
 	.icon25rem {
 		height: 2.5rem;
 		width: 2.5rem;
@@ -230,8 +236,18 @@
 		color: var(--color);
 		}
 	}
+	.icon3rem {
+		height: 3rem;
+		width: 3rem;
+		color: var(--color);
+		cursor: pointer;
+	}
+	.icon24{
+		height: 24px;
+		width: 24px;
+		cursor: pointer;
+	}
 
-	
 
 .appContainer {
 	color: var(--color);
@@ -484,11 +500,6 @@
 	margin-right: 1rem;
 }
 
-.title {
-	display: flex;
-	justify-content: flex-start;
-	margin-left: 1rem;
-}
 
 .search{
 	width: 100%;
