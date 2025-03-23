@@ -1,61 +1,96 @@
 <script lang="ts">
-import {jsonP1} from "$lib/wallet/provider/jsonProvider"
+	import { draggable, droppable, type DragDropState } from '@thisux/sveltednd';
+	import { flip } from 'svelte/animate';
 
-import { createClient } from "polkadot-api"
-import { getSmProvider } from "polkadot-api/sm-provider"
+	interface Card {
+		id: string;
+		color: string;
+		icon: string;
+	}
 
-import { AnkrProvider, type GetAccountBalanceReply } from '@ankr.com/ankr.js';
- 
-const provider = new AnkrProvider('https://rpc.ankr.com/multichain/a1cc506b1783ef5d0cbee73d4997f21996d1624933c09155f6e5990028f3ee7a');
+	let cards = $state<Card[]>([
+		{ id: '1', color: 'from-rose-400 to-red-500', icon: '🎨' },
+		{ id: '2', color: 'from-blue-400 to-blue-600', icon: '🌊' },
+		{ id: '3', color: 'from-green-400 to-green-600', icon: '🌿' },
+		{ id: '4', color: 'from-amber-300 to-yellow-500', icon: '⭐' },
+		{ id: '5', color: 'from-purple-400 to-purple-600', icon: '🔮' },
+		{ id: '6', color: 'from-pink-400 to-pink-600', icon: '🌸' }
+	]);
 
-/* import { wnd } from "@polkadot-api/descriptors" */
-/* 
-const smoldotWndChain = import("polkadot-api/chains/westend2").then(
-  ({ chainSpec }) => smoldot.addChain({ chainSpec }),
-)
+	function handleDrop(state: DragDropState<Card>) {
+		const { draggedItem, sourceContainer, targetContainer } = state;
+		if (!targetContainer || sourceContainer === targetContainer) return; // Prevent self-placement
 
-const jsonRpcProvider = getSmProvider(smoldotWndChain)
-const connection = createClient(jsonRpcProvider)
-const wndApi = connection.getTypedApi(wnd)
-
-
-
-const addr = '0xeDf074bd2c3FC10A296E7C9c52BfD80ab5d2A9E9';
-
-let myAccount = "1489ApV6z3YdCYYP3U6dnH5G1j46nY8QC8gVPLZ5w7YSULZZ"
- */
-
-
-
-  let data = $state <GetAccountBalanceReply>();
-
-
-        const balances = async () => {
-  return await provider.getAccountBalance({
-    blockchain: 'eth',
-    walletAddress: '0x8fF448Ed0C027DbE9F5AdD62e6fAEE439EAc0259',
-  }).then((res) => data = res);
-};
-
-balances();
-
-
+		cards = cards.filter((card: Card) => card.id !== draggedItem.id); // Remove the dragged item
+		cards.splice(parseInt(targetContainer), 0, draggedItem); // Insert the dragged item at the new position
+	}
 </script>
-
 
 <div class="appContainer">
 	<div class="appBody">
-        <div id="itemContainer">
-            
-        </div>
-       <img src={data?.assets[0].thumbnail} alt="">
-		
+		<div class="grid-container">
+			{#each cards as card, index (card.id)}
+				<div
+					use:droppable={{ container: index.toString(), callbacks: { onDrop: handleDrop } }}
+					class="item-container"
+					animate:flip={{ duration: 300 }}
+          >
+					<button class="item-button"
+						use:draggable={{
+							container: index.toString(),
+							dragData: card
+						}}
+					>
+						<div class="item-icon">
+							<span>{card.icon}</span>
+						</div>
+					</button>
+				</div>{/each}
+		</div>
 	</div>
 </div>
 
 <style lang="postcss">
-.appBody {
-        max-width: 464px;
-    }
+	.appBody {
+		max-width: 464px;
+	}
+	.grid-container {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(76px, 1fr));
+		grid-auto-rows: minmax(76px, auto); 
+		height: 100%;
+		width: 100%;
+    gap:1rem;
+	}
+	.item-container {
+		aspect-ratio: 1 / 1;
+		position: relative;
+		padding: 0.25rem;
+		border-radius: 0.75rem;
+    background: none;
+    border-radius: 2rem;
+	}
 
+	.item-button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background: var(--color-bg1);
+    border: none;
+    border-radius: 2rem;
+    &:hover {
+			background: var(--color-bg2);
+  }
+
+
+	}
+  .item-icon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+  }
 </style>

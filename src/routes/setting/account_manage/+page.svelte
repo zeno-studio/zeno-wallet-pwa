@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { CreateAccount, AddAccount, AccountList } from '$lib/ui/components';
+	import { CreateAccount, AddAccount, ImportAccount,AccountList } from '$lib/ui/components';
 	import { accountState } from '$lib/wallet/runes';
 	import { isSmallScreen } from '$lib/ui/ts';
 </script>
@@ -30,6 +30,7 @@
 			{#if accountState.currentAccountIndex === 0}
 				<div class="bottomB">
 					<CreateAccount />
+					<ImportAccount />
 				</div>
 			{:else if accountState.currentAccountIndex > 0 && accountState.nextAccountIndex < 21}
 				<div class="bottomA"><AddAccount /></div>

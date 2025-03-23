@@ -16,7 +16,7 @@
 			<button onclick={() => toastState.add('title', 'message')}>sdf</button>
 		</div>
 
-		<div class="item-container2">
+		<div class="item-container">
 			<div class="menu1">
 				<a class="text1" href="/#/receive">
 					<ReceiveIcon class="icon3rem" />
@@ -31,15 +31,32 @@
 					Swap
 				</a>
 				<a class="text1" href="/#/swap">
-					<PlugFilled class="icon3rem" />
-					Bridge
-				</a>
-				<a class="text1" href="/#/swap">
 					<BuyIcon class="icon3rem" />
 					Buy
 				</a>
 			</div>
 		</div>
+
+		<!-- <div class="item-container2">
+			<div class="menu1">
+				<a class="text1" href="/#/swap">
+					<PlugFilled class="icon3rem" />
+					Bridge
+				</a>
+				<a class="text1" href="/#/send">
+					<SendFilled class="icon3rem" />
+					Stake
+				</a>
+				<a class="text1" href="/#/swap">
+					<SwapIcon class="icon3rem" />
+					MiniBall
+				</a>
+				<a class="text1" href="/#/swap">
+					<PlugFilled class="icon3rem" />
+					...
+				</a>
+			</div>
+		</div> -->
 
 		<div class="item-container2">
 			<div class="menu2">
@@ -56,12 +73,13 @@
 	.menu1 {
 		width: 100%;
 		display: flex;
-		justify-content: space-around;
+		justify-content: space-between;
 
 	}
+
 	.text1 {
-		width: 54px;
-		height: 54px;
+		width: 70px;
+		height: 70px;
 		border-radius: 12px;
 		border: 0px;
 		padding: 4px;
