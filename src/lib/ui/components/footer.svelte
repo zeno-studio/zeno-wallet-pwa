@@ -50,7 +50,7 @@
 		right: 0px;
 		left: 0px;
 		width: 100vw;
-		padding: 12px;
+		padding: 8px 12px 16px 12px;
 		z-index: 100;
 		height: 64px;
 		background: transparent;

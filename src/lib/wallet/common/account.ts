@@ -71,6 +71,11 @@ export const isValidPassword = async (password: string, keypath: string): Promis
 	return true;
 };
 
+export const isValidMn = (mn: string): boolean => {
+	if (!bip39.validateMnemonic(mn, wordlist)) return false;
+	return true;
+};
+
 export const createEvmAccount = (
 	index: number,
 	addressIndex: number,
@@ -84,6 +89,7 @@ export const createEvmAccount = (
 
 export const deriveEvmAccount = async (index: number, addressIndex: number, password: string) => {
 	const mn = await restoreMn(password, `m/44'/60'/0'/0/${addressIndex}`);
+	if (!mn) return;
 	deriveEvm(index, addressIndex, mn);
 };
 
@@ -165,6 +171,7 @@ export const derivePolkadotAccount = async (
 	keypath: string
 ) => {
 	const mn = await restoreMn(password, keypath);
+	if (!mn) return;
 	derivePolkadot(index, addressIndex, type, mn);
 };
 
@@ -231,6 +238,7 @@ export const changePassword = async (oldPassword: string, newPassword: string): 
 			const vault = (await getElement(dbStore.Vault.name, id)) as LegacyVault | null;
 			if (vault) {
 				const mnemonic = await restoreMn(oldPassword, vault.vaultName);
+				if (!mnemonic) continue;
 				removeElement(dbStore.Vault.name, vault.vaultName);
 				packMn(newPassword, mnemonic, vault.vaultName);
 			}
