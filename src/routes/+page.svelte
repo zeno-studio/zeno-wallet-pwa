@@ -37,27 +37,6 @@
 			</div>
 		</div>
 
-		<!-- <div class="item-container2">
-			<div class="menu1">
-				<a class="text1" href="/#/swap">
-					<PlugFilled class="icon3rem" />
-					Bridge
-				</a>
-				<a class="text1" href="/#/send">
-					<SendFilled class="icon3rem" />
-					Stake
-				</a>
-				<a class="text1" href="/#/swap">
-					<SwapIcon class="icon3rem" />
-					MiniBall
-				</a>
-				<a class="text1" href="/#/swap">
-					<PlugFilled class="icon3rem" />
-					...
-				</a>
-			</div>
-		</div> -->
-
 		<div class="item-container2">
 			<div class="menu2">
 				<button class="button2">Create Account</button>

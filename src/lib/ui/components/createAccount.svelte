@@ -18,20 +18,19 @@
 	});
 	let isLoading = $state(false);
 
-	function handleCreateEvmAccount(ps: string) {
+	async function handleCreateEvmAccount(ps: string) {
 		isLoading = true;
 		const data = localStorage.getItem('settings');
 		if (data) {
 			const settings = JSON.parse(data);
 			createEvmAccount(1, 0, ps);
-			accountState.nextAccountIndex++;
 			accountState.currentAccountIndex = 1;
-			accountState.accountList.push(1);
+			accountState.nextAccountIndex++;
 			accountState.nextEvmAddressIndex++;
+			await accountState.getAccountList();
 			settings.nextEvmAddressIndex++;
 			settings.nextAccountIndex++;
 			settings.currentAccountIndex = 1;
-			settings.accountList.push(1);
 			settings.vaultList.push('default');
 			localStorage.setItem('settings', JSON.stringify(settings));
 

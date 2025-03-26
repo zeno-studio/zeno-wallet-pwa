@@ -1,9 +1,6 @@
 import {
 	type Settings,
 	defaultSettings,
-	dbStore,
-	getElement,
-	type Chain
 } from '$lib/wallet/common';
 import { accountState, chainState,setAutoLock,setTime, } from '$lib/wallet/runes';
 import { userlocale, getLanguage, availableLanguages } from '$lib/ui/runes';
@@ -24,18 +21,15 @@ export const createSettings = async () => {
 		setTime(data.timeLock);
 		setAutoLock(data.autoLock);
 		accountState.currentAccountIndex = data.currentAccountIndex;
-		accountState.accountList = data.accountList;
 		accountState.nextAccountIndex = data.nextAccountIndex;
 		accountState.nextPolkadotIndex = data.nextPolkadotIndex;
 		accountState.nextWatchAccountIndex = data.nextWatchAccountIndex;
 		accountState.nextEvmAddressIndex = data.nextEvmAddressIndex;
 		accountState.nextPolkadotAddressIndex = data.nextPolkadotAddressIndex;
+		await accountState.getAccountList();
 
 		// intialize additionalChains
-		const Chains = ((await getElement(dbStore.AdditionalChain.name, 'all')) as Chain[]) || [];
-		if (Chains.length > 0) {
-			chainState.additionalChains = new Map(Chains.map((chain) => [chain.chainId, chain]));
-		}
+		
 
 		// intialize fiat
 		chainState.currentFiat = data.fiat;

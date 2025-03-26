@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { isSmallScreen } from '$lib/ui/ts';
 	import { createEvmAccount, isValidMn } from '$lib/wallet/common';
-	import { Loading, CloseIcon, AlertTriangle, PasteAlt } from '$lib/svg';
+	import { Loading, CloseIcon, AlertTriangle, PasteIcon } from '$lib/svg';
 	import { passwordStrength } from 'check-password-strength';
 	import { accountState, saveMidPass } from '$lib/wallet/runes';
 
@@ -102,7 +102,7 @@
 
 		<div class="paste-container">
 			<button class="paste" onclick={pasteMn}>
-				<PasteAlt class="icon17A" />
+				<PasteIcon class="icon17A" />
 			</button>
 		</div>
 

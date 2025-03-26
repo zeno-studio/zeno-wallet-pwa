@@ -7,6 +7,7 @@ import * as bip39 from '@scure/bip39';
 import { wordlist } from '@scure/bip39/wordlists/english';
 import { HDKey } from '@scure/bip32';
 import { Transaction, addr } from 'micro-eth-signer';
+import { flip } from 'svelte/animate';
 
 
 let isLocked = true;
@@ -167,16 +168,16 @@ function signEvmTransaction(tx: any, account: Account, mn: string) {
 
 async function addEvmAccount(index: number, addressIndex: number) {
 	const mn = await reBuildMn();
-	deriveEvm(index, addressIndex, mn);
-	postMessage({ success: true });
+	if (deriveEvm(index, addressIndex, mn))	postMessage({ success: true });
+	postMessage({ success: false });
 }
 
 async function addEvmAccountWithPassword(index: number, addressIndex: number, password: string) {
 	const vault = (await getElement(dbStore.Vault.name, 'default')) as LegacyVault;
 	saveMidPass(password, vault.salt);
 	const mn = await reBuildMn();
-	deriveEvm(index, addressIndex, mn);
-	postMessage({ success: true });
+	if (deriveEvm(index, addressIndex, mn))	postMessage({ success: true});
+	postMessage({ success: false });
 }
 
 async function checkPassword(password: string) {
