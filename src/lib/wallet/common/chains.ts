@@ -180,6 +180,14 @@ export const ethereum: Chain = {
     testnet: false
   }
 
-
+  export const DefaultChains = new Map<number, Chain>([
+    [base.chainId, base],
+    [bsc.chainId, bsc],
+    [ethereum.chainId, ethereum],
+    [optimism.chainId, optimism],
+    [polygon.chainId, polygon],
+    [sonic.chainId, sonic],
+    [westend.chainId, westend]
+  ]);
 
   //https://github.com/wevm/viem/tree/main/src/chains/definitions

@@ -1,4 +1,4 @@
-import { base, bsc, ethereum, optimism, polygon, sonic } from '$lib/wallet/common';
+import {westend, base, bsc, ethereum, optimism, polygon, sonic } from '$lib/wallet/common';
 
 export type Settings = {
 	darkMode: boolean;
@@ -13,8 +13,6 @@ export type Settings = {
 	timeLock: number;
 	defaultChains: number[];
 	additionalChains: number[];
-	accountList: number[];
-	hiddenAccounts: number[];
 	vaultList: string[];
 	fiat: string;
 };
@@ -24,8 +22,8 @@ export const defaultSettings: Settings = {
 	locale: 'en',
 	currentAccountIndex: 0,
 	nextAccountIndex: 1,
-	nextPolkadotIndex: 21,
-	nextWatchAccountIndex: 31,
+	nextPolkadotIndex: 13,
+	nextWatchAccountIndex: 16,
 	nextEvmAddressIndex: 0,
 	nextPolkadotAddressIndex: 0,
 	autoLock: true,
@@ -39,11 +37,12 @@ export const defaultSettings: Settings = {
 		sonic.chainId
 	],
 	additionalChains: [],
-	accountList: [],
-	hiddenAccounts: [],
 	vaultList: [],
 	fiat: 'USD'
 };
+
+
+
 export type backupData = {
 	vaults: LegacyVault[];
 	accounts: Account[];
@@ -60,32 +59,38 @@ export type keyringType = 'secp256k1' | 'ed25519' | 'sr25519';
 export type accountType = 'legacy' | 'passkey' | 'hardware'| 'watch';
 
 export interface Account {
-	accountIndex: number;
 	accountName: string;
-	accountType: accountType;
-	address: string;
+	readonly accountIndex: number;
+	readonly accountType: accountType;
+	readonly address: string;
+	readonly addressType?: addressType;
+	readonly derivePath?: string;
+	readonly keyringType?: keyringType;
+	readonly publicKey?: string;
 	isHidden: boolean;
-	addressType?: addressType;
-	derivePath?: string;
-	keyringType?: keyringType;
-	publicKey?: string;
-	ens?: string;
-	avatar?: string;
-	nft?: string;
+	memo?: string;
+	ens?:string;
+	nft?:string;
+	tokenid?:number;
+	identicon?:string;
 }
 
 
 export interface AddressBook {
 	name: string;
-	address: string;
+	readonly address: string;
 	memo?: string;
+	ens?:string;
+	nft?:string;
+	tokenid?:number;
+	identicon?:string;
 }
 
 export interface LegacyVault {
-	vaultName: string;
-	salt: string;
-	ciphertext: string;
-	cryptoVersion: number;
+	readonly vaultName: string;
+	readonly salt: string;
+	readonly ciphertext: string;
+	readonly cryptoVersion: number;
 }
 
 // cryptoVersion: 1;
@@ -184,3 +189,4 @@ export type WalletBackupData = {
 	History: History[];
 	settings: Settings;
 };
+

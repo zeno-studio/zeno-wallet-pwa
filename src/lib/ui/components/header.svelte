@@ -2,16 +2,13 @@
 	import { LogoIcon, ArrowDown } from '$lib/svg';
 	import { NavPanel, NavLeft,AccountList } from '$lib/ui/components';
 	import { clickOutside, isSmallScreen } from '$lib/ui/ts';
-	import { dbStore, getElement ,type Account} from '$lib/wallet/common';
 	import { accountState } from '$lib/wallet/runes';
-	import { tick } from 'svelte';
 	
 	let accountPanel = $state(false);
 	let Panel = $state(false);
 	let networkPanel = $state(false);
-	async function getAccount() {
-		return await getElement(dbStore.Account.name, accountState.currentAccountIndex) as Account;
-	}
+	
+
 
 </script>
 
@@ -28,9 +25,9 @@
 					{#if accountState.currentAccountIndex === 0}
 						have no account
 					{:else}
-					    {#await getAccount() then account}
-							{account.accountName}
-						{/await}
+
+							{accountState.accountList.get(accountState.currentAccountIndex)?.accountName}
+
 					{/if}
 					
 					<ArrowDown class="icon2rem" />
@@ -48,9 +45,9 @@
 					{#if accountState.currentAccountIndex === 0}
 						have no account
 					{:else}
-						{#await getAccount() then account}
-							{account.accountName}
-						{/await}
+
+					{accountState.accountList.get(accountState.currentAccountIndex)?.accountName}
+
 					{/if}
 				</button>
 			{/if}

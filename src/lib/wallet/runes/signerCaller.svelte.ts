@@ -1,6 +1,6 @@
 import Signer from '$lib/wallet/worker/signer.ts?worker';
 import { accountState } from '$lib/wallet/runes';
-import { getElement, dbStore, type LegacyVault } from '$lib/wallet/common';
+import { getElement, dbStore, type LegacyVault,type Account} from '$lib/wallet/common';
 
 export const signer = new Signer();
 
@@ -73,12 +73,12 @@ export async function addEvmAccount() {
 		const data = localStorage.getItem('settings');
 		if (data) {
 			const settings = JSON.parse(data);
-			accountState.nextAccountIndex ++;
+			const newAccount = await getElement(dbStore.Account.name,settings.nextAccountIndex) as Account | null
+			if (newAccount !== null) accountState.updateAccountList(newAccount)
 			accountState.currentAccountIndex = settings.nextAccountIndex;
-			accountState.accountList.push(settings.nextAccountIndex);
+			accountState.nextAccountIndex ++;
 			accountState.nextEvmAddressIndex ++;
 			settings.currentAccountIndex = settings.nextAccountIndex;
-			settings.accountList.push(settings.nextAccountIndex);
 			settings.nextEvmAddressIndex++;
 			settings.nextAccountIndex++;
 			localStorage.setItem('settings', JSON.stringify(settings));
@@ -105,12 +105,12 @@ export async function AddEvmAccountWithPassword(password: string) {
 		const data = localStorage.getItem('settings');
 		if (data) {
 			const settings = JSON.parse(data);
-			accountState.nextAccountIndex ++;
+			const newAccount = await getElement(dbStore.Account.name,settings.nextAccountIndex) as Account | null
+			if (newAccount !== null) accountState.updateAccountList(newAccount)
 			accountState.currentAccountIndex = settings.nextAccountIndex;
-			accountState.accountList.push(settings.nextAccountIndex);
+			accountState.nextAccountIndex ++;
 			accountState.nextEvmAddressIndex ++;
 			settings.currentAccountIndex = settings.nextAccountIndex;
-			settings.accountList.push(settings.nextAccountIndex);
 			settings.nextEvmAddressIndex++;
 			settings.nextAccountIndex++;
 			localStorage.setItem('settings', JSON.stringify(settings));

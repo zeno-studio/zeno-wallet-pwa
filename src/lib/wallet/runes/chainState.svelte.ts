@@ -1,22 +1,13 @@
-import { dbStore, type Chain, type Settings} from '$lib/wallet/common';
-import {  addElement, editElement } from '$lib/wallet/common';
-import { westend, base, bsc, ethereum, optimism, polygon, sonic } from '$lib/wallet/common';
+import { dbStore, type Chain,type Settings} from '$lib/wallet/common';
+import { getElement,addElement, editElement } from '$lib/wallet/common';
 
-export const DefaultChains = new Map<number, Chain>([
-	[base.chainId, base],
-	[bsc.chainId, bsc],
-	[ethereum.chainId, ethereum],
-	[optimism.chainId, optimism],
-	[polygon.chainId, polygon],
-	[sonic.chainId, sonic]
-]);
 
 
 export const AdditionalChains = new Map<number, Chain>([]);
 
 class ChainState {
 	currentFiat = $state<string>("USD");
-	currentChain = $state(westend);
+	currentChain = $state<Chain|null>(null);
 	additionalChains = $state(AdditionalChains);
 
 	setFiat(fiat: string) {
@@ -29,6 +20,13 @@ class ChainState {
 		}
 		
 	}
+	async getAdditionalChains(){
+		const Chains = ((await getElement(dbStore.AdditionalChain.name, 'all')) as Chain[]) || [];
+		if (Chains.length > 0) {
+			chainState.additionalChains = new Map(Chains.map((chain) => [chain.chainId, chain]));
+		}
+	}
+
 	async addChain(chain: Chain) {
 		addElement(dbStore.AdditionalChain.name, chain);
 		this.additionalChains.set(chain.chainId, chain);

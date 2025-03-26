@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { type AccountInfo } from '$lib/wallet/common';
-	import encodeQR from '@paulmillr/qr';
+	import encodeQR from 'qr';
 	import {isSmallScreen } from '$lib/ui/ts';
 	import { SettingFilled } from '$lib/svg';
 	import { page } from '$app/state';

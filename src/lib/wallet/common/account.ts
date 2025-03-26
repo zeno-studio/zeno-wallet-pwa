@@ -5,6 +5,7 @@ import {
 	removeElement,
 	type AddressBook
 } from '$lib/wallet/common';
+
 import {
 	dbStore,
 	type Account,

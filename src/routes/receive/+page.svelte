@@ -1,40 +1,21 @@
 <script lang="ts">
-	import { type AccountInfo } from '$lib/wallet/common';
-	import encodeQR from '@paulmillr/qr';
+
+	import encodeQR from 'qr';
 	import {isSmallScreen,copyText } from '$lib/ui/ts';
-	import { SettingFilled,CopiedIcon } from '$lib/svg';
+	import { CopyIcon,CopiedIcon,ContractIcon } from '$lib/svg';
 	import { page } from '$app/state';
 
 	let address = '0xeDf074bd2c3FC10A296E7C9c52BfD80ab5d2A9E9';
 	const addressSvg = encodeQR(address, 'svg');
+	let copied = $state(false)
 	function handleCopy() {
 		copyText('address');
-		document.querySelector('.copyIcon').style.color = 'var(--color-green)';
+		copied = true
 		setTimeout(() => {
-			document.querySelector('.copyIcon').style.color = 'var(--color-text)';
+			copied = false
 		}, 2000);
 	}
-function shareAddress() {
-	const shareData = {
-		title: 'My Address',
-		text: `Check out this address: ${address}`,
-		url: window.location.href
-	};
-	
-	try {
-		if (navigator.share) {
-			navigator.share(shareData).then(() => {
-				console.log('Address shared successfully');
-			}).catch((error) => {
-				console.error('Error sharing address:', error);
-			});
-		} else {
-			alert('Share feature is not supported in your browser.');
-		}
-	} catch (error) {
-		console.error('Error during sharing:', error);
-	}
-}
+
 
 
 
@@ -70,17 +51,22 @@ function shareAddress() {
 		</div>
 		<div class="item-container">
 			<div class="item">
-			<span class="addressLabel">Address: &nbsp</span>
 			 <span id="address">{address}</span>
-			
-					<button class="copy" onclick={handleCopy}>
-						<CopiedIcon class="copyIcon" />
-					</button>
+
+			 {#if copied}
+			 <button class="copy" >
+				<CopiedIcon class="icon17G" />
+			</button>
+			 {:else }
+			 <button class="copy" onclick={handleCopy}>
+				<CopyIcon class="icon17A" />
+			</button>
+			 {/if}
 			
 			</div>
 		</div>
 
-			<button class="button-full" onclick={shareAddress}>share</button>
+			
 
 	</div>
 </div>
@@ -116,16 +102,13 @@ function shareAddress() {
 		color: var(--color);
 	}
 	#address {
-		font-size: 1rem;
+		font-size: 1.2rem;
 		font-weight: 600;
 		color: var(--color-text);
 	}
-	.addressLabel {
-		font-size: 1.1rem;
-		font-weight: 700;
-		color: var(--color-text);
-	}
 	.copy {
+		display: flex;
+		justify-content: center;
 		background: none;
 		border: none;
 	}

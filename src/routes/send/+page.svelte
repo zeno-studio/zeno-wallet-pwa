@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { isSmallScreen } from '$lib/ui/ts';
-	import { PinIcon, ArrowDown, CloseIcon, SearchIcon, ClockIcon, StarIcon } from '$lib/svg';
+	import { ArrowDown, CloseIcon, SearchIcon, ClockIcon, StarIcon } from '$lib/svg';
 	import { page } from '$app/state';
 	let amount = $state(10000);
 	let amount2 = $state(100);

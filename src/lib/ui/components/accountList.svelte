@@ -1,33 +1,27 @@
 <script lang="ts">
 	import { accountState } from '$lib/wallet/runes';
 	import { EditFilled } from '$lib/svg';
-	import { getElement, dbStore, type Account } from '$lib/wallet/common';
 
 	function selectedAccount(i: number) {
 		accountState.setCurrentAccountIndex(i);
 	}
-
-	async function getAccountDetail(i: number) {
-		return (await getElement(dbStore.Account.name, i)) as Account|null;
-	}
-
 
 
 
 </script>
 
 <div class="container">
+	{#key accountState.accountList}
+		
 
-{#each accountState.accountList as i}
-{#await getAccountDetail(i) then account}
-	{#if account}
-		<button
-			class="accountList"
+
+{#each [...accountState.accountList.values()] as account }
+
+		<button	 class="accountList"
 			class:selected={account.accountIndex === accountState.currentAccountIndex}
 			onclick={() => selectedAccount(account.accountIndex)}
 		>
-			<div class="item">
-				<div class="item-l">
+			<div class="item">				<div class="item-l">
 					<div class="avatar">{account.accountIndex}</div>
 					<div class="content">
 						<span class="label">{account.accountName} </span>
@@ -36,10 +30,8 @@
 			</div>
 			<a class="edit" href="/#/setting/account_detail"><EditFilled class="icon25rem" /></a>
 		</button>
-	{/if}
-{/await}
 {/each}
-
+{/key}
 </div>
 
 

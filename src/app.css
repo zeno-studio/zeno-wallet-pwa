@@ -213,18 +213,28 @@
 		width: 1.7rem;
 		color: var(--color-text);
 		margin: 0px;
+		cursor: pointer;
 	}
 	.icon17B {
 		height: 1.7rem;
 		width: 1.7rem;
 		color: var(--color-text);
 		margin: -24;
+		cursor: pointer;
 	}
-	.icon17C {
+	.icon17G {
+		height: 1.7rem;
+		width: 1.7rem;
+		color: var(--green4);
+		cursor: pointer;
+	}
+	.icon17P {
 		height: 1.7rem;
 		width: 1.7rem;
 		color: var(--color-pink);
+		cursor: pointer;
 	}
+
 	.icon25rem {
 		height: 2.5rem;
 		width: 2.5rem;
@@ -360,12 +370,6 @@
 	cursor: pointer;
 }
 
-.copyIcon {
-	height: 2rem;
-	width: 2rem;
-	color: var(--color-text);
-	cursor: pointer;
-}
 
 .button-full {
 	width: 100%;
