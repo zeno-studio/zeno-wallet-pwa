@@ -6,12 +6,14 @@
 		accountState.setCurrentAccountIndex(i);
 	}
 
+
+
 </script>
 
 <div class="container">
 
 
-{#each [...accountState.accountList.values()] as account }
+{#each accountState.accountList as account }
 
 <button	 class="accountList"
 	class:selected={account.accountIndex === accountState.currentAccountIndex}
