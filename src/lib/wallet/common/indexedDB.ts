@@ -62,7 +62,10 @@ export const getElement = (store: string, key: string | number) => {
                 if (key === 'all') request = objectStore.getAll();
                 else request = objectStore.get(key);
                 request.onerror = () => resolve(null);
-                request.onsuccess = () => resolve(request.result);       
+                request.onsuccess = () => {
+                    const result = request.result;
+                    resolve(result !== undefined ? result : null); // 键不存在时返回 null
+                  };;       
         };
     });
 };

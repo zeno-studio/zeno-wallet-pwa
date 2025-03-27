@@ -73,8 +73,8 @@ export async function addEvmAccount() {
 		const data = localStorage.getItem('settings');
 		if (data) {
 			const settings = JSON.parse(data);
-			const newAccount = await getElement(dbStore.Account.name,settings.nextAccountIndex) as Account | null
-			if (newAccount !== null) accountState.updateAccountList(newAccount)
+			const newAccount = result.data as Account | null 
+			if (newAccount) accountState.accountList.set(newAccount.accountIndex,newAccount);
 			accountState.currentAccountIndex = settings.nextAccountIndex;
 			accountState.nextAccountIndex ++;
 			accountState.nextEvmAddressIndex ++;
@@ -100,13 +100,13 @@ function addEvmAccountWorker() {
 }
 
 export async function AddEvmAccountWithPassword(password: string) {
-	const result = (await addEvmAccountPasswordWorker(password)) as signerResponseType | null;
-	if (result?.success === true) {
-		const data = localStorage.getItem('settings');
-		if (data) {
+    const result = (await addEvmAccountPasswordWorker(password)) as signerResponseType | null;
+    if (result?.success === true) {
+        const data = localStorage.getItem('settings');
+        if (data) {
 			const settings = JSON.parse(data);
-			const newAccount = await getElement(dbStore.Account.name,settings.nextAccountIndex) as Account | null
-			if (newAccount !== null) accountState.updateAccountList(newAccount)
+			const newAccount = result.data as Account | null 
+			if (newAccount) accountState.accountList.set(newAccount.accountIndex,newAccount);
 			accountState.currentAccountIndex = settings.nextAccountIndex;
 			accountState.nextAccountIndex ++;
 			accountState.nextEvmAddressIndex ++;
@@ -118,6 +118,7 @@ export async function AddEvmAccountWithPassword(password: string) {
 	}
 }
 
+
 function addEvmAccountPasswordWorker(password: string) {
 	return new Promise((resolve) => {
 		signer.onmessage = (event) => {
@@ -128,7 +129,7 @@ function addEvmAccountPasswordWorker(password: string) {
 			method: 'addEvmAccountWithPassword',
 			argus: {
 				index: accountState.nextAccountIndex,
-				accountIndex: accountState.nextEvmAddressIndex,
+				addressIndex: accountState.nextEvmAddressIndex,
 				password: password
 			}
 		});

@@ -44,7 +44,7 @@
 </script>
 
 
-<button class="bottom-button" onclick={handleAddEvmAccount}> Add new account </button>
+<button class="bottom-button" onclick={async () =>await handleAddEvmAccount()}> Add new account </button>
 
 
 
@@ -92,7 +92,7 @@
 	{#if password === null}
 		<button class="start"> input your password</button>
 	{:else if password !== null}
-		<button class="start" onclick={() => checkPasswordAndAdd(password!.toString())}>
+		<button class="start" onclick={async () =>await checkPasswordAndAdd(password as string)}>
 			Submit
 		</button>
 	{/if}

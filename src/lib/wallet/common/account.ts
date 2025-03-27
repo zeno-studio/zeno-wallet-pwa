@@ -88,19 +88,20 @@ export const createEvmAccount = (
 	deriveEvm(index, addressIndex, mn);
 };
 
-export const deriveEvmAccount = async (index: number, addressIndex: number, password: string) => {
+export const deriveEvmAccount = async (index: number, addressIndex: number, password: string):Promise<Account | null> => {
 	const mn = await restoreMn(password, `m/44'/60'/0'/0/${addressIndex}`);
-	if (!mn) return;
-	deriveEvm(index, addressIndex, mn);
+	if (!mn) return null;
+	return deriveEvm(index, addressIndex, mn);
 };
 
-export const deriveEvm = (index: number, addressIndex: number, mn: string): boolean => {
-	if (!bip39.validateMnemonic(mn, wordlist) || !mn) return false;
+export const deriveEvm = (index: number, addressIndex: number, mn: string): Account|null => {
+	if (!bip39.validateMnemonic(mn, wordlist) || !mn) return null;
 	else {
+		let newAccount: Account|null =null
 		const hdKey_ = HDKey.fromMasterSeed(bip39.mnemonicToSeedSync(mn));
 		const hdKey = hdKey_.derive(`m/44'/60'/0'/0/${addressIndex}`);
 		if (hdKey.publicKey) {
-			const newAccount: Account = {
+				newAccount= {
 				accountIndex: index,
 				accountName: `Account${index}`,
 				accountType: 'legacy',
@@ -112,9 +113,11 @@ export const deriveEvm = (index: number, addressIndex: number, mn: string): bool
 				publicKey: bytesToHex(hdKey.publicKey)
 			};
 			addElement(dbStore.Account.name, newAccount);
+			return newAccount;
+		
 		}
+		return null
 	}
-	return true;
 };
 
 export const createPolkadotAccount = (

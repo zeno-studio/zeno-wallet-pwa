@@ -6,32 +6,33 @@
 		accountState.setCurrentAccountIndex(i);
 	}
 
-
-
 </script>
 
 <div class="container">
-	{#key accountState.accountList}
-		
 
 
 {#each [...accountState.accountList.values()] as account }
 
-		<button	 class="accountList"
-			class:selected={account.accountIndex === accountState.currentAccountIndex}
-			onclick={() => selectedAccount(account.accountIndex)}
-		>
-			<div class="item">				<div class="item-l">
-					<div class="avatar">{account.accountIndex}</div>
-					<div class="content">
-						<span class="label">{account.accountName} </span>
-					</div>
-				</div>
+<button	 class="accountList"
+	class:selected={account.accountIndex === accountState.currentAccountIndex}
+	onclick={() => selectedAccount(account.accountIndex)}
+>
+	<div class="item">				<div class="item-l">
+			<div class="avatar">{account.accountIndex}</div>
+			<div class="content">
+				<span class="label">{account.accountName} </span>
 			</div>
-			<a class="edit" href="/#/setting/account_detail"><EditFilled class="icon25rem" /></a>
-		</button>
+		</div>
+	</div>
+	<a class="edit" href="/#/setting/account_detail"><EditFilled class="icon25rem" /></a>
+</button>
 {/each}
-{/key}
+
+
+
+
+
+
 </div>
 
 

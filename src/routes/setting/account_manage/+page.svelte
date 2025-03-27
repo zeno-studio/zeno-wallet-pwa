@@ -37,6 +37,9 @@
 			{/if}
 		{/if}
 	</div>
+
+	<div> {accountState.currentAccountIndex}</div>
+	<div> {accountState.accountList.length}</div>
 </div>
 
 <style lang="postcss">
