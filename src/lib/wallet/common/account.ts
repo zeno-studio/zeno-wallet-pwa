@@ -114,7 +114,6 @@ export const deriveEvm = (index: number, addressIndex: number, mn: string): Acco
 			};
 			addElement(dbStore.Account.name, newAccount);
 			return newAccount;
-		
 		}
 		return null
 	}

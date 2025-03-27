@@ -1,5 +1,4 @@
 import { dbStore, getElement,type Settings,type Account} from '$lib/wallet/common';
-import { SvelteMap } from 'svelte/reactivity';
 
 class AccountState {
     currentAccountIndex = $state(0);
@@ -8,7 +7,7 @@ class AccountState {
     nextEvmAddressIndex = $state(0);
     nextPolkadotAddressIndex = $state(0);
     nextWatchAccountIndex = $state(16);
-    accountList = $state(new SvelteMap<number, Account>());
+    accountList = $state<Account[]>([]);
     
     setCurrentAccountIndex(accountIndex: number) {
         this.currentAccountIndex = accountIndex;
@@ -21,9 +20,15 @@ class AccountState {
     }
 
     async getAccountList() {
-		const accountList = (await getElement(dbStore.Account.name, "all")) as Account[];
-		this.accountList = new SvelteMap(accountList.map((account) => [account.accountIndex, account]));
-	}
+        try {
+            const accounts = await getElement(dbStore.Account.name, "all");
+            if (accounts) {
+                this.accountList = accounts as Account[];
+            }
+        } catch (error) {
+            console.error('Failed to get account list:', error);
+        }
+    }
 
 }
 

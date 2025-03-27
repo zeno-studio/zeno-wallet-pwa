@@ -73,8 +73,8 @@ export async function addEvmAccount() {
 		const data = localStorage.getItem('settings');
 		if (data) {
 			const settings = JSON.parse(data);
-			const newAccount = result.data as Account | null 
-			if (newAccount) accountState.accountList.set(newAccount.accountIndex,newAccount);
+			const newAccount = result.data
+			if (newAccount) accountState.accountList = [...accountState.accountList, newAccount as Account];
 			accountState.currentAccountIndex = settings.nextAccountIndex;
 			accountState.nextAccountIndex ++;
 			accountState.nextEvmAddressIndex ++;
@@ -105,8 +105,8 @@ export async function AddEvmAccountWithPassword(password: string) {
         const data = localStorage.getItem('settings');
         if (data) {
 			const settings = JSON.parse(data);
-			const newAccount = result.data as Account | null 
-			if (newAccount) accountState.accountList.set(newAccount.accountIndex,newAccount);
+			const newAccount = result.data
+			if (newAccount) accountState.accountList = [...accountState.accountList, newAccount as Account];
 			accountState.currentAccountIndex = settings.nextAccountIndex;
 			accountState.nextAccountIndex ++;
 			accountState.nextEvmAddressIndex ++;

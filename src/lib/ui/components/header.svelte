@@ -11,6 +11,10 @@
 	let name = $state("");
 
 
+	$effect(() => {
+		const account = accountState.accountList.find(a => a.accountIndex === accountState.currentAccountIndex) 
+		if (account) name = account.accountName
+	})
 
 
 </script>
@@ -29,7 +33,7 @@
 						have no account
 					{:else}
 
-					{accountState.accountList.get(accountState.currentAccountIndex)?.accountName}
+							{name }
 
 					{/if}
 					
@@ -49,7 +53,7 @@
 						have no account
 					{:else}
 
-					{accountState.accountList.get(accountState.currentAccountIndex)?.accountName}
+					{name }
 
 					{/if}
 				</button>
