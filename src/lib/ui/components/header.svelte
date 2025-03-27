@@ -7,7 +7,10 @@
 	let accountPanel = $state(false);
 	let Panel = $state(false);
 	let networkPanel = $state(false);
-	
+
+	let name = $state("");
+
+
 
 
 </script>
@@ -26,7 +29,7 @@
 						have no account
 					{:else}
 
-							{accountState.accountList.get(accountState.currentAccountIndex)?.accountName}
+					{accountState.accountList.get(accountState.currentAccountIndex)?.accountName}
 
 					{/if}
 					

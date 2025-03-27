@@ -13,11 +13,10 @@ const translate = $derived.by(async () => {
 	return t
 });
 
+
 $effect(() => {
 	translate
-})
-
-
+	});
 </script>
 
 <div class="navLeft">

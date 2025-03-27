@@ -28,9 +28,9 @@
 			accountState.nextAccountIndex++;
 			accountState.nextEvmAddressIndex++;
 			await accountState.getAccountList();
-			settings.nextEvmAddressIndex++;
-			settings.nextAccountIndex++;
 			settings.currentAccountIndex = 1;
+			settings.nextAccountIndex++;
+			settings.nextEvmAddressIndex++;
 			settings.vaultList.push('default');
 			localStorage.setItem('settings', JSON.stringify(settings));
 

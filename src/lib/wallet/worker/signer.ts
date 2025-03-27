@@ -7,7 +7,6 @@ import * as bip39 from '@scure/bip39';
 import { wordlist } from '@scure/bip39/wordlists/english';
 import { HDKey } from '@scure/bip32';
 import { Transaction, addr } from 'micro-eth-signer';
-import { flip } from 'svelte/animate';
 
 
 let isLocked = true;
@@ -44,7 +43,7 @@ onmessage = ({ data }) => {
 			addEvmAccount(data.argus.index, data.argus.addressIndex);
 			break;
 		case 'addEvmAccountWithPassword':
-			addEvmAccountWithPassword(data.argus.index, data.argus.accountIndex, data.argus.password);
+			addEvmAccountWithPassword(data.argus.index, data.argus.addressIndex, data.argus.password);
 			break;
 		case 'checkPassword':
 			checkPassword(data.argus.password);
@@ -98,6 +97,20 @@ function saveMidPass(password: string, salt: string) {
 		});
 	}
 }
+
+function saveMidPassNotPost(password: string, salt: string) {
+	midpass = scrypt(password, hexToBytes(salt), { N: 2 ** 16, r: 8, p: 1, dkLen: 32 })
+	isLocked = false;
+	if (isAutoLock) {
+		setTimeout(() => {
+			isLocked = true;
+		}, timeout);
+		setTimeout(() => {
+			midpass = psReplacer;
+		}, timeout + 60000);;
+	} 
+}
+
 
 async function signEvmTx(tx: any, account: Account, password?: string, salt?: string) {
 	const ps = password ?? password;
@@ -168,19 +181,21 @@ function signEvmTransaction(tx: any, account: Account, mn: string) {
 
 async function addEvmAccount(index: number, addressIndex: number) {
 	const mn = await reBuildMn();
-	if (deriveEvm(index, addressIndex, mn))	postMessage({ success: true });
-	postMessage({ success: false });
+	const newAccount = deriveEvm(index, addressIndex, mn)
+	if (newAccount)	postMessage({ success: true,data:newAccount});
+	else postMessage({ success: false });
 }
 
 async function addEvmAccountWithPassword(index: number, addressIndex: number, password: string) {
 	const vault = (await getElement(dbStore.Vault.name, 'default')) as LegacyVault;
-	saveMidPass(password, vault.salt);
+	saveMidPassNotPost(password, vault.salt);
 	const mn = await reBuildMn();
-	if (deriveEvm(index, addressIndex, mn))	postMessage({ success: true});
-	postMessage({ success: false });
+	const newAccount = deriveEvm(index, addressIndex, mn)
+	if (newAccount)	postMessage({ success: true,data:newAccount});
+	else postMessage({ success: false });
 }
 
 async function checkPassword(password: string) {
 	const isValid = await isValidPassword(password, 'default');
-	postMessage({ success: true, data: isValid });
+	postMessage({ success: true, data: isValid });  
 }
