@@ -5,49 +5,31 @@
 	function selectedAccount(i: number) {
 		accountState.setCurrentAccountIndex(i);
 	}
-
-
-
 </script>
 
 <div class="container">
-
-
-{#each accountState.accountList as account }
-
-<button	 class="accountList"
-	class:selected={account.accountIndex === accountState.currentAccountIndex}
-	onclick={() => selectedAccount(account.accountIndex)}
->
-	<div class="item">				<div class="item-l">
-			<div class="avatar">{account.accountIndex}</div>
-			<div class="content">
-				<span class="label">{account.accountName} </span>
+	{#each accountState.accountList as account}
+		<button
+			class="accountList"
+			class:selected={account.accountIndex === accountState.currentAccountIndex}
+			onclick={() => selectedAccount(account.accountIndex)}
+		>
+			<div class="item">
+				<div class="item-l">
+					<div class="avatar">{account.accountIndex}</div>
+					<div class="content">
+						<span class="label">{account.accountName} </span>
+					</div>
+				</div>
 			</div>
-		</div>
-	</div>
-	<a class="edit" href="/#/setting/account_detail"><EditFilled class="icon25rem" /></a>
-</button>
-{/each}
-
-
-
-
-
-
+			<a class="edit" href="/#/setting/account_detail"><EditFilled class="icon24rem" /></a>
+		</button>
+	{/each}
 </div>
-
-
-
-
-
-
-
-
 
 <style lang="postcss">
 	.container {
-		margin-bottom: 64px;
+		margin-bottom: 6.4rem;
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
@@ -61,8 +43,8 @@
 	}
 	.avatar {
 		flex-shrink: 0;
-		width: 40px;
-		height: 40px;
+		width: 4rem;
+		height: 4rem;
 		margin-left: 1rem;
 		margin-right: 1rem;
 		border-radius: 50%;
@@ -83,10 +65,10 @@
 		width: 100%;
 		flex-direction: row;
 		background: var(--color-bg1);
-		border-radius: 16px;
+		border-radius: 1.6rem;
 		padding: 1rem;
 		cursor: pointer;
-		margin-bottom: 8px;
+		margin-bottom: 0.8rem;
 		border: none;
 		&:hover {
 			background: var(--color-bg3);

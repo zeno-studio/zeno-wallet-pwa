@@ -36,13 +36,13 @@
 	.panel-desktop {
 		position: fixed;
 		display: flex;
-		right: 10px;
-		top: 8px;
+		right: 1rem;
+		top: 0.8rem;
 		bottom: 8px;
-		width: 380px;
+		width: 38rem;
 		display: flex;
 		z-index: 100;
-		border-radius: 16px;
+		border-radius: 1.6rem;
 		background: transparent;
 	}
 	.panel-desktop:hover {
@@ -55,12 +55,12 @@
 
 	.panelMain {
 		position: fixed;
-		right: 8px;
-		top: 8px;
-		bottom: 8px;
-		border-radius: 12px;
-		width: 320px;
-		padding: 20px 16px;
+		right: 0.8rem;
+		top: 0.8rem;
+		bottom: 0.8rem;
+		border-radius: 1.6rem;
+		width: 32rem;
+		padding: 2rem 1.6rem;
 		flex-direction: column;
 		justify-content: flex-start;
 		align-items: flex-start;
@@ -79,14 +79,14 @@
 		flex-direction: row;
 		width: 100%;
 		margin-top: 1rem;
-		border-radius: 16px;
+		border-radius: 1.6rem;
 		background: none;
 		padding: 0px;
 	}
 
 	.panel-Item-l {
 		justify-content: flex-start;
-		width: 200px;
+		width: 20rem;
 		height: 100%;
 		margin-left: 1.5rem;
 	}
@@ -106,7 +106,7 @@
 		height: 100%;
 		padding: 1rem;
 		border: none;
-		border-radius: 16px;
+		border-radius: 1.6rem;
 		background: none;
 	}
 

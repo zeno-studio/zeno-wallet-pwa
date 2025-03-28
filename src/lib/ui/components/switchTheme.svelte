@@ -18,8 +18,8 @@
 .switch {
   position: relative;
   display: inline-block;
-  width: 54px;
-  height: 28px;
+  width: 5.4rem;
+  height: 2.8rem;
 }
 
 .switch input {
@@ -37,16 +37,16 @@
   bottom: 0;
   background-color:var(--color-bg3);
   transition: .4s;
-  border-radius: 28px;
+  border-radius: 2.8rem;
 
 }
 
 .slider:before {
   position: absolute;
   content: "";
-  height: 24px;
-  width: 24px;
-  border-radius: 24px;
+  height: 2.4rem;
+  width: 2.4rem;
+  border-radius: 2.4rem;
   left: 2px;
   bottom: 2px;
   z-index: 2;
@@ -57,10 +57,10 @@
 .sun svg {
   position: absolute;
   top: 2px;
-  left: 28px;
+  left: 2.8rem;
   z-index: 1;
-  width: 24px;
-  height: 24px;
+  width: 2.4rem;
+  height: 2.4rem;
   fill: var(--color-text);
 }
 
@@ -70,8 +70,8 @@
   top: 2px;
   left: 2px;
   z-index: 1;
-  width: 24px;
-  height: 24px;
+  width: 2.4rem;
+  height: 2.4rem;
 }
 
 .input:checked + .slider {
@@ -83,7 +83,7 @@
 }
 
 .input:checked + .slider:before {
-  transform: translateX(26px);
+  transform: translateX(2.6rem);
 }
 
 </style>

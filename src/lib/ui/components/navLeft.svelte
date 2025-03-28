@@ -30,7 +30,7 @@ $effect(() => {
 
 <style lang="postcss">
 	.navLeft {
-		height: 36px;
+		height: 3.6rem;
 		display: flex;
 		justify-content: flex-start;
 		width: 100%;

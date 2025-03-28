@@ -91,19 +91,19 @@
 	.nav-wrapper {
 		display: flex;
 		width: 96%;
-		height: 32px;
-		padding: 16px 16px;
+		height: 3.2rem;
+		padding: 1.6rem 1.6rem;
 	}
 	.icon {
 		display: block;
 		justify-content: flex-start;
-		height: 32px;
+		height: 3.2rem;
 		vertical-align: middle;
 	}
 	.logoButton {
-		width: 36px;
-		height: 36px;
-		margin-right: 12px;
+		width: 3.6rem;
+		height: 3.6rem;
+		margin-right: 1.2rem;
 		padding: 0px;
 		border: none;
 		background: none;
@@ -114,33 +114,33 @@
 		flex-direction: column;
 		justify-content: flex-start;
 		position: fixed;
-		top: 64px;
+		top: 6.4rem;
 		left: 2rem;
-		width: 236px;
-		height: 500px;
+		width: 24rem;
+		height: 50rem;
 		overflow-y: scroll;
 		background: var(--color-bg);
 		border-radius: 2rem;
-		padding: 8px;
+		padding: 0.8rem;
 		z-index: 100;
 		border: 1px solid var(--color-border);
+		overflow-y: scroll;
+		scrollbar-width: none;
 
 	}
 	.navRight {
 		display: flex;
 		justify-content: flex-end;
-		width: 100%;
 		align-items: center;
-		box-sizing: border-box;
-		vertical-align: baseline;
 		margin-left: auto;
 	}
 	.accountButton {
 		display: flex;
 		justify-content: flex-start;
+		align-items: center;
 		font-size: 1.6rem;
 		font-weight: 600;
-		width: 200px;
+		margin-right: auto;
 		border: none;
 		background: none;
 		color: var(--color-text);
@@ -155,9 +155,9 @@
 		color: var(--color-text);
 		font-size: 1.6rem;
 		font-weight: 600;
-		height: 28px;
-		padding: 0px 1rem;
-		border-radius: 14px;
+		height: 2.8rem;
+		padding: 0rem 1rem;
+		border-radius: 1.4rem;
 		border: 1px solid var(--color-border);
 		background: var(--color-bg1);
 		color: var(--color-text);
@@ -168,11 +168,12 @@
 	}
 
 	.accountLeft {
+
 		width: 100%;
 	}
 	.networkImage {
-		width: 24px;
-		height: 24px;
+		width: 2.4rem;
+		height: 2.4rem;
 		border-radius: 50%;
 	}
 	.networkButton {
