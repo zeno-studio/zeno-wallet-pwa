@@ -1,6 +1,7 @@
 import { dbStore, getElement,type Settings,type Account} from '$lib/wallet/common';
 
 class AccountState {
+    isBackup = $state(false);
     currentAccountIndex = $state(0);
     nextAccountIndex = $state(1);
     nextPolkadotIndex = $state(13);

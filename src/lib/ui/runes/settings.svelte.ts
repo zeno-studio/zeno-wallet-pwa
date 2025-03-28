@@ -20,6 +20,7 @@ export const createSettings = async () => {
 		// intialize account
 		setTime(data.timeLock);
 		setAutoLock(data.autoLock);
+		accountState.isBackup = data.isBackup;
 		accountState.currentAccountIndex = data.currentAccountIndex;
 		accountState.nextAccountIndex = data.nextAccountIndex;
 		accountState.nextPolkadotIndex = data.nextPolkadotIndex;

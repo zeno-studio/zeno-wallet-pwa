@@ -11,27 +11,27 @@
 		<div class="menu">
 			<a href="/" class:active={page.route.id == '/'} aria-label="Asset">
 				<div class="set">
-					<AssetFilled class="icon24" />
+					<AssetFilled class="icon2A" />
 					Asset
 				</div>
 			</a>
 
 			<a href="/#/apps" class:active={page.route.id == '/apps'} aria-label="Apps">
 				<div class="set">
-					<AppsFilled class="icon24" />
+					<AppsFilled class="icon2A" />
 					Apps
 				</div>
 			</a>
 			<a href="/#/nft" class:active={page.route.id == '/nft'} aria-label="NFT">
 				<div class="set">
-					<HeartFilled class="icon24" />
+					<HeartFilled class="icon2A" />
 					NFT
 				</div>
 			</a>
 
 			<a href="/#/setting" class:active={page.route.id == '/setting'} aria-label="Setting">
 				<div class="set">
-					<SettingFilled class="icon24" />
+					<SettingFilled class="icon2A" />
 					Setting
 				</div>
 			</a>
@@ -50,9 +50,9 @@
 		right: 0px;
 		left: 0px;
 		width: 100vw;
-		padding: 8px 12px 16px 12px;
+		padding: 0.8rem 1.2rem 1.6rem 1.2rem;
 		z-index: 100;
-		height: 64px;
+		height: 6.4rem;
 		background: transparent;
 		backdrop-filter: blur(30px);
 		border-top: 1px solid var(--color-border);

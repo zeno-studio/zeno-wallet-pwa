@@ -27,14 +27,14 @@
 					<span class="title">Account 1 </span>
 				</div>
 
-				<div class="item-r"><ArrowForward class="icon17A" /></div>
+				<div class="item-r"><ArrowForward class="icon18A" /></div>
 			</div>
 		</a>
 		<!-- Theme -->
 		<div class="setting-top">
 			<div class="item">
 				<div class="item-l">
-					<span class="icon"> <Darkmode class="icon17A" /></span>
+					<span class="icon"> <Darkmode class="icon18A" /></span>
 					<span class="title">Theme</span>
 				</div>
 				<div class="item-r"><SwitchTheme /></div>
@@ -44,118 +44,118 @@
 		<button class="setting-medium" popovertarget="language">
 			<div class="item">
 				<div class="item-l">
-					<span class="icon"> <LanguageIcon class="icon17A" /></span>
+					<span class="icon"> <LanguageIcon class="icon18A" /></span>
 
 					<span class="title">Language</span>
 				</div>
-				<div class="item-r"><ArrowForward class="icon17A" /></div>
+				<div class="item-r"><ArrowForward class="icon18A" /></div>
 			</div>
 		</button>
 		<!-- Currency -->
 		<button class="setting-bottom" popovertarget="fiat">
 			<div class="item">
 				<div class="item-l">
-					<span class="icon"> <DollarIcon class="icon17A" /></span>
+					<span class="icon"> <DollarIcon class="icon18A" /></span>
 
 					<span class="title">Currency</span>
 				</div>
 
-				<div class="item-r"><ArrowForward class="icon17A" /></div>
+				<div class="item-r"><ArrowForward class="icon18A" /></div>
 			</div>
 		</button>
 		<!-- manage account -->
 		<a class="setting-top" href="/#/setting/account_manage">
 			<div class="item">
 				<div class="item-l">
-					<span class="icon"> <AccountIcon class="icon17A" /></span>
+					<span class="icon"> <AccountIcon class="icon18A" /></span>
 
 					<span class="title">Manage Account</span>
 				</div>
 
-				<div class="item-r"><ArrowForward class="icon17A" /></div>
+				<div class="item-r"><ArrowForward class="icon18A" /></div>
 			</div>
 		</a>
 		<!-- Security & Privacy -->
 		<a class="setting-medium" href="/#/setting/security">
 			<div class="item">
 				<div class="item-l">
-					<span class="icon"> <SafeGuardIcon class="icon17A" /></span>
+					<span class="icon"> <SafeGuardIcon class="icon18A" /></span>
 
 					<span class="title">Security & Privacy</span>
 				</div>
 
-				<div class="item-r"><ArrowForward class="icon17A" /></div>
+				<div class="item-r"><ArrowForward class="icon18A" /></div>
 			</div>
 		</a>
 		<!-- Backup Wallet -->
 		<a class="setting-bottom" href="/#/setting/backup">
 			<div class="item">
 				<div class="item-l">
-					<span class="icon"> <CloudIcon class="icon17A" /></span>
+					<span class="icon"> <CloudIcon class="icon18A" /></span>
 
 					<span class="title">Backup Wallet</span>
 				</div>
 
-				<div class="item-r"><ArrowForward class="icon17A" /></div>
+				<div class="item-r"><ArrowForward class="icon18A" /></div>
 			</div>
 		</a>
 		<!--Active Network -->
 		<a class="setting-top" href="/#/setting/security">
 			<div class="item">
 				<div class="item-l">
-					<span class="icon"> <ExplorerIcon class="icon17A" /></span>
+					<span class="icon"> <ExplorerIcon class="icon18A" /></span>
 
 					<span class="title">Active Network</span>
 				</div>
 
-				<div class="item-r"><ArrowForward class="icon17A" /></div>
+				<div class="item-r"><ArrowForward class="icon18A" /></div>
 			</div>
 		</a>
 		<!--Address Book -->
 		<a class="setting-medium" href="/#/setting/security">
 			<div class="item">
 				<div class="item-l">
-					<span class="icon"> <BookIcon class="icon17A" /></span>
+					<span class="icon"> <BookIcon class="icon18A" /></span>
 
 					<span class="title">Address Book</span>
 				</div>
 
-				<div class="item-r"><ArrowForward class="icon17A" /></div>
+				<div class="item-r"><ArrowForward class="icon18A" /></div>
 			</div>
 		</a>
 		<!--Active App -->
 		<a class="setting-bottom" href="/#/setting/security">
 			<div class="item">
 				<div class="item-l">
-					<span class="icon"> <AppsIcon class="icon17A" /></span>
+					<span class="icon"> <AppsIcon class="icon18A" /></span>
 
 					<span class="title">Active Apps</span>
 				</div>
 
-				<div class="item-r"><ArrowForward class="icon17A" /></div>
+				<div class="item-r"><ArrowForward class="icon18A" /></div>
 			</div>
 		</a>
 
 		<a class="setting1" href="/#/setting/about">
 			<div class="item">
 				<div class="item-l">
-					<span class="icon"> <QuestionIcon class="icon17A" /></span>
+					<span class="icon"> <QuestionIcon class="icon18A" /></span>
 
 					<span class="title">About</span>
 				</div>
 
-				<div class="item-r"><ArrowForward class="icon17A" /></div>
+				<div class="item-r"><ArrowForward class="icon18A" /></div>
 			</div>
 		</a>
 		<a class="setting" href="/#/setting/dev">
 			<div class="item">
 				<div class="item-l">
-					<span class="icon"> <QuestionIcon class="icon17A" /></span>
+					<span class="icon"> <QuestionIcon class="icon18A" /></span>
 
 					<span class="title">DEV</span>
 				</div>
 
-				<div class="item-r"><ArrowForward class="icon17A" /></div>
+				<div class="item-r"><ArrowForward class="icon18A" /></div>
 			</div>
 		</a>
 	</div>
@@ -163,13 +163,13 @@
 
 <div id="language" popover class:active={isSmallScreen.current}>
 	<button class="close" popovertarget="language" popovertargetaction="hide"
-		><CloseIcon class="icon17A" /></button
+		><CloseIcon class="icon18A" /></button
 	>
 	<LanguageSelector />
 </div>
 <div id="fiat" popover class:active={isSmallScreen.current}>
 	<button class="close" popovertarget="fiat" popovertargetaction="hide"
-		><CloseIcon class="icon17A" /></button
+		><CloseIcon class="icon18A" /></button
 	>
 	<FiatSelector />
 </div>

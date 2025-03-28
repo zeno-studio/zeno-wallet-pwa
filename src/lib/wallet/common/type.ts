@@ -1,4 +1,4 @@
-import {westend, base, bsc, ethereum, optimism, polygon, sonic } from '$lib/wallet/common';
+import {base, bsc, ethereum, optimism, polygon, sonic } from '$lib/wallet/common';
 
 export type Settings = {
 	darkMode: boolean;
@@ -15,6 +15,7 @@ export type Settings = {
 	additionalChains: number[];
 	vaultList: string[];
 	fiat: string;
+	isBackup:boolean;
 };
 
 export const defaultSettings: Settings = {
@@ -38,7 +39,8 @@ export const defaultSettings: Settings = {
 	],
 	additionalChains: [],
 	vaultList: [],
-	fiat: 'USD'
+	fiat: 'USD',
+	isBackup:false
 };
 
 
