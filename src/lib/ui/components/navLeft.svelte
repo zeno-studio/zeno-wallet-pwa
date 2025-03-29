@@ -25,12 +25,13 @@ $effect(() => {
 		<a href="/#/apps" class={{active:page.route.id == '/apps'}}>{t.get("Apps")}</a>
 		<a href="/#/nft" class={{active:page.route.id == '/nft'}}>NFT</a>
 		<a href="/#/setting" class={{active:page.route.id == '/setting'}}>{t.get("Setting")} </a>
+		<a href="/#/dev" class={{active:page.route.id == '/dev'}}>dev</a>
 	{/if}
 </div>
 
 <style lang="postcss">
 	.navLeft {
-		height: 36px;
+		height: 3.6rem;
 		display: flex;
 		justify-content: flex-start;
 		width: 100%;

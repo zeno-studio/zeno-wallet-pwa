@@ -12,7 +12,7 @@
                 {fiat.name}
 			</div>
             <div class="item-r" class:active={fiat.name === chainState.currentFiat}>
-				<CheckIcon class="icon17A" />
+				<CheckIcon class="icon18A" />
 			</div>
         </button>
     {/each}
@@ -21,12 +21,13 @@
 
 <style lang="postcss">
 	.item-button {
+		position: relative;
 		display: flex;
 		flex-direction: row;
 		width: 100%;
 		font-size: 1.6rem;
 		font-weight: 600;
-		padding: 6px;
+		padding: 0.6rem;
 		background: none;
 		border: none;
 		color: var(--color);
@@ -47,6 +48,6 @@
 	}
 	.item-button:hover {
 		background: var(--color-bg2);
-		border-radius: 8px;
+		border-radius: 0.8rem;
 	}
 </style>

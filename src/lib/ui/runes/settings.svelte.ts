@@ -20,6 +20,7 @@ export const createSettings = async () => {
 		// intialize account
 		setTime(data.timeLock);
 		setAutoLock(data.autoLock);
+		accountState.isBackup = data.isBackup;
 		accountState.currentAccountIndex = data.currentAccountIndex;
 		accountState.nextAccountIndex = data.nextAccountIndex;
 		accountState.nextPolkadotIndex = data.nextPolkadotIndex;
@@ -28,7 +29,7 @@ export const createSettings = async () => {
 		accountState.nextPolkadotAddressIndex = data.nextPolkadotAddressIndex;
 		await accountState.getAccountList();
 
-		// intialize additionalChains
+		// intialize customChains
 		
 
 		// intialize fiat
@@ -36,6 +37,8 @@ export const createSettings = async () => {
 
 		// intialize locale
 		userlocale.locale = data.locale;
+
+		// intialize applist
 	}
 	if (!settings) {
 		const systemLanguage = getLanguage();

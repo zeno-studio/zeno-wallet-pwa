@@ -1,4 +1,11 @@
-import {westend, base, bsc, ethereum, optimism, polygon, sonic } from '$lib/wallet/common';
+import { base, bsc, ethereum, optimism, polygon, sonic } from '$lib/wallet/common';
+
+export type App = {
+	id: number;
+	name: string;
+	path: string;
+	chain: string[];
+};
 
 export type Settings = {
 	darkMode: boolean;
@@ -11,10 +18,9 @@ export type Settings = {
 	nextPolkadotAddressIndex: number;
 	autoLock: boolean;
 	timeLock: number;
-	defaultChains: number[];
-	additionalChains: number[];
-	vaultList: string[];
+	activeAppList: App[];
 	fiat: string;
+	isBackup: boolean;
 };
 
 export const defaultSettings: Settings = {
@@ -28,20 +34,10 @@ export const defaultSettings: Settings = {
 	nextPolkadotAddressIndex: 0,
 	autoLock: true,
 	timeLock: 30, // in minutes
-	defaultChains: [
-		base.chainId,
-		bsc.chainId,
-		ethereum.chainId,
-		optimism.chainId,
-		polygon.chainId,
-		sonic.chainId
-	],
-	additionalChains: [],
-	vaultList: [],
-	fiat: 'USD'
+	activeAppList: [],
+	fiat: 'USD',
+	isBackup: false
 };
-
-
 
 export type backupData = {
 	vaults: LegacyVault[];
@@ -56,7 +52,7 @@ export type AccessStatus = 'APPROVED' | 'DENIED';
 export type HexString = `0x${string}`;
 export type addressType = 'evm' | 'polkadot';
 export type keyringType = 'secp256k1' | 'ed25519' | 'sr25519';
-export type accountType = 'legacy' | 'passkey' | 'hardware'| 'watch';
+export type accountType = 'legacy' | 'passkey' | 'hardware' | 'watch';
 
 export interface Account {
 	accountName: string;
@@ -69,21 +65,20 @@ export interface Account {
 	readonly publicKey?: string;
 	isHidden: boolean;
 	memo?: string;
-	ens?:string;
-	nft?:string;
-	tokenid?:number;
-	identicon?:string;
+	ens?: string;
+	nft?: string;
+	tokenid?: number;
+	identicon?: string;
 }
-
 
 export interface AddressBook {
 	name: string;
 	readonly address: string;
 	memo?: string;
-	ens?:string;
-	nft?:string;
-	tokenid?:number;
-	identicon?:string;
+	ens?: string;
+	nft?: string;
+	tokenid?: number;
+	identicon?: string;
 }
 
 export interface LegacyVault {
@@ -118,8 +113,8 @@ export interface Chain {
 			blockCreated: number;
 		};
 	};
+	logoPath: string;
 	testnet: boolean;
-	logoPath?: string;
 }
 
 export interface Fiat {
@@ -184,9 +179,7 @@ export interface TransferResult {
 export type WalletBackupData = {
 	vaults: LegacyVault[];
 	accounts: Account[];
-	additionalChains: Chain[];
 	addressBook: AddressBook[];
 	History: History[];
 	settings: Settings;
 };
-

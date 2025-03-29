@@ -12,6 +12,18 @@
 	let password = $state<string | null>(null);
 	let passwordShow = $state(false);
 	let isValidPs = $state<boolean | null>(null);
+	
+		function close() {
+		const popover = document.getElementById('add');
+		if (popover) {
+			popover.hidePopover();
+		}
+		const passwordInput = document.getElementById('password') as HTMLInputElement;
+		if (passwordInput) {
+			passwordInput.value = '';
+		}
+		isValidPs = null
+	}
 
 	async function handleAddEvmAccount() {
 		const result = (await checkIsLocked()) as signerResponseType | null;
@@ -20,63 +32,58 @@
 		} else {
 			const popover = document.getElementById('add');
 			if (popover) popover.showPopover();
-		}
 	}
+}
 
 	async function checkPasswordAndAdd(ps: string) {
 		const result = (await checkPassword(ps)) as signerResponseType | null;
 		if (result?.data === true) {
 			isValidPs = true;
 			AddEvmAccountWithPassword(ps);
-			const popover = document.getElementById('add');
-			if (popover) popover.hidePopover();
-			password = null;
-			passwordShow = false;
-			isValidPs = null;
-		} else  {
+			close()
+		} else {
 			isValidPs = false;
 			setTimeout(() => {
 				isValidPs = null;
 			}, 3000);
 		}
 	}
-	
 </script>
 
-
-<button class="bottom-button" onclick={async () =>await handleAddEvmAccount()}> Add new account </button>
-
-
-
+<button class="bottom-button" onclick={async () => await handleAddEvmAccount()}>
+	Add new account
+</button>
 
 <div id="add" popover="manual" class:active={isSmallScreen.current}>
-	<button class="close" popovertarget="add" popovertargetaction="hide">
-		<CloseIcon class="icon17A" />
+	<button class="close" onclick={close}>
+		<CloseIcon class="icon18A" />
 	</button>
-	<h3>Add New Account</h3>
+	<div class="title">Add New Account</div>
 	<div class="container">
 		{#if passwordShow}
 			<input
-	
+				id ="password"
 				class="input"
 				type="text"
 				placeholder="Please input your password"
+				autocomplete="off"
 				bind:value={password}
 			/>
 		{:else}
 			<input
-	
+				id ="password"
 				class="input"
 				type="password"
 				placeholder="Please input your password"
+				autocomplete="off"
 				bind:value={password}
 			/>
 		{/if}
 		<button class="eye" onclick={() => (passwordShow = !passwordShow)}>
 			{#if passwordShow}
-				<EyeIcon class="icon17B" />
+				<EyeIcon class="icon18B" />
 			{:else}
-				<EyeOffIcon class="icon17B" />
+				<EyeOffIcon class="icon18B" />
 			{/if}
 		</button>
 	</div>
@@ -92,24 +99,33 @@
 	{#if password === null}
 		<button class="start"> input your password</button>
 	{:else if password !== null}
-		<button class="start" onclick={async () =>await checkPasswordAndAdd(password as string)}>
+		<button class="start" onclick={async () => await checkPasswordAndAdd(password as string)}>
 			Submit
 		</button>
 	{/if}
 </div>
 
 <style lang="postcss">
+	.title{
+		display: flex;
+		font-size: 2rem;
+		font-weight: 700;
+		color: var(--color-text);
+		margin-bottom: 2rem;
+	}
 	.container {
+		display: flex;
+		align-items: center;
 		width: 96%;
-		padding: 8px;
+		padding: 0.8rem;
 	}
 	.bottom-button {
 		color: #fff;
-		font-size: 1.7rem;
+		font-size: 1.8rem;
 		font-weight: 600;
-		height: 48px;
+		height: 4.8rem;
 		border: none;
-		border-radius: 16px;
+		border-radius: 1.6rem;
 		background: var(--color-blue);
 		box-sizing: border-box;
 		width: 100%;
@@ -125,13 +141,12 @@
 		position: fixed;
 		color: var(--color-text);
 		height: 70%;
-		width: 384px;
-		padding: 16px;
+		width: 38.4rem;
+		padding: 1.6rem;
 		background: var(--color-bg1);
-		border-radius: 16px;
+		border-radius: 2rem;
 		border: 1px solid var(--color-border);
 		overflow: hidden;
-
 	}
 	.active {
 		position: fixed;
@@ -140,16 +155,16 @@
 		justify-content: flex-start;
 		height: 100vh;
 		width: 100vw;
-		padding: 16px;
+		padding: 1.6rem;
 		margin: 0px;
 		background: var(--color-bg1);
-		border-radius: 16px;
+		border-radius: 1.6rem;
 		border: 1px solid var(--color-border);
 		z-index: 1001;
 	}
 	.input {
-		padding: 1.4rem;
-		font-size: 1.4rem;
+		padding: 1.5rem 2rem;
+		font-size: 1.5rem;
 		width: 80%;
 		border-radius: 16px;
 		background: var(--color-bg2);
@@ -161,19 +176,19 @@
 		color: #fff;
 		font-size: 1.7rem;
 		font-weight: 600;
-		height: 48px;
+		height: 4.8rem;
 		border: none;
-		border-radius: 16px;
+		border-radius: 1.6rem;
 		background: var(--color-pink);
 		box-sizing: border-box;
 		width: 80%;
-		margin-top: 32px;
+		margin-top: 3.2rem;
 		padding: 1rem;
 		cursor: pointer;
 	}
 
 	.eye {
-		width: 24px;
+		display: flex;
 		border: none;
 		background: none;
 		position: absolute;

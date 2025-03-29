@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { isSmallScreen } from '$lib/ui/ts';
 	import { createEvmAccount } from '$lib/wallet/common';
-	import { Loading, CloseIcon, EyeIcon, EyeOffIcon } from '$lib/svg';
+	import { CloseIcon, EyeIcon, EyeOffIcon } from '$lib/svg';
 	import { passwordStrength } from 'check-password-strength';
 	import { accountState, saveMidPass } from '$lib/wallet/runes';
 
@@ -16,10 +16,23 @@
 			return 'empty';
 		}
 	});
-	let isLoading = $state(false);
+
+	function close() {
+		const popover = document.getElementById('create');
+		if (popover) {
+			popover.hidePopover();
+		}
+		const passwordInput = document.getElementById('password') as HTMLInputElement;
+		if (passwordInput) {
+			passwordInput.value = '';
+		}
+		const passwordInput2 = document.getElementById('password2') as HTMLInputElement;
+		if (passwordInput2) {
+			passwordInput2.value = '';
+		}
+	}
 
 	async function handleCreateEvmAccount(ps: string) {
-		isLoading = true;
 		const data = localStorage.getItem('settings');
 		if (data) {
 			const settings = JSON.parse(data);
@@ -31,20 +44,10 @@
 			settings.currentAccountIndex = 1;
 			settings.nextAccountIndex++;
 			settings.nextEvmAddressIndex++;
-			settings.vaultList.push('default');
 			localStorage.setItem('settings', JSON.stringify(settings));
-
 			saveMidPass(ps);
-			const popover = document.getElementById('create');
-			if (popover) {
-				popover.hidePopover();
-			}
+			close();
 		}
-		password = null;
-		password2 = null;
-		terms = false;
-		passwordShow = false;
-		isLoading = false;
 	}
 </script>
 
@@ -53,47 +56,56 @@
 </button>
 
 <div id="create" popover="manual" class:active={isSmallScreen.current}>
-	<button class="close" popovertarget="create" popovertargetaction="hide">
-		<CloseIcon class="icon17A" />
+	<button class="close" onclick={close}>
+		<CloseIcon class="icon18A" />
 	</button>
-	<h3>Create New Account</h3>
+	<div class="title">Create New Account</div>
+
 	<div class="container">
 		{#if passwordShow}
 			<input
+				id="password"
 				class="input"
 				type="text"
 				placeholder="Please input your password"
+				autocomplete="off"
 				bind:value={password}
 			/>
 		{:else}
 			<input
+				id="password"
 				class="input"
 				type="password"
 				placeholder="Please input your password"
+				autocomplete="off"
 				bind:value={password}
 			/>
 		{/if}
 		<button class="eye" onclick={() => (passwordShow = !passwordShow)}>
 			{#if passwordShow}
-				<EyeIcon class="icon17B" />
+				<EyeIcon class="icon18B" />
 			{:else}
-				<EyeOffIcon class="icon17B" />
+				<EyeOffIcon class="icon18B" />
 			{/if}
 		</button>
 	</div>
 
 	{#if passwordShow}
 		<input
+			id="password2"
 			class="input"
 			type="text"
 			placeholder="Please input your password"
+			autocomplete="off"
 			bind:value={password2}
 		/>
 	{:else}
 		<input
+			id="password2"
 			class="input"
 			type="password"
 			placeholder="Please input your password"
+			autocomplete="off"
 			bind:value={password2}
 		/>
 	{/if}
@@ -123,13 +135,18 @@
 		<button class="start"> Password too weak</button>
 	{:else if password === password2 && terms && psStrength !== 'Too weak'}
 		<button class="ok" onclick={() => handleCreateEvmAccount(password as string)}> Submit</button>
-	{:else if isLoading}
-		<button class="start"> <Loading class="icon17A" /> </button>
+
 	{/if}
 </div>
 
-
 <style lang="postcss">
+	.title {
+		display: flex;
+		font-size: 2rem;
+		font-weight: 700;
+		color: var(--color-text);
+		margin-bottom: 2rem;
+	}
 	.label {
 		display: flex;
 		justify-content: flex-start;
@@ -142,9 +159,9 @@
 		color: #fff;
 		font-size: 1.7rem;
 		font-weight: 600;
-		height: 48px;
+		height: 4.8rem;
 		border: none;
-		border-radius: 16px;
+		border-radius: 1.6rem;
 		background: var(--color-pink);
 		box-sizing: border-box;
 		width: 100%;
@@ -161,29 +178,29 @@
 		position: fixed;
 		color: var(--color-text);
 		height: 75%;
-		width: 384px;
-		padding: 16px;
+		width: 38.4rem;
+		padding: 1.6rem;
 		background: var(--color-bg1);
-		border-radius: 16px;
+		border-radius: 1.6rem;
 		border: 1px solid var(--color-border);
 	}
 	.active {
 		position: fixed;
-		top: calc(100vh - 500px);
+		top: calc(100vh - 50rem);
 		flex-direction: column;
 		justify-content: flex-start;
 		height: 100vh;
 		width: 100vw;
-		padding: 16px;
+		padding: 1.6rem;
 		margin: 0px;
 		background: var(--color-bg1);
-		border-radius: 16px;
+		border-radius: 1.6rem;
 		border: 1px solid var(--color-border);
 		z-index: 1001;
 	}
 	.input {
-		padding: 1.4rem;
-		font-size: 1.4rem;
+		padding: 1.5rem 2rem;
+		font-size: 1.5rem;
 		width: 80%;
 		border-radius: 16px;
 		background: var(--color-bg2);
@@ -195,13 +212,13 @@
 		color: #fff;
 		font-size: 1.7rem;
 		font-weight: 600;
-		height: 48px;
+		height: 4.8rem;
 		border: none;
-		border-radius: 16px;
+		border-radius: 1.6rem;
 		background: var(--color-pink);
 		box-sizing: border-box;
 		width: 80%;
-		margin-top: 32px;
+		margin-top: 3.2rem;
 		padding: 1rem;
 		cursor: pointer;
 	}
@@ -210,34 +227,34 @@
 		color: #fff;
 		font-size: 1.7rem;
 		font-weight: 600;
-		height: 48px;
+		height: 4.8rem;
 		border: none;
-		border-radius: 16px;
+		border-radius: 1.6rem;
 		background: var(--color-blue);
 		box-sizing: border-box;
 		width: 80%;
-		margin-top: 32px;
+		margin-top: 3.2rem;
 		padding: 1rem;
 		cursor: pointer;
 	}
 	.weak {
-		padding: 0px 8px;
+		padding: 0rem 0.8rem;
 		border: none;
-		border-radius: 8px;
+		border-radius: 0.8rem;
 		color: #fff;
 		background: red;
 		font-weight: 500;
 	}
 	.normal {
 		font-weight: 500;
-		padding: 0px 8px;
+		padding: 0rem 0.8rem;
 		border: none;
-		border-radius: 8px;
+		border-radius: 0.8rem;
 		color: #fff;
 		background: var(--color-green);
 	}
 	.eye {
-		width: 24px;
+		display: flex;
 		border: none;
 		background: none;
 		position: absolute;

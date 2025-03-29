@@ -1,7 +1,9 @@
 <script lang="ts">
-	import { Toaster, Tabs } from '$lib/ui/components';
+	import { Toaster, Tabs,CreateAccount,ImportAccount } from '$lib/ui/components';
 	import { toastState } from '$lib/ui/runes';
-	import { ReceiveIcon, SendFilled, SwapIcon, BuyIcon,PlugFilled} from '$lib/svg';
+	import { ReceiveIcon,CloseIcon, SendFilled, SwapIcon, BuyIcon,PlugFilled } from '$lib/svg';
+	import { accountState } from '$lib/wallet/runes';
+
 </script>
 
 <Toaster />
@@ -16,7 +18,7 @@
 			<button onclick={() => toastState.add('title', 'message')}>sdf</button>
 		</div>
 
-		<div class="item-container">
+		<div class="item-container2">
 			<div class="menu1">
 				<a class="text1" href="/#/receive">
 					<ReceiveIcon class="icon3rem" />
@@ -30,18 +32,42 @@
 					<SwapIcon class="icon3rem" />
 					Swap
 				</a>
-				<a class="text1" href="/#/swap">
+				<a class="text1" href="/#/bridge">
+					<PlugFilled class="icon3rem" />
+					Bridge
+				</a>
+				<a class="text1" href="/#/buy">
 					<BuyIcon class="icon3rem" />
 					Buy
 				</a>
+				
 			</div>
 		</div>
+		
+	
 
 		<div class="item-container2">
+			{#if accountState.nextAccountIndex===1}
 			<div class="menu2">
-				<button class="button2">Create Account</button>
-				<button class="button3">Import Account</button>
-			</div>
+				<CreateAccount />
+				<ImportAccount />
+			</div>	
+			{/if}
+			{#if accountState.nextAccountIndex > 1 && accountState.isBackup === false }
+			<div class="backup">
+	
+				<button class="close" onclick={()=>{accountState.isBackup = true}}>
+					<CloseIcon class="icon18A" />
+				</button>
+				<button class="backup-button">
+					Backup Your Recovery Phrase
+				</button>
+				
+			</div>	
+			{/if}
+
+
+			
 		</div>
 
 		<Tabs />
@@ -50,18 +76,17 @@
 
 <style lang="postcss">
 	.menu1 {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));
+		height: 100%;
 		width: 100%;
-		display: flex;
-		justify-content: space-between;
-
+		gap:1rem;
 	}
 
 	.text1 {
-		width: 70px;
-		height: 70px;
-		border-radius: 12px;
+		aspect-ratio: 1 / 0.8;
+		border-radius: 1.6rem;
 		border: 0px;
-		padding: 4px;
 		color: var(--color);
 		display: flex;
 		justify-content: center;
@@ -74,24 +99,31 @@
 		width: 100%;
 		display: grid;
 		grid-template-columns: 1fr 1fr;
-		gap: 12px;
+		gap: 1rem;
 	}
-	.button2 {
-		color: #fff;
-		min-width: 160px;
+	.backup {
+		display: flex;
 		flex-direction: column;
-		border-radius: 12px;
-		border: 0px;
-		padding: 12px 0px;
-		background: var(--color-blue);
-	}
-	.button3 {
-		color: #fff;
-		min-width: 160px;
-		flex-direction: column;
-		border-radius: 12px;
-		border: 0px;
-		padding: 12px 0px;
+		justify-content: center;
+		width: 100%;
+		padding: 1rem;
 		background: var(--color-pink);
+		border: none;
+		border-radius: 1.6rem;
+		box-sizing: border-box;
+		gap:0px
 	}
+
+	.backup-button{
+		display: flex;
+		justify-content: center;
+		width: 100%;
+		background: none;
+		color: #fff;
+		font-size: 1.8rem;
+		font-weight: 600;
+		border: none;
+		cursor: pointer;
+	}
+
 </style>

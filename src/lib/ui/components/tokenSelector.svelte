@@ -67,8 +67,8 @@
 		justify-content: flex-start;
 		height: 100%;
 		width: 100%;
-		max-width: 400px;
-		margin-top: 64px;
+		max-width: 40rem;
+		margin-top: 6.4rem;
 		padding: 0;
 		background: none;
 	}
@@ -77,20 +77,20 @@
 		flex-direction: row;
 		justify-items: center;
 		align-items: center;
-		height: 40px;
+		height: 4rem;
 		width: 96%;
 		font-size: 1.6rem;
 		font-weight: 700;
 		margin: 0px;
 		padding-left: 1rem;
-		border-radius: 20px;
+		border-radius: 2rem;
 		background: var(--color-bg2);
 		border: none;
 		color: var(--color);
 	}
 	.token-set {
 		width: 100%;
-		padding: 8px;
+		padding: 0.8rem;
 	}
 	.token-list {
 		flex-direction: column;
@@ -107,14 +107,14 @@
 		font-size: 1.5rem;
 		font-weight: 500;
 		margin: 0px;
-		padding: 4px;
+		padding: 0.4rem;
 		background: none;
 		border: none;
 		color: var(--color);
 	}
 	.token-lable:hover {
 		background: var(--color-bg2);
-		border-radius: 16px;
+		border-radius: 1.6rem;
 	}
 	.token-detail {
 		display: flex;
@@ -134,34 +134,22 @@
 	}
 
 	.token-icon {
-		width: 32px;
-		height: 32px;
-		border-radius: 16px;
-		margin-left: 8px;
+		width: 3.2rem;
+		height: 3.2rem;
+		border-radius: 1.6rem;
+		margin-left: 0.8rem;
 		&:hover {
 			box-shadow: 1px 4px 6px var(--color-shadow);
 			transform: scale(1.1);
 		}
 	}
 	.token-icon2 {
-		width: 32px;
-		height: 32px;
-		border-radius: 16px;
-		margin-left: 8px;
+		width: 3.2rem;
+		height: 3.2rem;
+		border-radius: 1.6rem;
+		margin-left: 0.8rem;
 	}
-	.finish {
-		height: 40px;
-		width: 100%;
-		border-radius: 20px;
-		margin: 0px;
-		padding: 0px;
-		background: var(--blue4);
-		border: none;
-		cursor: pointer;
-		color: #fff;
-		font-size: 1.5rem;
-		font-weight: 600;
-	}
+
 	.button-select {
 		display: flex;
 		flex-direction: row;
