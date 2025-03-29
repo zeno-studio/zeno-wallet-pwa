@@ -180,7 +180,6 @@ div {
 	height: 2rem;
 	width: 2rem;
 	color: var(--color-text);
-	margin-right: 1rem;
 	cursor: pointer;
 
 	&:hover {
@@ -192,22 +191,24 @@ div {
 .icon2A {
 	height: 2rem;
 	width: 2rem;
-	margin: 0px;
+	cursor: pointer;
+	&:hover {
+		transform: scale(1.1);
+		color: var(--color);
+	}
 }
 
 .icon18A {
 	height: 1.8rem;
 	width: 1.8rem;
 	color: var(--color-text);
-	margin: 0px;
 	cursor: pointer;
 }
 
 .icon18B {
 	height: 1.8rem;
 	width: 1.8rem;
-	color: var(--color-text);
-	margin: -24;
+	color: var(--color-blue);
 	cursor: pointer;
 }
 
@@ -229,7 +230,6 @@ div {
 	height: 2.4rem;
 	width: 2.4rem;
 	color: var(--color-text);
-	margin-right: 1rem;
 	cursor: pointer;
 
 	&:hover {
@@ -244,6 +244,7 @@ div {
 	color: var(--color);
 	cursor: pointer;
 }
+
 
 
 
@@ -300,9 +301,10 @@ div {
 
 
 .item {
+	position: relative;
 	display: flex;
 	flex-direction: row;
-	justify-items: center;
+	justify-content: flex-start;
 	align-items: center;
 	width: 100%;
 	font-size: 1.5rem;
@@ -315,18 +317,11 @@ div {
 
 .item-l {
 	display: flex;
-	flex-direction: row;
-	justify-content: flex-start;
-	align-items: center;
-	margin-right: auto;
 }
 
 .item-r {
-	display: flex;
-	align-items: center;
-	flex-direction: row;
-	justify-content: flex-end;
-	margin-left: auto;
+	position: absolute;
+	right: 0px;
 	fill: none;
 }
 

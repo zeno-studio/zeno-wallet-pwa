@@ -29,7 +29,7 @@ export const createSettings = async () => {
 		accountState.nextPolkadotAddressIndex = data.nextPolkadotAddressIndex;
 		await accountState.getAccountList();
 
-		// intialize additionalChains
+		// intialize customChains
 		
 
 		// intialize fiat
@@ -37,6 +37,8 @@ export const createSettings = async () => {
 
 		// intialize locale
 		userlocale.locale = data.locale;
+
+		// intialize applist
 	}
 	if (!settings) {
 		const systemLanguage = getLanguage();

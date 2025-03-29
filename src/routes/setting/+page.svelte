@@ -99,20 +99,20 @@
 				<div class="item-r"><ArrowForward class="icon18A" /></div>
 			</div>
 		</a>
-		<!--Active Network -->
-		<a class="setting-top" href="/#/setting/security">
+		<!--Active Chain -->
+		<a class="setting-top" href="/#/setting/active_chains">
 			<div class="item">
 				<div class="item-l">
 					<span class="icon"> <ExplorerIcon class="icon18A" /></span>
 
-					<span class="title">Active Network</span>
+					<span class="title">Active Chains</span>
 				</div>
 
 				<div class="item-r"><ArrowForward class="icon18A" /></div>
 			</div>
 		</a>
 		<!--Address Book -->
-		<a class="setting-medium" href="/#/setting/security">
+		<a class="setting-medium" href="/#/setting/address_book">
 			<div class="item">
 				<div class="item-l">
 					<span class="icon"> <BookIcon class="icon18A" /></span>
@@ -124,7 +124,7 @@
 			</div>
 		</a>
 		<!--Active App -->
-		<a class="setting-bottom" href="/#/setting/security">
+		<a class="setting-bottom" href="/#/setting/active_apps">
 			<div class="item">
 				<div class="item-l">
 					<span class="icon"> <AppsIcon class="icon18A" /></span>
@@ -144,18 +144,7 @@
 					<span class="title">About</span>
 				</div>
 
-				<div class="item-r"><ArrowForward class="icon18A" /></div>
-			</div>
-		</a>
-		<a class="setting" href="/#/setting/dev">
-			<div class="item">
-				<div class="item-l">
-					<span class="icon"> <QuestionIcon class="icon18A" /></span>
-
-					<span class="title">DEV</span>
-				</div>
-
-				<div class="item-r"><ArrowForward class="icon18A" /></div>
+				<div ><ArrowForward class="icon18A" /></div>
 			</div>
 		</a>
 	</div>

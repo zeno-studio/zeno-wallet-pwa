@@ -32,10 +32,11 @@
 			{#each cards as card, index (card.id)}
 				<div
 					use:droppable={{ container: index.toString(), callbacks: { onDrop: handleDrop } }}
-					class="item-container"
+					class="container"
 					animate:flip={{ duration: 300 }}
-          >
-					<button class="item-button"
+				>
+					<button
+						class="item-button"
 						use:draggable={{
 							container: index.toString(),
 							dragData: card
@@ -45,52 +46,48 @@
 							<span>{card.icon}</span>
 						</div>
 					</button>
-				</div>{/each}
+				</div>
+			{/each}
 		</div>
 	</div>
 </div>
 
 <style lang="postcss">
-	.appBody {
-		max-width: 464px;
-	}
 	.grid-container {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(76px, 1fr));
-		grid-auto-rows: minmax(76px, auto); 
+		grid-template-columns: repeat(auto-fit, minmax(7.6rem, 1fr));
+		grid-auto-rows: minmax(7.6rem, auto);
 		height: 100%;
 		width: 100%;
-    gap:1rem;
+		gap: 1rem;
 	}
-	.item-container {
+	.container {
 		aspect-ratio: 1 / 1;
 		position: relative;
 		padding: 0.25rem;
 		border-radius: 0.75rem;
-    background: none;
-    border-radius: 2rem;
+		background: none;
+		border-radius: 2rem;
 	}
 
-	.item-button{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 100%;
-    background: var(--color-bg1);
-    border: none;
-    border-radius: 2rem;
-    &:hover {
+	.item-button {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 100%;
+		width: 100%;
+		background: var(--color-bg1);
+		border: none;
+		border-radius: 2rem;
+		&:hover {
 			background: var(--color-bg2);
-  }
-
-
+		}
 	}
-  .item-icon{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 100%;
-  }
+	.item-icon {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 100%;
+		width: 100%;
+	}
 </style>

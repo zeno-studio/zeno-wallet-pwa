@@ -90,7 +90,6 @@
 			settings.nextEvmAddressIndex++;
 			settings.nextAccountIndex++;
 			settings.currentAccountIndex = 1;
-			settings.vaultList.push('default');
 			localStorage.setItem('settings', JSON.stringify(settings));
 			saveMidPass(ps);
 			close() 

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Toaster, Tabs,CreateAccount,ImportAccount } from '$lib/ui/components';
 	import { toastState } from '$lib/ui/runes';
-	import { ReceiveIcon,CloseIcon, SendFilled, SwapIcon, BuyIcon} from '$lib/svg';
+	import { ReceiveIcon,CloseIcon, SendFilled, SwapIcon, BuyIcon,PlugFilled } from '$lib/svg';
 	import { accountState } from '$lib/wallet/runes';
 
 </script>
@@ -18,7 +18,7 @@
 			<button onclick={() => toastState.add('title', 'message')}>sdf</button>
 		</div>
 
-		<div class="item-container">
+		<div class="item-container2">
 			<div class="menu1">
 				<a class="text1" href="/#/receive">
 					<ReceiveIcon class="icon3rem" />
@@ -32,12 +32,19 @@
 					<SwapIcon class="icon3rem" />
 					Swap
 				</a>
-				<a class="text1" href="/#/swap">
+				<a class="text1" href="/#/bridge">
+					<PlugFilled class="icon3rem" />
+					Bridge
+				</a>
+				<a class="text1" href="/#/buy">
 					<BuyIcon class="icon3rem" />
 					Buy
 				</a>
+				
 			</div>
 		</div>
+		
+	
 
 		<div class="item-container2">
 			{#if accountState.nextAccountIndex===1}
@@ -69,18 +76,17 @@
 
 <style lang="postcss">
 	.menu1 {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));
+		height: 100%;
 		width: 100%;
-		display: flex;
-		justify-content: space-between;
-
+		gap:1rem;
 	}
 
 	.text1 {
-		width: 70px;
-		height: 70px;
-		border-radius: 12px;
+		aspect-ratio: 1 / 0.8;
+		border-radius: 1.6rem;
 		border: 0px;
-		padding: 4px;
 		color: var(--color);
 		display: flex;
 		justify-content: center;

@@ -21,6 +21,7 @@
 
 <style lang="postcss">
 	.item-button {
+		position: relative;
 		display: flex;
 		flex-direction: row;
 		width: 100%;

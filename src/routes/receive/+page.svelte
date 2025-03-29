@@ -55,11 +55,11 @@
 
 			 {#if copied}
 			 <button class="copy" >
-				<CopiedIcon class="icon17G" />
+				<CopiedIcon class="icon18G" />
 			</button>
 			 {:else }
 			 <button class="copy" onclick={handleCopy}>
-				<CopyIcon class="icon17A" />
+				<CopyIcon class="icon18A" />
 			</button>
 			 {/if}
 			
@@ -71,7 +71,7 @@
 	</div>
 </div>
 
-<style>
+<style lang="postcss">
 	.item-container {
 		margin-bottom: 4px;
 	}

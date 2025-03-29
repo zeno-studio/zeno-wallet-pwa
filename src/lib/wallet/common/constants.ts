@@ -22,10 +22,6 @@ export const dbStore = {
     name: 'Account',
     keypath: "accountIndex"
   },
-  AdditionalChain: {
-    name: 'AdditionalChain',
-    keypath: 'chainId'
-  },
   History: {
     name: 'HistoryRecords',
     keypath: 'address'

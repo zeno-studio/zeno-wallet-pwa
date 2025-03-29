@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { accountState } from '$lib/wallet/runes';
 	import { EditFilled } from '$lib/svg';
+	import { goto } from '$app/navigation';
 
 	function selectedAccount(i: number) {
 		accountState.setCurrentAccountIndex(i);
@@ -9,7 +10,7 @@
 
 <div class="container">
 	{#each accountState.accountList as account}
-		<button
+		<div
 			class="accountList"
 			class:selected={account.accountIndex === accountState.currentAccountIndex}
 			onclick={() => selectedAccount(account.accountIndex)}
@@ -22,8 +23,8 @@
 					</div>
 				</div>
 			</div>
-			<a class="edit" href="/#/setting/account_detail"><EditFilled class="icon24rem" /></a>
-		</button>
+			<button class="edit" onclick={() => goto(`#/setting/account_detail`)}><EditFilled class="icon24rem" /></button>
+		</div>
 	{/each}
 </div>
 

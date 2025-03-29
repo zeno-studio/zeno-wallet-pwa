@@ -14,8 +14,13 @@ const config = {
 		// See https://svelte.dev/docs/kit/adapters for more information about adapters.
 		adapter: adapter(),
 		csp: {
-			mode: 'hash',
-			directives: {"script-src": ["self"],"object-src": ["self"]},
+			mode: 'hash', // 保持 hash 模式，安全且支持内联脚本/样式
+			directives: {
+			  'script-src': ['self'], 
+			  'style-src': ['self'],
+			  'img-src': ['self', 'data:'], 
+			  'object-src': ['none'], 
+			}
 		  },
 		router: {
 			type: 'hash'
