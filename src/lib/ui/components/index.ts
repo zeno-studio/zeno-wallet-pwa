@@ -12,4 +12,3 @@ export { default as CreateAccount } from "./createAccount.svelte";
 export { default as AddAccount} from "./addAccount.svelte";
 export { default as AccountList } from "./accountList.svelte";
 export { default as ImportAccount } from "./importAccount.svelte";
-export { default as AccountEditor } from "./accountEditor.svelte";

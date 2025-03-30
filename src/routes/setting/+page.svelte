@@ -144,7 +144,7 @@
 					<span class="title">About</span>
 				</div>
 
-				<div ><ArrowForward class="icon18A" /></div>
+				<div class="item-r" ><ArrowForward class="icon18A" /></div>
 			</div>
 		</a>
 	</div>

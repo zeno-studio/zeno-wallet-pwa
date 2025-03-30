@@ -14,7 +14,9 @@
 				<h5>Please Create or Import a Account</h5>
 			</div>
 		{:else}
+
 			<AccountList />
+
 		{/if}
 
 		{#if isSmallScreen.current}
