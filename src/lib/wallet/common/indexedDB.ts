@@ -12,9 +12,6 @@ export function initDB() {
         if (!db.objectStoreNames.contains(dbStore.Account.name)) {
 			db.createObjectStore(dbStore.Account.name, { keyPath: dbStore.Account.keypath });
 		}
-        if (!db.objectStoreNames.contains(dbStore.AdditionalChain.name)) {
-            db.createObjectStore(dbStore.AdditionalChain.name, {keyPath: dbStore.AdditionalChain.keypath}); 
-        }
         if (!db.objectStoreNames.contains(dbStore.History.name)) {
 			db.createObjectStore(dbStore.History.name, { keyPath: dbStore.History.keypath });
 		}

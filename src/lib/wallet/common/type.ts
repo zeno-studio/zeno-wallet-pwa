@@ -4,7 +4,7 @@ export type App = {
 	id: number;
 	name: string;
 	path: string;
-	chain: string[];
+	chain: number[];
 };
 
 export type Settings = {
@@ -13,12 +13,13 @@ export type Settings = {
 	currentAccountIndex: number;
 	nextAccountIndex: number;
 	nextPolkadotIndex: number;
-	nextWatchAccountIndex: number;
 	nextEvmAddressIndex: number;
 	nextPolkadotAddressIndex: number;
 	autoLock: boolean;
 	timeLock: number;
-	activeAppList: App[];
+	activeApps: App[];
+	hiddenApps: App[];
+	hiddenChains: number[];
 	fiat: string;
 	isBackup: boolean;
 };
@@ -28,13 +29,14 @@ export const defaultSettings: Settings = {
 	locale: 'en',
 	currentAccountIndex: 0,
 	nextAccountIndex: 1,
-	nextPolkadotIndex: 13,
-	nextWatchAccountIndex: 16,
+	nextPolkadotIndex: 101,
 	nextEvmAddressIndex: 0,
 	nextPolkadotAddressIndex: 0,
 	autoLock: true,
 	timeLock: 30, // in minutes
-	activeAppList: [],
+	activeApps: [],
+	hiddenApps: [],
+	hiddenChains: [],
 	fiat: 'USD',
 	isBackup: false
 };

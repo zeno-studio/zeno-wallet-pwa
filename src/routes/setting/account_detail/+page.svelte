@@ -1,13 +1,26 @@
 <script lang="ts">
 	import { isSmallScreen } from '$lib/ui/ts';
-	import { EditFilled, ArrowForward } from '$lib/svg';
-	let hiddenAccount = $state(false);
+	import { EditFilled, ArrowForward,ArrowBack } from '$lib/svg';
+	import { accountState } from '$lib/wallet/runes';
+	function deleteAccount() {
+		accountState.deleteAccount();
+	}
 
-   
+	function toggleHideAccount() {
+       accountState.hiddenAccounts();
+    }
 </script>
-
 <div class="appContainer">
 	<div class="appBody" class:active={isSmallScreen.current}>
+		<div class="item-container2" >
+			<div class="item">
+				<div class="item-l">
+					<a class="title" href="/#/setting/account_manage">
+						<ArrowBack class="icon2A" />
+					</a>
+				</div>
+			</div>
+		</div>
 		<div class="item-container2">
 			<div class="avatar">
 				1
@@ -54,17 +67,37 @@
 
 				<div class="item-r">
 					<div class="toggle-switch">
-						<input class="toggle-input" id="hideAccount" type="checkbox" bind:checked={hiddenAccount} />
+						<input class="toggle-input" id="hideAccount" type="checkbox"  onchange={toggleHideAccount} />
 						<label class="toggle-label" for="hideAccount"></label>
 					</div>
 				</div>
 			</div>
 		</div>
 
+		<button class="delete"  onclick={deleteAccount}>Delete Account</button>
+
+
 	</div>
 </div>
 
 <style lang="postcss">
+	.delete {
+		
+		font-size: 1.5rem;
+		font-weight: 600;
+		width: 100%;
+		color: var(--color-pink);
+		background: var(--color-bg1);
+		border: none;
+		padding: 1.2rem;
+		cursor: pointer;
+		margin-bottom: 0.8rem;
+		border-radius: 1.6rem;
+		&:hover {
+			background: var(--color-bg2);
+		}
+	}
+
     .item-container2{
         margin-bottom: 3rem;
     }

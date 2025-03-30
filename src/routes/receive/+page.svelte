@@ -2,19 +2,32 @@
 
 	import encodeQR from 'qr';
 	import {isSmallScreen,copyText } from '$lib/ui/ts';
-	import { CopyIcon,CopiedIcon,ContractIcon } from '$lib/svg';
+	import { CopyIcon} from '$lib/svg';
+	import { accountState } from '$lib/wallet/runes';
 	import { page } from '$app/state';
 
-	let address = '0xeDf074bd2c3FC10A296E7C9c52BfD80ab5d2A9E9';
-	const addressSvg = encodeQR(address, 'svg');
+	let address = $state('');
+	let addressSvg = $state('');
 	let copied = $state(false)
+	let accountName = $state('');
+
+
+	$effect(() => {
+		if (accountState.currentAccount) {
+			address = accountState.currentAccount.address;
+			addressSvg = encodeQR(address, 'svg', { ecc: 'high' });
+			accountName = accountState.currentAccount.accountName;
+		}
+	})
 	function handleCopy() {
-		copyText('address');
+		copyText("address");
 		copied = true
 		setTimeout(() => {
 			copied = false
 		}, 2000);
 	}
+
+
 
 
 
@@ -44,27 +57,31 @@
 
 			</div>
 		</div>
+	
 		<div class="item-container">
-			<div class="item">
 				<div class="qr">{@html addressSvg}</div>
-			</div>
-		</div>
-		<div class="item-container">
-			<div class="item">
-			 <span id="address">{address}</span>
 
+		</div>
+		
+		<div class="item-container">
+
+			<div class="name">{accountName}</div>	
+	</div>
+			 
 			 {#if copied}
-			 <button class="copy" >
-				<CopiedIcon class="icon18G" />
-			</button>
+			 <div class="copied" >
+				Copied
+			</div>
 			 {:else }
+			 <div class="item-container3">
 			 <button class="copy" onclick={handleCopy}>
+				<span id="address">{address}</span>&nbsp;	
 				<CopyIcon class="icon18A" />
 			</button>
+				</div>
 			 {/if}
 			
-			</div>
-		</div>
+	
 
 			
 
@@ -72,7 +89,8 @@
 </div>
 
 <style lang="postcss">
-	.item-container {
+
+.item-container {
 		margin-bottom: 4px;
 	}
 	.appBody {
@@ -86,10 +104,9 @@
 		width: 200px;
 		height: 200px;
 		fill: var(--color);
-		stroke: none;
 		background: var(--color-bg);
-		border-radius: 16px;
-		margin: 20px;
+		border-radius: 1.6rem;
+		margin: 2rem;
 		border: 1px solid var(--color-border);
 	}
 	a {
@@ -111,6 +128,25 @@
 		justify-content: center;
 		background: none;
 		border: none;
+	}
+
+	.copied {
+		font-size: 1.6rem;
+		font-weight: 600;
+		box-sizing: border-box;
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		background: var(--color-blue);
+		border: none;
+		border-radius: 1.6rem;
+		color: #fff;
+		padding: 0.5rem;
+	}
+	.name {
+		font-size: 1.6rem;
+		font-weight: 600;
+		color: var(--color-text);
 	}
 
 
