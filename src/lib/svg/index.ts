@@ -57,6 +57,7 @@ export { default as QuestionIcon} from "./question.svelte";
 export { default as RefreshIcon } from "./refresh.svelte";
 export { default as ReceiveIcon} from "./receive.svelte";
 export { default as SwitchCheck } from "./switch.svelte";
+export { default as SaveIcon } from "./save.svelte";
 export { default as SafeGuardIcon } from "./safeGuard.svelte";
 export { default as SendFilled } from "./send-filled.svelte";
 export { default as ScanIcon } from "./scan.svelte";

@@ -1,6 +1,6 @@
 import Signer from '$lib/wallet/worker/signer.ts?worker';
 import { accountState } from '$lib/wallet/runes';
-import { getElement, dbStore, type LegacyVault,type Account} from '$lib/wallet/common';
+import { getElement, dbStore, type LegacyVault, type Account, type Settings } from '$lib/wallet/common';
 
 export const signer = new Signer();
 
@@ -69,55 +69,53 @@ export function queryMid() {
 
 export async function addEvmAccount() {
 	const result = (await addEvmAccountWorker()) as signerResponseType | null;
-	if (result?.success === true) {
-		const data = localStorage.getItem('settings');
-		if (data) {
-			const settings = JSON.parse(data);
-			const newAccount = result.data
-			if (newAccount) accountState.accountList = [...accountState.accountList, newAccount as Account];
+	try {
+		if (result?.success === true) {
+			const settings = JSON.parse(localStorage.getItem('settings')!) as Settings;
+			const newAccount = result.data as Account;
+			accountState.accountList = [...accountState.accountList, newAccount];
 			accountState.currentAccountIndex = settings.nextAccountIndex;
-			accountState.nextAccountIndex ++;
-			accountState.nextEvmAddressIndex ++;
+			accountState.nextAccountIndex++;
 			settings.currentAccountIndex = settings.nextAccountIndex;
-			settings.nextEvmAddressIndex++;
 			settings.nextAccountIndex++;
 			localStorage.setItem('settings', JSON.stringify(settings));
 		}
+	} catch (e) {
+		console.error('Error when adding new account', e);
 	}
 }
 
 function addEvmAccountWorker() {
 	return new Promise((resolve) => {
 		signer.onmessage = (event) => {
-			resolve(event.data); 
+			resolve(event.data);
 		};
-		
+
 		signer.postMessage({
-				method: 'addEvmAccount',
-				argus: { index: accountState.nextAccountIndex, addressIndex: accountState.nextEvmAddressIndex }
-			});
+			method: 'addEvmAccount',
+			argus: { index: accountState.nextAccountIndex }
+		});
 	});
 }
 
-export async function AddEvmAccountWithPassword(password: string) {
-    const result = (await addEvmAccountPasswordWorker(password)) as signerResponseType | null;
-    if (result?.success === true) {
-        const data = localStorage.getItem('settings');
-        if (data) {
-			const settings = JSON.parse(data);
-			const newAccount = result.data
-			if (newAccount) accountState.accountList = [...accountState.accountList, newAccount as Account];
+export async function addEvmAccountWithPassword(password: string) {
+	const result = (await addEvmAccountPasswordWorker(password)) as signerResponseType | null;
+	try {
+		if (result?.success === true) {
+			const settings = JSON.parse(localStorage.getItem('settings')!) as Settings;
+			const newAccount = result.data as Account;
+			if (newAccount) accountState.accountList = [...accountState.accountList, newAccount];
 			accountState.currentAccountIndex = settings.nextAccountIndex;
-			accountState.nextAccountIndex ++;
-			accountState.nextEvmAddressIndex ++;
+			accountState.nextAccountIndex++;
 			settings.currentAccountIndex = settings.nextAccountIndex;
-			settings.nextEvmAddressIndex++;
 			settings.nextAccountIndex++;
 			localStorage.setItem('settings', JSON.stringify(settings));
+
 		}
+	} catch (e) {
+		console.error('Error when adding new account', e);
 	}
 }
-
 
 function addEvmAccountPasswordWorker(password: string) {
 	return new Promise((resolve) => {
@@ -129,7 +127,6 @@ function addEvmAccountPasswordWorker(password: string) {
 			method: 'addEvmAccountWithPassword',
 			argus: {
 				index: accountState.nextAccountIndex,
-				addressIndex: accountState.nextEvmAddressIndex,
 				password: password
 			}
 		});
@@ -153,3 +150,15 @@ export function checkIsLocked() {
 		isLocked();
 	});
 }
+
+export function changeVaultPassword(oldPassword: string, newPassword: string) {
+	return new Promise((resolve) => {
+		signer.onmessage = (event) => {
+			resolve(event.data);
+		};
+		signer.postMessage({ method: 'changeVaultPassword', argus: { oldPassword: oldPassword, newPassword: newPassword } });
+	});
+}
+
+
+

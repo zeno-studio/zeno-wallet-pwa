@@ -24,9 +24,6 @@ export const createSettings = async () => {
 		accountState.currentAccountIndex = data.currentAccountIndex;
 		accountState.nextAccountIndex = data.nextAccountIndex;
 		accountState.nextPolkadotIndex = data.nextPolkadotIndex;
-		accountState.nextWatchAccountIndex = data.nextWatchAccountIndex;
-		accountState.nextEvmAddressIndex = data.nextEvmAddressIndex;
-		accountState.nextPolkadotAddressIndex = data.nextPolkadotAddressIndex;
 		await accountState.getAccountList();
 
 		// intialize customChains

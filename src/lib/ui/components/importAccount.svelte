@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { isSmallScreen } from '$lib/ui/ts';
-	import { createEvmAccount, isValidMn } from '$lib/wallet/common';
+	import { createEvmAccount, isValidMn, type Settings } from '$lib/wallet/common';
 	import { EyeIcon, EyeOffIcon, CloseIcon, AlertTriangle, PasteIcon } from '$lib/svg';
 	import { passwordStrength } from 'check-password-strength';
 	import { accountState, saveMidPass } from '$lib/wallet/runes';
@@ -78,21 +78,21 @@
 		});
 	}
 
-	async function handleImportEvmAccount(ps: string, mn: string) {
-		const data = localStorage.getItem('settings');
-		if (data) {
-			const settings = JSON.parse(data);
-			createEvmAccount(1, 0, ps,mn);
-			accountState.nextAccountIndex++;
-			accountState.currentAccountIndex = 1;
-			accountState.nextEvmAddressIndex++;
-			await accountState.getAccountList();
-			settings.nextEvmAddressIndex++;
-			settings.nextAccountIndex++;
-			settings.currentAccountIndex = 1;
-			localStorage.setItem('settings', JSON.stringify(settings));
-			saveMidPass(ps);
-			close() 
+	async function importAccount(ps: string, mn: string) {
+		try {
+			const settings = JSON.parse(localStorage.getItem('settings')!) as Settings;
+			if (createEvmAccount(1, ps, mn)) {
+				accountState.nextAccountIndex++;
+				accountState.currentAccountIndex = 1;
+				await accountState.getAccountList();
+				settings.currentAccountIndex = 1;
+				settings.nextAccountIndex++;
+				localStorage.setItem('settings', JSON.stringify(settings));
+				saveMidPass(ps);
+				close();
+			}
+		} catch (e) {
+			console.error('Error when importing account', e);
 		}
 	}
 
@@ -138,7 +138,6 @@
 	{#if mnValid === true}
 		<div class="step2">
 			<div class="title">Set Your Password</div>
-
 			<div class="container">
 				{#if passwordShow}
 					<input
@@ -212,7 +211,7 @@
 			{:else if password === password2 && terms && psStrength === 'Too weak'}
 				<button class="start"> Password too weak</button>
 			{:else if password === password2 && terms && psStrength !== 'Too weak'}
-				<button class="ok" onclick={() => handleImportEvmAccount(password as string,mn as string)}>
+				<button class="ok" onclick={() => importAccount(password as string,mn as string)}>
 					Submit
 				</button>
 			{/if}

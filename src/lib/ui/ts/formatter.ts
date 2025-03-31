@@ -11,9 +11,13 @@ export const shortenAccountId = (name: string, startChars = 8, endChars = 2) => 
     return `${name.slice(0, startChars)}${SEPARATOR}${name.slice(name.length - endChars)}`;
 };
 
-export const shortenAddress = (address: string, startChars = 6, endChars = 4) => {
+export const shortenAddress4 = (address: string, startChars = 6, endChars = 4) => {
     return `${address.slice(0, startChars)}${SEPARATOR}${address.slice(address.length - endChars)}`;
 };
+
+export const shortenAddress6 = (address: string, startChars = 8, endChars = 6) => {
+  return `${address.slice(0, startChars)}${SEPARATOR}${address.slice(address.length - endChars)}`;
+}
 
 export function trimToLength(value: string, maxLength: number): string {
     if (!value) return ''

@@ -5,7 +5,7 @@
 		addEvmAccount,
 		checkPassword,
 		type signerResponseType,
-		AddEvmAccountWithPassword
+		addEvmAccountWithPassword
 	} from '$lib/wallet/runes';
 	import { CloseIcon, EyeIcon, EyeOffIcon } from '$lib/svg';
 	import { accountState } from '$lib/wallet/runes';
@@ -26,6 +26,7 @@
 			passwordInput.value = '';
 		}
 		isValidPs = null
+		password = null;
 	}
 
 	async function handleAddEvmAccount() {
@@ -50,7 +51,7 @@
 		const result = (await checkPassword(ps)) as signerResponseType | null;
 		if (result?.data === true) {
 			isValidPs = true;
-			AddEvmAccountWithPassword(ps);
+			addEvmAccountWithPassword(ps);
 			close()
 		} else {
 			isValidPs = false;
@@ -160,7 +161,7 @@
 		height: 4.8rem;
 		border: none;
 		border-radius: 1.6rem;
-		background: var(--color-blue);
+		background: var(--color-pink);
 		box-sizing: border-box;
 		width: 100%;
 		padding: 1rem;

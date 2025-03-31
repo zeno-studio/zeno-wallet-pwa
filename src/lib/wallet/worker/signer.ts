@@ -1,4 +1,4 @@
-import { getElement, dbStore, deriveEvm,isValidPassword, type LegacyVault, type Account } from '$lib/wallet/common';
+import { getElement, removeElement, dbStore, deriveEvm, isValidPassword, type LegacyVault, type Account } from '$lib/wallet/common';
 import { scrypt } from '@noble/hashes/scrypt';
 import { hexToBytes } from '@noble/ciphers/utils';
 import { managedNonce } from '@noble/ciphers/webcrypto';
@@ -7,6 +7,7 @@ import * as bip39 from '@scure/bip39';
 import { wordlist } from '@scure/bip39/wordlists/english';
 import { HDKey } from '@scure/bip32';
 import { Transaction, addr } from 'micro-eth-signer';
+import { packMn, restoreMn } from '$lib/wallet/common';
 
 
 let isLocked = true;
@@ -40,10 +41,10 @@ onmessage = ({ data }) => {
 			saveMidPass(data.argus.password, data.argus.salt);
 			break;
 		case 'addEvmAccount':
-			addEvmAccount(data.argus.index, data.argus.addressIndex);
+			addEvmAccount(data.argus.index);
 			break;
 		case 'addEvmAccountWithPassword':
-			addEvmAccountWithPassword(data.argus.index, data.argus.addressIndex, data.argus.password);
+			addEvmAccountWithPassword(data.argus.index, data.argus.password);
 			break;
 		case 'checkPassword':
 			checkPassword(data.argus.password);
@@ -57,6 +58,9 @@ onmessage = ({ data }) => {
 			break;
 		case 'signEvmTx':
 			signEvmTx(data.argus.tx, data.argus.account, data.argus.password);
+			break;
+		case 'changeVaultPassword':
+			changeVaultPassword(data.argus.oldPassword, data.argus.newPassword);
 			break;
 		default:
 			throw new Error(`Unknown method: ${data.method}`);
@@ -108,7 +112,7 @@ function saveMidPassNotPost(password: string, salt: string) {
 		setTimeout(() => {
 			midpass = psReplacer;
 		}, timeout + 60000);;
-	} 
+	}
 }
 
 
@@ -175,27 +179,38 @@ function signEvmTransaction(tx: any, account: Account, mn: string) {
 		});
 		const signedTx = Tx.signBy(privateKey).toHex();
 		const success = true;
-		postMessage({ success, data:signedTx });
+		postMessage({ success, data: signedTx });
 	}
 }
 
-async function addEvmAccount(index: number, addressIndex: number) {
+async function addEvmAccount(index: number) {
 	const mn = await reBuildMn();
-	const newAccount = deriveEvm(index, addressIndex, mn)
-	if (newAccount)	postMessage({ success: true,data:newAccount});
+	const newAccount = deriveEvm(index, mn)
+	if (newAccount) postMessage({ success: true, data: newAccount });
 	else postMessage({ success: false });
 }
 
-async function addEvmAccountWithPassword(index: number, addressIndex: number, password: string) {
+async function addEvmAccountWithPassword(index: number, password: string) {
 	const vault = (await getElement(dbStore.Vault.name, 'default')) as LegacyVault;
 	saveMidPassNotPost(password, vault.salt);
 	const mn = await reBuildMn();
-	const newAccount = deriveEvm(index, addressIndex, mn)
-	if (newAccount)	postMessage({ success: true,data:newAccount});
+	const newAccount = deriveEvm(index, mn)
+	if (newAccount) postMessage({ success: true, data: newAccount });
 	else postMessage({ success: false });
 }
 
 async function checkPassword(password: string) {
 	const isValid = await isValidPassword(password, 'default');
-	postMessage({ success: true, data: isValid });  
+	postMessage({ success: true, data: isValid });
 }
+
+async function changeVaultPassword(oldPassword: string, newPassword: string) {
+	const vault = (await getElement(dbStore.Vault.name, 'default')) as LegacyVault;
+	if (!vault) return postMessage({ success: false });
+	const mnemonic = await restoreMn(oldPassword, vault.vaultName);
+	if (!mnemonic) return postMessage({ success: false });
+	removeElement(dbStore.Vault.name, vault.vaultName);
+	packMn(newPassword, mnemonic, vault.vaultName);
+	postMessage({ success: true });
+}
+

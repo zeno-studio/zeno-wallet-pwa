@@ -2,7 +2,7 @@
 	import { fly } from 'svelte/transition';
 	import { MediaQuery } from 'svelte/reactivity';
 	import { ChevronsRight } from '$lib/svg';
-	import { shortenAddress } from '$lib/ui/ts';
+	import { shortenAddress6 } from '$lib/ui/ts';
 
 	let address = '0xeDf074bd2c3FC10A296E7C9c52BfD80ab5d2A9E9';
 	const isSmallScreen = new MediaQuery('(max-width: 768px)');
@@ -23,7 +23,7 @@
 		</div>
 		<div class="panelMain" transition:fly={{ x: 360, opacity: 1 }}>
 			<div class="panel-top">
-				<div class="panel-Item-l">{shortenAddress(address)}</div>
+				<div class="panel-Item-l">{shortenAddress6(address)}</div>
 				<div class="panel-Item-r">{sdf}</div>
 			</div>
 

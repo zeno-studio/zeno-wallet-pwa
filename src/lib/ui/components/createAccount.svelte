@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { isSmallScreen } from '$lib/ui/ts';
-	import { createEvmAccount } from '$lib/wallet/common';
+	import { createEvmAccount,type Settings } from '$lib/wallet/common';
 	import { CloseIcon, EyeIcon, EyeOffIcon } from '$lib/svg';
 	import { passwordStrength } from 'check-password-strength';
 	import { accountState, saveMidPass } from '$lib/wallet/runes';
@@ -30,23 +30,25 @@
 		if (passwordInput2) {
 			passwordInput2.value = '';
 		}
+		password = null;
+		password2 = null;
 	}
 
-	async function handleCreateEvmAccount(ps: string) {
-		const data = localStorage.getItem('settings');
-		if (data) {
-			const settings = JSON.parse(data);
-			createEvmAccount(1, 0, ps);
-			accountState.currentAccountIndex = 1;
-			accountState.nextAccountIndex++;
-			accountState.nextEvmAddressIndex++;
-			await accountState.getAccountList();
-			settings.currentAccountIndex = 1;
-			settings.nextAccountIndex++;
-			settings.nextEvmAddressIndex++;
-			localStorage.setItem('settings', JSON.stringify(settings));
-			saveMidPass(ps);
-			close();
+	async function createAccount(password: string) {
+		const settings = JSON.parse(localStorage.getItem('settings')!) as Settings;
+		try {
+			if (createEvmAccount(1, password)) {
+				accountState.currentAccountIndex = 1;
+				accountState.nextAccountIndex++;
+				await accountState.getAccountList();
+				settings.currentAccountIndex = 1;
+				settings.nextAccountIndex++;
+				localStorage.setItem('settings', JSON.stringify(settings));
+				saveMidPass(password);
+				close();
+			}
+		} catch (e) {
+			console.error('Error when creating account', e);
 		}
 	}
 </script>
@@ -134,8 +136,7 @@
 	{:else if password === password2 && terms && psStrength === 'Too weak'}
 		<button class="start"> Password too weak</button>
 	{:else if password === password2 && terms && psStrength !== 'Too weak'}
-		<button class="ok" onclick={() => handleCreateEvmAccount(password as string)}> Submit</button>
-
+		<button class="ok" onclick={() => createAccount(password as string)}> Submit</button>
 	{/if}
 </div>
 
