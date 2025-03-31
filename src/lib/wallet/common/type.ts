@@ -13,8 +13,6 @@ export type Settings = {
 	currentAccountIndex: number;
 	nextAccountIndex: number;
 	nextPolkadotIndex: number;
-	nextEvmAddressIndex: number;
-	nextPolkadotAddressIndex: number;
 	autoLock: boolean;
 	timeLock: number;
 	activeApps: App[];
@@ -30,8 +28,6 @@ export const defaultSettings: Settings = {
 	currentAccountIndex: 0,
 	nextAccountIndex: 1,
 	nextPolkadotIndex: 101,
-	nextEvmAddressIndex: 0,
-	nextPolkadotAddressIndex: 0,
 	autoLock: true,
 	timeLock: 30, // in minutes
 	activeApps: [],

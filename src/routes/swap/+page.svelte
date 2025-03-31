@@ -3,9 +3,15 @@
 	import {isSmallScreen } from '$lib/ui/ts';
 	import { SettingFilled } from '$lib/svg';
 	import { page } from '$app/state';
+	import { onMount } from 'svelte';
 
 	let address = '0xeDf074bd2c3FC10A296E7C9c52BfD80ab5d2A9E9';
 	const addressSvg = encodeQR(address, 'svg');
+	onMount(() => {
+		console.log(
+			document.getElementById('delete')
+		);
+	});
 </script>
 
 <div class="appContainer">
@@ -41,9 +47,12 @@
 			<div class="item">
 				<div>{address}</div>
 			</div>
+		
 		</div>
 	</div>
 </div>
+
+<button id="delete" >Delete Account</button>
 
 <style>
 	.appBody {

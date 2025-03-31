@@ -6,10 +6,11 @@ class AccountState {
     currentAccountIndex = $state(0);
     nextAccountIndex = $state(1);
     nextPolkadotIndex = $state(101);
-    nextEvmAddressIndex = $state(0);
-    nextPolkadotAddressIndex = $state(0);
     accountList = $state<Account[]>([]);
     editingAccountIndex = $state(0);
+    editingAccount = $derived.by(() => {
+        return this.accountList.find(a => a.accountIndex === this.editingAccountIndex);
+    });
     currentAccount = $derived.by(() => {
         return this.accountList.find(a => a.accountIndex === this.currentAccountIndex);
     });
@@ -25,10 +26,10 @@ class AccountState {
     }
 
     deleteAccount() {
-        if (this.currentAccountIndex !== 0) {
-            removeElement(dbStore.Account.name, this.currentAccountIndex);
+        if (this.editingAccountIndex !== 0) {
+            removeElement(dbStore.Account.name, this.editingAccountIndex);
         }
-        this.accountList = this.accountList.filter(a => a.accountIndex !== this.currentAccountIndex);
+        this.accountList = this.accountList.filter(a => a.accountIndex !== this.editingAccountIndex);
         this.setCurrentAccountIndex(this.accountList[0].accountIndex);
         goto('/#/setting/account_manage');
     }
@@ -44,11 +45,12 @@ class AccountState {
         }
     }
     hiddenAccounts() {
-        const account =$state.snapshot(this.currentAccount);
+        if (!this.editingAccount) return;
+        this.editingAccount.isHidden = !this.editingAccount.isHidden;
+        const account =$state.snapshot(this.editingAccount);
         if (account) {
-            account.isHidden = !account.isHidden;
             editElement(dbStore.Account.name, account);
-            this.accountList = this.accountList.map(a => a.accountIndex === this.currentAccountIndex ? account : a);
+            this.accountList = this.accountList.map(a => a.accountIndex === this.editingAccountIndex ? account : a);
         }
     }
 

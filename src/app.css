@@ -255,7 +255,6 @@ div {
 	box-sizing: border-box;
 	border: none;
 	padding: 6.4rem 0.8rem 0rem;
-	margin-bottom: 7rem;
 }
 
 .appBody {
@@ -323,6 +322,8 @@ div {
 	position: absolute;
 	right: 0px;
 	fill: none;
+	border: none;
+	background: none;
 }
 
 .toast {
@@ -340,26 +341,6 @@ div {
 	background-color: var(--color-blossom1);
 }
 
-.button-label {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 7rem;
-	height: 3.5rem;
-	margin-right: 0.4rem;
-	border-radius: 1.6rem;
-	border: none;
-	background: none;
-	cursor: pointer;
-}
-
-.button-empty {
-	width: 100%;
-	background: none;
-	padding: 0px;
-	border: none;
-	margin: 0px;
-}
 
 [popover]:not(:popover-open) {
 	/* But make sure not to show it unless it's open: */
@@ -393,12 +374,17 @@ div {
 	box-sizing: border-box;
 	width: 100%;
 	flex-direction: column;
-	background: var(--color-bg);
+	background: none;
 	border-radius: 1.6rem;
 	padding: 1rem;
 	cursor: pointer;
 	margin-bottom: 0.8rem;
-	border: 1px solid var(--color-border);
+	border: 1px solid transparent;
+}
+
+.setting:hover {
+	cursor: pointer;
+	border: 1px solid var(--color-bg3);
 }
 
 .setting1 {
@@ -410,10 +396,8 @@ div {
 	padding: 1rem;
 	cursor: pointer;
 	margin-bottom: 0.8rem;
-}
-
-.setting:hover {
-	border: 1px solid var(--color-bg3);
+	border: none;
+	height: 5rem;
 }
 
 .setting1:hover,
@@ -424,32 +408,44 @@ div {
 }
 
 .setting-top {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
 	box-sizing: border-box;
 	width: 100%;
-	flex-direction: column;
 	background: var(--color-bg1);
 	border-top-left-radius: 1.6rem;
 	border-top-right-radius: 1.6rem;
 	padding: 1rem;
 	cursor: pointer;
-	margin-bottom: 1px;
+	margin-bottom: 0.1rem;
+	border: none;
+	height: 5rem;
 }
 
 .setting-medium {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
 	box-sizing: border-box;
 	width: 100%;
-	flex-direction: column;
 	background: var(--color-bg1);
 	padding: 1rem;
 	cursor: pointer;
 	margin-bottom: 1px;
 	border: none;
+	height: 5rem;
 }
 
 .setting-bottom {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
 	box-sizing: border-box;
 	width: 100%;
-	flex-direction: column;
 	background: var(--color-bg1);
 	border-bottom-left-radius: 1.6rem;
 	border-bottom-right-radius: 1.6rem;
@@ -457,10 +453,11 @@ div {
 	cursor: pointer;
 	margin-bottom: 0.8rem;
 	border: none;
+	height: 5rem;
 }
 
 .article {
-	font-size: 1.5rem;
+	font-size: 1.8rem;
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
@@ -517,4 +514,31 @@ div {
 		border-radius: 0.4rem;
 		border: 1px solid var(--color-text);
 	}
+}
+
+.label1 {
+	font-size: 1.5rem;
+	font-weight: 500;
+}
+
+.label2 {
+	font-size: 1.5rem;
+	font-weight: 600;
+}
+.label3 {
+	font-size: 1.8rem;
+	font-weight: 700;
+}
+
+.button-label {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 7rem;
+	height: 3.5rem;
+	margin-right: 0.4rem;
+	border-radius: 1.6rem;
+	border: none;
+	background: none;
+	cursor: pointer;
 }

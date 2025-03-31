@@ -15,27 +15,44 @@
 		QuestionIcon,
 		AccountIcon,
 	} from '$lib/svg';
+	import { toSvg } from 'jdenticon';
+	import { accountState } from '$lib/wallet/runes';
+	import { goto } from '$app/navigation';
+
+	function generateAvatar(address: string) {
+		return toSvg(address, 40);
+	}
+	function gotoAccount() {
+		goto(`#/setting/account_detail`);
+		accountState.editingAccountIndex = accountState.currentAccountIndex
+	}
 </script>
 
 <div class="appContainer">
 	<div class="appBody">
 		<!-- currentAccount -->
-		<a class="setting" href="/#/setting/account_detail">
+		<button class="setting" onclick={gotoAccount}>
 			<div class="item">
 				<div class="item-l">
-					<div class="avatar">1</div>
-					<span class="title">Account 1 </span>
+					<div class="avatar">
+						{#if accountState.currentAccountIndex === 0}
+					0
+				{:else}
+					{@html generateAvatar(accountState.currentAccount?.address ?? '')}
+				{/if}
+					</div>
+					<span class="label2">{accountState.currentAccount?.accountName} </span>
 				</div>
 
 				<div class="item-r"><ArrowForward class="icon18A" /></div>
 			</div>
-		</a>
+		</button>
 		<!-- Theme -->
 		<div class="setting-top">
 			<div class="item">
 				<div class="item-l">
 					<span class="icon"> <Darkmode class="icon18A" /></span>
-					<span class="title">Theme</span>
+					<span class="label2">Theme</span>
 				</div>
 				<div class="item-r"><SwitchTheme /></div>
 			</div>
@@ -46,7 +63,7 @@
 				<div class="item-l">
 					<span class="icon"> <LanguageIcon class="icon18A" /></span>
 
-					<span class="title">Language</span>
+					<span class="label2">Language</span>
 				</div>
 				<div class="item-r"><ArrowForward class="icon18A" /></div>
 			</div>
@@ -57,7 +74,7 @@
 				<div class="item-l">
 					<span class="icon"> <DollarIcon class="icon18A" /></span>
 
-					<span class="title">Currency</span>
+					<span class="label2">Currency</span>
 				</div>
 
 				<div class="item-r"><ArrowForward class="icon18A" /></div>
@@ -69,7 +86,7 @@
 				<div class="item-l">
 					<span class="icon"> <AccountIcon class="icon18A" /></span>
 
-					<span class="title">Manage Account</span>
+					<span class="label2">Manage Account</span>
 				</div>
 
 				<div class="item-r"><ArrowForward class="icon18A" /></div>
@@ -81,7 +98,7 @@
 				<div class="item-l">
 					<span class="icon"> <SafeGuardIcon class="icon18A" /></span>
 
-					<span class="title">Security & Privacy</span>
+					<span class="label2">Security & Privacy</span>
 				</div>
 
 				<div class="item-r"><ArrowForward class="icon18A" /></div>
@@ -93,7 +110,7 @@
 				<div class="item-l">
 					<span class="icon"> <CloudIcon class="icon18A" /></span>
 
-					<span class="title">Backup Wallet</span>
+					<span class="label2">Backup Wallet</span>
 				</div>
 
 				<div class="item-r"><ArrowForward class="icon18A" /></div>
@@ -105,7 +122,7 @@
 				<div class="item-l">
 					<span class="icon"> <ExplorerIcon class="icon18A" /></span>
 
-					<span class="title">Active Chains</span>
+					<span class="label2">Active Chains</span>
 				</div>
 
 				<div class="item-r"><ArrowForward class="icon18A" /></div>
@@ -117,7 +134,7 @@
 				<div class="item-l">
 					<span class="icon"> <BookIcon class="icon18A" /></span>
 
-					<span class="title">Address Book</span>
+					<span class="label2">Address Book</span>
 				</div>
 
 				<div class="item-r"><ArrowForward class="icon18A" /></div>
@@ -129,7 +146,7 @@
 				<div class="item-l">
 					<span class="icon"> <AppsIcon class="icon18A" /></span>
 
-					<span class="title">Active Apps</span>
+					<span class="label2">Active Apps</span>
 				</div>
 
 				<div class="item-r"><ArrowForward class="icon18A" /></div>
@@ -141,7 +158,7 @@
 				<div class="item-l">
 					<span class="icon"> <QuestionIcon class="icon18A" /></span>
 
-					<span class="title">About</span>
+					<span class="label2">About</span>
 				</div>
 
 				<div class="item-r" ><ArrowForward class="icon18A" /></div>
@@ -165,15 +182,16 @@
 
 <style lang="postcss">
 	.avatar {
-		width: 40px;
-		height: 40px;
-		display: flex;
-		justify-content: center;
+		box-sizing: border-box;
+		flex-shrink: 0;
+		width: 5rem;
+		height: 5rem;
 		margin-left: 1rem;
 		margin-right: 2rem;
-		border-radius: 20px;
-		background-color: var(--color-pink);
-		color: #fff;
+		border-radius: 50%;
+		padding: 0px;
+		background-color: #fff;
+		border: 2px solid var(--color-border);
 	}
 
 	:popover-open {
@@ -232,9 +250,5 @@
 		margin-right: 2rem;
 
 	}
-	.title{
-		display: flex;
-		color: var(--color);
 
-	}
 </style>

@@ -3,9 +3,85 @@
 	import {isSmallScreen } from '$lib/ui/ts';
 	import { SettingFilled } from '$lib/svg';
 	import { page } from '$app/state';
+	import { onMount } from 'svelte';
 
 	let address = '0xeDf074bd2c3FC10A296E7C9c52BfD80ab5d2A9E9';
-	const addressSvg = encodeQR(address, 'svg');
+	
+	function renderSimpleSquareQR(containerId: string) {
+  try {
+    const qrData = encodeQR(address, 'raw', { ecc: 'high' });
+    if (!qrData || !Array.isArray(qrData) || qrData.length === 0) {
+      throw new Error('Invalid QR data');
+    }
+
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    if (!ctx) {
+      throw new Error('Failed to get canvas context');
+    }
+
+    const size = qrData.length;
+    const scale = 10;
+
+    canvas.width = size * scale;
+    canvas.height = size * scale;
+
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    for (let y = 0; y < size; y++) {
+      for (let x = 0; x < size; x++) {
+        if (qrData[y][x]) {
+          ctx.fillStyle = 'black';
+          ctx.fillRect(x * scale, y * scale, scale, scale);
+        }
+      }
+    }
+
+    finalizeRendering(canvas, containerId);
+  } catch (error) {
+    console.error('Error rendering QR code:', error);
+  }
+}
+
+function finalizeRendering(canvas: HTMLCanvasElement | null, containerId: string) {
+  if (!canvas) {
+    console.error('Error rendering QR code: canvas is null');
+    return;
+  }
+
+  const container = document.getElementById(containerId);
+  if (!container) {
+    console.error('Error rendering QR code: container is null');
+    return;
+  }
+
+  try {
+    container.innerHTML = '';
+    container.appendChild(canvas);
+
+    const downloadBtn = document.createElement('button');
+    downloadBtn.textContent = 'Download QR Code';
+    downloadBtn.style.marginTop = '10px';
+    downloadBtn.onclick = () => {
+      const dataUrl = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.href = dataUrl;
+      link.download = 'qrcode_simple.png';
+      link.click();
+    };
+    container.appendChild(downloadBtn);
+  } catch (error) {
+    console.error('Error rendering QR code:', error);
+  }
+}
+
+onMount(() => {
+	renderSimpleSquareQR('qr');
+});
+// 使用示例
+
+
 </script>
 
 <div class="appContainer">
@@ -35,7 +111,8 @@
 		</div>
 		<div class="item-container">
 			<div class="item">
-				<div class="qr">{@html addressSvg}</div>
+				<div id="qr">1</div>
+				<div id="aa">1</div>
 			</div>
 
 			<div class="item">
@@ -46,6 +123,7 @@
 </div>
 
 <style>
+
 	.appBody {
 		padding-top: 64px;
 	}

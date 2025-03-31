@@ -60,13 +60,11 @@
 	
 		<div class="item-container">
 				<div class="qr">{@html addressSvg}</div>
+				<div class="name">{accountName}</div>	
 
 		</div>
 		
-		<div class="item-container">
-
-			<div class="name">{accountName}</div>	
-	</div>
+	
 			 
 			 {#if copied}
 			 <div class="copied" >
