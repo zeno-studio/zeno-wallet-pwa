@@ -3,84 +3,47 @@
 	import {isSmallScreen } from '$lib/ui/ts';
 	import { SettingFilled } from '$lib/svg';
 	import { page } from '$app/state';
-	import { onMount } from 'svelte';
+	import { accountState } from '$lib/wallet/runes';
+  import { onMount } from 'svelte';
 
-	let address = '0xeDf074bd2c3FC10A296E7C9c52BfD80ab5d2A9E9';
-	
-	function renderSimpleSquareQR(containerId: string) {
-  try {
-    const qrData = encodeQR(address, 'raw', { ecc: 'high' });
-    if (!qrData || !Array.isArray(qrData) || qrData.length === 0) {
-      throw new Error('Invalid QR data');
-    }
+  let previewBox = $state<HTMLVideoElement | null>(null);
+  let canvas = $state<HTMLCanvasElement | null>(null);
 
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    if (!ctx) {
-      throw new Error('Failed to get canvas context');
-    }
 
-    const size = qrData.length;
-    const scale = 10;
+let imgData = null;
 
-    canvas.width = size * scale;
-    canvas.height = size * scale;
-
-    ctx.fillStyle = 'white';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    for (let y = 0; y < size; y++) {
-      for (let x = 0; x < size; x++) {
-        if (qrData[y][x]) {
-          ctx.fillStyle = 'black';
-          ctx.fillRect(x * scale, y * scale, scale, scale);
-        }
-      }
-    }
-
-    finalizeRendering(canvas, containerId);
-  } catch (error) {
-    console.error('Error rendering QR code:', error);
-  }
+function startCamera() {
+  // 申请摄像头权限
+  navigator.mediaDevices.getUserMedia({video: true, audio: false}).then(stream => {
+    // 把媒体流直接传给 video 的 srcObject
+    (previewBox as HTMLVideoElement).srcObject = stream;
+  }).catch(info => {
+    alert('无法获取摄像头权限：' + info);
+  });
 }
 
-function finalizeRendering(canvas: HTMLCanvasElement | null, containerId: string) {
-  if (!canvas) {
-    console.error('Error rendering QR code: canvas is null');
-    return;
-  }
-
-  const container = document.getElementById(containerId);
-  if (!container) {
-    console.error('Error rendering QR code: container is null');
-    return;
-  }
-
-  try {
-    container.innerHTML = '';
-    container.appendChild(canvas);
-
-    const downloadBtn = document.createElement('button');
-    downloadBtn.textContent = 'Download QR Code';
-    downloadBtn.style.marginTop = '10px';
-    downloadBtn.onclick = () => {
-      const dataUrl = canvas.toDataURL('image/png');
-      const link = document.createElement('a');
-      link.href = dataUrl;
-      link.download = 'qrcode_simple.png';
-      link.click();
-    };
-    container.appendChild(downloadBtn);
-  } catch (error) {
-    console.error('Error rendering QR code:', error);
+function snapshot() {
+  // 拍照
+  if (canvas && previewBox) {
+    canvas.getContext('2d').drawImage(previewBox, 0, 0, canvas.width, canvas.height);
+    imgData = canvas.toDataURL('image/png');
   }
 }
 
 onMount(() => {
-	renderSimpleSquareQR('qr');
-});
-// 使用示例
+  const previewBoxElement = document.getElementById('preview-box');
+  const canvasElement = document.getElementById('canvas');
+  const startCameraButtonElement = document.getElementById('start-camera');
+  const snapshotButtonElement = document.getElementById('snapshot-btn');
 
+  if (!previewBoxElement || !canvasElement || !startCameraButtonElement || !snapshotButtonElement) {
+    console.error('Some required elements not found:', previewBoxElement, canvasElement, startCameraButtonElement, snapshotButtonElement);
+    return;
+  }
+
+  previewBox = previewBoxElement as HTMLVideoElement;
+  canvas = canvasElement as HTMLCanvasElement;
+});
 
 </script>
 
@@ -110,36 +73,30 @@ onMount(() => {
 			</div>
 		</div>
 		<div class="item-container">
-			<div class="item">
-				<div id="qr">1</div>
-				<div id="aa">1</div>
-			</div>
 
-			<div class="item">
-				<div>{address}</div>
-			</div>
+      <button type="button" id="start-camera" onclick={startCamera}>打开摄像头</button>
+      <button type="button" id="snapshot-btn" onclick={snapshot}>拍照</button>
+
+			<video id="preview-box" width="640" height="480" autoplay></video>
+			<canvas id="canvas" width="640" height="480"></canvas>
 		</div>
 	</div>
 </div>
 
 <style>
+		
 
 	.appBody {
-		padding-top: 64px;
+		padding-top: 48px;
 	}
 	.active {
 		padding-top: 20px;
 	}
 	.qr {
-		padding: 20px;
-		width: 200px;
-		height: 200px;
-		fill: var(--color);
-		stroke: none;
-		background: var(--color-bg);
+		width:20rem;
+    height: 200px;
+		background: var(--color-bg2);
 		border-radius: 16px;
-		margin: 20px;
-		border: 1px solid var(--color-border);
 	}
 	a {
 		font-size: 1.3rem;

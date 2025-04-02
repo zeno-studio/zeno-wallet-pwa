@@ -1,10 +1,17 @@
 <script lang="ts">
 	import { isSmallScreen } from '$lib/ui/ts';
-	import { ArrowDown, CloseIcon, SearchIcon, ClockIcon, StarIcon } from '$lib/svg';
+	import { ArrowDown, CloseIcon, SearchIcon, ClockIcon, StarIcon, ScanIcon } from '$lib/svg';
 	import { page } from '$app/state';
+	import { addressBookState } from '$lib/wallet/runes';
+    import { ScanButton } from '$lib/ui/components';
+
 	let amount = $state(10000);
 	let amount2 = $state(100);
 	let modalClose = $state(false);
+
+	
+
+	
 </script>
 
 <div class="appContainer">
@@ -29,10 +36,13 @@
 				</div>
 			</div>
 		</div>
+
 		<div class="item-container">
 			<div class="item">
-				<div class="item-l-lable">you are sending</div>
+				<ScanButton />
+				<div>{addressBookState.scanedAddress}</div>
 			</div>
+
 			<div class="item">
 				<span class="amount">
 					{amount} eth
@@ -64,7 +74,7 @@
 				<div class="modal-header">
 					<div class="modal-title">Select Token</div>
 					<div class="search">
-						<input type="text" placeholder="Search">
+						<input type="text" placeholder="Search" />
 					</div>
 					<button class="button-open" onclick={() => (modalClose = !modalClose)}>
 						<CloseIcon class="icon2rem" />
@@ -170,20 +180,21 @@
 					<span>ETH</span>
 				</div>
 			</button>
-			<button class="finish">
-				Finished
-			</button>
-		
+			<button class="finish"> Finished </button>
 		</div>
 	{/if}
 {/if}
 
+
+
 <style>
+	
+
 	.appBody {
-		padding-top: 64px;
+		padding-top: 4rem;
 	}
 	.active {
-		padding-top: 20px;
+		padding-top: 2rem;
 	}
 
 	a {
@@ -195,15 +206,7 @@
 		background: var(--color-bg2);
 		color: var(--color);
 	}
-	.item-l-lable {
-		display: flex;
-		flex-direction: row;
-		justify-content: flex-start;
-		margin-right: auto;
-		font-size: 1.3rem;
-		font-weight: 600;
-		padding-left: 1rem;
-	}
+
 	.amount {
 		margin-top: 60px;
 		font-size: 3rem;
@@ -334,16 +337,16 @@
 	}
 
 	.finish {
-        height: 40px;
-        width: 100%;
-        border-radius: 20px;
-        margin: 0px;
-        padding: 0px;
-        background: var(--blue4);
-        border: none;
-        cursor: pointer;
-        color: #fff;
-        font-size: 1.5rem;
-        font-weight: 600;
-    }
+		height: 40px;
+		width: 100%;
+		border-radius: 20px;
+		margin: 0px;
+		padding: 0px;
+		background: var(--blue4);
+		border: none;
+		cursor: pointer;
+		color: #fff;
+		font-size: 1.5rem;
+		font-weight: 600;
+	}
 </style>

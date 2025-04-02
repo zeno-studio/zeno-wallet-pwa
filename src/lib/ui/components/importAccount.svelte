@@ -160,9 +160,9 @@
 				{/if}
 				<button class="eye" onclick={() => (passwordShow = !passwordShow)}>
 					{#if passwordShow}
-						<EyeIcon class="icon18B" />
+						<EyeIcon class="icon18A" />
 					{:else}
-						<EyeOffIcon class="icon18B" />
+						<EyeOffIcon class="icon18A" />
 					{/if}
 				</button>
 			</div>
