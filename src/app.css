@@ -68,8 +68,12 @@ body {
 	margin: 0;
 	padding: 0;
 	border: 0;
+	
 
 }
+body::-webkit-scrollbar {
+	display: none;
+  }
 
 a,
 button,
@@ -256,6 +260,7 @@ div {
 	border: none;
 	padding: 6.4rem 0.8rem 0rem;
 }
+
 
 .appBody {
 	flex-direction: column;
@@ -541,4 +546,11 @@ div {
 	border: none;
 	background: none;
 	cursor: pointer;
+}
+
+
+#preview {
+	position: absolute;
+	top: 0;
+	left: 0;
 }

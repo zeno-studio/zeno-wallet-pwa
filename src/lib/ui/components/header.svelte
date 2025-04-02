@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { LogoIcon, ArrowDown } from '$lib/svg';
+	import { ArrowDown } from '$lib/svg';
 	import { NavPanel, NavLeft,AccountList } from '$lib/ui/components';
 	import { clickOutside, isSmallScreen } from '$lib/ui/ts';
 	import { accountState } from '$lib/wallet/runes';
@@ -21,11 +21,8 @@
 
 <div class="nav">
 	<div class="nav-wrapper">
-		<div class="icon">
-			<button class="logoButton">
-				<LogoIcon class="logo" />
-			</button>
-		</div>
+			<img class="logo" src="/favicon.svg" alt="logo" />
+		
 		{#if isSmallScreen.current}
 			<div class="accountLeft">
 				<button class="accountButton" onclick={() => (accountPanel = !accountPanel)}>
@@ -94,20 +91,13 @@
 		height: 3.2rem;
 		padding: 1.6rem 1.6rem;
 	}
-	.icon {
-		display: block;
-		justify-content: flex-start;
-		height: 3.2rem;
-		vertical-align: middle;
-	}
-	.logoButton {
+	.logo{
+		border-radius: 0.6rem;
 		width: 3.6rem;
 		height: 3.6rem;
-		margin-right: 1.2rem;
 		padding: 0px;
 		border: none;
 		background: none;
-		cursor: pointer;
 	}
 	.subMenu {
 		display: flex;

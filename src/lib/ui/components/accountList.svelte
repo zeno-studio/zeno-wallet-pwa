@@ -83,7 +83,8 @@
 
 <style lang="postcss">
 	.pressed {
-		background: var(--color-bg2);
+		background: var(--green4);
+		color: #fff;
 	}
 	.left {
 		background: var(--color-bg1);
@@ -100,7 +101,8 @@
 			transform: translateY(1px);
 		}
 		&.pressed {
-			background: var(--color-bg2);
+			background: var(--green4);
+			color: #fff;
 		}
 	}
 	.right {
@@ -118,7 +120,8 @@
 			transform: translateY(1px);
 		}
 		&.pressed {
-			background: var(--color-bg2);
+			background: var(--green4);
+			color: #fff;
 		}
 	}
 	.container2 {

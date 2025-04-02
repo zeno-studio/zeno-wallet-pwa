@@ -49,6 +49,7 @@
 		"micro-eth-signer": "^0.13.3",
 		"micro-ftch": "^0.4.2",
 		"polkadot-api": "^1.9.7",
-		"qr": "^0.4.0"
+		"qr": "^0.4.0",
+		"qrcode-with-logos": "^1.1.1"
 	}
 }

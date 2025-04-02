@@ -1,24 +1,15 @@
 <script lang="ts">
-
-	import encodeQR from 'qr';
 	import {isSmallScreen,copyText } from '$lib/ui/ts';
 	import { CopyIcon} from '$lib/svg';
 	import { accountState } from '$lib/wallet/runes';
 	import { page } from '$app/state';
+	import QrCodeWithLogo from 'qrcode-with-logos'
 
-	let address = $state('');
-	let addressSvg = $state('');
+  let qrcode = $state<QrCodeWithLogo | null>(null);
 	let copied = $state(false)
-	let accountName = $state('');
 
 
-	$effect(() => {
-		if (accountState.currentAccount) {
-			address = accountState.currentAccount.address;
-			addressSvg = encodeQR(address, 'svg', { ecc: 'high' });
-			accountName = accountState.currentAccount.accountName;
-		}
-	})
+
 	function handleCopy() {
 		copyText("address");
 		copied = true
@@ -26,6 +17,31 @@
 			copied = false
 		}, 2000);
 	}
+
+
+
+	$effect(() => {
+		if (accountState.currentAccount) {
+				qrcode = new QrCodeWithLogo({
+			  content: accountState.currentAccount.address,
+			  width: 500,
+			  logo: {
+				  src: "/favicon.svg",
+				  logoRadius: 8,
+				  borderWidth: 0
+				},
+			  dotsOptions: {
+				  type: 'dot',
+				  color: '#000000'
+				},
+			  cornersOptions: {
+				  type: 'circle',
+				  color: '#000000'
+				}
+			})
+		}
+	})
+
 
 
 
@@ -59,12 +75,41 @@
 		</div>
 	
 		<div class="item-container">
-				<div class="qr">{@html addressSvg}</div>
-				<div class="name">{accountName}</div>	
+			{#await qrcode?.getCanvas() then canvas}
+			<img class="qr" src={canvas?.toDataURL()} alt="" />
+			<div>
+				<div class="name">{accountState.currentAccount?.accountName}</div>	</div>
 
-		</div>
+			<div>
+				<button class="share-l" onclick={() => {
+					if (navigator.share) {
+						navigator.share({
+							title: 'Qr Code',
+							files: [new File([canvas?.toDataURL() || ''], 'qr.png', { type: 'image/png' })]
+						})
+					}
+				}}>
+					Share Qrcode
+				</button>
+
+				<button class="share-r" onclick={() => {
+					if (navigator.share) {
+						navigator.share({
+							title: 'Address',
+							text: accountState.currentAccount?.address || ''
+						})
+					}
+				}}>
+					Share Address
+				  </button>
+			</div>
+			
+
+		  {/await}
+				
+
+		</div>	
 		
-	
 			 
 			 {#if copied}
 			 <div class="copied" >
@@ -73,7 +118,7 @@
 			 {:else }
 			 <div class="item-container3">
 			 <button class="copy" onclick={handleCopy}>
-				<span id="address">{address}</span>&nbsp;	
+				<span id="address">{accountState.currentAccount?.address}</span>&nbsp;	
 				<CopyIcon class="icon18A" />
 			</button>
 				</div>
@@ -89,23 +134,51 @@
 <style lang="postcss">
 
 .item-container {
-		margin-bottom: 4px;
+		margin-bottom: 0.4rem;
 	}
 	.appBody {
-		padding-top: 64px;
+		padding-top: 4rem;
 	}
 	.active {
-		padding-top: 20px;
+		padding-top: 2rem;
+	}
+	.share-l{
+		font-size: 1.2rem;
+		font-weight: 600;
+		padding: 0.5rem 1rem;
+		border-top-left-radius: 1.6rem;
+		border-bottom-left-radius: 1.6rem;
+		border:1px solid var(--color-bg3);
+		background:none;
+		color: var(--color-text);
+		cursor: pointer;
+		&:hover {
+			background: var(--green4);	
+			color: #fff;
+		}	
+	}
+	.share-r{
+		font-size: 1.2rem;
+		font-weight: 600;
+		padding: 0.5rem 1rem;
+		border-top-right-radius: 1.6rem;
+		border-bottom-right-radius: 1.6rem;
+		border:1px solid var(--color-bg3);
+		background:none;
+		color: var(--color-text);
+		cursor: pointer;
+		&:hover {
+			background: var(--green4);
+			color: #fff;
+		}
 	}
 	.qr {
-		padding: 20px;
-		width: 200px;
-		height: 200px;
+		width: 30rem;
+		height: 30rem;
 		fill: var(--color);
-		background: var(--color-bg);
-		border-radius: 1.6rem;
+		border-radius: 3rem;
 		margin: 2rem;
-		border: 1px solid var(--color-border);
+		border: 1px solid var(--color-bg3);
 	}
 	a {
 		font-size: 1.3rem;
@@ -126,6 +199,7 @@
 		justify-content: center;
 		background: none;
 		border: none;
+		cursor: pointer;
 	}
 
 	.copied {
@@ -144,7 +218,7 @@
 	.name {
 		font-size: 1.6rem;
 		font-weight: 600;
-		color: var(--color-text);
+		color: var(--color);
 	}
 
 

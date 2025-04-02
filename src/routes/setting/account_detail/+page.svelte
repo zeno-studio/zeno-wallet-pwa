@@ -267,7 +267,7 @@
 	.copied {
 		font-size: 1.2rem;
 		font-weight: 600;
-		color: var(--color);
+		color: #fff;
 		background: var(--green4);
 		display: flex;
 		align-items: center;
@@ -363,6 +363,7 @@
 		cursor: pointer;
 		margin-bottom: 0.8rem;
 		border: none;
+
 	}
 	.memo-content {
 		position: relative;
@@ -380,6 +381,7 @@
 		box-sizing: border-box;
 		border: 1px solid transparent;
 	}
+
 	.memo-wrap {
 		position: relative;
 		width: 100%;

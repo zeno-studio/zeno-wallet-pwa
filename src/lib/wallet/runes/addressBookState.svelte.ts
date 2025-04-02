@@ -3,6 +3,7 @@ import { dbStore, getElement,addElement, editElement,removeElement, type Setting
 
 
 class AddressBookState {
+    scanedAddress = $state('');
     selectedAddress = $state<AddressBook|null>(null);
     addressBookAll = $state<AddressBook[]>([]);
 

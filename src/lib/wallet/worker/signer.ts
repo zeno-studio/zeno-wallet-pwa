@@ -200,7 +200,7 @@ async function addEvmAccountWithPassword(index: number, password: string) {
 }
 
 async function checkPassword(password: string) {
-	const isValid = await isValidPassword(password, 'default');
+	const isValid = await isValidPassword(password);
 	postMessage({ success: true, data: isValid });
 }
 

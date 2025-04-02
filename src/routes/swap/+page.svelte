@@ -35,18 +35,12 @@
 					</button>
 				</div>
 				<div class="item-r">
-					<SettingFilled class="icon2rem" />
+					<SettingFilled class="icon18A" />
 				</div>
 			</div>
 		</div>
 		<div class="item-container">
-			<div class="item">
-				<div class="qr">{@html addressSvg}</div>
-			</div>
-
-			<div class="item">
-				<div>{address}</div>
-			</div>
+			
 		
 		</div>
 	</div>
@@ -56,22 +50,12 @@
 
 <style>
 	.appBody {
-		padding-top: 64px;
+		padding-top: 4rem;
 	}
 	.active {
-		padding-top: 20px;
+		padding-top: 2rem;
 	}
-	.qr {
-		padding: 20px;
-		width: 200px;
-		height: 200px;
-		fill: var(--color);
-		stroke: none;
-		background: var(--color-bg);
-		border-radius: 16px;
-		margin: 20px;
-		border: 1px solid var(--color-border);
-	}
+	
 	a {
 		font-size: 1.3rem;
 		font-weight: 600;
