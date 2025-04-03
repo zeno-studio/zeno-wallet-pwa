@@ -2,16 +2,15 @@ import {
 	addElement,
 	getElement,
 	removeElement,
-	type AddressBook
-} from '$lib/wallet/common';
-
-import {
 	dbStore,
 	type Account,
 	type LegacyVault,
-	type keyringType,
-	type WalletBackupData
+	type KeyringType,
+	type WalletBackupData,
+	type AddressType,
 } from '$lib/wallet/common';
+
+
 import { HDKey } from '@scure/bip32';
 import * as bip39 from '@scure/bip39';
 import { bytesToHex, hexToBytes } from '@noble/ciphers/utils';
@@ -25,6 +24,7 @@ import {
 	entropyToMiniSecret,
 	mnemonicToEntropy,
 	ss58Address,
+	ss58Decode,
 	type DeriveFn
 } from '@polkadot-labs/hdkd-helpers';
 
@@ -43,7 +43,7 @@ export const packMn = (password: string, mn: string, Keypath: string): boolean =
 		vaultName: Keypath,
 		salt: bytesToHex(salt),
 		ciphertext: bytesToHex(ciphertext),
-		cryptoVersion: 1	
+		cryptoVersion: 1
 	};
 	try {
 		addElement(dbStore.Vault.name, store);
@@ -54,7 +54,7 @@ export const packMn = (password: string, mn: string, Keypath: string): boolean =
 	}
 };
 
-export const restoreMn = async (password: string, keypath: string): Promise<string|null> => {
+export const restoreMn = async (password: string, keypath: string): Promise<string | null> => {
 	const vault = (await getElement(dbStore.Vault.name, keypath)) as LegacyVault;
 	const phrase = scrypt(password, hexToBytes(vault.salt), { N: 2 ** 16, r: 8, p: 1, dkLen: 32 }); // vault.salt, { N: 2 ** 16, r: 8, p: 1, dkLen: 32 });
 	const chacha = managedNonce(xchacha)(phrase);
@@ -73,7 +73,7 @@ export const isValidPassword = async (password: string): Promise<boolean> => {
 	const phrase = scrypt(password, hexToBytes(vault.salt), { N: 2 ** 16, r: 8, p: 1, dkLen: 32 }); // vault.salt, { N: 2 ** 16, r: 8, p: 1, dkLen: 32 });
 	const chacha = managedNonce(xchacha)(phrase);
 	try {
-		if(chacha.decrypt(hexToBytes(vault.ciphertext))) return true;
+		if (chacha.decrypt(hexToBytes(vault.ciphertext))) return true;
 		return false;
 	}
 	catch (e) {
@@ -102,26 +102,26 @@ export const createEvmAccount = (
 	}
 };
 
-export const deriveEvmAccount = async (index: number, password: string):Promise<Account | null> => {
-	const mn = await restoreMn(password, `m/44'/60'/0'/0/${index-1}`);
+export const deriveEvmAccount = async (index: number, password: string): Promise<Account | null> => {
+	const mn = await restoreMn(password, `m/44'/60'/0'/0/${index - 1}`);
 	if (!mn) return null;
 	return deriveEvm(index, mn);
 };
-export const deriveEvm = (index: number, mn: string): Account|null => {
+export const deriveEvm = (index: number, mn: string): Account | null => {
 	if (!bip39.validateMnemonic(mn, wordlist) || !mn) return null;
 	else {
-		let newAccount: Account|null =null
+		let newAccount: Account | null = null
 		const hdKey_ = HDKey.fromMasterSeed(bip39.mnemonicToSeedSync(mn));
-		const hdKey = hdKey_.derive(`m/44'/60'/0'/0/${index-1}`);
+		const hdKey = hdKey_.derive(`m/44'/60'/0'/0/${index - 1}`);
 		if (hdKey.publicKey) {
-				newAccount= {
+			newAccount = {
 				accountIndex: index,
 				accountName: `Account${index}`,
 				accountType: 'legacy',
 				isHidden: false,
 				address: addr.fromPublicKey(hdKey.publicKey),
-				addressType: 'evm',
-				derivePath: `m/44'/60'/0'/0/${index-1}`,
+				addressType: 'EVM',
+				derivePath: `m/44'/60'/0'/0/${index - 1}`,
 				keyringType: 'secp256k1',
 				publicKey: bytesToHex(hdKey.publicKey)
 			};
@@ -135,7 +135,7 @@ export const deriveEvm = (index: number, mn: string): Account|null => {
 export const createPolkadotAccount = (
 	index: number,
 	password: string,
-	type: keyringType,
+	type: KeyringType,
 	keypath: string,
 	mn?: string
 ): boolean => {
@@ -152,7 +152,7 @@ export const createPolkadotAccount = (
 
 export const derivePolkadot = async (
 	index: number,
-	type: keyringType,
+	type: KeyringType,
 	mn: string
 ): Promise<boolean> => {
 	const miniSecret = entropyToMiniSecret(mnemonicToEntropy(mn));
@@ -166,7 +166,7 @@ export const derivePolkadot = async (
 	} else {
 		return false;
 	}
-	const path = (index-101) > 0 ? `//${index - 101}` : '';
+	const path = (index - 101) > 0 ? `//${index - 101}` : '';
 	const pair = derive(path);
 	const pub = bytesToHex(pair.publicKey);
 	const newAccount: Account = {
@@ -175,12 +175,12 @@ export const derivePolkadot = async (
 		accountType: 'legacy',
 		address: ss58Address(pub, 0),
 		isHidden: false,
-		addressType: 'polkadot',
+		addressType: 'POLKADOT',
 		derivePath: path,
 		keyringType: type,
 		publicKey: pub
 	};
-	try{
+	try {
 		addElement(dbStore.Account.name, newAccount);
 		return true;
 	}
@@ -192,7 +192,7 @@ export const derivePolkadot = async (
 export const derivePolkadotAccount = async (
 	index: number,
 	password: string,
-	type: keyringType,
+	type: KeyringType,
 	keypath: string
 ): Promise<boolean> => {
 	const mn = await restoreMn(password, keypath);
@@ -241,3 +241,19 @@ export const restoreWallet = async (backup: string) => {
 	localStorage.setItem('settings', JSON.stringify(data.settings));
 };
 
+export function detectAddressType(address: string | null | undefined): AddressType {
+	if (address == null || address.trim() === '') {
+		return '';
+	}
+	const trimmedAddress = address.trim();
+
+	if (trimmedAddress.startsWith('0x')) {
+		return addr.isValid(trimmedAddress) ? 'EVM' : '';
+	}
+	try {
+		ss58Decode(trimmedAddress);
+		return 'POLKADOT';
+	} catch {
+		return '';
+	}
+}

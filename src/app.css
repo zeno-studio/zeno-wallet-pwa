@@ -27,6 +27,7 @@
 	--blue2: #b4e8ff;
 	--blue3: #7dd5fc;
 	--blue4: #2abdff;
+	--alert: #f9b433;
 }
 
 
@@ -215,7 +216,12 @@ div {
 	color: var(--color-blue);
 	cursor: pointer;
 }
-
+.icon18Y {
+	height: 1.8rem;
+	width: 1.8rem;
+	color: var(--alert);
+	cursor: pointer;
+}
 .icon18G {
 	height: 1.8rem;
 	width: 1.8rem;
@@ -515,15 +521,15 @@ div {
 
 	&:hover {
 		color: var(--color);
-		background: none;
-		border-radius: 0.4rem;
+		background: var(--color-bg2);
+		border-radius:50%;
 		border: 1px solid var(--color-text);
 	}
 }
 
 .label1 {
 	font-size: 1.5rem;
-	font-weight: 500;
+	font-weight: 400;
 }
 
 .label2 {

@@ -2,7 +2,7 @@ import {
 	type Settings,
 	defaultSettings,
 } from '$lib/wallet/common';
-import { accountState, chainState,setAutoLock,setTime, } from '$lib/wallet/runes';
+import { accountState, chainState,setAutoLock,setTime,addressBook } from '$lib/wallet/runes';
 import { userlocale, getLanguage, availableLanguages } from '$lib/ui/runes';
 import {} from '$lib/wallet/runes';
 
@@ -25,9 +25,6 @@ export const createSettings = async () => {
 		accountState.nextAccountIndex = data.nextAccountIndex;
 		accountState.nextPolkadotIndex = data.nextPolkadotIndex;
 		await accountState.getAccountList();
-
-		// intialize customChains
-		
 
 		// intialize fiat
 		chainState.currentFiat = data.fiat;

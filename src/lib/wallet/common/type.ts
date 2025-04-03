@@ -37,46 +37,37 @@ export const defaultSettings: Settings = {
 	isBackup: false
 };
 
-export type backupData = {
-	vaults: LegacyVault[];
-	accounts: Account[];
-	additionalChains: Chain[];
-	addressBook: AddressBook[];
-	history: History[];
-	settings: Settings;
-};
+
 
 export type AccessStatus = 'APPROVED' | 'DENIED';
 export type HexString = `0x${string}`;
-export type addressType = 'evm' | 'polkadot';
-export type keyringType = 'secp256k1' | 'ed25519' | 'sr25519';
-export type accountType = 'legacy' | 'passkey' | 'hardware' | 'watch';
+export type AddressType = 'EVM' |'POLKADOT'|'';
+export type KeyringType = 'secp256k1' | 'ed25519' | 'sr25519';
+export type AccountType = 'legacy' | 'passkey' | 'hardware' | 'watch';
 
 export interface Account {
 	accountName: string;
 	readonly accountIndex: number;
-	readonly accountType: accountType;
+	readonly accountType: AccountType;
 	readonly address: string;
-	readonly addressType?: addressType;
+	readonly addressType?: AddressType;
 	readonly derivePath?: string;
-	readonly keyringType?: keyringType;
+	readonly keyringType?: KeyringType;
 	readonly publicKey?: string;
 	isHidden: boolean;
 	memo?: string;
 	ens?: string;
 	nft?: string;
 	tokenid?: number;
-	identicon?: string;
 }
 
-export interface AddressBook {
+export interface AddressEntry {
 	name: string;
+	type: AddressType;
 	readonly address: string;
-	memo?: string;
 	ens?: string;
-	nft?: string;
-	tokenid?: number;
-	identicon?: string;
+	memo?: string;
+	avatar?: string;
 }
 
 export interface LegacyVault {
@@ -177,7 +168,7 @@ export interface TransferResult {
 export type WalletBackupData = {
 	vaults: LegacyVault[];
 	accounts: Account[];
-	addressBook: AddressBook[];
+	addressBook: AddressEntry[];
 	History: History[];
 	settings: Settings;
 };

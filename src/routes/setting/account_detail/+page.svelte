@@ -134,8 +134,9 @@
 							<input class="input-name" maxlength="20" type="text" bind:value={name} />
 						{:else}
 							<span class="label2"
-								>Account Name: &nbsp;{accountState.editingAccount?.accountName}</span
-							>
+								>Account Name:
+								<span class="label-name">{accountState.editingAccount?.accountName}</span>
+							</span>
 						{/if}
 					</div>
 					{#if nameEdit}
@@ -155,7 +156,9 @@
 		<div class="setting-medium">
 			<div class="item">
 				<div class="item-l">
-					<span class="label2">Account Index: &nbsp; {accountState.editingAccountIndex}</span>
+					<span class="label2">Account Index:
+						<span class="label-name">{accountState.editingAccountIndex}</span>
+					</span>
 				</div>
 			</div>
 		</div>
@@ -380,6 +383,11 @@
 		border-radius: 1.6rem;
 		box-sizing: border-box;
 		border: 1px solid transparent;
+	}
+	.label-name{
+		font-size: 1.5rem;
+	font-weight: 600;
+	margin-left: 1rem;
 	}
 
 	.memo-wrap {
