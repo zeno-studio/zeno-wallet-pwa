@@ -3,7 +3,7 @@
     import { ScanIcon,CloseIcon } from '$lib/svg';
 	import {frontalCamera, QRCanvas, frameLoop } from 'qr/dom.js';
     import { isSmallScreen } from '$lib/ui/ts';
-    import { addressBookState } from '$lib/wallet/runes';
+    import { addressBook} from '$lib/wallet/runes';
 
     async function startCamera() {
 		const popover = document.getElementById('camera');
@@ -24,7 +24,7 @@
 			if (frameSkip % 10 !== 0) return; 
 			const res = camera.readFrame(canvas);
 			if (res && typeof res === 'string') {
-				addressBookState.scanedAddress = res;
+				addressBook.scanedAddress = res;
 				beep.play();
 				camera.stop();
 				isRunning = false;

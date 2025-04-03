@@ -2,7 +2,7 @@
 	import { isSmallScreen } from '$lib/ui/ts';
 	import { ArrowDown, CloseIcon, SearchIcon, ClockIcon, StarIcon, ScanIcon } from '$lib/svg';
 	import { page } from '$app/state';
-	import { addressBookState } from '$lib/wallet/runes';
+	import { addressBook } from '$lib/wallet/runes';
     import { ScanButton } from '$lib/ui/components';
 
 	let amount = $state(10000);
@@ -40,7 +40,7 @@
 		<div class="item-container">
 			<div class="item">
 				<ScanButton />
-				<div>{addressBookState.scanedAddress}</div>
+				<div>{addressBook.scanedAddress}</div>
 			</div>
 
 			<div class="item">
