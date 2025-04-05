@@ -1,9 +1,10 @@
 <script lang="ts">
-	import '../app.css';
+	import "../app.pcss";
 	import { Header, Footer, Toaster } from '$lib/ui/components';
 	import { createSettings } from '$lib/ui/runes';
 	import { initDB } from '$lib/wallet/common';
 	import { page } from '$app/state';
+
 
 	initDB();
 	createSettings();

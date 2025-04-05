@@ -28,3 +28,16 @@
 		</div>
 	</div>
 </div>
+
+<style>
+	.article {
+	font-size: 1.8rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	gap: 1rem;
+	justify-items: flex-start;
+	align-items: flex-start;
+	padding: 1rem;
+}
+</style>

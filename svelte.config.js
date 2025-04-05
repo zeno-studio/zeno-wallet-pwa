@@ -12,14 +12,19 @@ const config = {
 		// adapter-auto only supports some environments, see https://svelte.dev/docs/kit/adapter-auto for a list.
 		// If your environment is not supported, or you settled on a specific environment, switch out the adapter.
 		// See https://svelte.dev/docs/kit/adapters for more information about adapters.
-		adapter: adapter(),
+		adapter: adapter({
+			assets: 'build',
+			fallback: undefined,
+			precompress: false,
+			strict: true
+		}),
 		csp: {
-			mode: 'hash', // 保持 hash 模式，安全且支持内联脚本/样式
+			mode: 'hash',
 			directives: {
-			  'script-src': ['self'], 
-			  'style-src': ['self'],
-			  'img-src': ['self', 'data:'], 
-			  'object-src': ['none'], 
+			  'script-src': ['self'],
+			  'style-src': ['self', 'unsafe-inline'],
+			  'img-src': ['self', 'data:'],
+			  'object-src': ['none'],
 			}
 		  },
 		router: {

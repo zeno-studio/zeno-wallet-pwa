@@ -53,5 +53,7 @@
 		background: var(--color-bg2);
 		border-radius: 0.8rem;
 	}
+
+	
 	
 </style>

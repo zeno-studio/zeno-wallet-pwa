@@ -88,7 +88,22 @@
 		width: 48px;
 		height: 24px;
 	}
+	.setting1 {
+		box-sizing: border-box;
+		width: 100%;
+		flex-direction: column;
+		background: var(--color-bg1);
+		border-radius: 1.6rem;
+		padding: 1rem;
+		cursor: pointer;
+		margin-bottom: 0.8rem;
+		border: none;
+		height: 5rem;
+	}
 
+	.setting1:hover {
+		background: var(--color-bg2);
+	}
 
 </style>
 

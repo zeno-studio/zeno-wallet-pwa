@@ -51,11 +51,11 @@
 		left: 0px;
 		width: 100vw;
 		padding: 0.8rem 1.2rem 1.6rem 1.2rem;
-		z-index: 100;
 		height: 6.4rem;
 		background: transparent;
 		backdrop-filter: blur(30px);
 		border-top: 1px solid var(--color-border);
+
 	}
 	.menu {
 		width: 100vw;

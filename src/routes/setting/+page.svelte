@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { isSmallScreen } from '$lib/ui/ts';
-	import { SwitchTheme, LanguageSelector, FiatSelector } from '$lib/ui/components';
+	import { SwitchTheme, LanguageSelector, CurrencySelector } from '$lib/ui/components';
 	import {
 		ArrowForward,
 		DollarIcon,
@@ -13,19 +13,44 @@
 		ExplorerIcon,
 		AppsIcon,
 		QuestionIcon,
-		AccountIcon,
+		AccountIcon
 	} from '$lib/svg';
 	import { toSvg } from 'jdenticon';
 	import { accountState } from '$lib/wallet/runes';
 	import { goto } from '$app/navigation';
+	import { fade, fly } from 'svelte/transition';
 
 	function generateAvatar(address: string) {
 		return toSvg(address, 40);
 	}
 	function gotoAccount() {
 		goto(`#/setting/account_detail`);
-		accountState.editingAccountIndex = accountState.currentAccountIndex
+		accountState.editingAccountIndex = accountState.currentAccountIndex;
 	}
+
+	let langOpen = $state(false);
+	let fiatOpen = $state(false);
+
+	function handleKeydown(event: KeyboardEvent) {
+		if (event.key === 'Escape') {
+			langOpen = false;
+			fiatOpen = false;
+		}
+	}
+
+	function handleBackdropClick(event: MouseEvent) {
+		if (event.target === event.currentTarget) {
+			langOpen = false;
+			fiatOpen = false;
+		}
+	}
+
+	$effect(() => {
+		if (langOpen) {
+			window.addEventListener('keydown', handleKeydown);
+			return () => window.removeEventListener('keydown', handleKeydown);
+		}
+	});
 </script>
 
 <div class="appContainer">
@@ -36,12 +61,12 @@
 				<div class="item-l">
 					<div class="avatar">
 						{#if accountState.currentAccountIndex === 0}
-					0
-				{:else}
-					{@html generateAvatar(accountState.currentAccount?.address ?? '')}
-				{/if}
+							0
+						{:else}
+							{@html generateAvatar(accountState.currentAccount?.address ?? '')}
+						{/if}
 					</div>
-					<span class="label2">{accountState.currentAccount?.accountName} </span>
+					<span class="label2">{accountState.currentAccount?.name} </span>
 				</div>
 
 				<div class="item-r"><ArrowForward class="icon18A" /></div>
@@ -58,7 +83,7 @@
 			</div>
 		</div>
 		<!-- Language -->
-		<button class="setting-medium" popovertarget="language">
+		<button class="setting-medium" onclick={() => (langOpen = !langOpen)}>
 			<div class="item">
 				<div class="item-l">
 					<span class="icon"> <LanguageIcon class="icon18A" /></span>
@@ -69,7 +94,7 @@
 			</div>
 		</button>
 		<!-- Currency -->
-		<button class="setting-bottom" popovertarget="fiat">
+		<button class="setting-bottom" onclick={() => (fiatOpen = !fiatOpen)}>
 			<div class="item">
 				<div class="item-l">
 					<span class="icon"> <DollarIcon class="icon18A" /></span>
@@ -161,24 +186,45 @@
 					<span class="label2">About</span>
 				</div>
 
-				<div class="item-r" ><ArrowForward class="icon18A" /></div>
+				<div class="item-r"><ArrowForward class="icon18A" /></div>
 			</div>
 		</a>
 	</div>
 </div>
 
-<div id="language" popover class:active={isSmallScreen.current}>
-	<button class="close" popovertarget="language" popovertargetaction="hide"
-		><CloseIcon class="icon18A" /></button
-	>
-	<LanguageSelector />
-</div>
-<div id="fiat" popover class:active={isSmallScreen.current}>
-	<button class="close" popovertarget="fiat" popovertargetaction="hide"
-		><CloseIcon class="icon18A" /></button
-	>
-	<FiatSelector />
-</div>
+{#if langOpen}
+	<!-- svelte-ignore a11y_interactive_supports_focus -->
+	<!-- svelte-ignore a11y_click_events_have_key_events -->
+	<div class="backdrop" role="dialog" transition:fade={{ duration: 200 }} onclick={handleBackdropClick}>
+		<div
+			id="language"
+			in:fly={{ duration: 200, y: 50 }}
+			out:fade={{ duration: 120 }}
+			class={{ modal: !isSmallScreen.current, 'modal-m': isSmallScreen.current }}
+		>
+			<button class="close" onclick={() => (langOpen = false)}><CloseIcon class="icon18A" /></button
+			>
+			<LanguageSelector />
+		</div>
+	</div>
+{/if}
+
+{#if fiatOpen}
+	<!-- svelte-ignore a11y_interactive_supports_focus -->
+	<!-- svelte-ignore a11y_click_events_have_key_events -->
+	<div class="backdrop" role="dialog" transition:fade={{ duration: 200 }} onclick={handleBackdropClick}>
+		<div
+			id="fiat"
+			in:fly={{ duration: 200, y: 50 }}
+			out:fade={{ duration: 120 }}
+			class={{ modal: !isSmallScreen.current, 'modal-m': isSmallScreen.current }}
+		>
+			<button class="close" onclick={() => (fiatOpen = false)}><CloseIcon class="icon18A" /></button
+			>
+			<CurrencySelector />
+		</div>
+	</div>
+{/if}
 
 <style lang="postcss">
 	.avatar {
@@ -194,61 +240,124 @@
 		border: 2px solid var(--color-border);
 	}
 
-	:popover-open {
+	.modal {
 		box-sizing: border-box;
 		flex-direction: column;
 		justify-content: flex-start;
 		position: fixed;
-		top: 20px;
+		top: 2rem;
 		height: 100vh;
 		width: 384px;
-		padding: 16px;
+		padding: 2rem;
 		background: var(--color-bg1);
-		border-radius: 16px;
+		border-radius: 1.6rem;
 		border: 1px solid var(--color-border);
-		z-index: 1001;
 	}
-
-	[popover]:popover-open {
-		translate: 0 0;
-	}
-
-	/*   EXIT STATE   */
-	[popover] {
-		transition:
-			translate 0.3s ease-out,
-			overlay 0.3s ease-out;
-		translate: 0 1rem;
-	}
-
-	/*   0. BEFORE-OPEN STATE   */
-	@starting-style {
-		[popover]:popover-open {
-			translate: 0 1rem;
-		}
-	}
-
-	.active {
-		position: fixed;
-		top: 48px;
+	.modal-m {
 		box-sizing: border-box;
 		flex-direction: column;
 		justify-content: flex-start;
+		position: fixed;
+		top: 4.8rem;
 		height: 100vh;
 		width: 100vw;
-		padding: 20px;
+		padding: 2rem;
 		background: var(--color-bg1);
-		border-radius: 16px;
+		border-radius: 1.6rem;
 		border: 1px solid var(--color-border);
-		z-index: 1001;
 	}
-	.icon{
+
+	.icon {
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		margin-left: 1rem;
 		margin-right: 2rem;
-
 	}
 
+	.setting {
+		box-sizing: border-box;
+		width: 100%;
+		flex-direction: column;
+		background: none;
+		border-radius: 1.6rem;
+		padding: 1rem;
+		cursor: pointer;
+		margin-bottom: 0.8rem;
+		border: 1px solid transparent;
+	}
+
+	.setting:hover {
+		cursor: pointer;
+		border: 1px solid var(--color-bg3);
+	}
+
+	.setting1 {
+		box-sizing: border-box;
+		width: 100%;
+		flex-direction: column;
+		background: var(--color-bg1);
+		border-radius: 1.6rem;
+		padding: 1rem;
+		cursor: pointer;
+		margin-bottom: 0.8rem;
+		border: none;
+		height: 5rem;
+	}
+
+	.setting1:hover,
+	.setting-medium:hover,
+	.setting-top:hover,
+	.setting-bottom:hover {
+		background: var(--color-bg2);
+	}
+
+	.setting-top {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		box-sizing: border-box;
+		width: 100%;
+		background: var(--color-bg1);
+		border-top-left-radius: 1.6rem;
+		border-top-right-radius: 1.6rem;
+		padding: 1rem;
+		cursor: pointer;
+		margin-bottom: 0.1rem;
+		border: none;
+		height: 5rem;
+	}
+
+	.setting-medium {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		box-sizing: border-box;
+		width: 100%;
+		background: var(--color-bg1);
+		padding: 1rem;
+		cursor: pointer;
+		margin-bottom: 1px;
+		border: none;
+		height: 5rem;
+	}
+
+	.setting-bottom {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		box-sizing: border-box;
+		width: 100%;
+		background: var(--color-bg1);
+		border-bottom-left-radius: 1.6rem;
+		border-bottom-right-radius: 1.6rem;
+		padding: 1rem;
+		cursor: pointer;
+		margin-bottom: 0.8rem;
+		border: none;
+		height: 5rem;
+	}
 </style>

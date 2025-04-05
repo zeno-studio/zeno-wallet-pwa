@@ -14,8 +14,9 @@
 				<h5>Please Create or Import a Account</h5>
 			</div>
 		{:else}
-
-			<AccountList />
+			<div class="Account-container">
+				<AccountList />
+			</div>
 
 		{/if}
 
@@ -45,6 +46,11 @@
 </div>
 
 <style lang="postcss">
+	.Account-container{
+		width: 100%;
+		height: 100%;
+		margin-bottom: 9rem;
+	}
 
 	.bottomA {
 		gap: 1rem;

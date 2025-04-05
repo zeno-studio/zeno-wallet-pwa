@@ -4,6 +4,7 @@
 	import { page } from '$app/state';
 	import { addressBook } from '$lib/wallet/runes';
     import { ScanButton } from '$lib/ui/components';
+	
 
 	let amount = $state(10000);
 	let amount2 = $state(100);
@@ -196,6 +197,18 @@
 	.active {
 		padding-top: 2rem;
 	}
+	.button-label {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 7rem;
+	height: 3.5rem;
+	margin-right: 0.4rem;
+	border-radius: 1.6rem;
+	border: none;
+	background: none;
+	cursor: pointer;
+}
 
 	a {
 		font-size: 1.3rem;
@@ -349,4 +362,5 @@
 		font-size: 1.5rem;
 		font-weight: 600;
 	}
+
 </style>

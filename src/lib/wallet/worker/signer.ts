@@ -12,7 +12,7 @@ import { packMn, restoreMn } from '$lib/wallet/common';
 
 let isLocked = true;
 let isAutoLock = true;
-let timeout = 1000 * 60 * 30;
+let timeout = 1000 * 60 * 15;
 const psReplacer = hexToBytes('0000000000000000000000000000000000000000000000000000000000000000');
 let midpass = psReplacer;
 onmessage = ({ data }) => {
