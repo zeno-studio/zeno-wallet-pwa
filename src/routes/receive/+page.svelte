@@ -1,53 +1,41 @@
 <script lang="ts">
-	import {isSmallScreen,copyText } from '$lib/ui/ts';
-	import { CopyIcon} from '$lib/svg';
+	import { isSmallScreen, copyText } from '$lib/ui/ts';
+	import { CopyIcon, Loading } from '$lib/svg';
 	import { accountState } from '$lib/wallet/runes';
 	import { page } from '$app/state';
-	import QrCodeWithLogo from 'qrcode-with-logos'
-
-  let qrcode = $state<QrCodeWithLogo | null>(null);
-	let copied = $state(false)
-
-
+	import QrCodeWithLogo from 'qrcode-with-logos';
+	let qrcode = $state<QrCodeWithLogo | null>(null);
+	let copied = $state(false);
 
 	function handleCopy() {
-		copyText("address");
-		copied = true
+		copyText('address');
+		copied = true;
 		setTimeout(() => {
-			copied = false
+			copied = false;
 		}, 2000);
 	}
 
-
-
 	$effect(() => {
 		if (accountState.currentAccount) {
-				qrcode = new QrCodeWithLogo({
-			  content: accountState.currentAccount.address,
-			  width: 500,
-			  logo: {
-				  src: "/favicon.svg",
-				  logoRadius: 8,
-				  borderWidth: 0
+			qrcode = new QrCodeWithLogo({
+				content: accountState.currentAccount.address,
+				width: 500,
+				logo: {
+					src: '/favicon.svg',
+					logoRadius: 8,
+					borderWidth: 0
 				},
-			  dotsOptions: {
-				  type: 'dot',
-				  color: '#000000'
+				dotsOptions: {
+					type: 'dot',
+					color: '#000000'
 				},
-			  cornersOptions: {
-				  type: 'circle',
-				  color: '#000000'
+				cornersOptions: {
+					type: 'circle',
+					color: '#000000'
 				}
-			})
+			});
 		}
-	})
-
-
-
-
-
-
-
+	});
 </script>
 
 <div class="appContainer">
@@ -70,101 +58,121 @@
 						<a href="/#/buy" class:active1={page.route.id == '/buy'} aria-label="Setting">Buy</a>
 					</button>
 				</div>
-
 			</div>
 		</div>
-	
+
 		<div class="item-container">
-			{#await qrcode?.getCanvas() then canvas}
-			<img class="qr" src={canvas?.toDataURL()} alt="" />
-			<div>
-				<div class="name">{accountState.currentAccount?.accountName}</div>	</div>
-
-			<div>
-				<button class="share-l" onclick={() => {
-					if (navigator.share) {
-						navigator.share({
-							title: 'Qr Code',
-							files: [new File([canvas?.toDataURL() || ''], 'qr.png', { type: 'image/png' })]
-						})
-					}
-				}}>
-					Share Qrcode
-				</button>
-
-				<button class="share-r" onclick={() => {
-					if (navigator.share) {
-						navigator.share({
-							title: 'Address',
-							text: accountState.currentAccount?.address || ''
-						})
-					}
-				}}>
-					Share Address
-				  </button>
-			</div>
-			
-
-		  {/await}
-				
-
-		</div>	
-		
-			 
-			 {#if copied}
-			 <div class="copied" >
-				Copied
-			</div>
-			 {:else }
-			 <div class="item-container3">
-			 <button class="copy" onclick={handleCopy}>
-				<span id="address">{accountState.currentAccount?.address}</span>&nbsp;	
-				<CopyIcon class="icon18A" />
-			</button>
+			{#if accountState.currentAccountIndex === 0}
+				<div class="qr">have no account</div>
+				<div>
+					<div class="name">{accountState.currentAccount?.name}</div>
 				</div>
-			 {/if}
-			
-	
 
-			
+				<div>
+					<button class="share-l"> Share Qrcode </button>
 
+					<button class="share-r"> Share Address </button>
+				</div>
+			{:else}
+				{#await qrcode?.getCanvas()}
+					<div class="qr"><Loading class="icon18A" /></div>
+				{:then canvas}
+					<img class="qr" src={canvas?.toDataURL()} alt="" />
+					<div>
+						<div class="name">{accountState.currentAccount?.name}</div>
+					</div>
+
+					<div>
+						<button
+							class="share-l"
+							onclick={() => {
+								if (navigator.share) {
+									navigator.share({
+										title: 'Qr Code',
+										files: [new File([canvas?.toDataURL() || ''], 'qr.png', { type: 'image/png' })]
+									});
+								}
+							}}
+						>
+							Share Qrcode
+						</button>
+
+						<button
+							class="share-r"
+							onclick={() => {
+								if (navigator.share) {
+									navigator.share({
+										title: 'Address',
+										text: accountState.currentAccount?.address || ''
+									});
+								}
+							}}
+						>
+							Share Address
+						</button>
+					</div>
+				{/await}
+			{/if}
+		</div>
+
+		{#if copied}
+			<div class="copied">Copied</div>
+		{:else}
+			<div class="item-container3">
+				<button class="copy" onclick={handleCopy}>
+					<span id="address">{accountState.currentAccount?.address}</span>&nbsp;
+					<CopyIcon class="icon18A" />
+				</button>
+			</div>
+		{/if}
 	</div>
 </div>
 
 <style lang="postcss">
-
-.item-container {
+	.item-container {
 		margin-bottom: 0.4rem;
 	}
 	.appBody {
 		padding-top: 4rem;
 	}
+	.button-label {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 7rem;
+	height: 3.5rem;
+	margin-right: 0.4rem;
+	border-radius: 1.6rem;
+	border: none;
+	background: none;
+	cursor: pointer;
+}
 	.active {
 		padding-top: 2rem;
 	}
-	.share-l{
+	.share-l {
 		font-size: 1.2rem;
 		font-weight: 600;
 		padding: 0.5rem 1rem;
 		border-top-left-radius: 1.6rem;
 		border-bottom-left-radius: 1.6rem;
-		border:1px solid var(--color-bg3);
-		background:none;
+		border: 1px solid var(--color-bg3);
+		background: none;
 		color: var(--color-text);
 		cursor: pointer;
 		&:hover {
-			background: var(--green4);	
+			background: var(--green4);
 			color: #fff;
-		}	
+		}
 	}
-	.share-r{
+	.share-r {
 		font-size: 1.2rem;
 		font-weight: 600;
 		padding: 0.5rem 1rem;
 		border-top-right-radius: 1.6rem;
 		border-bottom-right-radius: 1.6rem;
-		border:1px solid var(--color-bg3);
-		background:none;
+		border: 1px solid var(--color-bg3);
+		background: none;
 		color: var(--color-text);
 		cursor: pointer;
 		&:hover {
@@ -220,6 +228,4 @@
 		font-weight: 600;
 		color: var(--color);
 	}
-
-
 </style>

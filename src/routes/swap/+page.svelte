@@ -14,7 +14,7 @@
 	});
 </script>
 
-<div class="appContainer">
+<div class="appContainer" >
 	<div class="appBody" class:active={isSmallScreen.current}>
 		<div class="item-container2">
 			<div class="item">
@@ -49,6 +49,18 @@
 <button id="delete" >Delete Account</button>
 
 <style>
+	.button-label {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 7rem;
+	height: 3.5rem;
+	margin-right: 0.4rem;
+	border-radius: 1.6rem;
+	border: none;
+	background: none;
+	cursor: pointer;
+}
 	.appBody {
 		padding-top: 4rem;
 	}

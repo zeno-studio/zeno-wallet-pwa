@@ -3,6 +3,7 @@
 	import { EditIcon } from '$lib/svg';
 	import { toSvg } from 'jdenticon';
 	import { goto } from '$app/navigation';
+	import { shortenAddress6 } from '$lib/ui/ts';
 
 	let isHidden = $state(false);
 
@@ -40,9 +41,13 @@
 						onclick={() => selectedAccount(account.accountIndex)}
 					>
 						<div class="avatar">{@html generateAvatar(account.address)}</div>
-						<div class="content">
-							<span class="label">{account.accountName} </span>
-						</div>
+
+							<div class="content">
+								<span class="label">{account.name} </span>
+								<span class="address">{shortenAddress6(account.address)} </span>
+							</div>
+	
+						
 					</button>
 					<button
 						class="label-right"
@@ -66,7 +71,8 @@
 				>
 					<div class="avatar">{@html generateAvatar(account.address)}</div>
 					<div class="content">
-						<span class="label">{account.accountName} </span>
+						<span class="label">{account.name} </span>
+						<span class="address">{shortenAddress6(account.address)} </span>
 					</div>
 				</button>
 				<button
@@ -145,6 +151,11 @@
 		flex-direction: column;
 		align-items: flex-start;
 		width: 100%;
+	}
+	.address {
+		font-size: 1.2rem;
+		font-weight: 600;
+		color: var(--color-text);
 	}
 	.avatar {
 		box-sizing: border-box;

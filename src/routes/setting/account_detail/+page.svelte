@@ -16,6 +16,9 @@
 	import { dbStore, editElement } from '$lib/wallet/common';
 	import { slide } from 'svelte/transition';
 	import { shortenAddress6 } from '$lib/ui/ts';
+	import { fade, fly } from 'svelte/transition';
+let modalOpen = $state(false);
+
 
 	let name = $state('');
 	let nameEdit = $state(false);
@@ -24,17 +27,11 @@
 	let memoShow = $state(false);
 	let copied = $state(false);
 
-	function close() {
-		const popover = document.getElementById('delete');
-		if (popover) {
-			popover.hidePopover();
-		}
-	}
 
 	function saveName() {
 		if (!name) return;
 		if (!accountState.editingAccount) return;
-		accountState.editingAccount.accountName = name;
+		accountState.editingAccount.name = name;
 		const account = $state.snapshot(accountState.editingAccount);
 		if (account) {
 			editElement(dbStore.Account.name, account);
@@ -82,8 +79,24 @@
 		return toSvg(address, 100);
 	}
 
-	const popover = document.getElementById('delete')
-	console.log(popover);
+	function handleKeydown(event: KeyboardEvent) {
+		if (event.key === 'Escape') {
+			modalOpen = false;
+		}
+	}
+
+	function handleBackdropClick(event: MouseEvent) {
+		if (event.target === event.currentTarget) {
+			modalOpen = false;
+		}
+	}
+
+	$effect(() => {
+		if (modalOpen) {
+			window.addEventListener('keydown', handleKeydown);
+			return () => window.removeEventListener('keydown', handleKeydown);
+		}
+	});
 </script>
 
 <div class="appContainer">
@@ -122,7 +135,7 @@
 			<div class="setting-top">
 				<div class="item">
 					<div class="item-l">
-						<span class="label2">Please select an account</span>
+						<span class="label1">Please select an account</span>
 					</div>
 				</div>
 			</div>
@@ -133,9 +146,9 @@
 						{#if nameEdit}
 							<input class="input-name" maxlength="20" type="text" bind:value={name} />
 						{:else}
-							<span class="label2"
+							<span class="label1"
 								>Account Name:
-								<span class="label-name">{accountState.editingAccount?.accountName}</span>
+								<span class="label-name">{accountState.editingAccount?.name}</span>
 							</span>
 						{/if}
 					</div>
@@ -156,7 +169,7 @@
 		<div class="setting-medium">
 			<div class="item">
 				<div class="item-l">
-					<span class="label2">Account Index:
+					<span class="label1">Account Index:
 						<span class="label-name">{accountState.editingAccountIndex}</span>
 					</span>
 				</div>
@@ -166,7 +179,7 @@
 		<div class="memo">
 			<div class="item">
 				<div class="item-l">
-					<span class="label2">Memo</span>
+					<span class="label1">Memo</span>
 				</div>
 
 				{#if memoShow}
@@ -205,7 +218,7 @@
 		<div class="setting1">
 			<div class="item">
 				<div class="item-l">
-					<span class="label2">Hidden Account</span>
+					<span class="label1">Hidden Account</span>
 				</div>
 
 				<div class="item-r">
@@ -223,30 +236,79 @@
 			</div>
 		</div>
 
-		<button class="delete" popovertarget="delete" popovertargetaction="show">Delete Account</button>
+		<button class="delete" onclick={() => modalOpen = true}>Delete Account</button>
 	</div>
 </div>
 
-<div id="delete" popover="manual" class:active={isSmallScreen.current}>
-	<button class="close" onclick={close}>
-		<CloseIcon class="icon18A" />
-	</button>
-	<div class="label3">Delete Account</div>
-	<div>
-		<AlertCirCle class="icon3rem" />
+
+{#if modalOpen}
+	<!-- svelte-ignore a11y_interactive_supports_focus -->
+	<!-- svelte-ignore a11y_click_events_have_key_events -->
+	<div
+		class="backdrop"
+		role="dialog"
+		transition:fade={{ duration: 200 }}
+		onclick={handleBackdropClick}
+	>
+		<div
+			id="addAccount"
+			in:fly={{ duration: 200, y: 50 }}
+			out:fade={{ duration: 120 }}
+			class={{ modal: !isSmallScreen.current, 'modal-m': isSmallScreen.current }}
+		>
+
+		<button class="close" onclick={() => modalOpen = false}>
+			<CloseIcon class="icon18A" />
+		</button>
+		<div class="label2">Delete Account</div>
+		<div>
+			<AlertCirCle class="icon3rem" />
+		</div>
+		<div class="alert">
+			If you want to recover this account later, you should save the account index. This account's
+			index is:
+		</div>
+		<div class="label2">{accountState.editingAccountIndex}</div>
+		<div class="container">
+			<button class="cancel" onclick={close}>Cancel</button>
+			<button class="action" onclick={deleteAccount}>Delete</button>
+		</div>
+		</div>
 	</div>
-	<div class="alert">
-		If you want to recover this account later, you should save the account index. This account's
-		index is:
-	</div>
-	<div class="label3">{accountState.editingAccountIndex}</div>
-	<div class="container">
-		<button class="cancel" onclick={close}>Cancel</button>
-		<button class="action" onclick={deleteAccount}>Delete</button>
-	</div>
-</div>
+{/if}
+
+
+
 
 <style lang="postcss">
+	.modal {
+		gap: 1rem;
+		box-sizing: border-box;
+		flex-direction: column;
+		justify-content: flex-start;
+		position: fixed;
+		color: var(--color-text);
+		height: 70%;
+		width: 38.4rem;
+		padding: 2rem;
+		background: var(--color-bg1);
+		border-radius: 1.6rem;
+		border: 1px solid var(--color-border);
+	}
+	.modal-m {
+		gap: 1rem;
+		position: fixed;
+		top: calc(100vh - 50rem);
+		box-sizing: border-box;
+		flex-direction: column;
+		justify-content: flex-start;
+		height: 100vh;
+		width: 100vw;
+		padding: 2rem;
+		background: var(--color-bg1);
+		border-radius: 1.6rem;
+		border: 1px solid var(--color-border);
+	}
 	.address-container {
 		display: flex;
 		flex-direction: row;
@@ -363,7 +425,6 @@
 		border-bottom-left-radius: 1.6rem;
 		border-bottom-right-radius: 1.6rem;
 		padding: 1.2rem 1rem;
-		cursor: pointer;
 		margin-bottom: 0.8rem;
 		border: none;
 
@@ -549,4 +610,57 @@
 	.toggle-switch .toggle-input:checked + .toggle-label::before {
 		transform: translateX(16px);
 	}
+
+	.setting-top {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		box-sizing: border-box;
+		width: 100%;
+		background: var(--color-bg1);
+		border-top-left-radius: 1.6rem;
+		border-top-right-radius: 1.6rem;
+		padding: 1rem;
+		margin-bottom: 0.1rem;
+		border: none;
+		height: 5rem;
+	}
+
+	.setting-medium {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		box-sizing: border-box;
+		width: 100%;
+		background: var(--color-bg1);
+		padding: 1rem;
+		margin-bottom: 1px;
+		border: none;
+		height: 5rem;
+	}
+
+
+
+	.setting1 {
+		box-sizing: border-box;
+		width: 100%;
+		flex-direction: column;
+		background: var(--color-bg1);
+		border-radius: 1.6rem;
+		padding: 1rem;
+		margin-bottom: 0.8rem;
+		border: none;
+		height: 5rem;
+	}
+.label1 {
+	font-size: 1.5rem;
+	font-weight: 600;
+}
+.label2 {
+	font-size: 1.8rem;
+	font-weight: 700;
+}
+
 </style>

@@ -5,7 +5,9 @@
     import { CloseIcon,DeleteIcon,AlertTriangle} from '$lib/svg';
     import { toSvg } from 'jdenticon';
     import { type AddressEntry,detectAddressType, type Account } from '$lib/wallet/common';
- 
+	import { fade, fly } from 'svelte/transition';
+	let modalOpen = $state(false);
+
     addressBook.getAddressBook();
     let search = $state('');
     let searchedAccounts = $state<Account[]>([]);
@@ -18,7 +20,7 @@
 
     const emptyEntry: AddressEntry = {
 		name: '',
-		type: '',
+		addressType: '',
 		address: '',
         ens: undefined,
         memo: undefined,
@@ -38,6 +40,7 @@
     function gotoAccountDetail(account: Account) {
         const i = searchedAccounts.findIndex(a => a.address === account.address);
         const index = searchedAccounts[i].accountIndex;
+		addressBook.selectedEntry = searchedAccounts[i];
         accountState.editingAccountIndex = index;
         goto('#/setting/account_detail');  
     }
@@ -48,20 +51,17 @@
 	}   
 
     function close() {
-		const popover = document.getElementById('addAddress');
-		if (popover) {
-			popover.hidePopover();
-		}
+		modalOpen = false;
 		newEntry = emptyEntry;
 		isValidAddress = null;
-        error = '';
+		error = '';
 	}
 	function submit() {
-		newEntry.type = detectAddressType(newEntry.address);
+		newEntry.addressType = detectAddressType(newEntry.address);
 		const Entry = $state.snapshot(newEntry)
 		try {
 			addressBook.addAddressEntry(Entry);
-		} catch (e) {
+		} catch (e:any) {
 			error = e.message;
 			return;
 		}
@@ -73,7 +73,7 @@
 $effect(() => {
     if (search) {
        const filteredAccounts = accountState.accountList.filter(account =>
-            account.accountName.toLowerCase().includes(search.toLowerCase())
+            account.name.toLowerCase().includes(search.toLowerCase())
         );
     
         const filteredAddresses = addressBook.addressBook.filter(addressEntry =>
@@ -88,6 +88,25 @@ $effect(() => {
     }
 });
 
+function handleKeydown(event: KeyboardEvent) {
+		if (event.key === 'Escape') {
+			modalOpen = false;
+		}
+	}
+
+	function handleBackdropClick(event: MouseEvent) {
+		if (event.target === event.currentTarget) {
+			modalOpen = false;
+		}
+	}
+
+	$effect(() => {
+		if (modalOpen) {
+			window.addEventListener('keydown', handleKeydown);
+			return () => window.removeEventListener('keydown', handleKeydown);
+		}
+	});
+
 </script>
 
 <div class="appContainer">
@@ -100,7 +119,7 @@ $effect(() => {
 					<button class="addressList1" onclick={() => gotoAccountDetail(account)}>
                         <div class="avatar" >{@html generateAvatar(account.address)}</div>
 						<div class="content">
-							<span class="label-name">{account.accountName} </span>
+							<span class="label-name">{account.name} </span>
                             <span class="address">[{account.addressType}]{shortenAddress6(account.address)} </span>
 						</div>
 					</button>
@@ -117,7 +136,7 @@ $effect(() => {
                     <div class="avatar2" >{getFirstAndLast(addressEntry.name)}</div>
 						<div class="content">
 							<span class="label-name">{addressEntry.name} </span>
-                            <span class="address">[{addressEntry.type}]{shortenAddress6(addressEntry.address)} </span>
+                            <span class="address">[{addressEntry.addressType}]{shortenAddress6(addressEntry.address)} </span>
 						</div>
 					</button>
 					<button
@@ -129,7 +148,7 @@ $effect(() => {
 		{/each}
 
         <div class={{"bottom-d": !isSmallScreen.current, "bottom-m": isSmallScreen.current}}>
-            <button class='bottom-button' popovertarget="addAddress" popovertargetaction="show" >
+            <button class='bottom-button' onclick={() => modalOpen = true} >
                 Add new address
             </button>
         </div>
@@ -138,65 +157,113 @@ $effect(() => {
 	</div>
 </div>
 
-<div id="addAddress" popover="manual" class:active={isSmallScreen.current}>
-	<button class="close" onclick={close}>
-		<CloseIcon class="icon18A" />
-	</button>
-	<div class="title">Add Address Entry</div>
-	<div class="form">
-            <label class="label" for="name">Name</label>
-			<input
-				id ="name"
-				class="input"
-				type="text"
-				placeholder="Please input name"
-                maxlength="20"
-				autocomplete="off"
-				bind:value={newEntry.name}
-			/>
-            <label class="label" for="address">Address</label>
-			<input
-				id ="address"
-				class="input"
-				type="text"
-				placeholder="Please input address"
-				autocomplete="off"
-				bind:value={newEntry.address}
-			/>
-            <label class="label" for="memo">Memo</label>
-            <textarea
-                id="memo"
-                maxlength="100"
-                class="input-memo"
-                placeholder="Please input memo"
-                autocomplete="off"
-                bind:value={newEntry.memo}
-            ></textarea>
-	</div>
 
-	<div class="form-label">
-		{#if isValidAddress === false}
-        <AlertTriangle class="icon18Y" /> <span class="alert">Invalid Address</span>
-		{:else if error}
-        <AlertTriangle class="icon18Y" /> <span class="alert">{error}</span>
+
+{#if modalOpen}
+	<!-- svelte-ignore a11y_interactive_supports_focus -->
+	<!-- svelte-ignore a11y_click_events_have_key_events -->
+	<div
+		class="backdrop"
+		role="dialog"
+		transition:fade={{ duration: 200 }}
+		onclick={handleBackdropClick}
+	>
+		<div
+			id="importAccount"
+			in:fly={{ duration: 200, y: 50 }}
+			out:fade={{ duration: 120 }}
+			class={{ modal: !isSmallScreen.current, 'modal-m': isSmallScreen.current }}
+		>
+		<button class="close" onclick={close}>
+			<CloseIcon class="icon18A" />
+		</button>
+		<div class="title">Add Address Entry</div>
+		<div class="form">
+				<label class="label" for="name">Name</label>
+				<input
+					id ="name"
+					class="input"
+					type="text"
+					placeholder="Please input name"
+					maxlength="20"
+					autocomplete="off"
+					bind:value={newEntry.name}
+				/>
+				<label class="label" for="address">Address</label>
+				<input
+					id ="address"
+					class="input"
+					type="text"
+					placeholder="Please input address"
+					autocomplete="off"
+					bind:value={newEntry.address}
+				/>
+				<label class="label" for="memo">Memo</label>
+				<textarea
+					id="memo"
+					maxlength="100"
+					class="input-memo"
+					placeholder="Please input memo"
+					autocomplete="off"
+					bind:value={newEntry.memo}
+				></textarea>
+		</div>
+	
+		<div class="form-label">
+			{#if isValidAddress === false}
+			<AlertTriangle class="icon18Y" /> <span class="alert">Invalid Address</span>
+			{:else if error}
+			<AlertTriangle class="icon18Y" /> <span class="alert">{error}</span>
+			{/if}
+		</div>
+	
+		{#if newEntry.address === "" || newEntry.name === "" || isValidAddress === false}
+			<div class="container">
+				<button class="cancel" onclick={close}>Cancel</button>
+				<button class="action" >Input</button>
+			</div>
+		{:else }
+			<div class="container">
+				<button class="cancel" onclick={close}>Cancel</button>
+				<button class="action" onclick={submit}>Submit</button>
+			</div>
 		{/if}
+		
+		</div>
 	</div>
+{/if}
 
-	{#if newEntry.address === "" || newEntry.name === "" || isValidAddress === false}
-		<div class="container">
-			<button class="cancel" onclick={close}>Cancel</button>
-			<button class="action" >Input</button>
-		</div>
-	{:else }
-		<div class="container">
-			<button class="cancel" onclick={close}>Cancel</button>
-			<button class="action" onclick={submit}>Submit</button>
-		</div>
-	{/if}
 
-</div>
 
 <style lang="postcss">
+	.modal {
+		gap: 1rem;
+		box-sizing: border-box;
+		flex-direction: column;
+		justify-content: flex-start;
+		position: fixed;
+		color: var(--color-text);
+		height: 70%;
+		width: 38.4rem;
+		padding: 2rem;
+		background: var(--color-bg1);
+		border-radius: 1.6rem;
+		border: 1px solid var(--color-border);
+	}
+	.modal-m {
+		gap: 1rem;
+		position: fixed;
+		top: calc(100vh - 50rem);
+		box-sizing: border-box;
+		flex-direction: column;
+		justify-content: flex-start;
+		height: 100vh;
+		width: 100vw;
+		padding: 2rem;
+		background: var(--color-bg1);
+		border-radius: 1.6rem;
+		border: 1px solid var(--color-border);
+	}
     .bottom-d {
 		gap: 1rem;
 		position: fixed;

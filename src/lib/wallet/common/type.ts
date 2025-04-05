@@ -18,7 +18,7 @@ export type Settings = {
 	activeApps: App[];
 	hiddenApps: App[];
 	hiddenChains: number[];
-	fiat: string;
+	currency: string;
 	isBackup: boolean;
 };
 
@@ -29,11 +29,11 @@ export const defaultSettings: Settings = {
 	nextAccountIndex: 1,
 	nextPolkadotIndex: 101,
 	autoLock: true,
-	timeLock: 30, // in minutes
+	timeLock: 15, // in minutes
 	activeApps: [],
 	hiddenApps: [],
 	hiddenChains: [],
-	fiat: 'USD',
+	currency: 'USD',
 	isBackup: false
 };
 
@@ -46,10 +46,10 @@ export type KeyringType = 'secp256k1' | 'ed25519' | 'sr25519';
 export type AccountType = 'legacy' | 'passkey' | 'hardware' | 'watch';
 
 export interface Account {
-	accountName: string;
+	name: string;
+	readonly address: string;
 	readonly accountIndex: number;
 	readonly accountType: AccountType;
-	readonly address: string;
 	readonly addressType?: AddressType;
 	readonly derivePath?: string;
 	readonly keyringType?: KeyringType;
@@ -63,7 +63,7 @@ export interface Account {
 
 export interface AddressEntry {
 	name: string;
-	type: AddressType;
+	addressType: AddressType;
 	readonly address: string;
 	ens?: string;
 	memo?: string;

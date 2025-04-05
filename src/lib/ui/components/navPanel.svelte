@@ -1,12 +1,10 @@
 <script lang="ts">
+	import { isSmallScreen } from '$lib/ui/ts';
 	import { fly } from 'svelte/transition';
-	import { MediaQuery } from 'svelte/reactivity';
 	import { ChevronsRight } from '$lib/svg';
 	import { shortenAddress6 } from '$lib/ui/ts';
 
 	let address = '0xeDf074bd2c3FC10A296E7C9c52BfD80ab5d2A9E9';
-	const isSmallScreen = new MediaQuery('(max-width: 768px)');
-
 	let {Panel = $bindable(false)} = $props();
 	let sdf=$state('ddfdfd');
 

@@ -8,6 +8,7 @@ import {
 	type KeyringType,
 	type WalletBackupData,
 	type AddressType,
+	type AddressEntry,
 } from '$lib/wallet/common';
 
 
@@ -116,7 +117,7 @@ export const deriveEvm = (index: number, mn: string): Account | null => {
 		if (hdKey.publicKey) {
 			newAccount = {
 				accountIndex: index,
-				accountName: `Account${index}`,
+				name: `Account${index}`,
 				accountType: 'legacy',
 				isHidden: false,
 				address: addr.fromPublicKey(hdKey.publicKey),
@@ -171,7 +172,7 @@ export const derivePolkadot = async (
 	const pub = bytesToHex(pair.publicKey);
 	const newAccount: Account = {
 		accountIndex: index,
-		accountName: `Account${index}`,
+		name: `Account${index}`,
 		accountType: 'legacy',
 		address: ss58Address(pub, 0),
 		isHidden: false,
@@ -211,7 +212,7 @@ export const resetWallet = async (): Promise<void> => {
 export const backupWallet = async (): Promise<string> => {
 	const vaults = (await getElement(dbStore.Vault.name, 'all')) as LegacyVault[];
 	const accounts = (await getElement(dbStore.Account.name, 'all')) as Account[];
-	const addressBook = (await getElement(dbStore.AddressBook.name, 'all')) as AddressBook[];
+	const addressBook = (await getElement(dbStore.AddressBook.name, 'all')) as AddressEntry[];
 	const History = (await getElement(dbStore.History.name, 'all')) as History[];
 	const settings = localStorage.getItem('settings');
 	const backup = JSON.stringify({

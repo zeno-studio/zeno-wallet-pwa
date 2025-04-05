@@ -27,7 +27,7 @@ export const createSettings = async () => {
 		await accountState.getAccountList();
 
 		// intialize fiat
-		chainState.currentFiat = data.fiat;
+		chainState.currentCurrency = data.currency;
 
 		// intialize locale
 		userlocale.locale = data.locale;

@@ -1,14 +1,18 @@
 <script lang="ts">
     import { DefaultFiats } from '$lib/wallet/common';
     import { chainState } from '$lib/wallet/runes';
+    import { CheckIcon} from '$lib/svg';
 </script>
 
 <div class="container">
     {#each [...DefaultFiats] as fiat}
-        <button class="item-button" onclick={() => chainState.setFiat(fiat.name)}>
+        <button class="item-button" onclick={() => chainState.setCurrency(fiat.name)}>
             <img class="img24" src={fiat.iconPath} alt="">
             <div class="item-l">
                 {fiat.name}
+			</div>
+            <div class="item-r" class:active={fiat.name === chainState.currentCurrency}>
+				<CheckIcon class="icon18A" />
 			</div>
         </button>
     {/each}
@@ -17,12 +21,13 @@
 
 <style lang="postcss">
 	.item-button {
+		position: relative;
 		display: flex;
 		flex-direction: row;
 		width: 100%;
 		font-size: 1.6rem;
 		font-weight: 600;
-		padding: 6px;
+		padding: 0.6rem;
 		background: none;
 		border: none;
 		color: var(--color);
@@ -43,6 +48,6 @@
 	}
 	.item-button:hover {
 		background: var(--color-bg2);
-		border-radius: 8px;
+		border-radius: 0.8rem;
 	}
 </style>
