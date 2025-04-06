@@ -4,4 +4,3 @@
     let { data }: { data: PageData } = $props();
 </script>
 
-<div class="appContainer"> currency</div>

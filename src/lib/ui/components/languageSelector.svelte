@@ -23,6 +23,17 @@
 </div>
 
 <style lang="postcss">
+	.item-l {
+	display: flex;
+}
+
+.item-r {
+	position: absolute;
+	right: 0px;
+	fill: none;
+	border: none;
+	background: none;
+}
 	.item-button {
 		position: relative;
 		display: flex;

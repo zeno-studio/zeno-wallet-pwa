@@ -26,7 +26,7 @@
 	}
 </script>
 
-<div class="appContainer">
+
 	<div class="appBody">
 		<div class="grid-container">
 			{#each cards as card, index (card.id)}
@@ -50,7 +50,7 @@
 			{/each}
 		</div>
 	</div>
-</div>
+
 
 <style lang="postcss">
 	.grid-container {

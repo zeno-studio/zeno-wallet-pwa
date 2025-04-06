@@ -1,10 +1,24 @@
 <script lang="ts">
 	import { isSmallScreen, copyText } from '$lib/ui/ts';
-	import { CopyIcon, Loading } from '$lib/svg';
+	import { CopyIcon } from '$lib/svg';
 	import { accountState } from '$lib/wallet/runes';
 	import { page } from '$app/state';
-	import QrCodeWithLogo from 'qrcode-with-logos';
-	let qrcode = $state<QrCodeWithLogo | null>(null);
+	import { generateQRCodeSvg } from '$lib/ui/ts';
+
+	let qrcode = $derived(() => {
+		if (!accountState.currentAccount?.address) return '';
+		return generateQRCodeSvg(
+			accountState.currentAccount.address,
+			{
+				size: 300,
+				color: '#000000',
+				radius: 0.3,
+				border: 2 
+			},
+			{ image: '/favicon.svg' }
+		);
+	});
+
 	let copied = $state(false);
 
 	function handleCopy() {
@@ -15,140 +29,163 @@
 		}, 2000);
 	}
 
-	$effect(() => {
-		if (accountState.currentAccount) {
-			qrcode = new QrCodeWithLogo({
-				content: accountState.currentAccount.address,
-				width: 500,
-				logo: {
-					src: '/favicon.svg',
-					logoRadius: 8,
-					borderWidth: 0
-				},
-				dotsOptions: {
-					type: 'dot',
-					color: '#000000'
-				},
-				cornersOptions: {
-					type: 'circle',
-					color: '#000000'
-				}
-			});
-		}
-	});
+	function downloadSvg() {
+		const blob = new Blob([qrcode()], { type: 'image/svg+xml' });
+		const url = URL.createObjectURL(blob);
+		const link = document.createElement('a');
+		link.href = url;
+		link.download = 'qrcode.svg';
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+		URL.revokeObjectURL(url);
+	}
 </script>
 
-<div class="appContainer">
-	<div class="appBody" class:active={isSmallScreen.current}>
-		<div class="item-container2">
-			<div class="item">
-				<div class="item-l">
-					<button class="button-label" class:active1={page.route.id == '/receive'}>
-						<a href="/#/receive" class:active1={page.route.id == '/receive'} aria-label="Setting"
-							>Receive</a
-						>
-					</button>
-					<button class="button-label" class:active1={page.route.id == '/send'}>
-						<a href="/#/send" class:active1={page.route.id == '/send'} aria-label="Setting">Send</a>
-					</button>
-					<button class="button-label" class:active1={page.route.id == '/swap'}>
-						<a href="/#/swap" class:active1={page.route.id == '/swap'} aria-label="Setting">Swap</a>
-					</button>
-					<button class="button-label" class:active1={page.route.id == '/buy'}>
-						<a href="/#/buy" class:active1={page.route.id == '/buy'} aria-label="Setting">Buy</a>
-					</button>
-				</div>
+<div class="appBody" class:active={isSmallScreen.current}>
+	<div class="item-container2">
+		<div class="item">
+			<div class="item-l">
+				<button class="button-label" class:active1={page.route.id == '/receive'}>
+					<a href="/#/receive" class:active1={page.route.id == '/receive'} aria-label="Setting"
+						>Receive</a
+					>
+				</button>
+				<button class="button-label" class:active1={page.route.id == '/send'}>
+					<a href="/#/send" class:active1={page.route.id == '/send'} aria-label="Setting">Send</a>
+				</button>
+				<button class="button-label" class:active1={page.route.id == '/swap'}>
+					<a href="/#/swap" class:active1={page.route.id == '/swap'} aria-label="Setting">Swap</a>
+				</button>
+				<button class="button-label" class:active1={page.route.id == '/buy'}>
+					<a href="/#/buy" class:active1={page.route.id == '/buy'} aria-label="Setting">Buy</a>
+				</button>
 			</div>
 		</div>
+	</div>
 
-		<div class="item-container">
-			{#if accountState.currentAccountIndex === 0}
-				<div class="qr">have no account</div>
-				<div>
-					<div class="name">{accountState.currentAccount?.name}</div>
-				</div>
+	<div class="item-container">
+		{#if accountState.currentAccountIndex === 0}
+			<div class="qr">have no account</div>
+			<div>
+				<div class="name">{accountState.currentAccount?.name}</div>
+			</div>
 
-				<div>
-					<button class="share-l"> Share Qrcode </button>
+			<div>
+				<button class="share-l"> Share Qrcode </button>
 
-					<button class="share-r"> Share Address </button>
-				</div>
-			{:else}
-				{#await qrcode?.getCanvas()}
-					<div class="qr"><Loading class="icon18A" /></div>
-				{:then canvas}
-					<img class="qr" src={canvas?.toDataURL()} alt="" />
-					<div>
-						<div class="name">{accountState.currentAccount?.name}</div>
-					</div>
-
-					<div>
-						<button
-							class="share-l"
-							onclick={() => {
-								if (navigator.share) {
-									navigator.share({
-										title: 'Qr Code',
-										files: [new File([canvas?.toDataURL() || ''], 'qr.png', { type: 'image/png' })]
-									});
-								}
-							}}
-						>
-							Share Qrcode
-						</button>
-
-						<button
-							class="share-r"
-							onclick={() => {
-								if (navigator.share) {
-									navigator.share({
-										title: 'Address',
-										text: accountState.currentAccount?.address || ''
-									});
-								}
-							}}
-						>
-							Share Address
-						</button>
-					</div>
-				{/await}
-			{/if}
-		</div>
-
-		{#if copied}
-			<div class="copied">Copied</div>
+				<button class="share-r"> Share Address </button>
+			</div>
 		{:else}
-			<div class="item-container3">
-				<button class="copy" onclick={handleCopy}>
-					<span id="address">{accountState.currentAccount?.address}</span>&nbsp;
-					<CopyIcon class="icon18A" />
+			<div class="qr">
+				{@html qrcode()}
+			</div>
+
+			<div>
+				<div class="name">{accountState.currentAccount?.name}</div>
+			</div>
+
+			<div>
+				<button class="share-l" onclick={downloadSvg}> Share Qrcode </button>
+
+				<button
+					class="share-r"
+					onclick={() => {
+						if (navigator.share) {
+							navigator.share({
+								title: 'Address',
+								text: accountState.currentAccount?.address || ''
+							});
+						}
+					}}
+				>
+					Share Address
 				</button>
 			</div>
 		{/if}
 	</div>
+
+	{#if copied}
+		<div class="copied">Copied</div>
+	{:else}
+		<div class="item-container3">
+			<button class="copy" onclick={handleCopy}>
+				<span id="address">{accountState.currentAccount?.address}</span>&nbsp;
+				<CopyIcon class="icon18A" />
+			</button>
+		</div>
+	{/if}
 </div>
 
 <style lang="postcss">
-	.item-container {
-		margin-bottom: 0.4rem;
-	}
 	.appBody {
 		padding-top: 4rem;
 	}
-	.button-label {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 7rem;
-	height: 3.5rem;
-	margin-right: 0.4rem;
-	border-radius: 1.6rem;
-	border: none;
-	background: none;
-	cursor: pointer;
-}
 	.active {
 		padding-top: 2rem;
+	}
+	.item-container {
+		gap: 1rem;
+		box-sizing: border-box;
+		width: 100%;
+		flex-direction: column;
+		background: var(--color-bg1);
+		border-radius: 1.6rem;
+		padding: 3rem 1rem 1rem 1rem;
+		margin-bottom: 0.8rem;
+	}
+
+	.item-container2 {
+		box-sizing: border-box;
+		width: 100%;
+		height: 100%;
+		flex-direction: column;
+		padding: 0px;
+		margin-bottom: 1rem;
+	}
+
+	.item-container3 {
+		box-sizing: border-box;
+		width: 100%;
+		height: 100%;
+		flex-direction: column;
+		padding: 1rem;
+		border-radius: 1.6rem;
+		background: var(--color-bg);
+		border: 1px solid var(--color-border);
+		margin-bottom: 1rem;
+	}
+
+	.item {
+		position: relative;
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-start;
+		align-items: center;
+		width: 100%;
+		font-size: 1.5rem;
+		font-weight: 500;
+		padding: 0px;
+		background: none;
+		border: none;
+		color: var(--color);
+	}
+
+	.item-l {
+		display: flex;
+	}
+
+	.button-label {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 7rem;
+		height: 3.5rem;
+		margin-right: 0.4rem;
+		border-radius: 1.6rem;
+		border: none;
+		background: none;
+		cursor: pointer;
 	}
 	.share-l {
 		font-size: 1.2rem;
@@ -181,12 +218,10 @@
 		}
 	}
 	.qr {
-		width: 30rem;
-		height: 30rem;
-		fill: var(--color);
+		display: inline-block;
 		border-radius: 3rem;
-		margin: 2rem;
-		border: 1px solid var(--color-bg3);
+		overflow: hidden;
+		background: white;
 	}
 	a {
 		font-size: 1.3rem;

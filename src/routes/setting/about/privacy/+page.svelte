@@ -1,5 +1,5 @@
 
-<div class="appContainer">
+
 	<div class="appBody">
 		<div class="article">
 			<h1>Privacy Policy</h1>
@@ -22,7 +22,7 @@
 		
 		</div>
 	</div>
-</div>
+
 
 <style>
 	.article {

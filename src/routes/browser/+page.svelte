@@ -2,7 +2,7 @@
 
 </script>
 
-<div class="appContainer">
+
 	<div class="appBody">
 		
 		第一回　赏罢秋月遇美娘
@@ -39,7 +39,7 @@
 
 
 </div>
-</div>
+
 
 <style lang="postcss">
 

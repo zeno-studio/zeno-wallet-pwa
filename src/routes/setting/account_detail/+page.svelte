@@ -17,8 +17,7 @@
 	import { slide } from 'svelte/transition';
 	import { shortenAddress6 } from '$lib/ui/ts';
 	import { fade, fly } from 'svelte/transition';
-let modalOpen = $state(false);
-
+	let modalOpen = $state(false);
 
 	let name = $state('');
 	let nameEdit = $state(false);
@@ -26,7 +25,6 @@ let modalOpen = $state(false);
 	let memoEdit = $state(false);
 	let memoShow = $state(false);
 	let copied = $state(false);
-
 
 	function saveName() {
 		if (!name) return;
@@ -99,147 +97,145 @@ let modalOpen = $state(false);
 	});
 </script>
 
-<div class="appContainer">
-	<div class="appBody">
-		<div class="item-container2">
-			<a class="back" href="/#/setting/account_manage">
-				<ArrowBack class="icon2A" />
-			</a>
-		</div>
-		<div class="item-container2">
-			<div class="avatar">
-				{#if accountState.editingAccountIndex === 0}
-					0
-				{:else}
-					{@html generateAvatar(accountState.editingAccount?.address ?? '')}
-				{/if}
-				<div class="edit">
-					<EditFilled class="icon3rem" />
-				</div>
-			</div>
-		</div>
-		<div class="address-container">
-			<span class="address">{shortenAddress6(accountState.editingAccount?.address ?? '')}</span>
-
-			{#if copied}
-				<div class="copied">Copied</div>
+<div class="appBody">
+	<div class="item-container2">
+		<a class="back" href="/#/setting/account_manage">
+			<ArrowBack class="icon2A" />
+		</a>
+	</div>
+	<div class="item-container2">
+		<div class="avatar">
+			{#if accountState.editingAccountIndex === 0}
+				0
 			{:else}
-				<button class="copyicon" onclick={copyAddress}>
-					<CopyIcon class="icon18A" />
-				</button>
+				{@html generateAvatar(accountState.editingAccount?.address ?? '')}
 			{/if}
+			<div class="edit">
+				<EditFilled class="icon3rem" />
+			</div>
 		</div>
-		<!--name -->
+	</div>
+	<div class="address-container">
+		<span class="address">{shortenAddress6(accountState.editingAccount?.address ?? '')}</span>
 
-		{#if accountState.editingAccountIndex === 0}
-			<div class="setting-top">
-				<div class="item">
-					<div class="item-l">
-						<span class="label1">Please select an account</span>
-					</div>
+		{#if copied}
+			<div class="copied">Copied</div>
+		{:else}
+			<button class="copyicon" onclick={copyAddress}>
+				<CopyIcon class="icon18A" />
+			</button>
+		{/if}
+	</div>
+	<!--name -->
+
+	{#if accountState.editingAccountIndex === 0}
+		<div class="setting-top">
+			<div class="item">
+				<div class="item-l">
+					<span class="label1">Please select an account</span>
 				</div>
 			</div>
-		{:else}
-			<div class="setting-top">
-				<div class="item">
-					<div class="item-l">
-						{#if nameEdit}
-							<input class="input-name" maxlength="20" type="text" bind:value={name} />
-						{:else}
-							<span class="label1"
-								>Account Name:
-								<span class="label-name">{accountState.editingAccount?.name}</span>
-							</span>
-						{/if}
-					</div>
+		</div>
+	{:else}
+		<div class="setting-top">
+			<div class="item">
+				<div class="item-l">
 					{#if nameEdit}
-						<div class="item-r">
-							<button class="save" onclick={saveName}>Save</button>
-						</div>
+						<input class="input-name" maxlength="20" type="text" bind:value={name} />
 					{:else}
-						<button class="item-r" onclick={() => (nameEdit = true)}
-							><EditIcon class="icon18A" /></button
-						>
+						<span class="label1"
+							>Account Name:
+							<span class="label-name">{accountState.editingAccount?.name}</span>
+						</span>
 					{/if}
 				</div>
-			</div>
-		{/if}
-
-		<!--index -->
-		<div class="setting-medium">
-			<div class="item">
-				<div class="item-l">
-					<span class="label1">Account Index:
-						<span class="label-name">{accountState.editingAccountIndex}</span>
-					</span>
-				</div>
-			</div>
-		</div>
-		<!--memo -->
-		<div class="memo">
-			<div class="item">
-				<div class="item-l">
-					<span class="label1">Memo</span>
-				</div>
-
-				{#if memoShow}
-					<button class="item-r" onclick={() => (memoShow = !memoShow)}
-						><ArrowDown class="icon18A" /></button
-					>
+				{#if nameEdit}
+					<div class="item-r">
+						<button class="save" onclick={saveName}>Save</button>
+					</div>
 				{:else}
-					<button class="item-r" onclick={() => (memoShow = !memoShow)}
-						><ArrowForward class="icon18A" /></button
+					<button class="item-r" onclick={() => (nameEdit = true)}
+						><EditIcon class="icon18A" /></button
 					>
 				{/if}
+			</div>
+		</div>
+	{/if}
+
+	<!--index -->
+	<div class="setting-medium">
+		<div class="item">
+			<div class="item-l">
+				<span class="label1"
+					>Account Index:
+					<span class="label-name">{accountState.editingAccountIndex}</span>
+				</span>
+			</div>
+		</div>
+	</div>
+	<!--memo -->
+	<div class="memo">
+		<div class="item">
+			<div class="item-l">
+				<span class="label1">Memo</span>
 			</div>
 
 			{#if memoShow}
-				<div class="wrap" transition:slide>
-					{#if memoEdit}
-						<div class="memo-wrap">
-							<textarea class="memo-input" maxlength="100" bind:value={memo}></textarea>
-							<div class="memo-edit">
-								<button class="memo-save" onclick={saveMemo}>Save</button>
-							</div>
-						</div>
-					{:else}
-						<div class="memo-content">
-							{accountState.editingAccount?.memo}
-							<button class="memo-edit" onclick={() => (memoEdit = true)}>
-								<EditIcon class="icon18A" />
-							</button>
-						</div>
-					{/if}
-				</div>
+				<button class="item-r" onclick={() => (memoShow = !memoShow)}
+					><ArrowDown class="icon18A" /></button
+				>
+			{:else}
+				<button class="item-r" onclick={() => (memoShow = !memoShow)}
+					><ArrowForward class="icon18A" /></button
+				>
 			{/if}
 		</div>
 
-		<!--hidden -->
-		<div class="setting1">
-			<div class="item">
-				<div class="item-l">
-					<span class="label1">Hidden Account</span>
-				</div>
-
-				<div class="item-r">
-					<div class="toggle-switch">
-						<input
-							class="toggle-input"
-							id="hideAccount"
-							type="checkbox"
-							checked={accountState.editingAccount?.isHidden}
-							onclick={toggleHideAccount}
-						/>
-						<label class="toggle-label" for="hideAccount"></label>
+		{#if memoShow}
+			<div class="wrap" transition:slide>
+				{#if memoEdit}
+					<div class="memo-wrap">
+						<textarea class="memo-input" maxlength="100" bind:value={memo}></textarea>
+						<div class="memo-edit">
+							<button class="memo-save" onclick={saveMemo}>Save</button>
+						</div>
 					</div>
+				{:else}
+					<div class="memo-content">
+						{accountState.editingAccount?.memo}
+						<button class="memo-edit" onclick={() => (memoEdit = true)}>
+							<EditIcon class="icon18A" />
+						</button>
+					</div>
+				{/if}
+			</div>
+		{/if}
+	</div>
+
+	<!--hidden -->
+	<div class="setting1">
+		<div class="item">
+			<div class="item-l">
+				<span class="label1">Hidden Account</span>
+			</div>
+
+			<div class="item-r">
+				<div class="toggle-switch">
+					<input
+						class="toggle-input"
+						id="hideAccount"
+						type="checkbox"
+						checked={accountState.editingAccount?.isHidden}
+						onclick={toggleHideAccount}
+					/>
+					<label class="toggle-label" for="hideAccount"></label>
 				</div>
 			</div>
 		</div>
-
-		<button class="delete" onclick={() => modalOpen = true}>Delete Account</button>
 	</div>
-</div>
 
+	<button class="delete" onclick={() => (modalOpen = true)}>Delete Account</button>
+</div>
 
 {#if modalOpen}
 	<!-- svelte-ignore a11y_interactive_supports_focus -->
@@ -256,31 +252,62 @@ let modalOpen = $state(false);
 			out:fade={{ duration: 120 }}
 			class={{ modal: !isSmallScreen.current, 'modal-m': isSmallScreen.current }}
 		>
-
-		<button class="close" onclick={() => modalOpen = false}>
-			<CloseIcon class="icon18A" />
-		</button>
-		<div class="label2">Delete Account</div>
-		<div>
-			<AlertCirCle class="icon3rem" />
-		</div>
-		<div class="alert">
-			If you want to recover this account later, you should save the account index. This account's
-			index is:
-		</div>
-		<div class="label2">{accountState.editingAccountIndex}</div>
-		<div class="container">
-			<button class="cancel" onclick={close}>Cancel</button>
-			<button class="action" onclick={deleteAccount}>Delete</button>
-		</div>
+			<button class="close" onclick={() => (modalOpen = false)}>
+				<CloseIcon class="icon18A" />
+			</button>
+			<div class="label2">Delete Account</div>
+			<div>
+				<AlertCirCle class="icon3rem" />
+			</div>
+			<div class="alert">
+				If you want to recover this account later, you should save the account index. This account's
+				index is:
+			</div>
+			<div class="label2">{accountState.editingAccountIndex}</div>
+			<div class="container">
+				<button class="cancel" onclick={close}>Cancel</button>
+				<button class="action" onclick={deleteAccount}>Delete</button>
+			</div>
 		</div>
 	</div>
 {/if}
 
-
-
-
 <style lang="postcss">
+	.item-container2 {
+		box-sizing: border-box;
+		width: 100%;
+		height: 100%;
+		flex-direction: column;
+		padding: 0px;
+		margin-bottom: 1rem;
+	}
+
+	.item {
+		position: relative;
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-start;
+		align-items: center;
+		width: 100%;
+		font-size: 1.5rem;
+		font-weight: 500;
+		padding: 0px;
+		background: none;
+		border: none;
+		color: var(--color);
+	}
+
+	.item-l {
+		display: flex;
+	}
+
+	.item-r {
+		position: absolute;
+		right: 0px;
+		fill: none;
+		border: none;
+		background: none;
+	}
 	.modal {
 		gap: 1rem;
 		box-sizing: border-box;
@@ -427,7 +454,6 @@ let modalOpen = $state(false);
 		padding: 1.2rem 1rem;
 		margin-bottom: 0.8rem;
 		border: none;
-
 	}
 	.memo-content {
 		position: relative;
@@ -445,10 +471,10 @@ let modalOpen = $state(false);
 		box-sizing: border-box;
 		border: 1px solid transparent;
 	}
-	.label-name{
+	.label-name {
 		font-size: 1.5rem;
-	font-weight: 600;
-	margin-left: 1rem;
+		font-weight: 600;
+		margin-left: 1rem;
 	}
 
 	.memo-wrap {
@@ -528,36 +554,6 @@ let modalOpen = $state(false);
 		padding: 1rem;
 		cursor: pointer;
 	}
-	:popover-open {
-		gap: 1rem;
-		box-sizing: border-box;
-		flex-direction: column;
-		justify-content: flex-start;
-		align-items: center;
-		position: fixed;
-		color: var(--color-text);
-		height: 70%;
-		width: 38.4rem;
-		padding: 1.6rem;
-		background: var(--color-bg1);
-		border-radius: 2rem;
-		border: 1px solid var(--color-border);
-		overflow: hidden;
-	}
-	.active {
-		position: fixed;
-		top: calc(100vh - 400px);
-		flex-direction: column;
-		justify-content: flex-start;
-		height: 100vh;
-		width: 100vw;
-		padding: 1.6rem;
-		margin: 0px;
-		background: var(--color-bg1);
-		border-radius: 1.6rem;
-		border: 1px solid var(--color-border);
-		z-index: 1001;
-	}
 
 	.edit {
 		position: absolute;
@@ -566,6 +562,56 @@ let modalOpen = $state(false);
 		border-radius: 50%;
 		background: var(--color-bg2);
 		border: 1px solid var(--color-border);
+	}
+
+	.setting-top {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		box-sizing: border-box;
+		width: 100%;
+		background: var(--color-bg1);
+		border-top-left-radius: 1.6rem;
+		border-top-right-radius: 1.6rem;
+		padding: 1rem;
+		margin-bottom: 0.1rem;
+		border: none;
+		height: 5rem;
+	}
+
+	.setting-medium {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		box-sizing: border-box;
+		width: 100%;
+		background: var(--color-bg1);
+		padding: 1rem;
+		margin-bottom: 1px;
+		border: none;
+		height: 5rem;
+	}
+
+	.setting1 {
+		box-sizing: border-box;
+		width: 100%;
+		flex-direction: column;
+		background: var(--color-bg1);
+		border-radius: 1.6rem;
+		padding: 1rem;
+		margin-bottom: 0.8rem;
+		border: none;
+		height: 5rem;
+	}
+	.label1 {
+		font-size: 1.5rem;
+		font-weight: 600;
+	}
+	.label2 {
+		font-size: 1.8rem;
+		font-weight: 700;
 	}
 	.toggle-switch {
 		position: relative;
@@ -610,57 +656,4 @@ let modalOpen = $state(false);
 	.toggle-switch .toggle-input:checked + .toggle-label::before {
 		transform: translateX(16px);
 	}
-
-	.setting-top {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		flex-direction: column;
-		box-sizing: border-box;
-		width: 100%;
-		background: var(--color-bg1);
-		border-top-left-radius: 1.6rem;
-		border-top-right-radius: 1.6rem;
-		padding: 1rem;
-		margin-bottom: 0.1rem;
-		border: none;
-		height: 5rem;
-	}
-
-	.setting-medium {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		flex-direction: column;
-		box-sizing: border-box;
-		width: 100%;
-		background: var(--color-bg1);
-		padding: 1rem;
-		margin-bottom: 1px;
-		border: none;
-		height: 5rem;
-	}
-
-
-
-	.setting1 {
-		box-sizing: border-box;
-		width: 100%;
-		flex-direction: column;
-		background: var(--color-bg1);
-		border-radius: 1.6rem;
-		padding: 1rem;
-		margin-bottom: 0.8rem;
-		border: none;
-		height: 5rem;
-	}
-.label1 {
-	font-size: 1.5rem;
-	font-weight: 600;
-}
-.label2 {
-	font-size: 1.8rem;
-	font-weight: 700;
-}
-
 </style>

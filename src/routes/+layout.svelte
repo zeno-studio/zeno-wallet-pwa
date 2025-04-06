@@ -30,10 +30,27 @@
 	<meta property="twitter:title" content={metadata.title} />
 	<meta property="twitter:description" content={metadata.description} />
 	<link rel="icon" type="image/png" href={metadata.favicon} sizes="32x32" />
+
 	<title>{page.route.id}</title>
 </svelte:head>
 
 <Toaster />
 <Header />
-{@render children()}
+<main class="main">
+	{@render children()}
+</main>
 <Footer />
+
+<style lang="postcss">
+	.main {
+	color: var(--color);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: var(--color-bg);
+	box-sizing: border-box;
+	border: none;
+	padding: 6.4rem 0.8rem 0rem 0.8rem;
+}
+</style>
+

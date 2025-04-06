@@ -6,6 +6,8 @@
     import { ScanButton } from '$lib/ui/components';
 	
 
+	let scanOpen = $state(false);
+
 	let amount = $state(10000);
 	let amount2 = $state(100);
 	let modalClose = $state(false);
@@ -15,8 +17,8 @@
 	
 </script>
 
-<div class="appContainer">
 	<div class="appBody" class:active={isSmallScreen.current}>
+
 		<div class="item-container2">
 			<div class="item">
 				<div class="item-l">
@@ -41,6 +43,7 @@
 		<div class="item-container">
 			<div class="item">
 				<ScanButton />
+			
 				<div>{addressBook.scanedAddress}</div>
 			</div>
 
@@ -66,7 +69,9 @@
 			</div>
 		</div>
 	</div>
-</div>
+
+
+
 
 {#if modalClose}
 	{#if !isSmallScreen.current}
@@ -197,6 +202,52 @@
 	.active {
 		padding-top: 2rem;
 	}
+	.item-container {
+	box-sizing: border-box;
+	width: 100%;
+	flex-direction: column;
+	background: var(--color-bg1);
+	border-radius: 1.6rem;
+	padding: 1rem;
+	margin-bottom: 1rem;
+}
+
+.item-container2 {
+	box-sizing: border-box;
+	width: 100%;
+	height: 100%;
+	flex-direction: column;
+	padding: 0px;
+	margin-bottom: 1rem;
+}
+
+
+.item {
+	position: relative;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+	width: 100%;
+	font-size: 1.5rem;
+	font-weight: 500;
+	padding: 0px;
+	background: none;
+	border: none;
+	color: var(--color)
+}
+
+.item-l {
+	display: flex;
+}
+
+.item-r {
+	position: absolute;
+	right: 0px;
+	fill: none;
+	border: none;
+	background: none;
+}
 	.button-label {
 	display: flex;
 	align-items: center;

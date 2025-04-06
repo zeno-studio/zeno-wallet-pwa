@@ -53,7 +53,7 @@
 	});
 </script>
 
-<div class="appContainer">
+
 	<div class="appBody">
 		<!-- currentAccount -->
 		<button class="setting" onclick={gotoAccount}>
@@ -190,7 +190,7 @@
 			</div>
 		</a>
 	</div>
-</div>
+
 
 {#if langOpen}
 	<!-- svelte-ignore a11y_interactive_supports_focus -->
@@ -227,6 +227,35 @@
 {/if}
 
 <style lang="postcss">
+	.appBody {
+		margin-bottom: 8rem;
+	}
+	.item {
+	position: relative;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+	width: 100%;
+	font-size: 1.5rem;
+	font-weight: 500;
+	padding: 0px;
+	background: none;
+	border: none;
+	color: var(--color)
+}
+
+.item-l {
+	display: flex;
+}
+
+.item-r {
+	position: absolute;
+	right: 0px;
+	fill: none;
+	border: none;
+	background: none;
+}
 	.avatar {
 		box-sizing: border-box;
 		flex-shrink: 0;
