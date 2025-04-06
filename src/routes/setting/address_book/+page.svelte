@@ -109,7 +109,7 @@ function handleKeydown(event: KeyboardEvent) {
 
 </script>
 
-<div class="appContainer">
+
 	<div class="appBody">
         <div class="search">
             <input  class="input-search" type="text" bind:value={search} placeholder="Search" />
@@ -155,7 +155,7 @@ function handleKeydown(event: KeyboardEvent) {
 
         
 	</div>
-</div>
+
 
 
 

@@ -44,12 +44,10 @@
 		"@sveltejs/adapter-static": "^3.0.8",
 		"@thisux/sveltednd": "^0.0.20",
 		"check-password-strength": "^3.0.0",
-		"eip1193-types": "^0.2.2",
 		"jdenticon": "^3.3.0",
 		"micro-eth-signer": "^0.13.3",
 		"micro-ftch": "^0.4.2",
 		"polkadot-api": "^1.9.7",
-		"qr": "^0.4.0",
-		"qrcode-with-logos": "^1.1.1"
+		"qr": "^0.4.0"
 	}
 }

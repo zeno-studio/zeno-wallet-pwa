@@ -37,7 +37,6 @@
 			(a) => a.accountIndex === accountState.currentAccountIndex
 		);
 		if (account) name = account.name;
-		
 	});
 	function handleKeydown(event: KeyboardEvent) {
 		if (event.key === 'Escape') {
@@ -88,14 +87,18 @@
 <NavPanel bind:Panel />
 
 {#if isSmallScreen.current}
-{#if accountPanel}
-	<div class="subMenu" 
-	in:fly={{ duration: 200, y: 50 }}
-	out:fade={{ duration: 120 }}
-	use:clickOutside onoutclick={() => (accountPanel = !accountPanel)}>
+	{#if accountPanel}
+		<div
+			class="subMenu"
+			in:fly={{ duration: 200, y: 50 }}
+			out:fade={{ duration: 120 }}
+			use:clickOutside
+			onoutclick={() => (accountPanel = !accountPanel)}
+		>
 			<div class="container">
-				<div class="label-switch"> Switch Account</div>
-				<button class="setting-button" onclick={gotoSetting}><SettingFilled class="icon18A" />
+				<div class="label-switch">Switch Account</div>
+				<button class="setting-button" onclick={gotoSetting}
+					><SettingFilled class="icon18A" />
 				</button>
 			</div>
 			{#if !isHidden}
@@ -122,11 +125,17 @@
 					{/if}
 				{/each}
 			{/if}
-		
-	</div>
+		</div>
+	{/if}
 {/if}
-{/if}
+
 <style lang="postcss">
+	.logo {
+		height: 3.2rem;
+		width: 3.2rem;
+		color: var(--color);
+		fill: var(--color-pink);
+	}
 	.label-switch {
 		display: flex;
 		align-items: center;
@@ -145,6 +154,7 @@
 		position: fixed;
 		top: 0px;
 		background: var(--color-bg);
+		z-index: 100;
 	}
 	.nav-wrapper {
 		display: flex;
@@ -176,9 +186,8 @@
 		z-index: 1000;
 		border: 1px solid var(--color-border);
 		margin: 0rem;
-
 	}
-	
+
 	.navRight {
 		display: flex;
 		justify-content: flex-end;
@@ -222,8 +231,7 @@
 		width: 100%;
 	}
 
-
-	.container{
+	.container {
 		position: relative;
 		display: flex;
 		flex-direction: row;

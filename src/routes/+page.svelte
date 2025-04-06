@@ -1,86 +1,96 @@
 <script lang="ts">
-	import { Toaster, Tabs,CreateAccount,ImportAccount } from '$lib/ui/components';
+	import { Toaster, Tabs, CreateAccount, ImportAccount } from '$lib/ui/components';
 	import { toastState } from '$lib/ui/runes';
-	import { ReceiveIcon,CloseIcon, SendFilled, SwapIcon, BuyIcon,PlugFilled } from '$lib/svg';
+	import { ReceiveIcon, CloseIcon, SendFilled, SwapIcon, BuyIcon, PlugFilled } from '$lib/svg';
 	import { accountState } from '$lib/wallet/runes';
-
 </script>
 
 <Toaster />
 
-<div class="appContainer">
-	<div class="appBody">
-		<div class="item-container">
-			<div class="item">
-				<h2>Balance:100$</h2>
-			</div>
-
-			<button onclick={() => toastState.add('title', 'message')}>sdf</button>
+<div class="appBody">
+	<div class="item-container">
+		<div class="item">
+			<h2>Balance:100$</h2>
 		</div>
 
-		<div class="item-container2">
-			<div class="menu1">
-				<a class="text1" href="/#/receive">
-					<ReceiveIcon class="icon3rem" />
-					Receive
-				</a>
-				<a class="text1" href="/#/send">
-					<SendFilled class="icon3rem" />
-					Send
-				</a>
-				<a class="text1" href="/#/swap">
-					<SwapIcon class="icon3rem" />
-					Swap
-				</a>
-				<a class="text1" href="/#/bridge">
-					<PlugFilled class="icon3rem" />
-					Bridge
-				</a>
-				<a class="text1" href="/#/buy">
-					<BuyIcon class="icon3rem" />
-					Buy
-				</a>
-				
-			</div>
-		</div>
-		
-	
+		<button onclick={() => toastState.add('title', 'message')}>sdf</button>
+	</div>
 
-		<div class="item-container2">
-			{#if accountState.nextAccountIndex===1}
+	<div class="item-container2">
+		<div class="menu1">
+			<a class="text1" href="/#/receive">
+				<ReceiveIcon class="icon3rem" />
+				Receive
+			</a>
+			<a class="text1" href="/#/send">
+				<SendFilled class="icon3rem" />
+				Send
+			</a>
+			<a class="text1" href="/#/swap">
+				<SwapIcon class="icon3rem" />
+				Swap
+			</a>
+			<a class="text1" href="/#/bridge">
+				<PlugFilled class="icon3rem" />
+				Bridge
+			</a>
+			<a class="text1" href="/#/buy">
+				<BuyIcon class="icon3rem" />
+				Buy
+			</a>
+		</div>
+	</div>
+
+	<div class="item-container2">
+		{#if accountState.nextAccountIndex === 1}
 			<div class="menu2">
 				<CreateAccount />
 				<ImportAccount />
-			</div>	
-			{/if}
-			{#if accountState.nextAccountIndex > 1 && accountState.isBackup === false }
+			</div>
+		{/if}
+		{#if accountState.nextAccountIndex > 1 && accountState.isBackup === false}
 			<div class="backup">
-	
-				<button class="close" onclick={()=>{accountState.isBackup = true}}>
+				<button
+					class="close"
+					onclick={() => {
+						accountState.isBackup = true;
+					}}
+				>
 					<CloseIcon class="icon18A" />
 				</button>
-				<button class="backup-button">
-					Backup Your Recovery Phrase
-				</button>
-				
-			</div>	
-			{/if}
-
-
-			
-		</div>
-
-		<Tabs />
+				<button class="backup-button"> Backup Your Recovery Phrase </button>
+			</div>
+		{/if}
 	</div>
+
+	<Tabs />
 </div>
 
 <style lang="postcss">
+	.item-container {
+	box-sizing: border-box;
+	width: 100%;
+	flex-direction: column;
+	background: var(--color-bg1);
+	border-radius: 1.6rem;
+	padding: 1rem;
+	margin-bottom: 1rem;
+}
+
+.item-container2 {
+	box-sizing: border-box;
+	width: 100%;
+	height: 100%;
+	flex-direction: column;
+	padding: 0px;
+	margin-bottom: 1rem;
+}
 	.menu1 {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));
 		height: 100%;
 		width: 100%;
-		gap:1rem;
+		gap: 1rem;
 	}
 
 	.text1 {
@@ -111,10 +121,10 @@
 		border: none;
 		border-radius: 1.6rem;
 		box-sizing: border-box;
-		gap:0px
+		gap: 0px;
 	}
 
-	.backup-button{
+	.backup-button {
 		display: flex;
 		justify-content: center;
 		width: 100%;
@@ -125,5 +135,4 @@
 		border: none;
 		cursor: pointer;
 	}
-
 </style>

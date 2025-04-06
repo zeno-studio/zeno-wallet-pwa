@@ -3,6 +3,7 @@
 	import {restoreMn} from '$lib/wallet/common';
 	import {accountState} from '$lib/wallet/runes';
 	import type { Account } from '$lib/wallet/common';
+	import {generateQRCodeSvg} from '$lib/ui/ts';
 	let signerResponse : signerResponseType | null = null;
 	signer.onmessage = (event) => {
 		signerResponse = event.data;
@@ -14,6 +15,13 @@
 
 
 	let svg = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzYwIiBoZWlnaHQ9IjM2MCIgdmlld0JveD0iMCAwIDM2MCAzNjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZmlsbD0iIzAwNTJGRiIgZD0iTTAgMGgzNjB2MzYwSDB6Ii8+PHBhdGggZD0iTTE3OC45MTUgMjgyLjE5YzU3LjAzNyAwIDEwMy4yNzUtNDYuMTU3IDEwMy4yNzUtMTAzLjA5NVMyMzUuOTUyIDc2IDE3OC45MTUgNzZDMTI0LjgwMiA3NiA4MC40MDkgMTE3LjU0NiA3NiAxNzAuNDI5aDEzNi41MDZ2MTcuMzMySDc2YzQuNDA5IDUyLjg4MiA0OC44MDIgOTQuNDI5IDEwMi45MTUgOTQuNDI5eiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg=="
+	let svg1 = generateQRCodeSvg("0x8fF448Ed0C027DbE9F5AdD62e6fAEE439EAc0259",{
+    size: 300,
+    color: '#3C1C64',
+    radius: 0.3,
+    border: 3// 或 4
+  },{image:"/token/dot.svg"});
+
 let ssvg =atob(svg.split(',')[1])
 let addr = "0x8fF448Ed0C027DbE9F5AdD62e6fAEE439EAc0259";
 
@@ -39,9 +47,10 @@ console.log(getBalance());
 
 </script>
 
-<div class="appContainer">
+
 	<div class="appBody">
 		{signerResponse?.data}
+		{@html svg1}
 	
 	<button onclick={queryMid} >mid</button>
 		<button onclick={isLocked} >isLocked</button>
@@ -72,4 +81,4 @@ console.log(getBalance());
 	{accountState.currentAccount?.address}
 
 </div>
-</div>
+

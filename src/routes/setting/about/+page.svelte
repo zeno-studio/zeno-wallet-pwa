@@ -3,7 +3,7 @@
 	import { ArrowForward ,XIcon, GithubIcon, DiscordIcon, TelegramIcon } from '$lib/svg';
 </script>
 
-<div class="appContainer">
+
 	<div class="appBody">
 		<!-- Version -->
 		<div class="setting">
@@ -73,7 +73,7 @@
        
 
 	</div>
-</div>
+
 
 <style>
 

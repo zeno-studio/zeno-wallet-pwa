@@ -5,7 +5,7 @@
 
 </script>
 
-<div class="appContainer">
+
 	<div class="appBody">
 		<!-- currentAccount -->
 
@@ -43,9 +43,10 @@
 		{/if}
 	</div>
 
-</div>
+
 
 <style lang="postcss">
+	
 	.Account-container{
 		width: 100%;
 		height: 100%;

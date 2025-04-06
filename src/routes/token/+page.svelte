@@ -4,7 +4,7 @@ let {currentAddress} = $props();
 
 </script>
 
-<div class="container">
+
     <div class="search">
         <div class="item-l">
             <SearchIcon class="icon2rem" />
@@ -52,7 +52,7 @@ let {currentAddress} = $props();
         Finished
     </button>
 
-</div>
+
 
 <style>
     .container {

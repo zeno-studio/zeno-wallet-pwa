@@ -15,3 +15,4 @@ export { default as ScanButton } from "./scanButton.svelte";
 export { default as CurrencySelector } from "./currencySelector.svelte";
 
 
+
