@@ -34,38 +34,11 @@
 	{#if !isHidden}
 		{#each accountState.accountList as account}
 			{#if !account.isHidden}
-				<div class="accountList" >
-					<button
-						class="label-left"
-						class:selected={account.accountIndex === accountState.currentAccountIndex}
-						onclick={() => selectedAccount(account.accountIndex)}
-					>
-						<div class="avatar">{@html generateAvatar(account.address)}</div>
-
-							<div class="content">
-								<span class="label">{account.name} </span>
-								<span class="address">{shortenAddress6(account.address)} </span>
-							</div>
-	
-						
-					</button>
-					<button
-						class="label-right"
-						class:selected={account.accountIndex === accountState.currentAccountIndex}
-						onclick={() => gotoAccount(account.accountIndex)}
-						><EditIcon class="icon18A" />
-					</button>
-				</div>
-			{/if}
-		{/each}
-	{/if}
-
-	{#if isHidden}
-		{#each accountState.accountList as account}
-			{#if account.isHidden}
-			<div class="accountList" >
-				<button
-					class="label-left"
+			<div class="accountList">
+				<!-- svelte-ignore a11y_click_events_have_key_events -->
+				<!-- svelte-ignore a11y_no_static_element_interactions -->
+				<div
+					class="entry"
 					class:selected={account.accountIndex === accountState.currentAccountIndex}
 					onclick={() => selectedAccount(account.accountIndex)}
 				>
@@ -74,20 +47,78 @@
 						<span class="label">{account.name} </span>
 						<span class="address">{shortenAddress6(account.address)} </span>
 					</div>
-				</button>
-				<button
-					class="label-right"
-					class:selected={account.accountIndex === accountState.currentAccountIndex}
-					onclick={() => gotoAccount(account.accountIndex)}
-					><EditIcon class="icon18A" />
-				</button>
+					<button
+						class="entry-right"
+						class:selected={account.accountIndex === accountState.currentAccountIndex}
+						onclick={() => gotoAccount(account.accountIndex)}
+						><EditIcon class="icon18A" />
+					</button>
+				</div>
 			</div>
+			{/if}
+		{/each}
+	{/if}
+
+	{#if isHidden}
+		{#each accountState.accountList as account}
+			{#if account.isHidden}
+				<div class="accountList">
+					<!-- svelte-ignore a11y_click_events_have_key_events -->
+					<!-- svelte-ignore a11y_no_static_element_interactions -->
+					<div
+						class="entry"
+						class:selected={account.accountIndex === accountState.currentAccountIndex}
+						onclick={() => selectedAccount(account.accountIndex)}
+					>
+						<div class="avatar">{@html generateAvatar(account.address)}</div>
+						<div class="content">
+							<span class="label">{account.name} </span>
+							<span class="address">{shortenAddress6(account.address)} </span>
+						</div>
+						<button
+							class="entry-right"
+							class:selected={account.accountIndex === accountState.currentAccountIndex}
+							onclick={() => gotoAccount(account.accountIndex)}
+							><EditIcon class="icon18A" />
+						</button>
+					</div>
+				</div>
 			{/if}
 		{/each}
 	{/if}
 </div>
 
 <style lang="postcss">
+	.entry {
+		position: relative;
+		display: flex;
+		align-items: center;
+		padding: 1rem;
+		justify-content: flex-start;
+		box-sizing: border-box;
+		width: 100%;
+		flex-direction: row;
+		background: var(--color-bg1);
+		border: none;
+		border-radius: 1.6rem;
+		cursor: pointer;
+		&:active {
+			background: var(--color-bg2);
+			color: var(--color);
+			transform: translateY(1px);
+		}
+
+	}
+	.entry-right{
+		position: absolute;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		right: 1rem;
+		border: none;
+		background: none;
+		cursor: pointer;
+	}
 	.pressed {
 		background: var(--green4);
 		color: #fff;
@@ -137,7 +168,6 @@
 		padding: 0rem;
 		background: none;
 		border: none;
-		margin-bottom: 1rem;
 	}
 	.container {
 		margin-bottom: 6.4rem;
@@ -145,6 +175,7 @@
 		flex-direction: column;
 		align-items: flex-start;
 		width: 100%;
+		gap: 0.8rem;
 	}
 	.content {
 		display: flex;
@@ -171,63 +202,24 @@
 	}
 
 	.accountList {
-		display: grid;
-		grid-template-columns: 1fr 5rem;
-		padding: 0rem;
-		justify-content: flex-start;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.8rem;
 		box-sizing: border-box;
 		width: 100%;
-		flex-direction: row;
 		background: none;
 		border: none;
-		margin-bottom: 0.8rem;
-
 	}
 	.selected {
-		background: var(--green4);
+		background: var(--storm400);
 	}
 	.label {
 		margin: 0px;
 		padding: 0px;
 		font-size: 1.5rem;
-	}
-	.label-left {
-		display: flex;
-		font-size: 1.8rem;
 		font-weight: 600;
-		padding: 1rem;
-		align-items: center;
-		justify-content: flex-start;
-		flex-direction: row;
-		background: var(--color-bg1);
-		border: none;
-		border-top-left-radius: 1.6rem;
-		border-bottom-left-radius: 1.6rem;
-		cursor: pointer;
 		color: var(--color);
-		&:hover {
-			background: var(--color-bg2);
-		}
-		&.selected {
-			background: var(--green4);
-		}
 	}
-	.label-right {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		height: 100%;
-		background: var(--color-bg1);
-		border: none;
-		border-top-right-radius: 1.6rem;
-		border-bottom-right-radius: 1.6rem;
-		cursor: pointer;
-		color: var(--color);
-		&:hover {
-			background: var(--color-bg2);
-		}
-		&.selected {
-			background: var(--green4);
-		}
-	}
+	
 </style>

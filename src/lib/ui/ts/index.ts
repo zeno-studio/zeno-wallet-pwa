@@ -4,3 +4,4 @@ export * from "./copypaste"
 export * from "./mediaQuery"
 export * from "./qrSvg"
 export * from "./dom"
+export * from "./checkPasswordStrength";

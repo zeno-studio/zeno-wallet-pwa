@@ -287,7 +287,7 @@
 		flex-direction: column;
 		justify-content: flex-start;
 		position: fixed;
-		top: 4.8rem;
+		top: 5rem;
 		height: 100vh;
 		width: 100vw;
 		padding: 2rem;

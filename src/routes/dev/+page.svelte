@@ -4,6 +4,7 @@
 	import {accountState} from '$lib/wallet/runes';
 	import type { Account } from '$lib/wallet/common';
 	import {generateQRCodeSvg} from '$lib/ui/ts';
+
 	let signerResponse : signerResponseType | null = null;
 	signer.onmessage = (event) => {
 		signerResponse = event.data;
@@ -12,6 +13,8 @@
 	function res(password:string, mn:string){
 		console.log(restoreMn(password,mn));
 	}
+
+	let pass = $state('');
 
 
 	let svg = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzYwIiBoZWlnaHQ9IjM2MCIgdmlld0JveD0iMCAwIDM2MCAzNjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZmlsbD0iIzAwNTJGRiIgZD0iTTAgMGgzNjB2MzYwSDB6Ii8+PHBhdGggZD0iTTE3OC45MTUgMjgyLjE5YzU3LjAzNyAwIDEwMy4yNzUtNDYuMTU3IDEwMy4yNzUtMTAzLjA5NVMyMzUuOTUyIDc2IDE3OC45MTUgNzZDMTI0LjgwMiA3NiA4MC40MDkgMTE3LjU0NiA3NiAxNzAuNDI5aDEzNi41MDZ2MTcuMzMySDc2YzQuNDA5IDUyLjg4MiA0OC44MDIgOTQuNDI5IDEwMi45MTUgOTQuNDI5eiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg=="
@@ -43,7 +46,8 @@ async function getBalance() {
 )
 }
 
-console.log(getBalance());
+
+
 
 </script>
 
@@ -73,12 +77,15 @@ console.log(getBalance());
 		  <option value="goldfish">Goldfish</option>
 		</select>
 	</div>
-{#await getBalance() then balance}
+	{#await getBalance() then balance}
 		{balance.assets}
-{/await}
+	{/await}
 
-	{@html ssvg}
-	{accountState.currentAccount?.address}
+	<input type="text" bind:value={pass} />
+	<div>{pwd.checkPassword(pass)}</div>
+	<div>{pwd.secureMask.estimate().score}</div>
+
+
 
 </div>
 

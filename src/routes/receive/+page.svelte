@@ -218,10 +218,15 @@
 		}
 	}
 	.qr {
-		display: inline-block;
+		display: flex;
 		border-radius: 3rem;
 		overflow: hidden;
 		background: white;
+		width: 300px;
+		height: 300px;
+		justify-content: center;
+		align-items: center;
+		border: 1px solid var(--color-border);
 	}
 	a {
 		font-size: 1.3rem;

@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { isSmallScreen } from '$lib/ui/ts';
 	import { createEvmAccount, type Settings } from '$lib/wallet/common';
-	import { CloseIcon, EyeIcon, EyeOffIcon } from '$lib/svg';
-	import { passwordStrength } from 'check-password-strength';
+	import { CloseIcon, EyeIcon, EyeOffIcon, AlertTriangle } from '$lib/svg';
+	import { checkPasswordStrength } from '$lib/ui/ts';
 	import { accountState, saveMidPass } from '$lib/wallet/runes';
 	import { fade, fly } from 'svelte/transition';
 
@@ -14,9 +14,9 @@
 	let passwordShow = $state(false);
 	let psStrength = $derived.by(() => {
 		if (password) {
-			return passwordStrength(password).value;
+			return checkPasswordStrength(password).strength;
 		} else {
-			return 'empty';
+			return '';
 		}
 	});
 
@@ -65,10 +65,7 @@
 	});
 </script>
 
-<button class="bottom-button" onclick={() => modalOpen = true}>
-	Create account
-</button>
-
+<button class="bottom-button" onclick={() => (modalOpen = true)}> Create account </button>
 
 {#if modalOpen}
 	<!-- svelte-ignore a11y_interactive_supports_focus -->
@@ -80,107 +77,123 @@
 		onclick={handleBackdropClick}
 	>
 		<div
-			id="addAccount"
 			in:fly={{ duration: 200, y: 50 }}
 			out:fade={{ duration: 120 }}
 			class={{ modal: !isSmallScreen.current, 'modal-m': isSmallScreen.current }}
 		>
+			<button class="close" onclick={close}>
+				<CloseIcon class="icon18A" />
+			</button>
+			<div class="title">Create New Account</div>
 
-		<button class="close" onclick={close}>
-			<CloseIcon class="icon18A" />
-		</button>
-		<div class="title">Create New Account</div>
-	
-		<div class="container">
+			<div class="ps-container">
+				{#if passwordShow}
+					<input
+						id="password"
+						class="input"
+						type="text"
+						placeholder="Please input your password"
+						autocomplete="off"
+						bind:value={password}
+					/>
+				{:else}
+					<input
+						id="password"
+						class="input"
+						type="password"
+						placeholder="Please input your password"
+						autocomplete="off"
+						bind:value={password}
+					/>
+				{/if}
+				<button class="eye" onclick={() => (passwordShow = !passwordShow)}>
+					{#if passwordShow}
+						<EyeIcon class="icon18A" />
+					{:else}
+						<EyeOffIcon class="icon18A" />
+					{/if}
+				</button>
+			</div>
+
 			{#if passwordShow}
 				<input
-					id="password"
+					id="password2"
 					class="input"
 					type="text"
-					placeholder="Please input your password"
+					placeholder="Input your password again"
 					autocomplete="off"
-					bind:value={password}
+					bind:value={password2}
 				/>
 			{:else}
 				<input
-					id="password"
+					id="password2"
 					class="input"
 					type="password"
-					placeholder="Please input your password"
+					placeholder="Input your password again"
 					autocomplete="off"
-					bind:value={password}
+					bind:value={password2}
 				/>
 			{/if}
-			<button class="eye" onclick={() => (passwordShow = !passwordShow)}>
-				{#if passwordShow}
-					<EyeIcon class="icon18A" />
-				{:else}
-					<EyeOffIcon class="icon18A" />
+
+			<div class="label">
+				<label class="container">
+					<input bind:checked={terms} type="checkbox">
+					<div class="checkmark"></div>
+				  </label>
+				I agree to the<a href="/#/setting/about/terms"> Terms of Service </a>
+			</div>
+			<div class="label">
+				Password strength:
+				{#if psStrength === 'weak'}
+					<span class="weak">{psStrength}</span>
+				{:else if password === null || psStrength === ''}
+					<span class="weak"></span>
+				{:else if psStrength === 'medium'}
+					<span class="medium">{psStrength}</span>
+				{:else if psStrength === 'strong'}
+					<span class="strong">{psStrength}</span>
 				{/if}
-			</button>
-		</div>
-	
-		{#if passwordShow}
-			<input
-				id="password2"
-				class="input"
-				type="text"
-				placeholder="Please input your password"
-				autocomplete="off"
-				bind:value={password2}
-			/>
-		{:else}
-			<input
-				id="password2"
-				class="input"
-				type="password"
-				placeholder="Please input your password"
-				autocomplete="off"
-				bind:value={password2}
-			/>
-		{/if}
-	
-		<div class="label">
-			<input type="checkbox" bind:checked={terms} />
-			&nbsp I agree to the &nbsp<a href="/#/setting/about/terms"> Terms of Service </a>
-		</div>
-		<div class="label">
-			Password strength:&nbsp
-			{#if psStrength === 'Too weak' && password !== null}
-				<span class="weak">{psStrength}</span>
-			{:else if password === null}
-				<span class="weak"></span>
-			{:else if psStrength !== 'empty' && psStrength !== 'Too weak'}
-				<span class="normal">{psStrength}</span>
+			</div>
+			{#if psStrength === 'weak' && password === password2}
+				<div class="tips">
+					At least 8 characters long, containing at least 1 uppercase letter, 1 numeric digit, and 1
+					special character.
+				</div>
 			{/if}
-		</div>
-	
-		{#if password === null && password2 === null}
-			<button class="hint"> Setting your password</button>
-		{:else if password !== password2}
-			<button class="hint"> Password not match</button>
-		{:else if password === password2 && !terms}
-			<button class="hint"> Please agree to the terms</button>
-		{:else if password === password2 && terms && psStrength === 'Too weak'}
-			<button class="hint"> Password too weak</button>
-		{:else if password === password2 && terms && psStrength !== 'Too weak'}
-			<button class="submit" onclick={() => createAccount(password as string)}> Submit</button>
-		{/if}
-			
+
+			{#if password === null && password2 === null}
+				<button class="start"> Setting your password</button>
+			{:else if password !== password2}
+				<button class="start"> Password not match</button>
+			{:else if password === password2 && !terms && psStrength !== 'weak'}
+				<button class="start"> Please agree to the terms</button>
+			{:else if password === password2  && psStrength === 'weak'}
+				<button class="start"> Password too weak</button>
+			{:else if password === password2 && terms && psStrength !== 'weak'}
+				<button class="submit" onclick={() => createAccount(password as string)}> Submit</button>
+			{/if}
 		</div>
 	</div>
 {/if}
 
-
 <style lang="postcss">
+	a{
+		margin-left: 1rem;
+		font-weight: 600;
+		color: var(--color);
+		&:hover {
+			text-decoration: underline;
+		}
+	}
 	.modal {
+		display: flex;
 		gap: 1rem;
 		box-sizing: border-box;
 		flex-direction: column;
 		justify-content: flex-start;
 		position: fixed;
 		color: var(--color-text);
-		height: 70%;
+		height: 80%;
 		width: 38.4rem;
 		padding: 2rem;
 		background: var(--color-bg1);
@@ -188,12 +201,13 @@
 		border: 1px solid var(--color-border);
 	}
 	.modal-m {
+		display: flex;
 		gap: 1rem;
-		position: fixed;
-		top: calc(100vh - 50rem);
 		box-sizing: border-box;
 		flex-direction: column;
 		justify-content: flex-start;
+		position: fixed;
+		top: 5rem;
 		height: 100vh;
 		width: 100vw;
 		padding: 2rem;
@@ -249,8 +263,29 @@
 		border: none;
 	}
 
-	.hint {
+	.start {
+		display: flex;
 		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		color: #fff;
+		font-size: 1.7rem;
+		font-weight: 600;
+		height: 4.8rem;
+		border: none;
+		border-radius: 1.6rem;
+		background: var(--storm700);
+		box-sizing: border-box;
+		width: 80%;
+		margin-top: 3.2rem;
+		padding: 1rem;
+		cursor: pointer;
+	}
+	.submit {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
 		color: #fff;
 		font-size: 1.7rem;
 		font-weight: 600;
@@ -264,21 +299,6 @@
 		padding: 1rem;
 		cursor: pointer;
 	}
-	.submit {
-		flex-direction: column;
-		color: #fff;
-		font-size: 1.7rem;
-		font-weight: 600;
-		height: 4.8rem;
-		border: none;
-		border-radius: 1.6rem;
-		background: var(--color-blue);
-		box-sizing: border-box;
-		width: 80%;
-		margin-top: 3.2rem;
-		padding: 1rem;
-		cursor: pointer;
-	}
 	.weak {
 		padding: 0rem 0.8rem;
 		border: none;
@@ -286,14 +306,35 @@
 		color: #fff;
 		background: red;
 		font-weight: 500;
+		margin-left: 1rem;
 	}
-	.normal {
+	.medium {
 		font-weight: 500;
 		padding: 0rem 0.8rem;
 		border: none;
 		border-radius: 0.8rem;
 		color: #fff;
-		background: var(--color-green);
+		background: var(--alert);
+		margin-left: 1rem;
+	}
+	.strong {
+		font-weight: 500;
+		padding: 0rem 0.8rem;
+		border: none;
+		border-radius: 0.8rem;
+		color: #fff;
+		background: var(--green4);
+		margin-left: 1rem;
+	}
+	.tips {
+		display: flex;
+		color: var(--color-text);
+		font-size: 1.2rem;
+		font-weight: 500;
+		width: 60%;
+		border: 2px dashed var(--alert);
+		border-radius: 1.6rem;
+		padding: 1.5rem 2rem;
 	}
 	.eye {
 		display: flex;
@@ -303,7 +344,62 @@
 		right: 16%;
 	}
 
-	.container {
+	.ps-container {
 		width: 100%;
 	}
+	
+.container input {
+ position: absolute;
+ opacity: 0;
+ cursor: pointer;
+ height: 0;
+ width: 0;
+}
+
+.container {
+ display: block;
+ position: relative;
+ cursor: pointer;
+ font-size: 1.2rem;
+ user-select: none;
+ margin-right: 1rem;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+ position: relative;
+ top: 0;
+ left: 0;
+ height: 1.3em;
+ width: 1.3em;
+ background: none;
+ border: 1px solid var(--color-bg3);
+ border-radius: 0.6rem;
+ box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.30), 0px 1px 1px rgba(0,5);
+}
+
+
+.container input:checked ~ .checkmark {
+ background-color: var(--green4);
+}
+
+.checkmark:after {
+ content: "";
+ position: absolute;
+ display: none;
+}
+
+.container input:checked ~ .checkmark:after {
+ display: block;
+}
+
+.container .checkmark:after {
+ left: 0.45em;
+ top: 0.25em;
+ width: 0.25em;
+ height: 0.5em;
+ border: solid white;
+ border-width: 0 0.15em 0.15em 0;
+ transform: rotate(45deg);
+}
 </style>
