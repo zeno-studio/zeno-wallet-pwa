@@ -10,7 +10,7 @@
 		<!-- currentAccount -->
 
 		{#if accountState.currentAccountIndex === 0}
-			<div class="item-container3">
+			<div class="none-account">
 				<h5>Please Create or Import a Account</h5>
 			</div>
 		{:else}
@@ -46,6 +46,17 @@
 
 
 <style lang="postcss">
+	.none-account {
+		box-sizing: border-box;
+		width: 100%;
+		flex-direction: column;
+		background: none;
+		border-radius: 1.6rem;
+		padding: 1rem;
+		cursor: pointer;
+		margin-bottom: 0.8rem;
+		border: 1px solid var(--color-bg3)
+	}
 	
 	.Account-container{
 		width: 100%;

@@ -154,7 +154,6 @@
 		position: fixed;
 		top: 0px;
 		background: var(--color-bg);
-		z-index: 100;
 	}
 	.nav-wrapper {
 		display: flex;
