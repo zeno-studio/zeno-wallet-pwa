@@ -19,6 +19,11 @@
 	import { accountState } from '$lib/wallet/runes';
 	import { goto } from '$app/navigation';
 	import { fade, fly } from 'svelte/transition';
+	import { Footer,Header } from '$lib/ui/components';
+	import { metadata } from '$lib/ui/runes';
+
+	metadata.title = 'Settings';
+	metadata.description = 'Settings';
 
 	function generateAvatar(address: string) {
 		return toSvg(address, 40);
@@ -52,15 +57,19 @@
 		}
 	});
 </script>
-
-
-	<div class="appBody">
+{#if !isSmallScreen.current}
+<Header />
+{/if}
+	<div class={{"appBody": isSmallScreen.current, "appBody-d": !isSmallScreen.current}}>
 		<!-- currentAccount -->
+		{#if isSmallScreen.current}
+		<div class="label-top">Settings</div>
+		{/if}
 		<button class="setting" onclick={gotoAccount}>
 			<div class="item">
 				<div class="item-l">
 					<div class="avatar">
-						{#if accountState.currentAccountIndex === 0}
+						{#if accountState.accountList.length === 0}
 							0
 						{:else}
 							{@html generateAvatar(accountState.currentAccount?.address ?? '')}
@@ -191,6 +200,7 @@
 		</a>
 	</div>
 
+	<Footer />
 
 {#if langOpen}
 	<!-- svelte-ignore a11y_interactive_supports_focus -->
@@ -227,9 +237,39 @@
 {/if}
 
 <style lang="postcss">
-	.appBody {
-		margin-bottom: 8rem;
-	}
+	.appBody-d {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	width: 95%;
+	max-width: 48rem;
+	padding: 6.4rem 1rem 0rem 1rem;
+}
+.appBody {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	width: 95%;
+	max-width: 48rem;
+	padding: 1rem 1rem 0rem 1rem;
+}
+.label-top {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.7rem;
+	font-weight: 600;
+	background: var(--storm700);
+	height: 4.8rem;
+	padding: 1rem 2rem;
+	border-top-left-radius: 1.6rem;
+	border-top-right-radius: 1.6rem;
+	width: 100%;
+	box-sizing: border-box;
+	color: var(--color);
+	margin-bottom: 1rem;
+
+}
 	.item {
 	position: relative;
 	display: flex;
@@ -237,8 +277,6 @@
 	justify-content: flex-start;
 	align-items: center;
 	width: 100%;
-	font-size: 1.5rem;
-	font-weight: 500;
 	padding: 0px;
 	background: none;
 	border: none;
@@ -388,5 +426,10 @@
 		margin-bottom: 0.8rem;
 		border: none;
 		height: 5rem;
+	}
+	.label2{
+		font-size: 1.5rem;
+		font-weight: 500;
+		color: var(--color);
 	}
 </style>

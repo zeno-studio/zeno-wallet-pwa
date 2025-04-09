@@ -4,14 +4,14 @@
 	import { SettingFilled } from '$lib/svg';
 	import { page } from '$app/state';
 	import { onMount } from 'svelte';
-
+	import { Header } from '$lib/ui/components';
 	let address = '0xeDf074bd2c3FC10A296E7C9c52BfD80ab5d2A9E9';
 	const addressSvg = encodeQR(address, 'svg');
 	onMount(() => {
 		console.log(document.getElementById('delete'));
 	});
 </script>
-
+<Header />
 <div class="appBody" class:active={isSmallScreen.current}>
 	<div class="item-container2">
 		<div class="item">
@@ -41,10 +41,15 @@
 
 <style>
 	.appBody {
-		padding-top: 4rem;
+		flex-direction: column;
+		height: 100%;
+		width: 95%;
+		max-width: 48rem;
+		padding: 10.4rem 1rem 0rem 1rem;
 	}
 	.active {
-		padding-top: 2rem;
+		padding: 8.4rem 1rem 0rem 1rem;
+
 	}
 	.item-container {
 		box-sizing: border-box;

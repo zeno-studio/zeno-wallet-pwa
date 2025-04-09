@@ -2,8 +2,9 @@
 	import { signer, type signerResponseType,saveMidPass,setTime,setAutoLock, queryTime, isLocked, isAutoLock,queryMid} from '$lib/wallet/runes';
 	import {restoreMn} from '$lib/wallet/common';
 	import {accountState} from '$lib/wallet/runes';
-	import type { Account } from '$lib/wallet/common';
 	import {generateQRCodeSvg} from '$lib/ui/ts';
+	import { Toaster,Header,Footer } from '$lib/ui/components';
+	import { toastState } from '$lib/ui/runes';
 
 	let signerResponse : signerResponseType | null = null;
 	signer.onmessage = (event) => {
@@ -51,6 +52,8 @@ async function getBalance() {
 
 </script>
 
+<Header />
+<Toaster />
 
 	<div class="appBody">
 		{signerResponse?.data}
@@ -82,10 +85,19 @@ async function getBalance() {
 	{/await}
 
 	<input type="text" bind:value={pass} />
-	<div>{pwd.checkPassword(pass)}</div>
-	<div>{pwd.secureMask.estimate().score}</div>
+	<button onclick={() => toastState.add('title', 'message')}>toast</button>
 
 
 
 </div>
+<Footer />
 
+<style lang="postcss">
+		.appBody {
+	flex-direction: column;
+	height: 100%;
+	width: 95%;
+	max-width: 48rem;
+	padding: 6.4rem 1rem 0rem 1rem;
+}
+</style>

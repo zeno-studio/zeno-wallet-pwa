@@ -1,6 +1,11 @@
 <script lang="ts">
 	import { draggable, droppable, type DragDropState } from '@thisux/sveltednd';
 	import { flip } from 'svelte/animate';
+	import { Header, Footer } from '$lib/ui/components';
+	import { metadata } from '$lib/ui/runes';
+
+	metadata.title = 'Apps';
+	metadata.description = 'Apps';
 
 	interface Card {
 		id: string;
@@ -26,33 +31,41 @@
 	}
 </script>
 
+<Header />
 
-	<div class="appBody">
-		<div class="grid-container">
-			{#each cards as card, index (card.id)}
-				<div
-					use:droppable={{ container: index.toString(), callbacks: { onDrop: handleDrop } }}
-					class="container"
-					animate:flip={{ duration: 300 }}
+<div class="appBody">
+	<div class="grid-container">
+		{#each cards as card, index (card.id)}
+			<div
+				use:droppable={{ container: index.toString(), callbacks: { onDrop: handleDrop } }}
+				class="container"
+				animate:flip={{ duration: 300 }}
+			>
+				<button
+					class="item-button"
+					use:draggable={{
+						container: index.toString(),
+						dragData: card
+					}}
 				>
-					<button
-						class="item-button"
-						use:draggable={{
-							container: index.toString(),
-							dragData: card
-						}}
-					>
-						<div class="item-icon">
-							<span>{card.icon}</span>
-						</div>
-					</button>
-				</div>
-			{/each}
-		</div>
+					<div class="item-icon">
+						<span>{card.icon}</span>
+					</div>
+				</button>
+			</div>
+		{/each}
 	</div>
-
+</div>
+<Footer />
 
 <style lang="postcss">
+	.appBody {
+		flex-direction: column;
+		height: 100%;
+		width: 95%;
+		max-width: 48rem;
+		padding: 6.4rem 1rem 0rem 1rem;
+	}
 	.grid-container {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(7.6rem, 1fr));

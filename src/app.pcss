@@ -217,6 +217,10 @@ div {
 	width: 1.8rem;
 	color: var(--color-text);
 	cursor: pointer;
+	&:hover {
+		transform: scale(1.1);
+		color: var(--color);
+	}
 }
 
 .icon18B {
@@ -246,6 +250,12 @@ div {
 	color: var(--color-pink);
 	cursor: pointer;
 }
+.icon18R {
+	height: 1.8rem;
+	width: 1.8rem;
+	color: red;
+	cursor: pointer;
+}
 
 .icon24rem {
 	height: 2.4rem;
@@ -273,14 +283,6 @@ div {
 	margin-right: 1rem;
 }
 
-.appBody {
-	flex-direction: column;
-	height: 100%;
-	width: 96%;
-	max-width: 48rem;
-	padding: 0px;
-	margin: 0px;
-}
 
 
 .toast {
@@ -305,19 +307,9 @@ div {
 	align-items: center;
 	flex-direction: row;
 	justify-content: flex-end;
-	margin-left: auto;
-	margin-bottom: 1rem;
 	padding: 0px;
 	background: none;
 	border: none;
-	border: 1px solid transparent;
-
-	&:hover {
-		color: var(--color);
-		background: var(--color-bg2);
-		border-radius: 50%;
-		border: 1px solid var(--color-text);
-	}
 }
 
 

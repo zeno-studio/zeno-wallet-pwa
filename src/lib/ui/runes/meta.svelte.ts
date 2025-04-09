@@ -1,11 +1,8 @@
 
 class MetaDate {
-    title: string;
-    description: string;
-    constructor() {
-        this.title = 'Zeno Wallet';
-        this.description = 'Zeno Wallet';
-    }
+    title = $state('Zeno Wallet');
+    description = $state('Zeno Wallet');
+  
 }
 
 export const metadata = new MetaDate();

@@ -1,19 +1,21 @@
 <script lang="ts">
-	import { Toaster, Tabs, CreateAccount, ImportAccount } from '$lib/ui/components';
-	import { toastState } from '$lib/ui/runes';
+	import { Tabs, CreateAccount, ImportAccount,Footer,Header } from '$lib/ui/components';
 	import { ReceiveIcon, CloseIcon, SendFilled, SwapIcon, BuyIcon, PlugFilled } from '$lib/svg';
 	import { accountState } from '$lib/wallet/runes';
+	import { metadata } from '$lib/ui/runes';
+
+metadata.title = 'Assets';
+metadata.description = 'Assets';
+
 </script>
 
-<Toaster />
 
+<Header />
 <div class="appBody">
 	<div class="item-container">
 		<div class="item">
 			<h2>Balance:100$</h2>
-		</div>
-
-		<button onclick={() => toastState.add('title', 'message')}>sdf</button>
+		</div>	
 	</div>
 
 	<div class="item-container2">
@@ -42,7 +44,7 @@
 	</div>
 
 	<div class="item-container2">
-		{#if accountState.nextAccountIndex === 1}
+		{#if accountState.accountList.length === 0}
 			<div class="menu2">
 				<CreateAccount />
 				<ImportAccount />
@@ -62,11 +64,18 @@
 			</div>
 		{/if}
 	</div>
-
 	<Tabs />
 </div>
-
+<Footer />
 <style lang="postcss">
+	.appBody {
+	flex-direction: column;
+	height: 100%;
+	width: 95%;
+	max-width: 48rem;
+	padding: 6.4rem 1rem 0rem 1rem;
+}
+
 	.item-container {
 	box-sizing: border-box;
 	width: 100%;
