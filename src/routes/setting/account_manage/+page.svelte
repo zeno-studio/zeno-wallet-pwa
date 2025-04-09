@@ -9,9 +9,9 @@
 	<div class="appBody">
 		<!-- currentAccount -->
 
-		{#if accountState.currentAccountIndex === 0}
+		{#if accountState.accountList.length === 0}
 			<div class="none-account">
-				<h5>Please Create or Import a Account</h5>
+				<h5>Please Create or Import an Account</h5>
 			</div>
 		{:else}
 			<div class="Account-container">
@@ -21,23 +21,23 @@
 		{/if}
 
 		{#if isSmallScreen.current}
-			{#if accountState.currentAccountIndex === 0}
+			{#if accountState.accountList.length === 0}
 				<div class="bottomB-s">
 					<CreateAccount />
 					<ImportAccount />
 				</div>
-			{:else if accountState.currentAccountIndex > 0 && accountState.nextAccountIndex < 21}
+			{:else if accountState.accountList.length >0}
 				<div class="bottomA-s"><AddAccount /></div>
 			{/if}
 		{/if}
 
 		{#if !isSmallScreen.current}
-			{#if accountState.currentAccountIndex === 0}
+			{#if accountState.accountList.length === 0}
 				<div class="bottomB">
 					<CreateAccount />
 					<ImportAccount />
 				</div>
-			{:else if accountState.currentAccountIndex > 0 && accountState.nextAccountIndex < 21}
+			{:else if accountState.accountList.length >0}
 				<div class="bottomA"><AddAccount /></div>
 			{/if}
 		{/if}

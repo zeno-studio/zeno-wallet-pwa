@@ -1,20 +1,16 @@
 <script lang="ts">
 	import "../app.pcss";
-	import { Header, Footer, Toaster } from '$lib/ui/components';
 	import { createSettings } from '$lib/ui/runes';
 	import { initDB } from '$lib/wallet/common';
-	import { page } from '$app/state';
 	import { metadata } from '$lib/ui/runes';
-
 
 	initDB();
 	createSettings();
 	let { children } = $props();
 
-	
-
 	const thumbnail = '/favicon.png';
 	const favicon = '/favicon.svg';
+
 </script>
 
 <noscript>You need to enable JavaScript to run this app.</noscript>
@@ -30,26 +26,25 @@
 	<meta property="twitter:description" content={metadata.description} />
 	<link rel="icon" type="image/png" href={favicon} sizes="32x32" />
 
-	<title>{metadata.title}</title>
+	<title>{metadata.title} {metadata.description}</title>
 </svelte:head>
 
-<Toaster />
-<Header />
+
 <main class="main">
 	{@render children()}
 </main>
-<Footer />
+
 
 <style lang="postcss">
 	.main {
-	color: var(--color);
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	background-color: var(--color-bg);
-	box-sizing: border-box;
+	color: var(--color-text);
 	border: none;
-	padding: 6.4rem 0.8rem 0rem 0.8rem;
+	padding: 0px;
+	margin: 0px;
 }
 </style>
 

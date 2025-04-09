@@ -24,7 +24,6 @@ $effect(() => {
 		<a href="/" class={{active:page.route.id == '/'}}>{t.get("Asset")}</a>
 		<a href="/#/apps" class={{active:page.route.id == '/apps'}}>{t.get("Apps")}</a>
 		<a href="/#/nft" class={{active:page.route.id == '/nft'}}>NFT</a>
-		<a href="/#/setting" class={{active:page.route.id == '/setting'}}>{t.get("Setting")} </a>
 		<a href="/#/dev" class={{active:page.route.id == '/dev'}}>dev</a>
 	{/if}
 </div>

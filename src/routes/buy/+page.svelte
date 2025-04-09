@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { isSmallScreen } from '$lib/ui/ts';
-	import { SettingFilled } from '$lib/svg';
 	import { page } from '$app/state';
+	import { Header } from '$lib/ui/components';
 </script>
 
+<Header />
 <div class="appBody" class:active={isSmallScreen.current}>
 	<div class="item-container2">
 		<div class="item">
@@ -30,10 +31,15 @@
 
 <style>
 	.appBody {
-		padding-top: 4rem;
+		flex-direction: column;
+		height: 100%;
+		width: 95%;
+		max-width: 48rem;
+		padding: 10.4rem 1rem 0rem 1rem;
 	}
 	.active {
-		padding-top: 2rem;
+		padding: 8.4rem 1rem 0rem 1rem;
+
 	}
 	.item-container {
 		box-sizing: border-box;

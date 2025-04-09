@@ -45,3 +45,10 @@ export function getFirstAndLast(str: string): string {
   if (trimmed.length <= 1) return trimmed;
   return trimmed[0] + trimmed[trimmed.length - 1];
 }
+
+export function cutString(str: string, maxLength: number) {
+  if (str.length > maxLength) {
+    return str.substring(0, maxLength) + '...';
+  }
+  return str;
+}

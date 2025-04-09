@@ -4,7 +4,7 @@
 	import { accountState } from '$lib/wallet/runes';
 	import { page } from '$app/state';
 	import { generateQRCodeSvg } from '$lib/ui/ts';
-
+	import { Header } from '$lib/ui/components';
 	let qrcode = $derived(() => {
 		if (!accountState.currentAccount?.address) return '';
 		return generateQRCodeSvg(
@@ -41,7 +41,7 @@
 		URL.revokeObjectURL(url);
 	}
 </script>
-
+<Header />
 <div class="appBody" class:active={isSmallScreen.current}>
 	<div class="item-container2">
 		<div class="item">
@@ -119,10 +119,15 @@
 
 <style lang="postcss">
 	.appBody {
-		padding-top: 4rem;
+		flex-direction: column;
+		height: 100%;
+		width: 95%;
+		max-width: 48rem;
+		padding: 10.4rem 1rem 0rem 1rem;
 	}
 	.active {
-		padding-top: 2rem;
+		padding: 8.4rem 1rem 0rem 1rem;
+
 	}
 	.item-container {
 		gap: 1rem;

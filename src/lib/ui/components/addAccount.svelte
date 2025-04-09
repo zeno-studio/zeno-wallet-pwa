@@ -20,6 +20,8 @@
 
 	function close() {
 		modalOpen = false;
+		exceed1 = false;
+		exceed2 = false;
 		isValidPs = null;
 		password = null;
 		passwordShow = false;
