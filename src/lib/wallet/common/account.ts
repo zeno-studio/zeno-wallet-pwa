@@ -4,7 +4,7 @@ import {
 	removeElement,
 	dbStore,
 	type Account,
-	type LegacyVault,
+	type Vault,
 	type KeyringType,
 	type WalletBackupData,
 	type AddressType,
@@ -29,23 +29,24 @@ import {
 	type DeriveFn
 } from '@polkadot-labs/hdkd-helpers';
 
-export const packLegacyVaultToJson = async (): Promise<string> => {
-	const vault = (await getElement(dbStore.Vault.name, 'all')) as LegacyVault[];
+export const packVaultToJson = async (): Promise<string> => {
+	const vault = (await getElement(dbStore.Vault.name, 'all')) as Vault[];
 	return JSON.stringify(vault);
 };
 
-export const packMn = (password: string, mn: string, Keypath: string): boolean => {
+export const packMn = (password: string, mn: string, vaultName: string): boolean => {
 	const salt = randomBytes(32);
 	const ent = bip39.mnemonicToEntropy(mn, wordlist);
 	const phrase = scrypt(password, salt, { N: 2 ** 16, r: 8, p: 1, dkLen: 32 });
 	const chacha = managedNonce(xchacha)(phrase);
 	const ciphertext = chacha.encrypt(ent);
-	const store: LegacyVault = {
-		vaultName: Keypath,
+	const store: Vault = {
+		name: vaultName,
 		salt: bytesToHex(salt),
 		ciphertext: bytesToHex(ciphertext),
-		cryptoVersion: 1
-	};
+		Version: 'V1',
+		uuid: crypto.randomUUID()
+	};	
 	try {
 		addElement(dbStore.Vault.name, store);
 		return true;
@@ -54,9 +55,10 @@ export const packMn = (password: string, mn: string, Keypath: string): boolean =
 		return false;
 	}
 };
+	
 
-export const restoreMn = async (password: string, keypath: string): Promise<string | null> => {
-	const vault = (await getElement(dbStore.Vault.name, keypath)) as LegacyVault;
+export const restoreMn = async (password: string, vaultName: string): Promise<string | null> => {
+	const vault = (await getElement(dbStore.Vault.name, vaultName)) as Vault;
 	const phrase = scrypt(password, hexToBytes(vault.salt), { N: 2 ** 16, r: 8, p: 1, dkLen: 32 }); // vault.salt, { N: 2 ** 16, r: 8, p: 1, dkLen: 32 });
 	const chacha = managedNonce(xchacha)(phrase);
 	try {
@@ -70,7 +72,7 @@ export const restoreMn = async (password: string, keypath: string): Promise<stri
 };
 
 export const isValidPassword = async (password: string): Promise<boolean> => {
-	const vault = (await getElement(dbStore.Vault.name, 'default')) as LegacyVault;
+	const vault = (await getElement(dbStore.Vault.name, 'default')) as Vault;
 	const phrase = scrypt(password, hexToBytes(vault.salt), { N: 2 ** 16, r: 8, p: 1, dkLen: 32 }); // vault.salt, { N: 2 ** 16, r: 8, p: 1, dkLen: 32 });
 	const chacha = managedNonce(xchacha)(phrase);
 	try {
@@ -94,7 +96,7 @@ export const createEvmAccount = (
 ): boolean => {
 	mn = mn ?? bip39.generateMnemonic(wordlist, 128);
 	try {
-		packMn(password, mn, 'default');
+		packMn(password, mn, 'EVM');
 		deriveEvm(index, mn);
 		return true;
 	}
@@ -124,7 +126,6 @@ export const deriveEvm = (index: number, mn: string): Account | null => {
 				addressType: 'EVM',
 				derivePath: `m/44'/60'/0'/0/${index - 1}`,
 				keyringType: 'secp256k1',
-				publicKey: bytesToHex(hdKey.publicKey)
 			};
 			addElement(dbStore.Account.name, newAccount);
 			return newAccount;
@@ -137,12 +138,11 @@ export const createPolkadotAccount = (
 	index: number,
 	password: string,
 	type: KeyringType,
-	keypath: string,
 	mn?: string
 ): boolean => {
 	mn = mn ?? bip39.generateMnemonic(wordlist, 128);
 	try {
-		packMn(password, mn, keypath);
+		packMn(password, mn, 'POLKADOT');
 		derivePolkadot(index, type, mn);
 		return true;
 	}
@@ -179,7 +179,6 @@ export const derivePolkadot = async (
 		addressType: 'POLKADOT',
 		derivePath: path,
 		keyringType: type,
-		publicKey: pub
 	};
 	try {
 		addElement(dbStore.Account.name, newAccount);
@@ -194,9 +193,9 @@ export const derivePolkadotAccount = async (
 	index: number,
 	password: string,
 	type: KeyringType,
-	keypath: string
+	vaultName: string
 ): Promise<boolean> => {
-	const mn = await restoreMn(password, keypath);
+	const mn = await restoreMn(password, vaultName);
 	if (!mn) return false;
 	return derivePolkadot(index, type, mn);
 };
@@ -205,42 +204,6 @@ export const derivePolkadotAccount = async (
 
 
 
-export const resetWallet = async (): Promise<void> => {
-	removeElement(dbStore.Vault.name, 'default');
-};
-
-export const backupWallet = async (): Promise<string> => {
-	const vaults = (await getElement(dbStore.Vault.name, 'all')) as LegacyVault[];
-	const accounts = (await getElement(dbStore.Account.name, 'all')) as Account[];
-	const addressBook = (await getElement(dbStore.AddressBook.name, 'all')) as AddressEntry[];
-	const History = (await getElement(dbStore.History.name, 'all')) as History[];
-	const settings = localStorage.getItem('settings');
-	const backup = JSON.stringify({
-		vaults,
-		accounts,
-		addressBook,
-		History,
-		settings
-	});
-	return backup;
-};
-
-export const restoreWallet = async (backup: string) => {
-	const data = JSON.parse(backup) as WalletBackupData;
-	for (const vault of data.vaults) {
-		addElement(dbStore.Vault.name, vault);
-	}
-	for (const account of data.accounts) {
-		addElement(dbStore.Account.name, account);
-	}
-	for (const addressBook of data.addressBook) {
-		addElement(dbStore.AddressBook.name, addressBook);
-	}
-	for (const history of data.History) {
-		addElement(dbStore.History.name, history);
-	}
-	localStorage.setItem('settings', JSON.stringify(data.settings));
-};
 
 export function detectAddressType(address: string | null | undefined): AddressType {
 	if (address == null || address.trim() === '') {

@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { isSmallScreen } from '$lib/ui/ts';
-	import { createEvmAccount, type Settings } from '$lib/wallet/common';
+	import { createEvmAccount,createPolkadotAccount, type Settings } from '$lib/wallet/common';
 	import { CloseIcon, EyeIcon, EyeOffIcon, AlertTriangle, ArrowBack } from '$lib/svg';
 	import { checkPasswordStrength } from '$lib/ui/ts';
 	import { accountState, saveMidPass } from '$lib/wallet/runes';
 	import { fade, fly } from 'svelte/transition';
 
 	let modalOpen = $state(false);
+	let type = $state('EVM');
 	let notice = $state(false);
 	let terms = $state(false);
 	let password = $state<string | null>(null);
@@ -29,21 +30,50 @@
 		terms = false;
 	}
 
-	async function createAccount(password: string) {
+	async function createEvm(password: string) {
 		const settings = JSON.parse(localStorage.getItem('settings')!) as Settings;
 		try {
 			if (createEvmAccount(1, password)) {
 				accountState.currentAccountIndex = 1;
 				accountState.nextAccountIndex++;
+				accountState.vaultState[0] = 1;
 				await accountState.getAccountList();
 				settings.currentAccountIndex = 1;
 				settings.nextAccountIndex++;
+				settings.vaultState[0] = 1;
 				localStorage.setItem('settings', JSON.stringify(settings));
 				saveMidPass(password);
 				close();
 			}
 		} catch (e) {
 			console.error('Error when creating account', e);
+		}
+	}
+
+	async function createPolkadot(password: string) {
+		const settings = JSON.parse(localStorage.getItem('settings')!) as Settings;
+		try {
+			if (createPolkadotAccount(101, password,'sr25519')) {
+				accountState.currentAccountIndex = 101;
+				accountState.nextPolkadotIndex++;
+				accountState.vaultState[1] = 1;
+				await accountState.getAccountList();
+				settings.currentAccountIndex = 101;
+				settings.nextPolkadotIndex++;
+				settings.vaultState[1] = 1;
+				localStorage.setItem('settings', JSON.stringify(settings));
+
+			}
+		} catch (e) {
+			console.error('Error when creating account', e);
+		}
+	}
+
+	function handleCreate() {
+		if (type === 'EVM') {
+			createEvm(password!);
+		} else if (type === 'POLKADOT') {
+			createPolkadot(password!);
 		}
 	}
 
@@ -101,7 +131,18 @@
 							it.
 						</span>
 					</div>
-
+					<div class="label2"> Choose account type </div>
+					<div class="radio">
+						<label class="radio-label">
+							<input type="radio" bind:group={type} value="EVM" />
+							ETHEREUM
+						</label>
+					
+					<label class="radio-label">
+						<input type="radio" bind:group={type} value="POLKADOT" />
+						POLKADOT
+					</label>
+				</div>
 					<button class="start" onclick={() => (notice = true)}>Continue</button>
 				</div>
 			{/if}
@@ -119,7 +160,7 @@
 					</div>
 					<div class="title">Set Your Password</div>
 
-					<div class="lable2">Your password:</div>
+					<div class="label2">Your password:</div>
 					<div class="ps-container">
 						{#if passwordShow}
 							<input
@@ -147,7 +188,7 @@
 						</button>
 					</div>
 
-					<div class="lable2">Repeat your password:</div>
+					<div class="label2">Repeat your password:</div>
 					{#if passwordShow}
 						<input
 							id="password2"
@@ -166,14 +207,14 @@
 						/>
 					{/if}
 
-					<div class="label">
+					<div class="label-s">
 						<label class="container">
 							<input bind:checked={terms} type="checkbox" />
 							<div class="checkmark"></div>
 						</label>
 						I agree to the<a href="/#/setting/about/terms"> Terms of Service </a>
 					</div>
-					<div class="label">
+					<div class="label-s">
 						Password strength:
 						{#if psStrength === 'weak'}
 							<span class="weak">{psStrength}</span>
@@ -186,7 +227,7 @@
 						{/if}
 					</div>
 					{#if psStrength === 'weak' && password === password2}
-						<div class="tips">
+						<div class="tip2">
 							At least 8 characters long, containing at least 1 uppercase letter, 1 numeric digit,
 							and 1 special character.
 						</div>
@@ -201,7 +242,7 @@
 					{:else if password === password2 && psStrength === 'weak'}
 						<button class="start"> Password too weak</button>
 					{:else if password === password2 && terms && psStrength !== 'weak'}
-						<button class="submit" onclick={() => createAccount(password as string)}>
+						<button class="submit" onclick={handleCreate}>
 							Submit</button
 						>
 					{/if}
@@ -220,12 +261,20 @@
 			text-decoration: underline;
 		}
 	}
-	.lable2 {
+	.radio{
 		display: flex;
-		justify-content: flex-start;
+		flex-direction: row;
+		justify-content:space-around;
+		align-items: center;
+		width: 70%;
+	}
+	.radio-label {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 1rem;
 		font-size: 1.3rem;
 		font-weight: 600;
-		width: 70%;
 	}
 	.top1 {
 		position: relative;
@@ -269,7 +318,7 @@
 		flex-direction: column;
 		align-items: center;
 		width: 65%;
-		font-size: 1.2rem;
+		font-size: 1.3rem;
 	}
 	.alert {
 		display: flex;
@@ -290,7 +339,7 @@
 		justify-content: flex-start;
 		position: fixed;
 		color: var(--color-text);
-		height: 80%;
+		height: 85%;
 		width: 38.4rem;
 		padding: 2rem;
 		background: var(--color-bg1);
@@ -311,19 +360,33 @@
 		border-radius: 1.6rem;
 		border: 1px solid var(--color-border);
 	}
-	.title {
-		display: flex;
-		font-size: 2rem;
-		font-weight: 700;
-		color: var(--color-text);
-		margin-bottom: 2rem;
-	}
-	.label {
+
+	
+	.label2 {
 		display: flex;
 		justify-content: flex-start;
-		padding: 0px;
-		font-size: 1.2rem;
+		font-size: 1.3rem;
+		font-weight: 600;
+		width: 70%;
+	}
+	.tip {
+		font-size: 1.3rem;
 		color: var(--color-text);
+		text-align: center;
+		width: 70%;
+	}
+	.tip2 {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		color: var(--color-text);
+		font-size: 1.3rem;
+		font-weight: 500;
+		width: 70%;
+		border: 2px dashed var(--alert);
+		border-radius: 1.6rem;
+		padding: 1rem;
+		width: 70%;
 	}
 
 	.bottom-button {
@@ -351,10 +414,10 @@
 	}
 
 	.input {
-		padding: 1.5rem 2rem;
+		padding: 1rem 2rem;
 		font-size: 1.5rem;
 		width: 80%;
-		border-radius: 16px;
+		border-radius: 2rem;
 		background: var(--color-bg2);
 		border: 1px solid var(--color-border);
 		&:focus {
@@ -452,18 +515,13 @@
 		align-items: center;
 		gap: 1rem;
 	}
-	.tip {
-		font-size: 1.2rem;
-		color: var(--color-text);
-		text-align: center;
-		width: 70%;
-	}
+	
 	.tip2 {
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-start;
 		color: var(--color-text);
-		font-size: 1.2rem;
+		font-size: 1.3rem;
 		font-weight: 500;
 		width: 70%;
 		border: 2px dashed var(--alert);
@@ -566,7 +624,7 @@
 		display: block;
 		position: relative;
 		cursor: pointer;
-		font-size: 1.2rem;
+		font-size: 1.3rem;
 		user-select: none;
 		margin-right: 1rem;
 	}

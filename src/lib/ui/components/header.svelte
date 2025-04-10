@@ -215,9 +215,10 @@
 	.accountButton {
 		display: flex;
 		justify-content: flex-start;
-		align-items: flex-baseline;
-		font-size: 1.5rem;
+		align-items: flex-end;
+		font-size: 1.7rem;
 		font-weight: 600;
+		height: 2.4rem;
 		border: none;
 		background: none;
 		box-sizing: border-box;
@@ -235,7 +236,7 @@
 		justify-content: flex-start;
 		align-items: center;
 		color: var(--color-text);
-		font-size: 1.5rem;
+		font-size: 1.7rem;
 		font-weight: 600;
 		padding-right: 1rem;
 		border-radius: 2rem;
@@ -255,6 +256,7 @@
 		flex-direction: row;
 		justify-content: flex-start;
 		align-items: center;
+		width: 100%;
 	}
 
 	.container {
@@ -319,7 +321,7 @@
 	}
 	.label-left {
 		display: flex;
-		font-size: 1.8rem;
+		font-size: 1.7rem;
 		font-weight: 600;
 		padding: 1rem;
 		align-items: center;

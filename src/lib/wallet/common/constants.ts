@@ -16,7 +16,7 @@ export const PVM_ADDRESSID20_SUFFIX = "eeeeeeeeeeeeeeeeeeeeeeee"
 export const dbStore = {
   Vault:{
     name: 'Vault',
-    keypath: 'vaultName'
+    keypath: 'name'
   },
   Account: {
     name: 'Account',

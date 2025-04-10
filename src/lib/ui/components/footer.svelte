@@ -29,7 +29,7 @@
 				</div>
 			</a>
 
-			<a href="/#/setting" class:active={page.route.id == '/setting'} aria-label="Setting">
+			<a href="/#/settings" class:active={page.route.id == '/settings'} aria-label="Settings">
 				<div class="set">
 					<SettingFilled class="icon2A" />
 					Setting

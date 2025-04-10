@@ -29,7 +29,7 @@
 		return toSvg(address, 40);
 	}
 	function gotoAccount() {
-		goto(`#/setting/account_detail`);
+		goto(`#/settings/account_detail`);
 		accountState.editingAccountIndex = accountState.currentAccountIndex;
 	}
 
@@ -115,7 +115,7 @@
 			</div>
 		</button>
 		<!-- manage account -->
-		<a class="setting-top" href="/#/setting/account_manage">
+		<a class="setting-top" href="/#/settings/account_manage">
 			<div class="item">
 				<div class="item-l">
 					<span class="icon"> <AccountIcon class="icon18A" /></span>
@@ -127,7 +127,7 @@
 			</div>
 		</a>
 		<!-- Security & Privacy -->
-		<a class="setting-medium" href="/#/setting/security">
+		<a class="setting-medium" href="/#/settings/security">
 			<div class="item">
 				<div class="item-l">
 					<span class="icon"> <SafeGuardIcon class="icon18A" /></span>
@@ -139,7 +139,7 @@
 			</div>
 		</a>
 		<!-- Backup Wallet -->
-		<a class="setting-bottom" href="/#/setting/backup">
+		<a class="setting-bottom" href="/#/settings/backup">
 			<div class="item">
 				<div class="item-l">
 					<span class="icon"> <CloudIcon class="icon18A" /></span>
@@ -151,7 +151,7 @@
 			</div>
 		</a>
 		<!--Active Chain -->
-		<a class="setting-top" href="/#/setting/active_chains">
+		<a class="setting-top" href="/#/settings/active_chains">
 			<div class="item">
 				<div class="item-l">
 					<span class="icon"> <ExplorerIcon class="icon18A" /></span>
@@ -163,7 +163,7 @@
 			</div>
 		</a>
 		<!--Address Book -->
-		<a class="setting-medium" href="/#/setting/address_book">
+		<a class="setting-medium" href="/#/settings/address_book">
 			<div class="item">
 				<div class="item-l">
 					<span class="icon"> <BookIcon class="icon18A" /></span>
@@ -175,7 +175,7 @@
 			</div>
 		</a>
 		<!--Active App -->
-		<a class="setting-bottom" href="/#/setting/active_apps">
+		<a class="setting-bottom" href="/#/settings/active_apps">
 			<div class="item">
 				<div class="item-l">
 					<span class="icon"> <AppsIcon class="icon18A" /></span>
@@ -187,7 +187,7 @@
 			</div>
 		</a>
 
-		<a class="setting1" href="/#/setting/about">
+		<a class="setting1" href="/#/settings/about">
 			<div class="item">
 				<div class="item-l">
 					<span class="icon"> <QuestionIcon class="icon18A" /></span>
@@ -253,23 +253,7 @@
 	max-width: 48rem;
 	padding: 1rem 1rem 0rem 1rem;
 }
-.label-top {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 1.7rem;
-	font-weight: 600;
-	background: var(--storm700);
-	height: 4.8rem;
-	padding: 1rem 2rem;
-	border-top-left-radius: 1.6rem;
-	border-top-right-radius: 1.6rem;
-	width: 100%;
-	box-sizing: border-box;
-	color: var(--color);
-	margin-bottom: 1rem;
 
-}
 	.item {
 	position: relative;
 	display: flex;

@@ -1,8 +1,10 @@
 <script lang="ts">
 import Slot from '$lib/ui/apps/slot.svelte'
+import { Toaster,Header,Footer } from '$lib/ui/components';
 </script>
 
-<div class="appContainer">
+<Header />
+<Toaster />
 	<div class="appBody">
 		<div class="dropdown">
 			<Slot />
@@ -18,9 +20,16 @@ import Slot from '$lib/ui/apps/slot.svelte'
 		</div>
 		
 	</div>
-</div>
+
 
 <style lang="postcss">
+			.appBody {
+	flex-direction: column;
+	height: 100%;
+	width: 95%;
+	max-width: 48rem;
+	padding: 6.4rem 1rem 0rem 1rem;
+}
 .dropdown {
   position: relative;
   display: inline-block;

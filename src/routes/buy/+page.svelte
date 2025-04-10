@@ -10,18 +10,18 @@
 		<div class="item">
 			<div class="item-l">
 				<button class="button-label" class:active1={page.route.id == '/receive'}>
-					<a href="/#/receive" class:active1={page.route.id == '/receive'} aria-label="Setting"
+					<a href="/#/receive" class:active1={page.route.id == '/receive'} aria-label="Settings"
 						>Receive</a
 					>
 				</button>
 				<button class="button-label" class:active1={page.route.id == '/send'}>
-					<a href="/#/send" class:active1={page.route.id == '/send'} aria-label="Setting">Send</a>
+					<a href="/#/send" class:active1={page.route.id == '/send'} aria-label="Settings">Send</a>
 				</button>
 				<button class="button-label" class:active1={page.route.id == '/swap'}>
-					<a href="/#/swap" class:active1={page.route.id == '/swap'} aria-label="Setting">Swap</a>
+					<a href="/#/swap" class:active1={page.route.id == '/swap'} aria-label="Settings">Swap</a>
 				</button>
 				<button class="button-label" class:active1={page.route.id == '/buy'}>
-					<a href="/#/buy" class:active1={page.route.id == '/buy'} aria-label="Setting">Buy</a>
+					<a href="/#/buy" class:active1={page.route.id == '/buy'} aria-label="Settings">Buy</a>
 				</button>
 			</div>
 		</div>
