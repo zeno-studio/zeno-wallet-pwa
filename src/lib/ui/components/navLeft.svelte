@@ -41,7 +41,7 @@ $effect(() => {
 	}
 
 	a {
-		font-size: 1.75rem;
+		font-size: 1.9rem;
 		font-weight: 600;
 		margin-left: 1rem;
 		margin-right: 1rem;

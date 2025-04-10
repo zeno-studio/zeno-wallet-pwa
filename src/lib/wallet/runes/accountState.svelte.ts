@@ -3,6 +3,7 @@ import { goto } from '$app/navigation';
 
 class AccountState {
     isBackup = $state(false);
+    vaultState = $state([0,0]);
     currentAccountIndex = $state(0);
     nextAccountIndex = $state(1);
     nextPolkadotIndex = $state(101);

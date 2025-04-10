@@ -32,7 +32,7 @@
 		}, 3000);
 	}
 	function gotoAccount() {
-		goto('#/setting/account_detail');
+		goto('#/settings/account_detail');
 		accountState.editingAccountIndex = accountState.currentAccountIndex;
 	}
 	function generateAvatar(address: string) {
@@ -80,7 +80,7 @@
 					</div>
 				</div>
 				<div class="setting-icon">
-					<a href="/#/setting">
+					<a href="/#/settings">
 						<SettingFilled class="icon18A" />
 					</a>
 					<button class="button-empty" onclick={gotoAccount}

@@ -1,4 +1,4 @@
-import { getElement, removeElement, dbStore, deriveEvm, isValidPassword, type LegacyVault, type Account } from '$lib/wallet/common';
+import { getElement, removeElement, dbStore, deriveEvm, isValidPassword, type Vault, type Account } from '$lib/wallet/common';
 import { scrypt } from '@noble/hashes/scrypt';
 import { hexToBytes } from '@noble/ciphers/utils';
 import { managedNonce } from '@noble/ciphers/webcrypto';
@@ -157,7 +157,7 @@ async function signEvmTx(tx: any, account: Account, password?: string, salt?: st
 async function reBuildMn(): Promise<string> {
 	const phrase = midpass;
 	const chacha = managedNonce(xchacha)(phrase);
-	const vault = (await getElement(dbStore.Vault.name, 'default')) as LegacyVault;
+	const vault = (await getElement(dbStore.Vault.name, 'default')) as Vault;
 	const ent = chacha.decrypt(hexToBytes(vault.ciphertext));
 	const mn = bip39.entropyToMnemonic(ent, wordlist);
 	return mn;
@@ -191,7 +191,7 @@ async function addEvmAccount(index: number) {
 }
 
 async function addEvmAccountWithPassword(index: number, password: string) {
-	const vault = (await getElement(dbStore.Vault.name, 'default')) as LegacyVault;
+	const vault = (await getElement(dbStore.Vault.name, 'default')) as Vault;
 	saveMidPassNotPost(password, vault.salt);
 	const mn = await reBuildMn();
 	const newAccount = deriveEvm(index, mn)
@@ -205,7 +205,7 @@ async function checkPassword(password: string) {
 }
 
 async function changeVaultPassword(oldPassword: string, newPassword: string) {
-	const vault = (await getElement(dbStore.Vault.name, 'default')) as LegacyVault;
+	const vault = (await getElement(dbStore.Vault.name, 'default')) as Vault;
 	if (!vault) return postMessage({ success: false });
 	const mnemonic = await restoreMn(oldPassword, vault.vaultName);
 	if (!mnemonic) return postMessage({ success: false });

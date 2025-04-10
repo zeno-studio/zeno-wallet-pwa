@@ -20,6 +20,7 @@ export type Settings = {
 	hiddenChains: number[];
 	currency: string;
 	isBackup: boolean;
+	vaultState: number[];
 };
 
 export const defaultSettings: Settings = {
@@ -34,10 +35,9 @@ export const defaultSettings: Settings = {
 	hiddenApps: [],
 	hiddenChains: [],
 	currency: 'USD',
-	isBackup: false
+	isBackup: false,
+	vaultState: [0,0]
 };
-
-
 
 export type AccessStatus = 'APPROVED' | 'DENIED';
 export type HexString = `0x${string}`;
@@ -53,7 +53,6 @@ export interface Account {
 	readonly addressType?: AddressType;
 	readonly derivePath?: string;
 	readonly keyringType?: KeyringType;
-	readonly publicKey?: string;
 	isHidden: boolean;
 	memo?: string;
 	ens?: string;
@@ -70,16 +69,57 @@ export interface AddressEntry {
 	avatar?: string;
 }
 
-export interface LegacyVault {
-	readonly vaultName: string;
+export interface Vault {
+	readonly uuid: string;
+	readonly name: string;
 	readonly salt: string;
 	readonly ciphertext: string;
-	readonly cryptoVersion: number;
+	readonly Version: string;
 }
 
-// cryptoVersion: 1;
+// cryptoVersion: V1;
 // kdf: 'scrypt(password, salt, { N: 2 ** 16, r: 8, p: 1, dkLen: 32 })'
 // symmetric: 'XChaCha20-Poly1305-managedNonce'
+
+
+// {
+// 	"version": 3,
+// 	"id": "uuid-string",
+// 	"address": "0x...",
+// 	"crypto": {
+// 	  "cipher": "aes-128-ctr",
+// 	  "ciphertext": "encrypted-private-key",
+// 	  "cipherparams": { "iv": "initialization-vector" },
+// 	  "kdf": "pbkdf2",
+// 	  "kdfparams": {
+// 		"c": 262144,
+// 		"dklen": 32,
+// 		"prf": "hmac-sha256",
+// 		"salt": "random-salt"
+// 	  },
+// 	  "mac": "message-authentication-code"
+// 	}
+//   }
+
+export interface keystore {
+	version: number,
+	id: string,
+	address: string,
+	crypto: {
+	  cipher: string,
+	  ciphertext: string,
+	  cipherparams: { iv: string },
+	  kdf: string,
+	  kdfparams: {
+		n: number,
+		r: number,
+		p: number,
+		dklen: number,
+		salt: string
+	  },
+	  mac: string
+	}
+}
 
 export interface Chain {
 	chainId: number;
@@ -166,7 +206,7 @@ export interface TransferResult {
 }
 
 export type WalletBackupData = {
-	vaults: LegacyVault[];
+	vaults: Vault[];
 	accounts: Account[];
 	addressBook: AddressEntry[];
 	History: History[];

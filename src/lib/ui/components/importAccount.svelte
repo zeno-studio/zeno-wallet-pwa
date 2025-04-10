@@ -273,14 +273,14 @@
 						/>
 					{/if}
 
-					<div class="label">
+					<div class="label-s">
 						<label class="container">
 							<input bind:checked={terms} type="checkbox" />
 							<div class="checkmark"></div>
 						</label>
 						I agree to the<a href="/#/setting/about/terms"> Terms of Service </a>
 					</div>
-					<div class="label">
+					<div class="label-s">
 						Password strength:
 						{#if psStrength === 'weak'}
 							<span class="weak">{psStrength}</span>
@@ -376,7 +376,7 @@
 		flex-direction: column;
 		align-items: center;
 		width: 65%;
-		font-size: 1.2rem;
+		font-size: 1.3rem;
 	}
 	.alert {
 		display: flex;
@@ -397,7 +397,7 @@
 		justify-content: flex-start;
 		position: fixed;
 		color: var(--color-text);
-		height: 80%;
+		height: 85%;
 		width: 38.4rem;
 		padding: 2rem;
 		background: var(--color-bg1);
@@ -418,20 +418,7 @@
 		border-radius: 1.6rem;
 		border: 1px solid var(--color-border);
 	}
-	.title {
-		display: flex;
-		font-size: 2rem;
-		font-weight: 700;
-		color: var(--color-text);
-		margin-bottom: 2rem;
-	}
-	.label {
-		display: flex;
-		justify-content: flex-start;
-		padding: 0px;
-		font-size: 1.2rem;
-		color: var(--color-text);
-	}
+
 
 	.bottom-button {
 		display: flex;
@@ -458,10 +445,10 @@
 	}
 
 	.input {
-		padding: 1.5rem 2rem;
+		padding: 1rem 2rem;
 		font-size: 1.5rem;
 		width: 80%;
-		border-radius: 16px;
+		border-radius: 2rem;
 		background: var(--color-bg2);
 		border: 1px solid var(--color-border);
 		&:focus {
@@ -560,7 +547,7 @@
 		gap: 1rem;
 	}
 	.tip {
-		font-size: 1.2rem;
+		font-size: 1.3rem;
 		color: var(--color-text);
 		text-align: center;
 		width: 70%;
@@ -570,7 +557,7 @@
 		flex-direction: column;
 		justify-content: flex-start;
 		color: var(--color-text);
-		font-size: 1.2rem;
+		font-size: 1.3rem;
 		font-weight: 500;
 		width: 70%;
 		border: 2px dashed var(--alert);
@@ -673,7 +660,7 @@
 		display: block;
 		position: relative;
 		cursor: pointer;
-		font-size: 1.2rem;
+		font-size: 1.3rem;
 		user-select: none;
 		margin-right: 1rem;
 	}

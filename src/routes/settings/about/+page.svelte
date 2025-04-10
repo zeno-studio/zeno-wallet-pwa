@@ -4,6 +4,7 @@
 </script>
 
 
+
 	<div class="appBody">
 		<!-- Version -->
 		<div class="setting">
@@ -76,7 +77,13 @@
 
 
 <style>
-
+			.appBody {
+	flex-direction: column;
+	height: 100%;
+	width: 95%;
+	max-width: 48rem;
+	padding: 6.4rem 1rem 0rem 1rem;
+}
 	.social {
         margin-top: 16px;
 		width: 100%;

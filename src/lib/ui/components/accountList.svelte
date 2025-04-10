@@ -16,7 +16,7 @@
 	}
 
 	function gotoAccount(i: number) {
-		goto('#/setting/account_detail');
+		goto('#/settings/account_detail');
 		accountState.editingAccountIndex = i;
 	}
 </script>

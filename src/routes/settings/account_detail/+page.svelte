@@ -17,6 +17,11 @@
 	import { slide } from 'svelte/transition';
 	import { shortenAddress6 } from '$lib/ui/ts';
 	import { fade, fly } from 'svelte/transition';
+	import { Header } from '$lib/ui/components';
+	import { metadata } from '$lib/ui/runes';
+
+	metadata.title = 'Settings';
+	metadata.description = 'Settings';
 	let modalOpen = $state(false);
 
 	let name = $state('');
@@ -66,7 +71,7 @@
 	function deleteAccount() {
 		accountState.deleteAccount();
 		close();
-		goto('/#/setting/account_manage');
+		goto('/#/settings/account_manage');
 	}
 
 	function toggleHideAccount() {
@@ -96,10 +101,12 @@
 		}
 	});
 </script>
-
-<div class="appBody">
+{#if !isSmallScreen.current}
+<Header />
+{/if}
+<div class={{"appBody": isSmallScreen.current, "appBody-d": !isSmallScreen.current}}>
 	<div class="item-container2">
-		<a class="back" href="/#/setting/account_manage">
+		<a class="back" href="/#/settings/account_manage">
 			<ArrowBack class="icon2A" />
 		</a>
 	</div>
@@ -273,6 +280,22 @@
 {/if}
 
 <style lang="postcss">
+		.appBody-d {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	width: 95%;
+	max-width: 48rem;
+	padding: 6.4rem 1rem 0rem 1rem;
+}
+.appBody {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	width: 95%;
+	max-width: 48rem;
+	padding: 1rem 1rem 0rem 1rem;
+}
 	.item-container2 {
 		box-sizing: border-box;
 		width: 100%;
