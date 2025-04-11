@@ -61,7 +61,7 @@ export const getElement = (store: string, key: string | number) => {
                 request.onerror = () => resolve(null);
                 request.onsuccess = () => {
                     const result = request.result;
-                    resolve(result !== undefined ? result : null); // 键不存在时返回 null
+                    resolve(result !== undefined ? result : null); 
                   };;       
         };
     });

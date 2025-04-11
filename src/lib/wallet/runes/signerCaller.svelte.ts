@@ -1,6 +1,6 @@
 import Signer from '$lib/wallet/worker/signer.ts?worker';
 import { accountState } from '$lib/wallet/runes';
-import { getElement, dbStore, type Vault, type Account, type Settings } from '$lib/wallet/common';
+import { getElement, dbStore, type Vault, type Account, type Settings ,type KeyringType} from '$lib/wallet/common';
 
 export const signer = new Signer();
 
@@ -59,7 +59,7 @@ export function signTransaction(argus: any) {
 }
 
 export async function saveMidPass(password: string) {
-	const vault = (await getElement(dbStore.Vault.name, 'default')) as Vault;
+	const vault = (await getElement(dbStore.Vault.name, 'zeno')) as Vault;
 	signer.postMessage({ method: 'saveMidPass', argus: { password: password, salt: vault.salt } });
 }
 
@@ -120,7 +120,7 @@ export async function addEvmAccountWithPassword(password: string) {
 function addEvmAccountPasswordWorker(password: string) {
 	return new Promise((resolve) => {
 		signer.onmessage = (event) => {
-			resolve(event.data); // 接收 Worker 返回的结果
+			resolve(event.data); 
 		};
 
 		signer.postMessage({
@@ -131,6 +131,75 @@ function addEvmAccountPasswordWorker(password: string) {
 			}
 		});
 	});
+}
+
+
+function addPolkadotAccountWorker(type: KeyringType) {
+	return new Promise((resolve) => {
+		signer.onmessage = (event) => {
+			resolve(event.data);
+		};
+
+		signer.postMessage({
+			method: 'addPolkadotAccount',
+			argus: { index: accountState.nextPolkadotIndex, type: type }
+		});
+	});
+}
+
+export async function addPolkadotAccount(type: KeyringType) {
+	const result = (await addPolkadotAccountWorker(type)) as signerResponseType | null;
+	try {
+		if (result?.success === true) {
+			const settings = JSON.parse(localStorage.getItem('settings')!) as Settings;
+			const newAccount = result.data as Account;
+			accountState.accountList = [...accountState.accountList, newAccount];
+			accountState.currentAccountIndex = settings.nextPolkadotIndex;
+			accountState.nextPolkadotIndex++;
+			settings.currentAccountIndex = settings.nextPolkadotIndex;
+			settings.nextPolkadotIndex++;
+			localStorage.setItem('settings', JSON.stringify(settings));
+		}
+	} catch (e) {
+		console.error('Error when adding new account', e);
+	}
+}
+
+function addPolkadotAccountPasswordWorker(password: string, type: KeyringType) {
+	return new Promise((resolve) => {
+		signer.onmessage = (event) => {
+			resolve(event.data); // 接收 Worker 返回的结果
+		};
+
+		signer.postMessage({
+			method: 'addPolkadotAccountWithPassword',
+			argus: {
+				index: accountState.nextPolkadotIndex,
+				type: type,
+				password: password,
+				
+			}
+		});
+	});
+}
+
+export async function addPolkadotAccountWithPassword(password: string, type: KeyringType) {
+	const result = (await addPolkadotAccountPasswordWorker(password, type)) as signerResponseType | null;
+	try {
+		if (result?.success === true) {
+			const settings = JSON.parse(localStorage.getItem('settings')!) as Settings;
+			const newAccount = result.data as Account;
+			if (newAccount) accountState.accountList = [...accountState.accountList, newAccount];
+			accountState.currentAccountIndex = settings.nextPolkadotIndex;
+			accountState.nextPolkadotIndex++;
+			settings.currentAccountIndex = settings.nextPolkadotIndex;
+			settings.nextPolkadotIndex++;
+			localStorage.setItem('settings', JSON.stringify(settings));
+
+		}
+	} catch (e) {
+		console.error('Error when adding new account', e);
+	}
 }
 
 export function checkPassword(password: string) {
@@ -151,12 +220,12 @@ export function checkIsLocked() {
 	});
 }
 
-export function changeVaultPassword(oldPassword: string, newPassword: string) {
+export function changePassword(oldPassword: string, newPassword: string) {
 	return new Promise((resolve) => {
 		signer.onmessage = (event) => {
 			resolve(event.data);
 		};
-		signer.postMessage({ method: 'changeVaultPassword', argus: { oldPassword: oldPassword, newPassword: newPassword } });
+		signer.postMessage({ method: 'changePassword', argus: { oldPassword: oldPassword, newPassword: newPassword } });
 	});
 }
 

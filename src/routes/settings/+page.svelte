@@ -65,7 +65,7 @@
 		{#if isSmallScreen.current}
 		<div class="label-top">Settings</div>
 		{/if}
-		<button class="setting" onclick={gotoAccount}>
+		<button class="account" onclick={gotoAccount}>
 			<div class="item">
 				<div class="item-l">
 					<div class="avatar">
@@ -73,6 +73,9 @@
 							0
 						{:else}
 							{@html generateAvatar(accountState.currentAccount?.address ?? '')}
+						{/if}
+						{#if accountState.currentAccount?.addressType === 'POLKADOT'}
+							<img class="chain-logo" src="/token/dot.svg" alt="" />
 						{/if}
 					</div>
 					<span class="label2">{accountState.currentAccount?.name} </span>
@@ -85,7 +88,7 @@
 		<div class="setting-top">
 			<div class="item">
 				<div class="item-l">
-					<span class="icon"> <Darkmode class="icon18A" /></span>
+					<span class="icon"> <Darkmode class="icon18P" /></span>
 					<span class="label2">Theme</span>
 				</div>
 				<div class="item-r"><SwitchTheme /></div>
@@ -95,7 +98,7 @@
 		<button class="setting-medium" onclick={() => (langOpen = !langOpen)}>
 			<div class="item">
 				<div class="item-l">
-					<span class="icon"> <LanguageIcon class="icon18A" /></span>
+					<span class="icon"> <LanguageIcon class="icon18P" /></span>
 
 					<span class="label2">Language</span>
 				</div>
@@ -106,7 +109,7 @@
 		<button class="setting-bottom" onclick={() => (fiatOpen = !fiatOpen)}>
 			<div class="item">
 				<div class="item-l">
-					<span class="icon"> <DollarIcon class="icon18A" /></span>
+					<span class="icon"> <DollarIcon class="icon18P" /></span>
 
 					<span class="label2">Currency</span>
 				</div>
@@ -118,7 +121,7 @@
 		<a class="setting-top" href="/#/settings/account_manage">
 			<div class="item">
 				<div class="item-l">
-					<span class="icon"> <AccountIcon class="icon18A" /></span>
+					<span class="icon"> <AccountIcon class="icon18B" /></span>
 
 					<span class="label2">Manage Account</span>
 				</div>
@@ -130,7 +133,7 @@
 		<a class="setting-medium" href="/#/settings/security">
 			<div class="item">
 				<div class="item-l">
-					<span class="icon"> <SafeGuardIcon class="icon18A" /></span>
+					<span class="icon"> <SafeGuardIcon class="icon18B" /></span>
 
 					<span class="label2">Security & Privacy</span>
 				</div>
@@ -142,7 +145,7 @@
 		<a class="setting-bottom" href="/#/settings/backup">
 			<div class="item">
 				<div class="item-l">
-					<span class="icon"> <CloudIcon class="icon18A" /></span>
+					<span class="icon"> <CloudIcon class="icon18B" /></span>
 
 					<span class="label2">Backup Wallet</span>
 				</div>
@@ -154,7 +157,7 @@
 		<a class="setting-top" href="/#/settings/active_chains">
 			<div class="item">
 				<div class="item-l">
-					<span class="icon"> <ExplorerIcon class="icon18A" /></span>
+					<span class="icon"> <ExplorerIcon class="icon18P" /></span>
 
 					<span class="label2">Active Chains</span>
 				</div>
@@ -166,7 +169,7 @@
 		<a class="setting-medium" href="/#/settings/address_book">
 			<div class="item">
 				<div class="item-l">
-					<span class="icon"> <BookIcon class="icon18A" /></span>
+					<span class="icon"> <BookIcon class="icon18P" /></span>
 
 					<span class="label2">Address Book</span>
 				</div>
@@ -178,7 +181,7 @@
 		<a class="setting-bottom" href="/#/settings/active_apps">
 			<div class="item">
 				<div class="item-l">
-					<span class="icon"> <AppsIcon class="icon18A" /></span>
+					<span class="icon"> <AppsIcon class="icon18P" /></span>
 
 					<span class="label2">Active Apps</span>
 				</div>
@@ -190,7 +193,7 @@
 		<a class="setting1" href="/#/settings/about">
 			<div class="item">
 				<div class="item-l">
-					<span class="icon"> <QuestionIcon class="icon18A" /></span>
+					<span class="icon"> <QuestionIcon class="icon18P" /></span>
 
 					<span class="label2">About</span>
 				</div>
@@ -243,7 +246,7 @@
 	height: 100%;
 	width: 95%;
 	max-width: 48rem;
-	padding: 6.4rem 1rem 0rem 1rem;
+	padding: 6.4rem 1rem 2rem 1rem;
 }
 .appBody {
 	display: flex;
@@ -251,9 +254,20 @@
 	height: 100%;
 	width: 95%;
 	max-width: 48rem;
-	padding: 1rem 1rem 0rem 1rem;
+	padding: 1rem 1rem 8rem 1rem;
 }
-
+.account{
+	position: relative;
+	display: flex;
+	box-sizing: border-box;
+		width: 100%;
+		flex-direction: column;
+		background: none;
+		border:none;
+		padding: 1rem;
+		cursor: pointer;
+		margin-bottom: 0.8rem;
+}
 	.item {
 	position: relative;
 	display: flex;
@@ -279,6 +293,7 @@
 	background: none;
 }
 	.avatar {
+		position: relative;
 		box-sizing: border-box;
 		flex-shrink: 0;
 		width: 5rem;
@@ -291,6 +306,17 @@
 		border: 2px solid var(--color-border);
 	}
 
+.chain-logo{
+	position: absolute;
+	box-sizing: border-box;
+	width: 2rem;
+	height: 2rem;
+	bottom: 0;
+	right: 0;
+	border-radius: 50%;
+		padding: 0px;
+		background-color: #fff;
+}
 	.modal {
 		box-sizing: border-box;
 		flex-direction: column;

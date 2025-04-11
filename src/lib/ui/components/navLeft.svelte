@@ -33,11 +33,8 @@ $effect(() => {
 		height: 3.6rem;
 		display: flex;
 		justify-content: flex-start;
-		width: 100%;
 		align-items: center;
 		box-sizing: border-box;
-		vertical-align: baseline;
-		margin-right: auto;
 	}
 
 	a {

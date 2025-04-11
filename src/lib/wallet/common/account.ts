@@ -34,18 +34,17 @@ export const packVaultToJson = async (): Promise<string> => {
 	return JSON.stringify(vault);
 };
 
-export const packMn = (password: string, mn: string, vaultName: string): boolean => {
+export const packMn = (password: string, mn: string): boolean => {
 	const salt = randomBytes(32);
 	const ent = bip39.mnemonicToEntropy(mn, wordlist);
 	const phrase = scrypt(password, salt, { N: 2 ** 16, r: 8, p: 1, dkLen: 32 });
 	const chacha = managedNonce(xchacha)(phrase);
 	const ciphertext = chacha.encrypt(ent);
 	const store: Vault = {
-		name: vaultName,
+		name: 'zeno',
 		salt: bytesToHex(salt),
 		ciphertext: bytesToHex(ciphertext),
-		Version: 'V1',
-		uuid: crypto.randomUUID()
+		Version: 'v1',
 	};	
 	try {
 		addElement(dbStore.Vault.name, store);
@@ -72,7 +71,7 @@ export const restoreMn = async (password: string, vaultName: string): Promise<st
 };
 
 export const isValidPassword = async (password: string): Promise<boolean> => {
-	const vault = (await getElement(dbStore.Vault.name, 'default')) as Vault;
+	const vault = (await getElement(dbStore.Vault.name, 'zeno')) as Vault;
 	const phrase = scrypt(password, hexToBytes(vault.salt), { N: 2 ** 16, r: 8, p: 1, dkLen: 32 }); // vault.salt, { N: 2 ** 16, r: 8, p: 1, dkLen: 32 });
 	const chacha = managedNonce(xchacha)(phrase);
 	try {
@@ -96,7 +95,7 @@ export const createEvmAccount = (
 ): boolean => {
 	mn = mn ?? bip39.generateMnemonic(wordlist, 128);
 	try {
-		packMn(password, mn, 'EVM');
+		packMn(password, mn);
 		deriveEvm(index, mn);
 		return true;
 	}
@@ -120,7 +119,7 @@ export const deriveEvm = (index: number, mn: string): Account | null => {
 			newAccount = {
 				accountIndex: index,
 				name: `Account${index}`,
-				accountType: 'legacy',
+				accountType: 'local',
 				isHidden: false,
 				address: addr.fromPublicKey(hdKey.publicKey),
 				addressType: 'EVM',
@@ -142,7 +141,7 @@ export const createPolkadotAccount = (
 ): boolean => {
 	mn = mn ?? bip39.generateMnemonic(wordlist, 128);
 	try {
-		packMn(password, mn, 'POLKADOT');
+		packMn(password, mn);
 		derivePolkadot(index, type, mn);
 		return true;
 	}
@@ -151,11 +150,11 @@ export const createPolkadotAccount = (
 	}
 };
 
-export const derivePolkadot = async (
+export const derivePolkadot = (
 	index: number,
 	type: KeyringType,
 	mn: string
-): Promise<boolean> => {
+): Account | null => {
 	const miniSecret = entropyToMiniSecret(mnemonicToEntropy(mn));
 	let derive: DeriveFn;
 	if (type === 'secp256k1') {
@@ -165,15 +164,15 @@ export const derivePolkadot = async (
 	} else if (type === 'sr25519') {
 		derive = sr25519CreateDerive(miniSecret);
 	} else {
-		return false;
+		return null;
 	}
-	const path = (index - 101) > 0 ? `//${index - 101}` : '';
+	const path = (index - 101) > 0 ? `//${index - 102}` : '';
 	const pair = derive(path);
 	const pub = bytesToHex(pair.publicKey);
 	const newAccount: Account = {
 		accountIndex: index,
 		name: `Account${index}`,
-		accountType: 'legacy',
+		accountType: 'local',
 		address: ss58Address(pub, 0),
 		isHidden: false,
 		addressType: 'POLKADOT',
@@ -182,10 +181,10 @@ export const derivePolkadot = async (
 	};
 	try {
 		addElement(dbStore.Account.name, newAccount);
-		return true;
+		return newAccount;
 	}
 	catch (e) {
-		return false;
+		return null;
 	}
 };
 
@@ -194,9 +193,9 @@ export const derivePolkadotAccount = async (
 	password: string,
 	type: KeyringType,
 	vaultName: string
-): Promise<boolean> => {
+): Promise<Account | null> => {
 	const mn = await restoreMn(password, vaultName);
-	if (!mn) return false;
+	if (!mn) return null;
 	return derivePolkadot(index, type, mn);
 };
 

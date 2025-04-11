@@ -4,6 +4,7 @@
 	import { isSmallScreen } from '$lib/ui/ts';
 	import { Header } from '$lib/ui/components';
 	import { metadata } from '$lib/ui/runes';
+	import { ArrowBack } from '$lib/svg';
 
 	metadata.title = 'Settings';
 	metadata.description = 'Settings';
@@ -15,7 +16,13 @@
 	<div class={{"appBody": isSmallScreen.current, "appBody-d": !isSmallScreen.current}}>
 		<!-- currentAccount -->
 		{#if isSmallScreen.current}
-		<div class="label-top">Settings</div>
+		<div class="label-top">
+
+			Manage Accounts
+			<a class="arrowBack" href="/#/settings">
+				<ArrowBack class="icon18A"/>
+			</a>
+		</div>
 		{/if}
 
 		{#if accountState.accountList.length === 0}
@@ -92,56 +99,53 @@
 	.bottomA {
 		gap: 1rem;
 		position: fixed;
-		bottom: 0px;
+		bottom: 2rem;
 		width: 100%;
-		height: 8rem;
+		height: 6rem;
 		flex-direction: column;
 		max-width: 48rem;
 		background-color: var(--color-bg);
-		padding-bottom: 1.6rem;
+		box-sizing: border-box;
 	}
 
 	.bottomA-s {
 		box-sizing: border-box;
 		gap: 1rem;
-		padding: 0.8rem;
 		position: fixed;
-		bottom:6.4rem;
+		bottom:2rem;
 		width: 100%;
 		height: 6rem;
 		flex-direction: column;
 		justify-content: flex-end;
 		align-items: center;
 		max-width: 48rem;
-		width: 96%;
+		width: 95%;
 		background-color: var(--color-bg);
 	}
 
 	.bottomB {
 		gap: 1rem;
 		position: fixed;
-		bottom: 0px;
+		bottom: 2rem;
 		width: 100%;
-		height: 13rem;
+		height: 12rem;
 		flex-direction: column;
 		max-width: 48rem;
 		background-color: var(--color-bg);
-		padding-bottom: 1.6rem;
 	}
 
 	.bottomB-s {
 		box-sizing: border-box;
 		gap: 1rem;
-		padding: 0.8rem;
 		position: fixed;
-		bottom:6.8rem;
+		bottom:2rem;
 		width: 100%;
 		height:12rem;
 		flex-direction: column;
 		justify-content: flex-end;
 		align-items: center;
 		max-width: 48rem;
-		width: 96%;
+		width: 95%;
 		background-color: var(--color-bg);
 	}
 

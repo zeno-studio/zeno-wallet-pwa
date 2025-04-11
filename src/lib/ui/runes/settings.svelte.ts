@@ -21,7 +21,6 @@ export const createSettings = async () => {
 		setTime(data.timeLock);
 		setAutoLock(data.autoLock);
 		accountState.isBackup = data.isBackup;
-		accountState.vaultState = data.vaultState;
 		accountState.currentAccountIndex = data.currentAccountIndex;
 		accountState.nextAccountIndex = data.nextAccountIndex;
 		accountState.nextPolkadotIndex = data.nextPolkadotIndex;

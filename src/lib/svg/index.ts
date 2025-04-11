@@ -43,6 +43,7 @@ export { default as HelpIcon } from "./help.svelte";
 export { default as HelpFilled } from "./help-filled.svelte";
 export { default as HeartFilled } from "./heart-filled.svelte";
 export { default as HeartIcon } from "./heart.svelte";
+export { default as HomeIcon } from "./home.svelte";
 export { default as LockedIcon } from "./locked.svelte";
 export { default as LanguageIcon } from "./lang.svelte";
 export { default as Loading} from "./loading.svelte";

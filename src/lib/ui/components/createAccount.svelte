@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { isSmallScreen } from '$lib/ui/ts';
-	import { createEvmAccount,createPolkadotAccount, type Settings } from '$lib/wallet/common';
-	import { CloseIcon, EyeIcon, EyeOffIcon, AlertTriangle, ArrowBack } from '$lib/svg';
+	import { createEvmAccount, createPolkadotAccount, type Settings } from '$lib/wallet/common';
+	import { CloseIcon, EyeIcon, EyeOffIcon, AlertTriangle, ArrowBack, HelpFilled } from '$lib/svg';
 	import { checkPasswordStrength } from '$lib/ui/ts';
 	import { accountState, saveMidPass } from '$lib/wallet/runes';
 	import { fade, fly } from 'svelte/transition';
@@ -36,11 +36,9 @@
 			if (createEvmAccount(1, password)) {
 				accountState.currentAccountIndex = 1;
 				accountState.nextAccountIndex++;
-				accountState.vaultState[0] = 1;
 				await accountState.getAccountList();
 				settings.currentAccountIndex = 1;
 				settings.nextAccountIndex++;
-				settings.vaultState[0] = 1;
 				localStorage.setItem('settings', JSON.stringify(settings));
 				saveMidPass(password);
 				close();
@@ -53,16 +51,13 @@
 	async function createPolkadot(password: string) {
 		const settings = JSON.parse(localStorage.getItem('settings')!) as Settings;
 		try {
-			if (createPolkadotAccount(101, password,'sr25519')) {
+			if (createPolkadotAccount(101, password, 'sr25519')) {
 				accountState.currentAccountIndex = 101;
 				accountState.nextPolkadotIndex++;
-				accountState.vaultState[1] = 1;
 				await accountState.getAccountList();
 				settings.currentAccountIndex = 101;
 				settings.nextPolkadotIndex++;
-				settings.vaultState[1] = 1;
 				localStorage.setItem('settings', JSON.stringify(settings));
-
 			}
 		} catch (e) {
 			console.error('Error when creating account', e);
@@ -124,25 +119,26 @@
 					<div class="title">Notifications</div>
 
 					<div class="tip2">
-						<span class="alert3"><AlertTriangle class="icon18R" /></span>
+						<span class="alert3"><HelpFilled class="icon18G" /></span>
 						<span>
-							Zeno Wallet does not store your password, If you forget your password, we cannot help
-							you recover it. Your asset is on-chain and safe, but you will not be able to control
-							it.
+							Zeno wallet does not store your password. If you forget it, you will lose access to
+							your funds, and we cannot recover it for you. Use a strong password and store it
+							securely (e.g., in a password manager). Always back up your recovery phrase—it's the
+							only way to restore your wallet if your password is lost.
 						</span>
 					</div>
-					<div class="label2"> Choose account type </div>
+					<div class="label-l-margin">Choose Account Type</div>
 					<div class="radio">
 						<label class="radio-label">
 							<input type="radio" bind:group={type} value="EVM" />
 							ETHEREUM
 						</label>
-					
-					<label class="radio-label">
-						<input type="radio" bind:group={type} value="POLKADOT" />
-						POLKADOT
-					</label>
-				</div>
+
+						<label class="radio-label">
+							<input type="radio" bind:group={type} value="POLKADOT" />
+							POLKADOT
+						</label>
+					</div>
 					<button class="start" onclick={() => (notice = true)}>Continue</button>
 				</div>
 			{/if}
@@ -165,7 +161,7 @@
 						{#if passwordShow}
 							<input
 								id="password"
-								class="input"
+								class="input-password"
 								type="text"
 								autocomplete="off"
 								bind:value={password}
@@ -173,7 +169,7 @@
 						{:else}
 							<input
 								id="password"
-								class="input"
+								class="input-password"
 								type="password"
 								autocomplete="off"
 								bind:value={password}
@@ -192,7 +188,7 @@
 					{#if passwordShow}
 						<input
 							id="password2"
-							class="input"
+							class="input-password"
 							type="text"
 							autocomplete="off"
 							bind:value={password2}
@@ -200,7 +196,7 @@
 					{:else}
 						<input
 							id="password2"
-							class="input"
+							class="input-password"
 							type="password"
 							autocomplete="off"
 							bind:value={password2}
@@ -242,9 +238,7 @@
 					{:else if password === password2 && psStrength === 'weak'}
 						<button class="start"> Password too weak</button>
 					{:else if password === password2 && terms && psStrength !== 'weak'}
-						<button class="submit" onclick={handleCreate}>
-							Submit</button
-						>
+						<button class="submit" onclick={handleCreate}> Submit</button>
 					{/if}
 				</div>
 			{/if}
@@ -261,10 +255,10 @@
 			text-decoration: underline;
 		}
 	}
-	.radio{
+	.radio {
 		display: flex;
 		flex-direction: row;
-		justify-content:space-around;
+		justify-content: space-around;
 		align-items: center;
 		width: 70%;
 	}
@@ -286,11 +280,7 @@
 		background: none;
 		border: none;
 	}
-	.alert3 {
-		display: flex;
-		background: none;
-		border: none;
-	}
+
 	.top {
 		position: relative;
 		display: flex;
@@ -313,25 +303,8 @@
 		border: none;
 		cursor: pointer;
 	}
-	.alert-container {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		width: 65%;
-		font-size: 1.3rem;
-	}
-	.alert {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		font-size: 1.5rem;
-		font-weight: 600;
-	}
-	.important {
-		font-weight: 600;
-		color: var(--alert);
-		margin-right: 1rem;
-	}
+
+	
 	.modal {
 		display: flex;
 		box-sizing: border-box;
@@ -361,7 +334,6 @@
 		border: 1px solid var(--color-border);
 	}
 
-	
 	.label2 {
 		display: flex;
 		justify-content: flex-start;
@@ -369,12 +341,7 @@
 		font-weight: 600;
 		width: 70%;
 	}
-	.tip {
-		font-size: 1.3rem;
-		color: var(--color-text);
-		text-align: center;
-		width: 70%;
-	}
+
 	.tip2 {
 		display: flex;
 		flex-direction: column;
@@ -410,25 +377,6 @@
 		}
 		&:active {
 			outline: none;
-		}
-	}
-
-	.input {
-		padding: 1rem 2rem;
-		font-size: 1.5rem;
-		width: 80%;
-		border-radius: 2rem;
-		background: var(--color-bg2);
-		border: 1px solid var(--color-border);
-		&:focus {
-			outline: none;
-			border: 1px solid var(--color-bg3);
-			color: var(--color);
-		}
-		&:active {
-			outline: none;
-			border: 1px solid var(--color-bg3);
-			color: var(--color);
 		}
 	}
 
@@ -515,80 +463,10 @@
 		align-items: center;
 		gap: 1rem;
 	}
+
 	
-	.tip2 {
-		display: flex;
-		flex-direction: column;
-		justify-content: flex-start;
-		color: var(--color-text);
-		font-size: 1.3rem;
-		font-weight: 500;
-		width: 70%;
-		border: 2px dashed var(--alert);
-		border-radius: 1.6rem;
-		padding: 1rem;
-		width: 70%;
-	}
-	.input-mn {
-		display: block;
-		word-wrap: break-word;
-		word-break: break-all;
-		white-space: pre-wrap;
-		padding: 1rem;
-		font-size: 1.5rem;
-		font-weight: 500;
-		width: 80%;
-		height: 10rem;
-		border-radius: 1.6rem;
-		background: var(--color-bg2);
-		border: 1px solid var(--color-border);
-		resize: none;
-		overflow-wrap: break-word;
-		text-align: left;
-		line-height: 1.6;
-		&:focus {
-			outline: none;
-			border: 1px solid var(--color-bg3);
-			color: var(--color);
-		}
-		&:active {
-			outline: none;
-			border: 1px solid var(--color-bg3);
-			color: var(--color);
-		}
-	}
 
-	.paste {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		font-size: 1.3rem;
-		border-radius: 1.6rem;
-		background: var(--storm700);
-		border: none;
-		cursor: pointer;
-		padding: 0.4rem 1rem;
-		color: #fff;
-	}
-
-	.pasted {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		font-size: 1.3rem;
-		border-radius: 1.6rem;
-		background: var(--color-pink);
-		border: none;
-		cursor: pointer;
-		padding: 0.4rem 1rem;
-		color: #fff;
-	}
-	.paste-container {
-		display: flex;
-		justify-content: flex-end;
-		align-items: center;
-		width: 80%;
-	}
+	
 	.eye {
 		display: flex;
 		border: none;

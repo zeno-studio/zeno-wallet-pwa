@@ -20,7 +20,6 @@ export type Settings = {
 	hiddenChains: number[];
 	currency: string;
 	isBackup: boolean;
-	vaultState: number[];
 };
 
 export const defaultSettings: Settings = {
@@ -36,14 +35,13 @@ export const defaultSettings: Settings = {
 	hiddenChains: [],
 	currency: 'USD',
 	isBackup: false,
-	vaultState: [0,0]
 };
 
 export type AccessStatus = 'APPROVED' | 'DENIED';
 export type HexString = `0x${string}`;
 export type AddressType = 'EVM' |'POLKADOT'|'';
 export type KeyringType = 'secp256k1' | 'ed25519' | 'sr25519';
-export type AccountType = 'legacy' | 'passkey' | 'hardware' | 'watch';
+export type AccountType = 'local' | 'passkey' | 'hardware' ;
 
 export interface Account {
 	name: string;
@@ -70,7 +68,6 @@ export interface AddressEntry {
 }
 
 export interface Vault {
-	readonly uuid: string;
 	readonly name: string;
 	readonly salt: string;
 	readonly ciphertext: string;
@@ -101,14 +98,11 @@ export interface Vault {
 // 	}
 //   }
 
-export interface keystore {
-	version: number,
-	id: string,
-	address: string,
+export interface ZenoKeystore {
+	wallet: string;
 	crypto: {
 	  cipher: string,
 	  ciphertext: string,
-	  cipherparams: { iv: string },
 	  kdf: string,
 	  kdfparams: {
 		n: number,
@@ -117,9 +111,11 @@ export interface keystore {
 		dklen: number,
 		salt: string
 	  },
-	  mac: string
 	}
 }
+
+
+
 
 export interface Chain {
 	chainId: number;
@@ -206,7 +202,7 @@ export interface TransferResult {
 }
 
 export type WalletBackupData = {
-	vaults: Vault[];
+	vaults: Vault;
 	accounts: Account[];
 	addressBook: AddressEntry[];
 	History: History[];
