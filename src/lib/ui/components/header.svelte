@@ -1,21 +1,17 @@
 <script lang="ts">
 	import { ArrowDown } from '$lib/svg';
 	import { NavPanel, NavLeft } from '$lib/ui/components';
-	import { clickOutside, isSmallScreen,cutString } from '$lib/ui/ts';
+	import { clickOutside, isSmallScreen} from '$lib/ui/ts';
 	import { accountState } from '$lib/wallet/runes';
 	import { EditIcon, SettingFilled } from '$lib/svg';
 	import { toSvg } from 'jdenticon';
 	import { goto } from '$app/navigation';
 	import { fade, fly } from 'svelte/transition';
-	
-
 
 	let isHidden = $state(false);
 	let accountPanel = $state(false);
 	let Panel = $state(false);
 	let name = $state('');
-
-	
 
 	function selectedAccount(i: number) {
 		accountState.setCurrentAccountIndex(i);
@@ -59,7 +55,6 @@
 <div class="nav">
 	<div class="nav-wrapper">
 		<a class="logo-link" href="/"><img class="logo" src="/favicon.svg" alt="logo" /></a>
-		
 
 		{#if isSmallScreen.current}
 			<div class="accountLeft">
@@ -70,23 +65,28 @@
 						{name}
 					{/if}
 
-					<ArrowDown class="icon2rem" />
+					<ArrowDown class="icon2A" />
 				</button>
 			</div>
 		{/if}
 		<NavLeft />
 
-		<div class="navRight">
-			{#if !isSmallScreen.current}
-					<button class="accountButtonRight" onclick={() => (Panel = !Panel)}>
-					{#if accountState.accountList.length === 0}
-						{cutString('have no account', 16)}
-					{:else}
-					<div class="avatar">{@html generateAvatar(accountState.currentAccount?.address!)}</div>{cutString(name, 16)}<ArrowDown class="icon2rem" />
-					{/if}
-				</button>
-			{/if}
-		</div>
+		{#if !isSmallScreen.current}
+			<button class="accountButtonRight" onclick={() => (Panel = !Panel)}>
+				{#if accountState.accountList.length === 0}
+					have no account
+				{:else}
+					<div class="avatar">
+						{@html generateAvatar(accountState.currentAccount?.address!)}
+						{#if accountState.currentAccount?.addressType === 'POLKADOT'}
+							<img class="chain-logo" src="/token/dot.svg" alt="" />
+						{/if}
+					</div>
+					{name}
+					<ArrowDown class="icon2A" />
+				{/if}
+			</button>
+		{/if}
 	</div>
 </div>
 <NavPanel bind:Panel />
@@ -157,6 +157,17 @@
 		margin-left: 1rem;
 		color: var(--color);
 	}
+	.chain-logo {
+		position: absolute;
+		box-sizing: border-box;
+		width: 1.2rem;
+		height: 1.2rem;
+		bottom: 0;
+		right: 0;
+		border-radius: 50%;
+		padding: 0px;
+		background-color: #fff;
+	}
 	.nav {
 		box-sizing: border-box;
 		display: flex;
@@ -223,7 +234,6 @@
 		background: none;
 		box-sizing: border-box;
 		color: var(--color-text);
-		
 	}
 
 	.accountButton:hover {
@@ -233,18 +243,17 @@
 
 	.accountButtonRight {
 		display: flex;
+		position: absolute;
+		right: 1rem;
 		justify-content: flex-start;
 		align-items: center;
 		color: var(--color-text);
-		font-size: 1.7rem;
+		font-size: 1.5rem;
 		font-weight: 600;
-		padding-right: 1rem;
 		border-radius: 2rem;
 		border: 1px solid var(--color-border);
 		background: var(--color-bg1);
 		color: var(--color-text);
-		box-sizing: border-box;
-		
 	}
 	.accountButtonRight:hover {
 		cursor: pointer;
@@ -287,6 +296,7 @@
 		width: 100%;
 	}
 	.avatar {
+		position: relative;
 		box-sizing: border-box;
 		flex-shrink: 0;
 		width: 3rem;

@@ -61,6 +61,9 @@
 						{:else}
 							{@html generateAvatar(accountState.currentAccount?.address ?? '')}
 						{/if}
+						{#if accountState.currentAccount?.addressType === 'POLKADOT'}
+							<img class="chain-logo" src="/token/dot.svg" alt="" />
+						{/if}
 					</div>
 					<div class="account-info">
 						<span class="label2">{accountState.currentAccount?.name} </span>
@@ -127,6 +130,17 @@
 {/if}
 
 <style lang="postcss">
+		.chain-logo {
+		position: absolute;
+		box-sizing: border-box;
+		width: 2rem;
+		height: 2rem;
+		bottom: 0;
+		right: 0;
+		border-radius: 50%;
+		padding: 0px;
+		background-color: #fff;
+	}
 	.button-empty {
 		margin-top: 0.6rem;
 		padding: 0;
@@ -243,6 +257,7 @@
 		box-sizing: border-box;
 	}
 	.avatar {
+		position: relative;
 		box-sizing: border-box;
 		flex-shrink: 0;
 		width: 5rem;
@@ -276,7 +291,7 @@
 		font-size: 1.2rem;
 		font-weight: 600;
 		color: #fff;
-		background: var(--green4);
+		background: var(--color-green);
 		display: flex;
 		align-items: center;
 		justify-content: center;

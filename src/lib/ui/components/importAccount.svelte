@@ -1,13 +1,19 @@
 <script lang="ts">
 	import { isSmallScreen } from '$lib/ui/ts';
-	import { createEvmAccount, isValidMn, type Settings } from '$lib/wallet/common';
-	import { EyeIcon, EyeOffIcon, CloseIcon, AlertTriangle, ArrowBack,HelpFilled } from '$lib/svg';
+	import {
+		createEvmAccount,
+		createPolkadotAccount,
+		isValidMn,
+		type Settings
+	} from '$lib/wallet/common';
+	import { EyeIcon, EyeOffIcon, CloseIcon, AlertTriangle, ArrowBack, HelpFilled } from '$lib/svg';
 	import { accountState, saveMidPass } from '$lib/wallet/runes';
 	import { fade, fly } from 'svelte/transition';
 	import { checkPasswordStrength } from '$lib/ui/ts';
 	import { goto } from '$app/navigation';
 
 	let modalOpen = $state(false);
+	let type = $state('EVM');
 	let notice = $state(false);
 	let pasted = $state(false);
 	let terms = $state(false);
@@ -34,6 +40,7 @@
 		mnValid = null;
 		notice = false;
 		terms = false;
+		type = 'EVM';
 	}
 
 	function validMn(mn: string | null) {
@@ -79,20 +86,38 @@
 	}
 
 	async function importAccount(ps: string, mn: string) {
-		try {
-			const settings = JSON.parse(localStorage.getItem('settings')!) as Settings;
-			if (createEvmAccount(1, ps, mn)) {
-				accountState.nextAccountIndex++;
-				accountState.currentAccountIndex = 1;
-				await accountState.getAccountList();
-				settings.currentAccountIndex = 1;
-				settings.nextAccountIndex++;
-				localStorage.setItem('settings', JSON.stringify(settings));
-				saveMidPass(ps);
-				close();
+		const settings = JSON.parse(localStorage.getItem('settings')!) as Settings;
+		if (type === 'EVM') {
+			try {
+				if (createEvmAccount(1, ps, mn)) {
+					accountState.nextAccountIndex++;
+					accountState.currentAccountIndex = 1;
+					await accountState.getAccountList();
+					settings.currentAccountIndex = 1;
+					settings.nextAccountIndex++;
+					localStorage.setItem('settings', JSON.stringify(settings));
+					saveMidPass(ps);
+					close();
+				}
+			} catch (e) {
+				console.error('Error when importing account', e);
 			}
-		} catch (e) {
-			console.error('Error when importing account', e);
+		}
+		if (type === 'POLKADOT') {
+			try {
+				if (createPolkadotAccount(101, ps, 'sr25519', mn)) {
+					accountState.nextPolkadotIndex++;
+					accountState.currentAccountIndex = 101;
+					await accountState.getAccountList();
+					settings.currentAccountIndex = 101;
+					settings.nextPolkadotIndex++;
+					localStorage.setItem('settings', JSON.stringify(settings));
+					saveMidPass(ps);
+					close();
+				}
+			} catch (e) {
+				console.error('Error when importing account', e);
+			}
 		}
 	}
 
@@ -144,26 +169,28 @@
 					<div class="title">Notifications</div>
 
 					<div class="tip2">
-						<span class="alert3"><AlertTriangle class="icon18R" /></span>
+						<span class="alert3"><HelpFilled class="icon18G" /></span>
 						<span>
-							Copying and pasting the recovery phrase, or typing on the screen may reveal your
-							secrets. If you have had a Zeno account before, it is recommended to use the keystore
-							import method</span
-						>
+							To copy-paste or type your recovery phrase on-screen may risk exposing it. If you've used a Zeno account before, consider importing your keystore for a safer option.</span>
 						<span>
 							<button class="paste" onclick={() => goto('/#/setting')}>
 								switch to keystore importer
 							</button>
 						</span>
 					</div>
-					<div class="tip2">
-						<span class="alert3"><AlertTriangle class="icon18R" /></span>
-						<span> 
-							Zeno Wallet does not store your password,
-							If you forget your password, we cannot help you recover it.
-							Your asset is on-chain and safe, but you will not be able to control it. </span>
-					</div>
 
+					<div class="label-m">Choose Account Type</div>
+					<div class="radio">
+						<label class="radio-label">
+							<input type="radio" bind:group={type} value="EVM" />
+							ETHEREUM
+						</label>
+
+						<label class="radio-label">
+							<input type="radio" bind:group={type} value="POLKADOT" />
+							POLKADOT
+						</label>
+					</div>
 					<button class="start" onclick={() => (notice = true)}>Continue</button>
 				</div>
 			{/if}
@@ -231,7 +258,7 @@
 						{#if passwordShow}
 							<input
 								id="password"
-								class="input"
+								class="input-password"
 								type="text"
 								autocomplete="off"
 								bind:value={password}
@@ -239,7 +266,7 @@
 						{:else}
 							<input
 								id="password"
-								class="input"
+								class="input-password"
 								type="password"
 								autocomplete="off"
 								bind:value={password}
@@ -258,7 +285,7 @@
 					{#if passwordShow}
 						<input
 							id="password2"
-							class="input"
+							class="input-password"
 							type="text"
 							autocomplete="off"
 							bind:value={password2}
@@ -266,7 +293,7 @@
 					{:else}
 						<input
 							id="password2"
-							class="input"
+							class="input-password"
 							type="password"
 							autocomplete="off"
 							bind:value={password2}
@@ -327,6 +354,21 @@
 			text-decoration: underline;
 		}
 	}
+	.radio {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-around;
+		align-items: center;
+		width: 70%;
+	}
+	.radio-label {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 1rem;
+		font-size: 1.3rem;
+		font-weight: 600;
+	}
 	.lable2 {
 		display: flex;
 		justify-content: flex-start;
@@ -371,25 +413,7 @@
 		border: none;
 		cursor: pointer;
 	}
-	.alert-container {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		width: 65%;
-		font-size: 1.3rem;
-	}
-	.alert {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		font-size: 1.5rem;
-		font-weight: 600;
-	}
-	.important {
-		font-weight: 600;
-		color: var(--alert);
-		margin-right: 1rem;
-	}
+
 	.modal {
 		display: flex;
 		box-sizing: border-box;
@@ -419,7 +443,6 @@
 		border: 1px solid var(--color-border);
 	}
 
-
 	.bottom-button {
 		display: flex;
 		justify-content: center;
@@ -435,32 +458,6 @@
 		width: 100%;
 		padding: 1rem;
 		cursor: pointer;
-		outline: none;
-		&:focus {
-			outline: none;
-		}
-		&:active {
-			outline: none;
-		}
-	}
-
-	.input {
-		padding: 1rem 2rem;
-		font-size: 1.5rem;
-		width: 80%;
-		border-radius: 2rem;
-		background: var(--color-bg2);
-		border: 1px solid var(--color-border);
-		&:focus {
-			outline: none;
-			border: 1px solid var(--color-bg3);
-			color: var(--color);
-		}
-		&:active {
-			outline: none;
-			border: 1px solid var(--color-bg3);
-			color: var(--color);
-		}
 	}
 
 	.start {
@@ -523,7 +520,7 @@
 		border: none;
 		border-radius: 0.8rem;
 		color: #fff;
-		background: var(--green4);
+		background: var(--color-green);
 		margin-left: 1rem;
 	}
 

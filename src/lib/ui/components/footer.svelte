@@ -1,7 +1,7 @@
 <script>
 	import { page } from '$app/state';
 	import { MediaQuery } from 'svelte/reactivity';
-	import { AssetFilled,AppsFilled,HeartFilled,SettingFilled  } from '$lib/svg';
+	import { AssetFilled,AppsFilled,HeartFilled,SettingFilled,HomeIcon  } from '$lib/svg';
 
 	const isSmallScreen = new MediaQuery('(max-width: 768px)');
 </script>
@@ -11,28 +11,24 @@
 		<div class="menu">
 			<a href="/" class:active={page.route.id == '/'} aria-label="Asset">
 				<div class="set">
-					<AssetFilled class="icon2A" />
-					Asset
+					<HomeIcon class="icon24-footer" />
 				</div>
 			</a>
 
 			<a href="/#/apps" class:active={page.route.id == '/apps'} aria-label="Apps">
 				<div class="set">
-					<AppsFilled class="icon2A" />
-					Apps
+					<AppsFilled class="icon24-footer" />
 				</div>
 			</a>
 			<a href="/#/nft" class:active={page.route.id == '/nft'} aria-label="NFT">
 				<div class="set">
-					<HeartFilled class="icon2A" />
-					NFT
+					<HeartFilled class="icon24-footer" />
 				</div>
 			</a>
 
 			<a href="/#/settings" class:active={page.route.id == '/settings'} aria-label="Settings">
 				<div class="set">
-					<SettingFilled class="icon2A" />
-					Setting
+					<SettingFilled class="icon24-footer" />
 				</div>
 			</a>
 		</div>
@@ -50,7 +46,7 @@
 		right: 0px;
 		left: 0px;
 		width: 100vw;
-		padding: 0.8rem 1.2rem 1.6rem 1.2rem;
+		padding: 1rem 1.2rem 3rem 1.2rem;
 		height: 6.4rem;
 		background: transparent;
 		backdrop-filter: blur(30px);

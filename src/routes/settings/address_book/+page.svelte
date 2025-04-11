@@ -2,7 +2,7 @@
 	import { accountState, addressBook } from '$lib/wallet/runes';
 	import { isSmallScreen, shortenAddress6, getFirstAndLast } from '$lib/ui/ts';
 	import { goto } from '$app/navigation';
-	import { CloseIcon, DeleteIcon, AlertTriangle } from '$lib/svg';
+	import { CloseIcon, DeleteIcon, AlertTriangle, ArrowBack } from '$lib/svg';
 	import { toSvg } from 'jdenticon';
 	import { type AddressEntry, detectAddressType, type Account } from '$lib/wallet/common';
 	import { fade, fly } from 'svelte/transition';
@@ -113,16 +113,30 @@
 	<Header />
 {/if}
 <div class={{ appBody: isSmallScreen.current, 'appBody-d': !isSmallScreen.current }}>
+	{#if isSmallScreen.current}
+		<div class="label-top">
+
+			Manage Accounts
+			<a class="arrowBack" href="/#/settings">
+				<ArrowBack class="icon18A"/>
+			</a>
+		</div>
+		{/if}
+	
 	<div class="search">
 		<input class="input-search" type="text" bind:value={search} placeholder="Search" />
 	</div>
 	{#each searchedAccounts as account}
 		{#if !account.isHidden}
 			<button class="addressList1" onclick={() => gotoAccountDetail(account)}>
-				<div class="avatar">{@html generateAvatar(account.address)}</div>
+				<div class="avatar">{@html generateAvatar(account.address)}
+					{#if account.addressType === 'POLKADOT'}
+						<img class="chain-logo" src="/token/dot.svg" alt="" />
+					{/if}
+				</div>
 				<div class="content">
 					<span class="label-name">{account.name} </span>
-					<span class="address">[{account.addressType}]{shortenAddress6(account.address)} </span>
+					<span class="address">{shortenAddress6(account.address)} </span>
 				</div>
 			</button>
 		{/if}
@@ -131,11 +145,15 @@
 	{#each searchedAddresses as addressEntry}
 		<div class="addressList2">
 			<button class="label-left" onclick={() => gotoAddressEntry(addressEntry)}>
-				<div class="avatar2">{getFirstAndLast(addressEntry.name)}</div>
+				<div class="avatar2">{getFirstAndLast(addressEntry.name)}
+					{#if addressEntry.addressType === 'POLKADOT'}
+						<img class="chain-logo" src="/token/dot.svg" alt="" />
+					{/if}
+				</div>
 				<div class="content">
 					<span class="label-name">{addressEntry.name} </span>
 					<span class="address"
-						>[{addressEntry.addressType}]{shortenAddress6(addressEntry.address)}
+						>{shortenAddress6(addressEntry.address)}
 					</span>
 				</div>
 			</button>
@@ -224,9 +242,21 @@
 {/if}
 
 <style lang="postcss">
+			.chain-logo {
+		position: absolute;
+		box-sizing: border-box;
+		width: 1.5rem;
+		height: 1.5rem;
+		bottom: 0;
+		right: 0;
+		border-radius: 50%;
+		padding: 0px;
+		background-color: #fff;
+	}
 	.appBody-d {
 		display: flex;
 		flex-direction: column;
+		justify-content: flex-start;
 		height: 100%;
 		width: 95%;
 		max-width: 48rem;
@@ -235,6 +265,7 @@
 	.appBody {
 		display: flex;
 		flex-direction: column;
+		justify-content: flex-start;
 		height: 100%;
 		width: 95%;
 		max-width: 48rem;
@@ -244,7 +275,6 @@
 		gap: 1rem;
 		box-sizing: border-box;
 		flex-direction: column;
-		justify-content: flex-start;
 		position: fixed;
 		color: var(--color-text);
 		height: 70%;
@@ -260,7 +290,6 @@
 		top: calc(100vh - 50rem);
 		box-sizing: border-box;
 		flex-direction: column;
-		justify-content: flex-start;
 		height: 100vh;
 		width: 100vw;
 		padding: 2rem;
@@ -271,13 +300,12 @@
 	.bottom-d {
 		gap: 1rem;
 		position: fixed;
-		bottom: 0px;
+		bottom: 2rem;
 		width: 100%;
-		height: 8rem;
+		height: 6rem;
 		flex-direction: column;
 		max-width: 48rem;
 		background-color: var(--color-bg);
-		padding-bottom: 1.6rem;
 	}
 	.alert {
 		color: var(--alert);
@@ -290,25 +318,25 @@
 		gap: 1rem;
 		padding: 0.8rem;
 		position: fixed;
-		bottom: 6.4rem;
+		bottom: 2rem;
 		width: 100%;
 		height: 6rem;
 		flex-direction: column;
 		justify-content: flex-end;
 		align-items: center;
 		max-width: 48rem;
-		width: 96%;
+		width: 95%;
 		background-color: var(--color-bg);
 	}
 	.search {
-		position: relative;
 		display: flex;
 		align-items: center;
-		justify-content: center;
+		justify-content: flex-start;
 		padding: 0;
 		margin-bottom: 0.8rem;
-		width: 100%;
+		width: 60%;
 		border: none;
+		margin-right: auto;
 	}
 	.input-search {
 		width: 100%;
@@ -342,7 +370,7 @@
 		margin-bottom: 0.8rem;
 		cursor: pointer;
 		&:hover {
-			background: var(--green4);
+			background: var(--storm400);
 			color: var(--color);
 		}
 	}
@@ -386,6 +414,7 @@
 		color: var(--color-text);
 	}
 	.avatar {
+		position: relative;
 		flex-shrink: 0;
 		font-size: 1.2rem;
 		font-weight: 600;
@@ -399,6 +428,7 @@
 		border: 1px solid var(--color-border);
 	}
 	.avatar2 {
+		position: relative;
 		flex-shrink: 0;
 		font-size: 1.2rem;
 		font-weight: 600;
@@ -434,7 +464,7 @@
 		height: 4.8rem;
 		border: none;
 		border-radius: 1.6rem;
-		background: var(--color-pink);
+		background: var(--storm700);
 		box-sizing: border-box;
 		width: 100%;
 		padding: 1rem;
@@ -497,7 +527,7 @@
 		height: 4.8rem;
 		border: none;
 		border-radius: 1.6rem;
-		background: var(--color-pink);
+		background: var(--storm900);
 		box-sizing: border-box;
 		width: 100%;
 		padding: 1rem;
@@ -519,20 +549,7 @@
 		border: 1px solid var(--color-border);
 		overflow: hidden;
 	}
-	.active {
-		position: fixed;
-		top: calc(100vh - 60rem);
-		flex-direction: column;
-		justify-content: flex-start;
-		height: 100vh;
-		width: 100vw;
-		padding: 1.6rem;
-		margin: 0px;
-		background: var(--color-bg1);
-		border-radius: 1.6rem;
-		border: 1px solid var(--color-border);
-		z-index: 1001;
-	}
+
 	.input {
 		padding: 1rem 2rem;
 		font-size: 1.5rem;

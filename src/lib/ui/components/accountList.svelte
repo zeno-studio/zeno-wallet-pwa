@@ -5,7 +5,7 @@
 	import { goto } from '$app/navigation';
 	import { shortenAddress6 } from '$lib/ui/ts';
 
-	let isHidden = $state(false);
+	let tab = $state<'active' | 'hidden'>('active');
 
 	function selectedAccount(i: number) {
 		accountState.setCurrentAccountIndex(i);
@@ -21,45 +21,54 @@
 	}
 </script>
 
-<div class="container">
-	<div class="container2">
-		<button class="left" class:pressed={isHidden === false} onclick={() => (isHidden = false)}
-			>Active Accounts</button
-		>
-		<button class="right" class:pressed={isHidden === true} onclick={() => (isHidden = true)}
-			>Hidden Accounts</button
-		>
+<div class="list-container">
+	<div class="container">
+		<div class="tabs">
+			<input type="radio" id="radio-1" name="tabs" bind:group={tab} value="active" />
+			<label class="tab" for="radio-1">Active Accounts</label>
+			<input type="radio" id="radio-2" name="tabs" bind:group={tab} value="hidden" />
+			<label class="tab" for="radio-2">Hidden Accounts</label>
+			<span class="glider"></span>
+		</div>
 	</div>
 
-	{#if !isHidden}
+	{#if tab === 'active'}
 		{#each accountState.accountList as account}
 			{#if !account.isHidden}
-			<div class="accountList">
-				<!-- svelte-ignore a11y_click_events_have_key_events -->
-				<!-- svelte-ignore a11y_no_static_element_interactions -->
-				<div
-					class="entry"
-					class:selected={account.accountIndex === accountState.currentAccountIndex}
-					onclick={() => selectedAccount(account.accountIndex)}
-				>
-					<div class="avatar">{@html generateAvatar(account.address)}</div>
-					<div class="content">
-						<span class="label">{account.name} </span>
-						<span class="address">{shortenAddress6(account.address)} </span>
-					</div>
-					<button
-						class="entry-right"
+				<div class="accountList">
+					<!-- svelte-ignore a11y_click_events_have_key_events -->
+					<!-- svelte-ignore a11y_no_static_element_interactions -->
+					<div
+						class="entry"
 						class:selected={account.accountIndex === accountState.currentAccountIndex}
-						onclick={() => gotoAccount(account.accountIndex)}
-						><EditIcon class="icon18A" />
-					</button>
+						onclick={() => selectedAccount(account.accountIndex)}
+					>
+						<div class="avatar">
+							{@html generateAvatar(account.address)}
+							{#if account.addressType === 'POLKADOT'}
+								<img class="chain-logo" src="/token/dot.svg" alt="" />
+							{/if}
+						</div>
+						<div class="content">
+							<span class="label">{account.name} </span>
+							<span class="address">{shortenAddress6(account.address)} </span>
+						</div>
+						<button
+							class="entry-right"
+							class:selected={account.accountIndex === accountState.currentAccountIndex}
+							onclick={(e) => {
+								e.stopPropagation();
+								gotoAccount(account.accountIndex);
+							}}
+							><EditIcon class="icon18A" />
+						</button>
+					</div>
 				</div>
-			</div>
 			{/if}
 		{/each}
 	{/if}
 
-	{#if isHidden}
+	{#if tab === 'hidden'}
 		{#each accountState.accountList as account}
 			{#if account.isHidden}
 				<div class="accountList">
@@ -70,7 +79,13 @@
 						class:selected={account.accountIndex === accountState.currentAccountIndex}
 						onclick={() => selectedAccount(account.accountIndex)}
 					>
-						<div class="avatar">{@html generateAvatar(account.address)}</div>
+						<div class="avatar">
+							{@html generateAvatar(account.address)}
+
+							{#if account.addressType === 'POLKADOT'}
+								<img class="chain-logo" src="/token/dot.svg" alt="" />
+							{/if}
+						</div>
 						<div class="content">
 							<span class="label">{account.name} </span>
 							<span class="address">{shortenAddress6(account.address)} </span>
@@ -89,11 +104,22 @@
 </div>
 
 <style lang="postcss">
+	.chain-logo {
+		position: absolute;
+		box-sizing: border-box;
+		width: 1.5rem;
+		height: 1.5rem;
+		bottom: 0;
+		right: 0;
+		border-radius: 50%;
+		padding: 0px;
+		background-color: #fff;
+	}
 	.entry {
+		padding: 0.4rem;
 		position: relative;
 		display: flex;
 		align-items: center;
-		padding: 1rem;
 		justify-content: flex-start;
 		box-sizing: border-box;
 		width: 100%;
@@ -107,9 +133,8 @@
 			color: var(--color);
 			transform: translateY(1px);
 		}
-
 	}
-	.entry-right{
+	.entry-right {
 		position: absolute;
 		display: flex;
 		align-items: center;
@@ -118,58 +143,10 @@
 		border: none;
 		background: none;
 		cursor: pointer;
+		margin-right: 1rem;
 	}
-	.pressed {
-		background: var(--green4);
-		color: #fff;
-	}
-	.left {
-		background: var(--color-bg1);
-		border-bottom-left-radius: 1.6rem;
-		border-top-left-radius: 1.6rem;
-		font-size: 1.5rem;
-		font-weight: 600;
-		color: var(--color-text);
-		border: none;
-		padding: 1rem 2rem;
-		&:hover {
-			background: var(--color-bg2);
-			color: var(--color);
-			transform: translateY(1px);
-		}
-		&.pressed {
-			background: var(--green4);
-			color: #fff;
-		}
-	}
-	.right {
-		background: var(--color-bg1);
-		border-bottom-right-radius: 1.6rem;
-		border-top-right-radius: 1.6rem;
-		font-size: 1.5rem;
-		font-weight: 600;
-		color: var(--color-text);
-		border: none;
-		padding: 1rem 2rem;
-		&:hover {
-			background: var(--color-bg2);
-			color: var(--color);
-			transform: translateY(1px);
-		}
-		&.pressed {
-			background: var(--green4);
-			color: #fff;
-		}
-	}
-	.container2 {
-		display: flex;
-		justify-content: flex-start;
-		align-items: flex-start;
-		padding: 0rem;
-		background: none;
-		border: none;
-	}
-	.container {
+
+	.list-container {
 		margin-bottom: 6.4rem;
 		display: flex;
 		flex-direction: column;
@@ -189,6 +166,7 @@
 		color: var(--color-text);
 	}
 	.avatar {
+		position: relative;
 		box-sizing: border-box;
 		flex-shrink: 0;
 		width: 4rem;
@@ -206,13 +184,12 @@
 		flex-direction: column;
 		align-items: center;
 		gap: 0.8rem;
-		box-sizing: border-box;
 		width: 100%;
 		background: none;
 		border: none;
 	}
 	.selected {
-		background: var(--storm400);
+		background: var(--green3);
 	}
 	.label {
 		margin: 0px;
@@ -221,5 +198,61 @@
 		font-weight: 600;
 		color: var(--color);
 	}
-	
+
+	/* tab */
+	.tabs {
+		display: flex;
+		position: relative;
+		background-color: var(--color-bg2);
+		padding: 0.4rem;
+		border-radius: 1.6rem;
+		border: 1px solid var(--color-border);
+		width: 30rem;
+		margin: 0 auto;
+	}
+
+	.tabs * {
+		z-index: 2;
+	}
+
+	.container input[type='radio'] {
+		display: none;
+	}
+	.container input[type='radio']:checked + label {
+		color: var(--color);
+	}
+
+	.tab {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 3.6rem;
+		width: 15rem;
+		font-size: 1.3rem;
+		color: var(--color-text);
+		font-weight: 700;
+		border-radius: 1.6rem;
+		cursor: pointer;
+		transition: color 0.15s ease-in;
+	}
+
+	.container input[id='radio-1']:checked ~ .glider {
+		transform: translateX(0);
+	}
+
+	.container input[id='radio-2']:checked ~ .glider {
+		transform: translateX(100%);
+	}
+
+	.glider {
+		position: absolute;
+		display: flex;
+		left: 0.4rem;
+		height: 3.6rem;
+		width: 15rem;
+		background-color: var(--color-bg);
+		z-index: 1;
+		border-radius: 1.2rem;
+		transition: 0.25s ease-out;
+	}
 </style>

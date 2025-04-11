@@ -3,52 +3,72 @@
 	import {
 		checkIsLocked,
 		addEvmAccount,
+		addPolkadotAccount,
 		checkPassword,
 		type signerResponseType,
-		addEvmAccountWithPassword
+		addEvmAccountWithPassword,
+		addPolkadotAccountWithPassword
 	} from '$lib/wallet/runes';
 	import { CloseIcon, EyeIcon, EyeOffIcon } from '$lib/svg';
 	import { accountState } from '$lib/wallet/runes';
 	import { fade, fly } from 'svelte/transition';
 
-	let modalOpen = $state(false);
+	let modalList = $state<'' | 'nopass' | 'pass'>('');
+	let type = $state('EVM');
 	let password = $state<string | null>(null);
 	let passwordShow = $state(false);
 	let isValidPs = $state<boolean | null>(null);
-	let exceed1 = $state(false);
-	let exceed2 = $state(false);
+	let exceed = $state<number[]>([0, 0, 0]);
 
 	function close() {
-		modalOpen = false;
-		exceed1 = false;
-		exceed2 = false;
 		isValidPs = null;
 		password = null;
 		passwordShow = false;
+		modalList = '';
 	}
 
-	async function handleAddEvmAccount() {
-		if (accountState.accountList.length > 11) {
-			exceed1 = true;
+	async function checkModalList() {
+		if (accountState.accountList.length > 19) {
+			exceed[0] = 1;
 			return;
 		}
 		if (accountState.nextAccountIndex > 100) {
-			exceed2 = true;
+			exceed[1] = 1;
+			return;
+		}
+		if (accountState.nextPolkadotIndex > 200) {
+			exceed[2] = 1;
 			return;
 		}
 		const result = (await checkIsLocked()) as signerResponseType | null;
 		if (result?.data === false) {
-			addEvmAccount();
-		} else {
-			modalOpen = true;
+			modalList = 'nopass';
 		}
+
+		if (result?.data === true) {
+			modalList = 'pass';
+		}
+	}
+
+	async function handleAddAccount() {
+		if (type === 'EVM') {
+			addEvmAccount();
+		} else if (type === 'POLKADOT') {
+			addPolkadotAccount('sr25519');
+		}
+		close();
 	}
 
 	async function checkPasswordAndAdd(ps: string) {
 		const result = (await checkPassword(ps)) as signerResponseType | null;
 		if (result?.data === true) {
 			isValidPs = true;
-			addEvmAccountWithPassword(ps);
+			if (type === 'EVM') {
+				addEvmAccountWithPassword(ps);
+			}
+			if (type === 'POLKADOT') {
+				addPolkadotAccountWithPassword(ps, 'sr25519');
+			}
 			close();
 		} else {
 			isValidPs = false;
@@ -60,18 +80,18 @@
 
 	function handleKeydown(event: KeyboardEvent) {
 		if (event.key === 'Escape') {
-			modalOpen = false;
+			modalList = '';
 		}
 	}
 
 	function handleBackdropClick(event: MouseEvent) {
 		if (event.target === event.currentTarget) {
-			modalOpen = false;
+			modalList = '';
 		}
 	}
 
 	$effect(() => {
-		if (modalOpen) {
+		if (modalList === 'pass' || modalList === 'nopass') {
 			window.addEventListener('keydown', handleKeydown);
 			return () => window.removeEventListener('keydown', handleKeydown);
 		}
@@ -79,24 +99,30 @@
 </script>
 
 <button
-	onclick={async () => await handleAddEvmAccount()}
-	class={{ "gray-button": exceed1 || exceed2, 'bottom-button': !exceed1 && !exceed2 }}
+	onclick={async () => await checkModalList()}
+	class={{
+		'gray-button': exceed[0] === 1 || exceed[1] === 1 || exceed[2] === 1,
+		'bottom-button': exceed[0] === 0 && exceed[1] === 0 && exceed[2] === 0
+	}}
 >
-	{#if exceed1}
-		You can only keep 12 accounts
+	{#if exceed[0] === 1}
+		You can only keep 20 accounts
 	{/if}
-	{#if exceed2}
-		Too many times to add account
+	{#if exceed[1] === 1}
+		Too many times to add Ethereum account
 	{/if}
-	{#if !exceed1 && !exceed2}
+	{#if exceed[2] === 1}
+		Too many times to add Polkadot account
+	{/if}
+	{#if exceed[0] === 0 && exceed[1] === 0 && exceed[2] === 0}
 		Add new account
 	{/if}
 </button>
 
-{#if modalOpen}
+{#if modalList === 'pass'}
 	<!-- svelte-ignore a11y_interactive_supports_focus -->
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
-	 
+
 	<div
 		class="backdrop"
 		role="dialog"
@@ -109,15 +135,17 @@
 			out:fade={{ duration: 120 }}
 			class={{ modal: !isSmallScreen.current, 'modal-m': isSmallScreen.current }}
 		>
-			<button class="close" onclick={close}>
-				<CloseIcon class="icon18A" />
-			</button>
+			<div class="top1">
+				<button class="close" onclick={close}>
+					<CloseIcon class="icon18A" />
+				</button>
+			</div>
 			<div class="title">Add New Account</div>
 			<div class="container">
 				{#if passwordShow}
 					<input
 						id="password"
-						class="input"
+						class="input-password"
 						type="text"
 						placeholder="Please input your password"
 						autocomplete="off"
@@ -126,7 +154,7 @@
 				{:else}
 					<input
 						id="password"
-						class="input"
+						class="input-password"
 						type="password"
 						placeholder="Please input your password"
 						autocomplete="off"
@@ -150,6 +178,19 @@
 				{/if}
 			</div>
 
+			<div class="label-l-margin">Choose Account Type</div>
+			<div class="radio">
+				<label class="radio-label">
+					<input type="radio" bind:group={type} value="EVM" />
+					ETHEREUM
+				</label>
+
+				<label class="radio-label">
+					<input type="radio" bind:group={type} value="POLKADOT" />
+					POLKADOT
+				</label>
+			</div>
+
 			{#if password === null}
 				<button class="start"> input your password</button>
 			{:else if password !== null}
@@ -161,9 +202,73 @@
 	</div>
 {/if}
 
-<style lang="postcss">
-	
+{#if modalList === 'nopass'}
+	<!-- svelte-ignore a11y_interactive_supports_focus -->
+	<!-- svelte-ignore a11y_click_events_have_key_events -->
 
+	<div
+		class="backdrop"
+		role="dialog"
+		transition:fade={{ duration: 200 }}
+		onclick={handleBackdropClick}
+	>
+		<div
+			id="addAccount"
+			in:fly={{ duration: 200, y: 50 }}
+			out:fade={{ duration: 120 }}
+			class={{ modal: !isSmallScreen.current, 'modal-m': isSmallScreen.current }}
+		>
+			<div class="top1">
+				<button class="close" onclick={close}>
+					<CloseIcon class="icon18A" />
+				</button>
+			</div>
+			<div class="title">Add New Account</div>
+
+			<div class="label-l-margin">Choose Account Type</div>
+			<div class="radio">
+				<label class="radio-label">
+					<input type="radio" bind:group={type} value="EVM" />
+					ETHEREUM
+				</label>
+
+				<label class="radio-label">
+					<input type="radio" bind:group={type} value="POLKADOT" />
+					POLKADOT
+				</label>
+			</div>
+			<button class="start" onclick={handleAddAccount}>Submit</button>
+		</div>
+	</div>
+{/if}
+
+<style lang="postcss">
+	.top1 {
+		position: relative;
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-end;
+		align-items: center;
+		width: 100%;
+		background: none;
+		border: none;
+	}
+
+	.radio {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-around;
+		align-items: center;
+		width: 70%;
+	}
+	.radio-label {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 1rem;
+		font-size: 1.3rem;
+		font-weight: 600;
+	}
 	.modal {
 		box-sizing: border-box;
 		flex-direction: column;
@@ -206,13 +311,6 @@
 		padding: 1rem;
 		cursor: pointer;
 	}
-	.title {
-		display: flex;
-		font-size: 2rem;
-		font-weight: 700;
-		color: var(--color-text);
-		margin-bottom: 2rem;
-	}
 	.container {
 		display: flex;
 		align-items: center;
@@ -241,15 +339,6 @@
 		&:active {
 			outline: none;
 		}
-	}
-
-	.input {
-		padding: 1.5rem 2rem;
-		font-size: 1.5rem;
-		width: 80%;
-		border-radius: 16px;
-		background: var(--color-bg2);
-		border: none;
 	}
 
 	.start {

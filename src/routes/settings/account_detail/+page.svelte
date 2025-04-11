@@ -123,7 +123,7 @@
 		</div>
 	</div>
 	<div class="address-container">
-		<span class="address">{shortenAddress6(accountState.editingAccount?.address ?? '')}</span>
+		<span class="address">[{accountState.editingAccount?.addressType}]:{shortenAddress6(accountState.editingAccount?.address ?? '')}</span>
 
 		{#if copied}
 			<div class="copied">Copied</div>
@@ -139,7 +139,7 @@
 		<div class="setting-top">
 			<div class="item">
 				<div class="item-l">
-					<span class="label1">Please select an account</span>
+					<span class="label-m">Please select an account</span>
 				</div>
 			</div>
 		</div>
@@ -150,7 +150,7 @@
 					{#if nameEdit}
 						<input class="input-name" maxlength="20" type="text" bind:value={name} />
 					{:else}
-						<span class="label1"
+						<span class="label-m"
 							>Account Name:
 							<span class="label-name">{accountState.editingAccount?.name}</span>
 						</span>
@@ -173,7 +173,7 @@
 	<div class="setting-medium">
 		<div class="item">
 			<div class="item-l">
-				<span class="label1"
+				<span class="label-m"
 					>Account Index:
 					<span class="label-name">{accountState.editingAccountIndex}</span>
 				</span>
@@ -184,7 +184,7 @@
 	<div class="memo">
 		<div class="item">
 			<div class="item-l">
-				<span class="label1">Memo</span>
+				<span class="label-m">Memo</span>
 			</div>
 
 			{#if memoShow}
@@ -223,7 +223,7 @@
 	<div class="setting1">
 		<div class="item">
 			<div class="item-l">
-				<span class="label1">Hidden Account</span>
+				<span class="label-m">Hidden Account</span>
 			</div>
 
 			<div class="item-r">
@@ -262,15 +262,16 @@
 			<button class="close" onclick={() => (modalOpen = false)}>
 				<CloseIcon class="icon18A" />
 			</button>
-			<div class="label2">Delete Account</div>
+			<div class="title">Delete Account</div>
 			<div>
-				<AlertCirCle class="icon3rem" />
+				<AlertCirCle class="icon3Y" />
 			</div>
-			<div class="alert">
-				If you want to recover this account later, you should save the account index. This account's
-				index is:
+			
+			<div class="tip2">
+					If you want to recover this account later, you should save the account index. This account's
+					index is:
 			</div>
-			<div class="label2">{accountState.editingAccountIndex}</div>
+			<h1>{accountState.editingAccountIndex}</h1>
 			<div class="container">
 				<button class="cancel" onclick={close}>Cancel</button>
 				<button class="action" onclick={deleteAccount}>Delete</button>
@@ -296,6 +297,21 @@
 	max-width: 48rem;
 	padding: 1rem 1rem 0rem 1rem;
 }
+
+.tip2 {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		color: var(--color-text);
+		font-size: 1.3rem;
+		font-weight: 500;
+		width: 70%;
+		border: 2px dashed var(--alert);
+		border-radius: 1.6rem;
+		padding: 1rem;
+		width: 70%;
+	}
+
 	.item-container2 {
 		box-sizing: border-box;
 		width: 100%;
@@ -383,7 +399,7 @@
 		font-size: 1.2rem;
 		font-weight: 600;
 		color: #fff;
-		background: var(--green4);
+		background: var(--color-green);
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -514,12 +530,7 @@
 		box-sizing: border-box;
 		border: 1px solid transparent;
 	}
-	.alert {
-		width: 75%;
-		font-size: 1.5rem;
-		font-weight: 500;
-		color: var(--color-text);
-	}
+
 	.delete {
 		display: flex;
 		justify-content: flex-start;
@@ -628,14 +639,8 @@
 		border: none;
 		height: 5rem;
 	}
-	.label1 {
-		font-size: 1.5rem;
-		font-weight: 600;
-	}
-	.label2 {
-		font-size: 1.8rem;
-		font-weight: 700;
-	}
+
+
 	.toggle-switch {
 		position: relative;
 		display: inline-block;
@@ -673,7 +678,7 @@
 	}
 
 	.toggle-switch .toggle-input:checked + .toggle-label {
-		background-color: var(--green4);
+		background-color: var(--color-green);
 	}
 
 	.toggle-switch .toggle-input:checked + .toggle-label::before {

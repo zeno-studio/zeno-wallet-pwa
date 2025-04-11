@@ -1,4 +1,4 @@
-import { getElement, removeElement, dbStore, deriveEvm, isValidPassword, type Vault, type Account } from '$lib/wallet/common';
+import { getElement, removeElement, dbStore, deriveEvm, derivePolkadot,isValidPassword, type Vault, type Account } from '$lib/wallet/common';
 import { scrypt } from '@noble/hashes/scrypt';
 import { hexToBytes } from '@noble/ciphers/utils';
 import { managedNonce } from '@noble/ciphers/webcrypto';
@@ -7,7 +7,7 @@ import * as bip39 from '@scure/bip39';
 import { wordlist } from '@scure/bip39/wordlists/english';
 import { HDKey } from '@scure/bip32';
 import { Transaction, addr } from 'micro-eth-signer';
-import { packMn, restoreMn } from '$lib/wallet/common';
+import { packMn, restoreMn, type KeyringType } from '$lib/wallet/common';
 
 
 let isLocked = true;
@@ -46,6 +46,12 @@ onmessage = ({ data }) => {
 		case 'addEvmAccountWithPassword':
 			addEvmAccountWithPassword(data.argus.index, data.argus.password);
 			break;
+		case 'addPolkadotAccount':
+			addPolkadotAccount(data.argus.index, data.argus.type);
+			break;
+		case 'addPolkadotAccountWithPassword':
+			addPolkadotAccountWithPassword(data.argus.index, data.argus.password, data.argus.type);
+			break;
 		case 'checkPassword':
 			checkPassword(data.argus.password);
 			break;
@@ -59,8 +65,8 @@ onmessage = ({ data }) => {
 		case 'signEvmTx':
 			signEvmTx(data.argus.tx, data.argus.account, data.argus.password);
 			break;
-		case 'changeVaultPassword':
-			changeVaultPassword(data.argus.oldPassword, data.argus.newPassword);
+		case 'changePassword':
+			changePassword(data.argus.oldPassword, data.argus.newPassword);
 			break;
 		default:
 			throw new Error(`Unknown method: ${data.method}`);
@@ -157,7 +163,7 @@ async function signEvmTx(tx: any, account: Account, password?: string, salt?: st
 async function reBuildMn(): Promise<string> {
 	const phrase = midpass;
 	const chacha = managedNonce(xchacha)(phrase);
-	const vault = (await getElement(dbStore.Vault.name, 'default')) as Vault;
+	const vault = (await getElement(dbStore.Vault.name, 'zeno')) as Vault;
 	const ent = chacha.decrypt(hexToBytes(vault.ciphertext));
 	const mn = bip39.entropyToMnemonic(ent, wordlist);
 	return mn;
@@ -191,7 +197,7 @@ async function addEvmAccount(index: number) {
 }
 
 async function addEvmAccountWithPassword(index: number, password: string) {
-	const vault = (await getElement(dbStore.Vault.name, 'default')) as Vault;
+	const vault = (await getElement(dbStore.Vault.name, 'zeno')) as Vault;
 	saveMidPassNotPost(password, vault.salt);
 	const mn = await reBuildMn();
 	const newAccount = deriveEvm(index, mn)
@@ -199,18 +205,34 @@ async function addEvmAccountWithPassword(index: number, password: string) {
 	else postMessage({ success: false });
 }
 
+async function addPolkadotAccount(index: number, type: KeyringType) {
+	const mn = await reBuildMn();
+	const newAccount = derivePolkadot(index, type, mn)
+	if (newAccount) postMessage({ success: true, data: newAccount });
+	else postMessage({ success: false });
+}
+
+async function addPolkadotAccountWithPassword(index: number, password: string, type: KeyringType) {
+	const vault = (await getElement(dbStore.Vault.name, 'zeno')) as Vault;
+	saveMidPassNotPost(password, vault.salt);
+	const mn = await reBuildMn();
+	const newAccount = derivePolkadot(index, type, mn)
+	if (newAccount) postMessage({ success: true, data: newAccount });
+	else postMessage({ success: false });
+}	
+
 async function checkPassword(password: string) {
 	const isValid = await isValidPassword(password);
 	postMessage({ success: true, data: isValid });
 }
 
-async function changeVaultPassword(oldPassword: string, newPassword: string) {
-	const vault = (await getElement(dbStore.Vault.name, 'default')) as Vault;
+async function changePassword(oldPassword: string, newPassword: string) {
+	const vault = (await getElement(dbStore.Vault.name, 'zeno')) as Vault;
 	if (!vault) return postMessage({ success: false });
-	const mnemonic = await restoreMn(oldPassword, vault.vaultName);
+	const mnemonic = await restoreMn(oldPassword, vault.name);
 	if (!mnemonic) return postMessage({ success: false });
-	removeElement(dbStore.Vault.name, vault.vaultName);
-	packMn(newPassword, mnemonic, vault.vaultName);
+	removeElement(dbStore.Vault.name, 'zeno');
+	packMn(newPassword, mnemonic);
 	postMessage({ success: true });
 }
 

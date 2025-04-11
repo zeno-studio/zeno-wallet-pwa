@@ -21,23 +21,23 @@ metadata.description = 'Assets';
 	<div class="item-container2">
 		<div class="menu1">
 			<a class="text1" href="/#/receive">
-				<ReceiveIcon class="icon3rem" />
+				<ReceiveIcon class="icon3" />
 				Receive
 			</a>
 			<a class="text1" href="/#/send">
-				<SendFilled class="icon3rem" />
+				<SendFilled class="icon3" />
 				Send
 			</a>
 			<a class="text1" href="/#/swap">
-				<SwapIcon class="icon3rem" />
+				<SwapIcon class="icon3" />
 				Swap
 			</a>
 			<a class="text1" href="/#/bridge">
-				<PlugFilled class="icon3rem" />
+				<PlugFilled class="icon3" />
 				Bridge
 			</a>
 			<a class="text1" href="/#/buy">
-				<BuyIcon class="icon3rem" />
+				<BuyIcon class="icon3" />
 				Buy
 			</a>
 		</div>

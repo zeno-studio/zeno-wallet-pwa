@@ -48,7 +48,7 @@
 	}
 
 	.active {
-		fill: var(--green4);
+		fill: var(--color-green);
 	}
 
 	.container {
