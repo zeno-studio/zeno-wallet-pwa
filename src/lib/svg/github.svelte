@@ -3,12 +3,12 @@
 </div>
 <style>
 	.social-icon {
-        color : var(--color-text);
+        color : var(--text);
 		overflow: visible;
 		transition: all 0.2s ease-in;
 	}
 	.social-icon:hover {
-        color : var(--color-green);
+        color : var(--success);
 		transform: scale(1.3);
 	}
 </style>

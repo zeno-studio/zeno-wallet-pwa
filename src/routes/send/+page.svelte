@@ -211,7 +211,7 @@
 	box-sizing: border-box;
 	width: 100%;
 	flex-direction: column;
-	background: var(--color-bg1);
+	background: var(--bg1);
 	border-radius: 1.6rem;
 	padding: 1rem;
 	margin-bottom: 1rem;
@@ -272,7 +272,7 @@
 	}
 
 	.active1 {
-		background: var(--color-bg2);
+		background: var(--bg2);
 		color: var(--color);
 	}
 
@@ -317,9 +317,9 @@
 		width: 92%;
 		max-width: 398px;
 		padding: 16px;
-		background: var(--color-bg1);
+		background: var(--bg1);
 		border-radius: 16px;
-		border: 1px solid var(--color-border);
+		border: 1px solid var(--border);
 	}
 	.modal-mobile {
 		position: fixed;
@@ -330,9 +330,9 @@
 		height: 100vh;
 		width: 100vw;
 		padding: 20px;
-		background: var(--color-bg1);
+		background: var(--bg1);
 		border-radius: 16px;
-		border: 1px solid var(--color-border);
+		border: 1px solid var(--border);
 		z-index: 1001;
 	}
 
@@ -371,7 +371,7 @@
 		margin: 16px 8px;
 		padding-left: 1rem;
 		border-radius: 20px;
-		background: var(--color-bg2);
+		background: var(--bg2);
 		border: none;
 		color: var(--color);
 	}
@@ -393,7 +393,7 @@
 		color: var(--color);
 	}
 	.token-lable:hover {
-		background: var(--color-bg2);
+		background: var(--bg2);
 		border-radius: 16px;
 	}
 	.token-detail {

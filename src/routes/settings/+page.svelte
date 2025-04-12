@@ -303,7 +303,7 @@
 		border-radius: 50%;
 		padding: 0px;
 		background-color: #fff;
-		border: 2px solid var(--color-border);
+		border: 2px solid var(--border);
 	}
 
 .chain-logo{
@@ -326,9 +326,9 @@
 		height: 100vh;
 		width: 384px;
 		padding: 2rem;
-		background: var(--color-bg1);
+		background: var(--bg1);
 		border-radius: 1.6rem;
-		border: 1px solid var(--color-border);
+		border: 1px solid var(--border);
 	}
 	.modal-m {
 		box-sizing: border-box;
@@ -339,9 +339,9 @@
 		height: 100vh;
 		width: 100vw;
 		padding: 2rem;
-		background: var(--color-bg1);
+		background: var(--bg1);
 		border-radius: 1.6rem;
-		border: 1px solid var(--color-border);
+		border: 1px solid var(--border);
 	}
 
 	.icon {
@@ -366,14 +366,14 @@
 
 	.setting:hover {
 		cursor: pointer;
-		border: 1px solid var(--color-bg3);
+		border: 1px solid var(--bg3);
 	}
 
 	.setting1 {
 		box-sizing: border-box;
 		width: 100%;
 		flex-direction: column;
-		background: var(--color-bg1);
+		background: var(--bg1);
 		border-radius: 1.6rem;
 		padding: 1rem;
 		cursor: pointer;
@@ -386,7 +386,7 @@
 	.setting-medium:hover,
 	.setting-top:hover,
 	.setting-bottom:hover {
-		background: var(--color-bg2);
+		background: var(--bg2);
 	}
 
 	.setting-top {
@@ -396,7 +396,7 @@
 		flex-direction: column;
 		box-sizing: border-box;
 		width: 100%;
-		background: var(--color-bg1);
+		background: var(--bg1);
 		border-top-left-radius: 1.6rem;
 		border-top-right-radius: 1.6rem;
 		padding: 1rem;
@@ -413,7 +413,7 @@
 		flex-direction: column;
 		box-sizing: border-box;
 		width: 100%;
-		background: var(--color-bg1);
+		background: var(--bg1);
 		padding: 1rem;
 		cursor: pointer;
 		margin-bottom: 1px;
@@ -428,7 +428,7 @@
 		flex-direction: column;
 		box-sizing: border-box;
 		width: 100%;
-		background: var(--color-bg1);
+		background: var(--bg1);
 		border-bottom-left-radius: 1.6rem;
 		border-bottom-right-radius: 1.6rem;
 		padding: 1rem;

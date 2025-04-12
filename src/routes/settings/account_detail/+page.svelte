@@ -302,11 +302,11 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-start;
-		color: var(--color-text);
+		color: var(--text);
 		font-size: 1.3rem;
 		font-weight: 500;
 		width: 70%;
-		border: 2px dashed var(--alert);
+		border: 2px dashed var(--warning);
 		border-radius: 1.6rem;
 		padding: 1rem;
 		width: 70%;
@@ -353,13 +353,13 @@
 		flex-direction: column;
 		justify-content: flex-start;
 		position: fixed;
-		color: var(--color-text);
+		color: var(--text);
 		height: 70%;
 		width: 38.4rem;
 		padding: 2rem;
-		background: var(--color-bg1);
+		background: var(--bg1);
 		border-radius: 1.6rem;
-		border: 1px solid var(--color-border);
+		border: 1px solid var(--border);
 	}
 	.modal-m {
 		gap: 1rem;
@@ -371,9 +371,9 @@
 		height: 100vh;
 		width: 100vw;
 		padding: 2rem;
-		background: var(--color-bg1);
+		background: var(--bg1);
 		border-radius: 1.6rem;
-		border: 1px solid var(--color-border);
+		border: 1px solid var(--border);
 	}
 	.address-container {
 		display: flex;
@@ -399,7 +399,7 @@
 		font-size: 1.2rem;
 		font-weight: 600;
 		color: #fff;
-		background: var(--color-green);
+		background: var(--success);
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -413,7 +413,7 @@
 	.address {
 		font-size: 1.4rem;
 		font-weight: 600;
-		color: var(--color-text);
+		color: var(--text);
 		margin-right: 0.8rem;
 	}
 	.wrap {
@@ -437,7 +437,7 @@
 		font-size: 1.2rem;
 		font-weight: 600;
 		color: #fff;
-		background: var(--color-pink);
+		background: var(--pink);
 		border: none;
 		border-radius: 1.2rem;
 		cursor: pointer;
@@ -445,8 +445,8 @@
 	.input-name {
 		width: 30rem;
 		padding: 1rem;
-		border: 1px solid var(--color-bg3);
-		background: var(--color-bg2);
+		border: 1px solid var(--bg3);
+		background: var(--bg2);
 		border-radius: 1.6rem;
 		box-sizing: border-box;
 	}
@@ -457,8 +457,8 @@
 		width: 100%;
 		height: 12rem;
 		padding: 1rem;
-		background: var(--color-bg2);
-		border: 1px solid var(--color-bg3);
+		background: var(--bg2);
+		border: 1px solid var(--bg3);
 		border-radius: 1.6rem;
 		box-sizing: border-box;
 		resize: none;
@@ -471,7 +471,7 @@
 		font-size: 1.2rem;
 		font-weight: 600;
 		color: #fff;
-		background: var(--color-pink);
+		background: var(--pink);
 		border: none;
 		border-radius: 1.2rem;
 		cursor: pointer;
@@ -487,7 +487,7 @@
 		box-sizing: border-box;
 		width: 100%;
 		flex-direction: column;
-		background: var(--color-bg1);
+		background: var(--bg1);
 		border-bottom-left-radius: 1.6rem;
 		border-bottom-right-radius: 1.6rem;
 		padding: 1.2rem 1rem;
@@ -505,7 +505,7 @@
 		font-weight: 500;
 		height: 12rem;
 		width: 100%;
-		background: var(--color-bg);
+		background: var(--bg);
 		border-radius: 1.6rem;
 		box-sizing: border-box;
 		border: 1px solid transparent;
@@ -537,8 +537,8 @@
 		font-size: 1.5rem;
 		font-weight: 600;
 		width: 100%;
-		color: var(--color-pink);
-		background: var(--color-bg1);
+		color: var(--pink);
+		background: var(--bg1);
 		border: none;
 		padding: 1.5rem 2rem;
 		cursor: pointer;
@@ -546,7 +546,7 @@
 		margin-bottom: 0.8rem;
 		border-radius: 1.6rem;
 		&:hover {
-			background: var(--color-bg2);
+			background: var(--bg2);
 		}
 	}
 
@@ -561,16 +561,16 @@
 		position: relative;
 		width: 12rem;
 		height: 12rem;
-		background: var(--color-bg1);
-		border: 2px solid var(--color-border);
+		background: var(--bg1);
+		border: 2px solid var(--border);
 	}
 	.cancel {
-		color: var(--color-text);
+		color: var(--text);
 		font-size: 1.7rem;
 		font-weight: 600;
 		border: none;
 		border-radius: 1.6rem;
-		background: var(--color-bg2);
+		background: var(--bg2);
 		box-sizing: border-box;
 		width: 100%;
 		padding: 1rem;
@@ -582,7 +582,7 @@
 		font-weight: 600;
 		border: none;
 		border-radius: 1.6rem;
-		background: var(--color-pink);
+		background: var(--pink);
 		box-sizing: border-box;
 		width: 100%;
 		padding: 1rem;
@@ -594,8 +594,8 @@
 		bottom: 0;
 		right: 0;
 		border-radius: 50%;
-		background: var(--color-bg2);
-		border: 1px solid var(--color-border);
+		background: var(--bg2);
+		border: 1px solid var(--border);
 	}
 
 	.setting-top {
@@ -605,7 +605,7 @@
 		flex-direction: column;
 		box-sizing: border-box;
 		width: 100%;
-		background: var(--color-bg1);
+		background: var(--bg1);
 		border-top-left-radius: 1.6rem;
 		border-top-right-radius: 1.6rem;
 		padding: 1rem;
@@ -621,7 +621,7 @@
 		flex-direction: column;
 		box-sizing: border-box;
 		width: 100%;
-		background: var(--color-bg1);
+		background: var(--bg1);
 		padding: 1rem;
 		margin-bottom: 1px;
 		border: none;
@@ -632,7 +632,7 @@
 		box-sizing: border-box;
 		width: 100%;
 		flex-direction: column;
-		background: var(--color-bg1);
+		background: var(--bg1);
 		border-radius: 1.6rem;
 		padding: 1rem;
 		margin-bottom: 0.8rem;
@@ -658,7 +658,7 @@
 		left: 0;
 		width: 40px;
 		height: 24px;
-		background-color: var(--color-bg3);
+		background-color: var(--bg3);
 		border-radius: 34px;
 		cursor: pointer;
 		transition: background-color 0.3s;
@@ -672,13 +672,13 @@
 		border-radius: 50%;
 		top: 2px;
 		left: 2px;
-		background-color: var(--color-bg1);
+		background-color: var(--bg1);
 		box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.3);
 		transition: transform 0.3s;
 	}
 
 	.toggle-switch .toggle-input:checked + .toggle-label {
-		background-color: var(--color-green);
+		background-color: var(--success);
 	}
 
 	.toggle-switch .toggle-input:checked + .toggle-label::before {

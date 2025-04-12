@@ -274,13 +274,13 @@
 		flex-direction: column;
 		justify-content: flex-start;
 		position: fixed;
-		color: var(--color-text);
+		color: var(--text);
 		height: 70%;
 		width: 38.4rem;
 		padding: 2rem;
-		background: var(--color-bg1);
+		background: var(--bg1);
 		border-radius: 1.6rem;
-		border: 1px solid var(--color-border);
+		border: 1px solid var(--border);
 	}
 	.modal-m {
 		position: fixed;
@@ -291,15 +291,15 @@
 		height: 100vh;
 		width: 100vw;
 		padding: 2rem;
-		background: var(--color-bg1);
+		background: var(--bg1);
 		border-radius: 1.6rem;
-		border: 1px solid var(--color-border);
+		border: 1px solid var(--border);
 	}
 	.gray-button {
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		background: var(--storm700);
+		background: var(--storm3);
 		color: #fff;
 		font-size: 1.8rem;
 		font-weight: 600;
@@ -327,7 +327,7 @@
 		height: 4.8rem;
 		border: none;
 		border-radius: 1.6rem;
-		background: var(--color-pink);
+		background: var(--pink);
 		box-sizing: border-box;
 		width: 100%;
 		padding: 1rem;
@@ -349,7 +349,7 @@
 		height: 4.8rem;
 		border: none;
 		border-radius: 1.6rem;
-		background: var(--color-pink);
+		background: var(--pink);
 		box-sizing: border-box;
 		width: 80%;
 		margin-top: 3.2rem;

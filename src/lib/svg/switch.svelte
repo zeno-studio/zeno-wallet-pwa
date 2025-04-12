@@ -28,7 +28,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color:var(--color-bg2);
+  background-color:var(--bg2);
   transition: .4s;
   border-radius: 30px;
 }
@@ -42,7 +42,7 @@
   left: 3px;
   bottom: 3px;
   z-index: 2;
-  background-color: var(--color-bg1);
+  background-color: var(--bg1);
   transition: .4s;
 }
 
@@ -68,11 +68,11 @@
 
 
 .input:checked + .slider {
-  background-color: var(--color-bg1);
+  background-color: var(--bg1);
 }
 
 .input:focus + .slider {
-  box-shadow: 0 0 1px var(--color-bg2);
+  box-shadow: 0 0 1px var(--bg2);
 }
 
 .input:checked + .slider:before {

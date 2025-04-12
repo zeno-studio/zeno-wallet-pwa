@@ -35,7 +35,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color:var(--color-bg3);
+  background-color:var(--bg3);
   transition: .4s;
   border-radius: 2.4rem;
 
@@ -50,7 +50,7 @@
   left: 2px;
   bottom: 2px;
   z-index: 2;
-  background-color: var(--color-bg);
+  background-color: var(--bg);
   transition: .4s;
 }
 
@@ -61,11 +61,11 @@
   z-index: 1;
   width: 2rem;
   height: 2rem;
-  fill: var(--color-text);
+  fill: var(--text);
 }
 
 .moon svg {
-  fill: var(--color-text);
+  fill: var(--text);
   position: absolute;
   top: 2px;
   left: 2px;
@@ -75,11 +75,11 @@
 }
 
 .input:checked + .slider {
-  background-color: var(--color-bg3);
+  background-color: var(--bg3);
 }
 
 .input:focus + .slider {
-  box-shadow: 0 0 1px var(--color-bg3);
+  box-shadow: 0 0 1px var(--bg3);
 }
 
 .input:checked + .slider:before {

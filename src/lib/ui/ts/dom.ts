@@ -291,8 +291,8 @@ export async function frontalCamera(player: HTMLVideoElement): Promise<QRCamera>
 export async function backCamera(player: HTMLVideoElement): Promise<QRCamera> {
   const stream = await navigator.mediaDevices.getUserMedia({
     video: {
-      height:{ideal:1280},
-      width: {ideal:720},
+      height:{ideal:720},
+      width: {ideal:1280},
       facingMode: 'environment',
     },
   });

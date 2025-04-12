@@ -27,6 +27,7 @@ export { default as CloudDown} from "./cloud-down.svelte";
 export { default as ContractIcon } from "./contract.svelte";
 export { default as CopyIcon } from "./copy.svelte";
 export { default as CopiedIcon} from "./copied.svelte";
+export { default as DownloadIcon } from "./download.svelte";
 export { default as DiscordIcon} from "./discord.svelte";
 export { default as DeleteIcon } from "./delete.svelte";
 export { default as DollarIcon } from "./dollar.svelte";

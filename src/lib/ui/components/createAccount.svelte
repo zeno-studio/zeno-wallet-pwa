@@ -311,13 +311,13 @@
 		flex-direction: column;
 		justify-content: flex-start;
 		position: fixed;
-		color: var(--color-text);
+		color: var(--text);
 		height: 85%;
 		width: 38.4rem;
 		padding: 2rem;
-		background: var(--color-bg1);
+		background: var(--bg1);
 		border-radius: 1.6rem;
-		border: 1px solid var(--color-border);
+		border: 1px solid var(--border);
 	}
 	.modal-m {
 		display: flex;
@@ -329,9 +329,9 @@
 		height: 100vh;
 		width: 100vw;
 		padding: 2rem;
-		background: var(--color-bg1);
+		background: var(--bg1);
 		border-radius: 1.6rem;
-		border: 1px solid var(--color-border);
+		border: 1px solid var(--border);
 	}
 
 	.label2 {
@@ -346,11 +346,11 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-start;
-		color: var(--color-text);
+		color: var(--text);
 		font-size: 1.3rem;
 		font-weight: 500;
 		width: 70%;
-		border: 2px dashed var(--alert);
+		border: 2px dashed var(--warning);
 		border-radius: 1.6rem;
 		padding: 1rem;
 		width: 70%;
@@ -366,7 +366,7 @@
 		height: 4.8rem;
 		border: none;
 		border-radius: 1.6rem;
-		background: var(--color-pink);
+		background: var(--pink);
 		box-sizing: border-box;
 		width: 100%;
 		padding: 1rem;
@@ -391,7 +391,7 @@
 		height: 4.8rem;
 		border: none;
 		border-radius: 1.6rem;
-		background: var(--storm700);
+		background: var(--storm3);
 		box-sizing: border-box;
 		width: 80%;
 		padding: 2rem;
@@ -409,7 +409,7 @@
 		height: 4.8rem;
 		border: none;
 		border-radius: 1.6rem;
-		background: var(--color-pink);
+		background: var(--pink);
 		box-sizing: border-box;
 		width: 80%;
 		margin-top: 2rem;
@@ -431,7 +431,7 @@
 		border: none;
 		border-radius: 0.8rem;
 		color: #fff;
-		background: var(--alert);
+		background: var(--warning);
 		margin-left: 1rem;
 	}
 	.strong {
@@ -440,7 +440,7 @@
 		border: none;
 		border-radius: 0.8rem;
 		color: #fff;
-		background: var(--green4);
+		background: var(--success);
 		margin-left: 1rem;
 	}
 
@@ -514,7 +514,7 @@
 		height: 1.3em;
 		width: 1.3em;
 		background: none;
-		border: 1px solid var(--color-bg3);
+		border: 1px solid var(--bg3);
 		border-radius: 0.6rem;
 		box-shadow:
 			0px 0px 1px rgba(0, 0, 0, 0.3),
@@ -522,7 +522,7 @@
 	}
 
 	.container input:checked ~ .checkmark {
-		background-color: var(--green4);
+		background-color: var(--success);
 	}
 
 	.checkmark:after {

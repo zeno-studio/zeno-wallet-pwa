@@ -99,7 +99,7 @@
 		box-sizing: border-box;
 		width: 100%;
 		flex-direction: column;
-		background: var(--color-bg1);
+		background: var(--bg1);
 		border-radius: 1.6rem;
 		padding: 1rem;
 		cursor: pointer;
@@ -109,7 +109,7 @@
 	}
 
 	.setting1:hover {
-		background: var(--color-bg2);
+		background: var(--bg2);
 	}
 
 </style>

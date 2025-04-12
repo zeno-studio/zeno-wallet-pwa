@@ -89,11 +89,11 @@
 		align-items: center;
 		height: 100%;
 		width: 100%;
-		background: var(--color-bg1);
+		background: var(--bg1);
 		border: none;
 		border-radius: 2rem;
 		&:hover {
-			background: var(--color-bg2);
+			background: var(--bg2);
 		}
 	}
 	.item-icon {

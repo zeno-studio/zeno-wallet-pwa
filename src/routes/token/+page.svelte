@@ -78,7 +78,7 @@ let {currentAddress} = $props();
 		margin: 0px;
         padding-left: 1rem;
 		border-radius: 20px;
-		background: var(--color-bg2);
+		background: var(--bg2);
 		border: none;
 		color: var(--color);
 	}
@@ -107,7 +107,7 @@ let {currentAddress} = $props();
 		color: var(--color);
 	}
 	.token-lable:hover {
-		background: var(--color-bg2);
+		background: var(--bg2);
 		border-radius: 16px;
 	}
 	.token-detail {
@@ -134,7 +134,7 @@ let {currentAddress} = $props();
 		border-radius: 16px;
 		margin-left: 8px;
         &:hover {
-              box-shadow: 1px 4px 6px var(--color-shadow);
+              box-shadow: 1px 4px 6px var(--shadow);
               transform: scale(1.1);
         }
 	}

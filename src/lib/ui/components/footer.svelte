@@ -50,7 +50,7 @@
 		height: 6.4rem;
 		background: transparent;
 		backdrop-filter: blur(30px);
-		border-top: 1px solid var(--color-border);
+		border-top: 1px solid var(--border);
 
 	}
 	.menu {
@@ -73,6 +73,6 @@
 		font-weight: 500;
 	}
 	.active {
-		color: var(--color-pink);
+		color: var(--pink);
 	}
 </style>

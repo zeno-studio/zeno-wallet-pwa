@@ -18,6 +18,8 @@ metadata.description = 'Assets';
 		</div>	
 	</div>
 
+
+
 	<div class="item-container2">
 		<div class="menu1">
 			<a class="text1" href="/#/receive">
@@ -80,7 +82,7 @@ metadata.description = 'Assets';
 	box-sizing: border-box;
 	width: 100%;
 	flex-direction: column;
-	background: var(--color-bg1);
+	background: var(--bg1);
 	border-radius: 1.6rem;
 	padding: 1rem;
 	margin-bottom: 1rem;
@@ -112,7 +114,7 @@ metadata.description = 'Assets';
 		align-items: center;
 		flex-direction: column;
 		font-size: 1rem;
-		background: var(--color-bg2);
+		background: var(--bg2);
 	}
 	.menu2 {
 		width: 100%;
@@ -126,7 +128,7 @@ metadata.description = 'Assets';
 		justify-content: center;
 		width: 100%;
 		padding: 1rem;
-		background: var(--color-pink);
+		background: var(--pink);
 		border: none;
 		border-radius: 1.6rem;
 		box-sizing: border-box;

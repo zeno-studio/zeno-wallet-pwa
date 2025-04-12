@@ -71,6 +71,8 @@
 
 {#if scanOpen}
 
+	 <!-- svelte-ignore a11y_click_events_have_key_events -->
+	 <!-- svelte-ignore a11y_no_static_element_interactions -->
 	 <div class="backdrop" 
 	 transition:fade={{ duration: 200 }}
 		onclick={handleBackdropClick}
@@ -80,6 +82,7 @@
 	<div  class={{ "modal": !isSmallScreen.current, 'modal-m': isSmallScreen.current }}>
 
 		<div id="video" class="top">
+			<!-- svelte-ignore a11y_no_static_element_interactions -->
 			<div class="close-btn" onclick={close}>
 				<CloseIcon class="icon18A" />
 			</div>
@@ -89,7 +92,7 @@
 {/if}
 
 <button class="scan-button" onclick={startCamera}>
-	<ScanIcon class="icon2rem" />
+	<ScanIcon class="icon2A" />
 </button>
 <style lang="postcss">
 	#video {
@@ -100,7 +103,7 @@
 		align-items: center;
 		width: 100%;
 		height: 100%;
-		background: var(--color-bg3);
+		background: var(--bg3);
 		border-radius: 1.6rem;
 		overflow: hidden;
 	}
@@ -112,7 +115,7 @@
 		height: 48rem;
 		width: 72rem;
 		padding: 0;
-		background: var(--color-bg1);
+		background: var(--bg1);
 
 		
 	}
@@ -124,7 +127,7 @@
 		height: 100%;
 		width: 100%;
 		padding: 0;
-		background: var(--color-bg1);
+		background: var(--bg1);
 
 
 	}

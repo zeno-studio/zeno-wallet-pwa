@@ -163,7 +163,7 @@
 	.panel-desktop:hover {
 		transform: scaleX(0.95);
 		transition: ease-in 0.5s;
-		background: var(--color-bg1);
+		background: var(--bg1);
 	}
 
 	.account-info {
@@ -186,12 +186,12 @@
 		flex-direction: column;
 		justify-content: flex-start;
 		align-items: flex-start;
-		background-color: var(--color-bg);
+		background-color: var(--bg);
 		border: none;
-		box-shadow: var(--color-shadow) 0px 2px 6px;
+		box-shadow: var(--shadow) 0px 2px 6px;
 		transition: margin-right 250ms ease 0s;
 		box-sizing: border-box;
-		background: var(--color-bg);
+		background: var(--bg);
 		z-index: 101;
 	}
 
@@ -267,7 +267,7 @@
 		border-radius: 50%;
 		padding: 0px;
 		background-color: #fff;
-		border: 2px solid var(--color-border);
+		border: 2px solid var(--border);
 	}
 	.address-container {
 		display: flex;
@@ -291,7 +291,7 @@
 		font-size: 1.2rem;
 		font-weight: 600;
 		color: #fff;
-		background: var(--color-green);
+		background: var(--success);
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -305,14 +305,14 @@
 	.address {
 		font-size: 1.2rem;
 		font-weight: 600;
-		color: var(--color-text);
+		color: var(--text);
 		margin-right: 0.4rem;
 	}
 
 	.setting-medium:hover,
 	.setting-top:hover,
 	.setting-bottom:hover {
-		background: var(--color-bg2);
+		background: var(--bg2);
 	}
 
 	.setting-top {
@@ -322,7 +322,7 @@
 		flex-direction: column;
 		box-sizing: border-box;
 		width: 100%;
-		background: var(--color-bg1);
+		background: var(--bg1);
 		border-top-left-radius: 1.6rem;
 		border-top-right-radius: 1.6rem;
 		padding: 1rem;
@@ -339,7 +339,7 @@
 		flex-direction: column;
 		box-sizing: border-box;
 		width: 100%;
-		background: var(--color-bg1);
+		background: var(--bg1);
 		padding: 1rem;
 		cursor: pointer;
 		margin-bottom: 1px;
@@ -354,7 +354,7 @@
 		flex-direction: column;
 		box-sizing: border-box;
 		width: 100%;
-		background: var(--color-bg1);
+		background: var(--bg1);
 		border-bottom-left-radius: 1.6rem;
 		border-bottom-right-radius: 1.6rem;
 		padding: 1rem;
