@@ -45,7 +45,7 @@
 		box-sizing: border-box;
 		width: 100%;
 		flex-direction: column;
-		background: var(--color-bg1);
+		background: var(--bg1);
 		border-radius: 1.6rem;
 		padding: 1rem;
 		margin-bottom: 1rem;
@@ -97,7 +97,7 @@
 	}
 
 	.active1 {
-		background: var(--color-bg2);
+		background: var(--bg2);
 		color: var(--color);
 	}
 </style>

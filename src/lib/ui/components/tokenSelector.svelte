@@ -84,7 +84,7 @@
 		margin: 0px;
 		padding-left: 1rem;
 		border-radius: 2rem;
-		background: var(--color-bg2);
+		background: var(--bg2);
 		border: none;
 		color: var(--color);
 	}
@@ -113,7 +113,7 @@
 		color: var(--color);
 	}
 	.token-lable:hover {
-		background: var(--color-bg2);
+		background: var(--bg2);
 		border-radius: 1.6rem;
 	}
 	.token-detail {
@@ -139,7 +139,7 @@
 		border-radius: 1.6rem;
 		margin-left: 0.8rem;
 		&:hover {
-			box-shadow: 1px 4px 6px var(--color-shadow);
+			box-shadow: 1px 4px 6px var(--shadow);
 			transform: scale(1.1);
 		}
 	}

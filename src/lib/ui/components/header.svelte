@@ -145,7 +145,7 @@
 		height: 3.2rem;
 		width: 3.2rem;
 		color: var(--color);
-		fill: var(--color-pink);
+		fill: var(--pink);
 	}
 	.label-switch {
 		display: flex;
@@ -206,11 +206,11 @@
 		top: 6.4rem;
 		width: 100%;
 		height: 100vh;
-		background: var(--color-bg);
+		background: var(--bg);
 		border-radius: 1.6rem;
 		padding: 2rem;
 		z-index: 1000;
-		border: 1px solid var(--color-border);
+		border: 1px solid var(--border);
 		margin: 0rem;
 	}
 
@@ -233,7 +233,7 @@
 		border: none;
 		background: none;
 		box-sizing: border-box;
-		color: var(--color-text);
+		color: var(--text);
 	}
 
 	.accountButton:hover {
@@ -247,13 +247,13 @@
 		right: 1rem;
 		justify-content: flex-start;
 		align-items: center;
-		color: var(--color-text);
+		color: var(--text);
 		font-size: 1.5rem;
 		font-weight: 600;
 		border-radius: 2rem;
-		border: 1px solid var(--color-border);
-		background: var(--color-bg1);
-		color: var(--color-text);
+		border: 1px solid var(--border);
+		background: var(--bg1);
+		color: var(--text);
 	}
 	.accountButtonRight:hover {
 		cursor: pointer;
@@ -306,7 +306,7 @@
 		border-radius: 50%;
 		padding: 0px;
 		background-color: #fff;
-		border: 2px solid var(--color-border);
+		border: 2px solid var(--border);
 	}
 
 	.accountList {
@@ -322,7 +322,7 @@
 		margin-bottom: 0.8rem;
 	}
 	.selected {
-		background: var(--green4);
+		background: var(--success);
 	}
 	.label {
 		margin: 0px;
@@ -337,17 +337,17 @@
 		align-items: center;
 		justify-content: flex-start;
 		flex-direction: row;
-		background: var(--color-bg1);
+		background: var(--bg1);
 		border: none;
 		border-top-left-radius: 1.6rem;
 		border-bottom-left-radius: 1.6rem;
 		cursor: pointer;
 		color: var(--color);
 		&:hover {
-			background: var(--color-bg2);
+			background: var(--bg2);
 		}
 		&.selected {
-			background: var(--green4);
+			background: var(--success);
 		}
 	}
 	.label-right {
@@ -355,17 +355,17 @@
 		align-items: center;
 		justify-content: center;
 		height: 100%;
-		background: var(--color-bg1);
+		background: var(--bg1);
 		border: none;
 		border-top-right-radius: 1.6rem;
 		border-bottom-right-radius: 1.6rem;
 		cursor: pointer;
 		color: var(--color);
 		&:hover {
-			background: var(--color-bg2);
+			background: var(--bg2);
 		}
 		&.selected {
-			background: var(--green4);
+			background: var(--success);
 		}
 	}
 </style>

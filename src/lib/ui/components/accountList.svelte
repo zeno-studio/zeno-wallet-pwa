@@ -124,12 +124,12 @@
 		box-sizing: border-box;
 		width: 100%;
 		flex-direction: row;
-		background: var(--color-bg1);
+		background: var(--bg1);
 		border: none;
 		border-radius: 1.6rem;
 		cursor: pointer;
 		&:active {
-			background: var(--color-bg2);
+			background: var(--bg2);
 			color: var(--color);
 			transform: translateY(1px);
 		}
@@ -163,7 +163,7 @@
 	.address {
 		font-size: 1.2rem;
 		font-weight: 600;
-		color: var(--color-text);
+		color: var(--text);
 	}
 	.avatar {
 		position: relative;
@@ -176,7 +176,7 @@
 		border-radius: 50%;
 		padding: 0px;
 		background-color: #fff;
-		border: 2px solid var(--color-border);
+		border: 2px solid var(--border);
 	}
 
 	.accountList {
@@ -203,10 +203,10 @@
 	.tabs {
 		display: flex;
 		position: relative;
-		background-color: var(--color-bg2);
+		background-color: var(--bg2);
 		padding: 0.4rem;
 		border-radius: 1.6rem;
-		border: 1px solid var(--color-border);
+		border: 1px solid var(--border);
 		width: 30rem;
 		margin: 0 auto;
 	}
@@ -229,7 +229,7 @@
 		height: 3.6rem;
 		width: 15rem;
 		font-size: 1.3rem;
-		color: var(--color-text);
+		color: var(--text);
 		font-weight: 700;
 		border-radius: 1.6rem;
 		cursor: pointer;
@@ -250,7 +250,7 @@
 		left: 0.4rem;
 		height: 3.6rem;
 		width: 15rem;
-		background-color: var(--color-bg);
+		background-color: var(--bg);
 		z-index: 1;
 		border-radius: 1.2rem;
 		transition: 0.25s ease-out;

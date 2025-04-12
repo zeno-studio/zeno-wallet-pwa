@@ -87,7 +87,7 @@
 		padding: 1rem;
 		cursor: pointer;
 		margin-bottom: 0.8rem;
-		border: 1px solid var(--color-bg3)
+		border: 1px solid var(--bg3)
 	}
 	
 	.Account-container{
@@ -104,7 +104,7 @@
 		height: 6rem;
 		flex-direction: column;
 		max-width: 48rem;
-		background-color: var(--color-bg);
+		background-color: var(--bg);
 		box-sizing: border-box;
 	}
 
@@ -120,7 +120,7 @@
 		align-items: center;
 		max-width: 48rem;
 		width: 95%;
-		background-color: var(--color-bg);
+		background-color: var(--bg);
 	}
 
 	.bottomB {
@@ -131,7 +131,7 @@
 		height: 12rem;
 		flex-direction: column;
 		max-width: 48rem;
-		background-color: var(--color-bg);
+		background-color: var(--bg);
 	}
 
 	.bottomB-s {
@@ -146,7 +146,7 @@
 		align-items: center;
 		max-width: 48rem;
 		width: 95%;
-		background-color: var(--color-bg);
+		background-color: var(--bg);
 	}
 
 </style>

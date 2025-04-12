@@ -36,7 +36,7 @@
 
 <style>
 	.chevrons-right-icon {
-        color : var(--color-text);
+        color : var(--text);
 		overflow: visible;
 		transition: all 0.2s ease-in;
 	}

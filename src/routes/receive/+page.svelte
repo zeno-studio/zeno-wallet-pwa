@@ -134,7 +134,7 @@
 		box-sizing: border-box;
 		width: 100%;
 		flex-direction: column;
-		background: var(--color-bg1);
+		background: var(--bg1);
 		border-radius: 1.6rem;
 		padding: 3rem 1rem 1rem 1rem;
 		margin-bottom: 0.8rem;
@@ -156,8 +156,8 @@
 		flex-direction: column;
 		padding: 1rem;
 		border-radius: 1.6rem;
-		background: var(--color-bg);
-		border: 1px solid var(--color-border);
+		background: var(--bg);
+		border: 1px solid var(--border);
 		margin-bottom: 1rem;
 	}
 
@@ -191,19 +191,25 @@
 		border: none;
 		background: none;
 		cursor: pointer;
+		view-transition-name: action-lable;
 	}
+
+	::view-transition-new(action-lable) {
+		rotate: 10deg;
+	}
+
 	.share-l {
 		font-size: 1.2rem;
 		font-weight: 600;
 		padding: 0.5rem 1rem;
 		border-top-left-radius: 1.6rem;
 		border-bottom-left-radius: 1.6rem;
-		border: 1px solid var(--color-bg3);
+		border: 1px solid var(--bg3);
 		background: none;
-		color: var(--color-text);
+		color: var(--text);
 		cursor: pointer;
 		&:hover {
-			background: var(--green4);
+			background: var(--success);
 			color: #fff;
 		}
 	}
@@ -213,12 +219,12 @@
 		padding: 0.5rem 1rem;
 		border-top-right-radius: 1.6rem;
 		border-bottom-right-radius: 1.6rem;
-		border: 1px solid var(--color-bg3);
+		border: 1px solid var(--bg3);
 		background: none;
-		color: var(--color-text);
+		color: var(--text);
 		cursor: pointer;
 		&:hover {
-			background: var(--green4);
+			background: var(--success);
 			color: #fff;
 		}
 	}
@@ -231,7 +237,7 @@
 		height: 300px;
 		justify-content: center;
 		align-items: center;
-		border: 1px solid var(--color-border);
+		border: 1px solid var(--border);
 	}
 	a {
 		font-size: 1.3rem;
@@ -239,13 +245,13 @@
 	}
 
 	.active1 {
-		background: var(--color-bg2);
+		background: var(--bg2);
 		color: var(--color);
 	}
 	#address {
 		font-size: 1.2rem;
 		font-weight: 600;
-		color: var(--color-text);
+		color: var(--text);
 	}
 	.copy {
 		display: flex;
@@ -262,7 +268,7 @@
 		width: 100%;
 		display: flex;
 		justify-content: center;
-		background: var(--color-blue);
+		background: var(--blue);
 		border: none;
 		border-radius: 1.6rem;
 		color: #fff;

@@ -48,7 +48,7 @@
 	}
 
 	.active {
-		fill: var(--color-green);
+		fill: var(--success);
 	}
 
 	.container {
@@ -61,7 +61,7 @@
 		margin-bottom: 1px;
 	}
 	.item-button:hover {
-		background: var(--color-bg2);
+		background: var(--bg2);
 		border-radius: 0.8rem;
 	}
 

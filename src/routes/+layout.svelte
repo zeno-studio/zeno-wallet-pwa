@@ -36,15 +36,16 @@
 
 
 <style lang="postcss">
-	.main {
+	main {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: var(--color-bg);
-	color: var(--color-text);
+	background-color: var(--bg);
+	color: var(--text);
 	border: none;
 	padding: 0px;
 	margin: 0px;
 }
+
 </style>
 

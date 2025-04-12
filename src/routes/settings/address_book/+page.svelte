@@ -276,13 +276,13 @@
 		box-sizing: border-box;
 		flex-direction: column;
 		position: fixed;
-		color: var(--color-text);
+		color: var(--text);
 		height: 70%;
 		width: 38.4rem;
 		padding: 2rem;
-		background: var(--color-bg1);
+		background: var(--bg1);
 		border-radius: 1.6rem;
-		border: 1px solid var(--color-border);
+		border: 1px solid var(--border);
 	}
 	.modal-m {
 		gap: 1rem;
@@ -293,9 +293,9 @@
 		height: 100vh;
 		width: 100vw;
 		padding: 2rem;
-		background: var(--color-bg1);
+		background: var(--bg1);
 		border-radius: 1.6rem;
-		border: 1px solid var(--color-border);
+		border: 1px solid var(--border);
 	}
 	.bottom-d {
 		gap: 1rem;
@@ -305,10 +305,10 @@
 		height: 6rem;
 		flex-direction: column;
 		max-width: 48rem;
-		background-color: var(--color-bg);
+		background-color: var(--bg);
 	}
 	.alert {
-		color: var(--alert);
+		color: var(--warning);
 		display: flex;
 		align-items: center;
 		margin: 1rem;
@@ -326,7 +326,7 @@
 		align-items: center;
 		max-width: 48rem;
 		width: 95%;
-		background-color: var(--color-bg);
+		background-color: var(--bg);
 	}
 	.search {
 		display: flex;
@@ -341,16 +341,16 @@
 	.input-search {
 		width: 100%;
 		padding: 1rem 2rem;
-		border: 1px solid var(--color-border);
+		border: 1px solid var(--border);
 		border-radius: 2rem;
-		background: var(--color-bg1);
-		color: var(--color-text);
+		background: var(--bg1);
+		color: var(--text);
 		font-size: 1.4rem;
 		height: 100%;
 		outline: none;
 		transition: all 0.3s ease;
 		&:focus {
-			border-color: var(--color-bg3);
+			border-color: var(--bg3);
 		}
 	}
 	.addressList1 {
@@ -364,13 +364,13 @@
 		flex-direction: row;
 		background: none;
 		border: none;
-		background: var(--color-bg1);
-		color: var(--color-text);
+		background: var(--bg1);
+		color: var(--text);
 		border-radius: 1.6rem;
 		margin-bottom: 0.8rem;
 		cursor: pointer;
 		&:hover {
-			background: var(--storm400);
+			background: var(--storm2);
 			color: var(--color);
 		}
 	}
@@ -411,7 +411,7 @@
 		padding: 0px;
 		font-size: 1.2rem;
 		width: 100%;
-		color: var(--color-text);
+		color: var(--text);
 	}
 	.avatar {
 		position: relative;
@@ -425,7 +425,7 @@
 		border-radius: 50%;
 		background: #fff;
 		padding: 0px;
-		border: 1px solid var(--color-border);
+		border: 1px solid var(--border);
 	}
 	.avatar2 {
 		position: relative;
@@ -437,10 +437,10 @@
 		margin-left: 1rem;
 		margin-right: 2rem;
 		border-radius: 50%;
-		background-color: var(--color-pink);
+		background-color: var(--pink);
 		color: #fff;
 		padding: 0px;
-		border: 1px solid var(--color-border);
+		border: 1px solid var(--border);
 	}
 
 	.addressList2 {
@@ -464,7 +464,7 @@
 		height: 4.8rem;
 		border: none;
 		border-radius: 1.6rem;
-		background: var(--storm700);
+		background: var(--storm3);
 		box-sizing: border-box;
 		width: 100%;
 		padding: 1rem;
@@ -479,14 +479,14 @@
 		align-items: center;
 		justify-content: flex-start;
 		flex-direction: row;
-		background: var(--color-bg1);
+		background: var(--bg1);
 		border: none;
 		height: 4.8rem;
 		border-top-left-radius: 1.6rem;
 		border-bottom-left-radius: 1.6rem;
 		color: var(--color);
 		&:hover {
-			background: var(--green4);
+			background: var(--success);
 		}
 	}
 	.label-right {
@@ -494,7 +494,7 @@
 		align-items: center;
 		justify-content: center;
 		height: 100%;
-		background: var(--color-bg1);
+		background: var(--bg1);
 		border: none;
 		border-top-right-radius: 1.6rem;
 		border-bottom-right-radius: 1.6rem;
@@ -502,7 +502,7 @@
 		cursor: pointer;
 		color: var(--color);
 		&:hover {
-			background: var(--green4);
+			background: var(--success);
 		}
 	}
 
@@ -510,7 +510,7 @@
 		display: flex;
 		font-size: 2rem;
 		font-weight: 700;
-		color: var(--color-text);
+		color: var(--text);
 		margin-bottom: 1rem;
 	}
 	.form {
@@ -527,7 +527,7 @@
 		height: 4.8rem;
 		border: none;
 		border-radius: 1.6rem;
-		background: var(--storm900);
+		background: var(--storm4);
 		box-sizing: border-box;
 		width: 100%;
 		padding: 1rem;
@@ -540,13 +540,13 @@
 		justify-content: flex-start;
 		align-items: center;
 		position: fixed;
-		color: var(--color-text);
+		color: var(--text);
 		height: 90%;
 		width: 38.4rem;
 		padding: 1.6rem;
-		background: var(--color-bg1);
+		background: var(--bg1);
 		border-radius: 2rem;
-		border: 1px solid var(--color-border);
+		border: 1px solid var(--border);
 		overflow: hidden;
 	}
 
@@ -555,7 +555,7 @@
 		font-size: 1.5rem;
 		width: 80%;
 		border-radius: 1.6rem;
-		background: var(--color-bg2);
+		background: var(--bg2);
 		border: none;
 	}
 
@@ -565,18 +565,18 @@
 		height: 10rem;
 		width: 80%;
 		border-radius: 1.6rem;
-		background: var(--color-bg2);
+		background: var(--bg2);
 		border: none;
 		resize: none;
 	}
 
 	.cancel {
-		color: var(--color-text);
+		color: var(--text);
 		font-size: 1.7rem;
 		font-weight: 600;
 		border: none;
 		border-radius: 1.6rem;
-		background: var(--color-bg2);
+		background: var(--bg2);
 		box-sizing: border-box;
 		width: 100%;
 		padding: 1rem;
@@ -588,7 +588,7 @@
 		font-weight: 600;
 		border: none;
 		border-radius: 1.6rem;
-		background: var(--color-pink);
+		background: var(--pink);
 		box-sizing: border-box;
 		width: 100%;
 		padding: 1rem;
