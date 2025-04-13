@@ -14,7 +14,7 @@ metadata.description = 'Assets';
 <div class="appBody">
 	<div class="item-container">
 		<div class="item">
-			<h2>Balance:100$</h2>
+			Balance:100$
 		</div>	
 	</div>
 

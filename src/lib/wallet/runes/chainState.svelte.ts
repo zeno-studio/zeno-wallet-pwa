@@ -1,4 +1,4 @@
-import { dbStore, type Chain,type Settings} from '$lib/wallet/common';
+import { DB, type Chain,type Settings} from '$lib/wallet/common';
 import { getElement,addElement, editElement } from '$lib/wallet/common';
 
 

@@ -3,7 +3,7 @@
 	import { SwitchTheme, LanguageSelector, CurrencySelector } from '$lib/ui/components';
 	import {
 		ArrowForward,
-		DollarIcon,
+		BuyIcon,
 		LanguageIcon,
 		CloseIcon,
 		Darkmode,
@@ -109,7 +109,7 @@
 		<button class="setting-bottom" onclick={() => (fiatOpen = !fiatOpen)}>
 			<div class="item">
 				<div class="item-l">
-					<span class="icon"> <DollarIcon class="icon18P" /></span>
+					<span class="icon"> <BuyIcon class="icon18P" /></span>
 
 					<span class="label2">Currency</span>
 				</div>

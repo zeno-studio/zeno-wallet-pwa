@@ -7,13 +7,13 @@
 		ArrowDown,
 		ArrowBack,
 		CloseIcon,
-		AlertCirCle,
+		AlertBox,
 		EditIcon
 	} from '$lib/svg';
 	import { accountState } from '$lib/wallet/runes';
 	import { toSvg } from 'jdenticon';
 	import { goto } from '$app/navigation';
-	import { dbStore, editElement } from '$lib/wallet/common';
+	import { DB, editElement } from '$lib/wallet/common';
 	import { slide } from 'svelte/transition';
 	import { shortenAddress6 } from '$lib/ui/ts';
 	import { fade, fly } from 'svelte/transition';
@@ -37,7 +37,7 @@
 		accountState.editingAccount.name = name;
 		const account = $state.snapshot(accountState.editingAccount);
 		if (account) {
-			editElement(dbStore.Account.name, account);
+			editElement(DB.Account.name, account);
 			accountState.accountList = accountState.accountList.map((a) =>
 				a.accountIndex === accountState.editingAccountIndex ? account : a
 			);
@@ -51,7 +51,7 @@
 		accountState.editingAccount.memo = memo;
 		const account = $state.snapshot(accountState.editingAccount);
 		if (account) {
-			editElement(dbStore.Account.name, account);
+			editElement(DB.Account.name, account);
 			accountState.accountList = accountState.accountList.map((a) =>
 				a.accountIndex === accountState.editingAccountIndex ? account : a
 			);
@@ -101,12 +101,13 @@
 		}
 	});
 </script>
+
 {#if !isSmallScreen.current}
-<Header />
+	<Header />
 {/if}
-<div class={{"appBody": isSmallScreen.current, "appBody-d": !isSmallScreen.current}}>
-	<div class="item-container2">
-		<a class="back" href="/#/settings/account_manage">
+<div class={{ appBody: isSmallScreen.current, 'appBody-d': !isSmallScreen.current }}>
+	<div class="top">
+		<a class="top-back" href="/#/settings/account_manage">
 			<ArrowBack class="icon2A" />
 		</a>
 	</div>
@@ -118,12 +119,16 @@
 				{@html generateAvatar(accountState.editingAccount?.address ?? '')}
 			{/if}
 			<div class="edit">
-				<EditFilled class="icon3rem" />
+				<EditFilled class="icon3" />
 			</div>
 		</div>
 	</div>
 	<div class="address-container">
-		<span class="address">[{accountState.editingAccount?.addressType}]:{shortenAddress6(accountState.editingAccount?.address ?? '')}</span>
+		<span class="address"
+			>[{accountState.editingAccount?.addressType}]:{shortenAddress6(
+				accountState.editingAccount?.address ?? ''
+			)}</span
+		>
 
 		{#if copied}
 			<div class="copied">Copied</div>
@@ -161,7 +166,7 @@
 						<button class="save" onclick={saveName}>Save</button>
 					</div>
 				{:else}
-					<button class="item-r" onclick={() => (nameEdit = true)}
+					<button class="edit-btn" onclick={() => (nameEdit = true)}
 						><EditIcon class="icon18A" /></button
 					>
 				{/if}
@@ -241,7 +246,7 @@
 		</div>
 	</div>
 
-	<button class="delete" onclick={() => (modalOpen = true)}>Delete Account</button>
+	<button class="delete" onclick={() => (modalOpen = true)}>Remove Account</button>
 </div>
 
 {#if modalOpen}
@@ -259,21 +264,29 @@
 			out:fade={{ duration: 120 }}
 			class={{ modal: !isSmallScreen.current, 'modal-m': isSmallScreen.current }}
 		>
-			<button class="close" onclick={() => (modalOpen = false)}>
-				<CloseIcon class="icon18A" />
-			</button>
-			<div class="title">Delete Account</div>
-			<div>
-				<AlertCirCle class="icon3Y" />
+			{#if isSmallScreen.current}
+				<div class="tap"></div>
+			{/if}
+			{#if !isSmallScreen.current}
+				<div class="close-warp">
+					<button class="close" onclick={() => (modalOpen = false)}>
+						<CloseIcon class="icon18A" />
+					</button>
+				</div>
+			{/if}
+
+			<div class="title">Remove Account</div>
+			<div class="alert-warp">
+				<AlertBox class="icon18Y" />
 			</div>
-			
+
 			<div class="tip2">
-					If you want to recover this account later, you should save the account index. This account's
-					index is:
+				If you want to recover this account later, you should save the account index. This account's
+				index is:
 			</div>
 			<h1>{accountState.editingAccountIndex}</h1>
 			<div class="container">
-				<button class="cancel" onclick={close}>Cancel</button>
+				<button class="cancel" onclick={() => (modalOpen = false)}>Cancel</button>
 				<button class="action" onclick={deleteAccount}>Delete</button>
 			</div>
 		</div>
@@ -281,29 +294,38 @@
 {/if}
 
 <style lang="postcss">
-		.appBody-d {
-	display: flex;
-	flex-direction: column;
-	height: 100%;
-	width: 95%;
-	max-width: 48rem;
-	padding: 6.4rem 1rem 0rem 1rem;
-}
-.appBody {
-	display: flex;
-	flex-direction: column;
-	height: 100%;
-	width: 95%;
-	max-width: 48rem;
-	padding: 1rem 1rem 0rem 1rem;
-}
+	.appBody-d {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		width: 95%;
+		max-width: 48rem;
+		padding: 6.4rem 1rem 0rem 1rem;
+	}
+	.appBody {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		width: 95%;
+		max-width: 48rem;
+		padding: 1rem 1rem 0rem 1rem;
+	}
+	.top {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+		width: 100%;
+		height: 5rem;
+		background: none;
+		border: none;
+	}
 
-.tip2 {
+	.tip2 {
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-start;
 		color: var(--text);
-		font-size: 1.3rem;
+		font-size: 1.5rem;
 		font-weight: 500;
 		width: 70%;
 		border: 2px dashed var(--warning);
@@ -328,25 +350,44 @@
 		justify-content: flex-start;
 		align-items: center;
 		width: 100%;
-		font-size: 1.5rem;
+		font-size: 1.7rem;
 		font-weight: 500;
-		padding: 0px;
+		padding: 0;
+		margin: 0;
 		background: none;
 		border: none;
 		color: var(--color);
 	}
-
 	.item-l {
-		display: flex;
+		margin-left: 1rem;
 	}
-
 	.item-r {
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
 		position: absolute;
 		right: 0px;
-		fill: none;
+		padding: 0;
+		margin: 0;
 		border: none;
 		background: none;
 	}
+	.edit-btn {
+		position: absolute;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		right: 0px;
+		height: 3rem;
+		width: 3rem;
+		padding: 0.4rem;
+		margin: 0;
+		border-radius: 50%;
+		box-sizing: border-box;
+		border: none;
+		background: var(--bg2);
+	}
+
 	.modal {
 		gap: 1rem;
 		box-sizing: border-box;
@@ -356,7 +397,7 @@
 		color: var(--text);
 		height: 70%;
 		width: 38.4rem;
-		padding: 2rem;
+		padding: 1rem 2rem;
 		background: var(--bg1);
 		border-radius: 1.6rem;
 		border: 1px solid var(--border);
@@ -364,16 +405,39 @@
 	.modal-m {
 		gap: 1rem;
 		position: fixed;
-		top: calc(100vh - 50rem);
+		bottom: 0;
 		box-sizing: border-box;
 		flex-direction: column;
 		justify-content: flex-start;
-		height: 100vh;
 		width: 100vw;
-		padding: 2rem;
+		padding: 1rem 2rem 8rem 2rem;
 		background: var(--bg1);
-		border-radius: 1.6rem;
+		border-top-right-radius: 1.6rem;
+		border-top-left-radius: 1.6rem;
 		border: 1px solid var(--border);
+	}
+	.tap {
+		width: 15%;
+		height: 0.4rem;
+		background: var(--bg3);
+		border-radius: 0.2rem;
+	}
+	.close-warp {
+		position: relative;
+		box-sizing: border-box;
+		width: 100%;
+		padding: 0.4rem;
+		height: 2.4rem;
+		margin-top: 1rem;
+	}
+	.alert-warp {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 3rem;
+		height: 3rem;
+		background: var(--warning-back);
+		border-radius: 50%;
 	}
 	.address-container {
 		display: flex;
@@ -396,7 +460,7 @@
 		cursor: pointer;
 	}
 	.copied {
-		font-size: 1.2rem;
+		font-size: 1.5rem;
 		font-weight: 600;
 		color: #fff;
 		background: var(--success);
@@ -404,14 +468,14 @@
 		align-items: center;
 		justify-content: center;
 		padding: 0.4rem 0.8rem;
-		border-radius: 1.2rem;
+		border-radius: 1.3rem;
 		width: auto;
 		height: 1.8rem;
 		border: none;
 		cursor: pointer;
 	}
 	.address {
-		font-size: 1.4rem;
+		font-size: 1.5rem;
 		font-weight: 600;
 		color: var(--text);
 		margin-right: 0.8rem;
@@ -424,34 +488,34 @@
 		background: none;
 		border: none;
 	}
-	.back {
+	.top-back {
 		display: flex;
 		align-items: center;
 		justify-content: flex-start;
 		border: none;
-		background: none;
-		width: 100%;
+		background:none;
 	}
 	.save {
 		padding: 0.4rem 0.8rem;
-		font-size: 1.2rem;
+		font-size: 1.5rem;
 		font-weight: 600;
 		color: #fff;
-		background: var(--pink);
+		background: var(--success);
 		border: none;
-		border-radius: 1.2rem;
+		border-radius: 1.3rem;
 		cursor: pointer;
 	}
 	.input-name {
 		width: 30rem;
-		padding: 1rem;
+		padding: 1rem 1rem 1rem 2rem;
 		border: 1px solid var(--bg3);
+		font-size: 1.5rem;
 		background: var(--bg2);
-		border-radius: 1.6rem;
+		border-radius: 2rem;
 		box-sizing: border-box;
 	}
 	.memo-input {
-		font-size: 1.2rem;
+		font-size: 1.5rem;
 		margin-top: 1rem;
 		position: relative;
 		width: 100%;
@@ -468,12 +532,11 @@
 		bottom: 0rem;
 		right: 0rem;
 		padding: 0.4rem 1rem;
-		font-size: 1.2rem;
-		font-weight: 600;
+		font-size: 1.5rem;
 		color: #fff;
-		background: var(--pink);
+		background: var(--success);
 		border: none;
-		border-radius: 1.2rem;
+		border-radius: 1.3rem;
 		cursor: pointer;
 	}
 	.container {
@@ -491,6 +554,7 @@
 		border-bottom-left-radius: 1.6rem;
 		border-bottom-right-radius: 1.6rem;
 		padding: 1.2rem 1rem;
+		height: 6rem;
 		margin-bottom: 0.8rem;
 		border: none;
 	}
@@ -501,7 +565,7 @@
 		align-items: flex-start;
 		margin-top: 1rem;
 		padding: 1rem;
-		font-size: 1.2rem;
+		font-size: 1.5rem;
 		font-weight: 500;
 		height: 12rem;
 		width: 100%;
@@ -511,7 +575,7 @@
 		border: 1px solid transparent;
 	}
 	.label-name {
-		font-size: 1.5rem;
+		font-size: 1.7rem;
 		font-weight: 600;
 		margin-left: 1rem;
 	}
@@ -522,19 +586,26 @@
 		height: 100%;
 	}
 	.memo-edit {
+		display: flex;
+		justify-content: center;
+		align-items: center;
 		position: absolute;
+		height: 3rem;
+		width: 3rem;
+		background: var(--bg2);
 		bottom: 1rem;
 		right: 1rem;
-		background: none;
-		border-radius: 1.6rem;
+		padding: 0.4rem;
+		border-radius: 50%;
 		box-sizing: border-box;
-		border: 1px solid transparent;
+		border:none;
 	}
 
 	.delete {
 		display: flex;
 		justify-content: flex-start;
-		font-size: 1.5rem;
+		align-items: center;
+		font-size: 1.7rem;
 		font-weight: 600;
 		width: 100%;
 		color: var(--pink);
@@ -542,7 +613,7 @@
 		border: none;
 		padding: 1.5rem 2rem;
 		cursor: pointer;
-		height: 5rem;
+		height: 6rem;
 		margin-bottom: 0.8rem;
 		border-radius: 1.6rem;
 		&:hover {
@@ -550,19 +621,15 @@
 		}
 	}
 
-	.item-container2 {
-		margin-bottom: 2rem;
-	}
-	.item-l {
-		margin-left: 1rem;
-	}
+
+
 	.avatar {
-		aspect-ratio: 1 / 1;
+		flex-shrink: 0;
 		position: relative;
 		width: 12rem;
 		height: 12rem;
-		background: var(--bg1);
-		border: 2px solid var(--border);
+		background: #fff;
+		border: 3px solid var(--bg2);
 	}
 	.cancel {
 		color: var(--text);
@@ -611,7 +678,7 @@
 		padding: 1rem;
 		margin-bottom: 0.1rem;
 		border: none;
-		height: 5rem;
+		height: 6rem;
 	}
 
 	.setting-medium {
@@ -625,7 +692,7 @@
 		padding: 1rem;
 		margin-bottom: 1px;
 		border: none;
-		height: 5rem;
+		height: 6rem;
 	}
 
 	.setting1 {
@@ -637,15 +704,14 @@
 		padding: 1rem;
 		margin-bottom: 0.8rem;
 		border: none;
-		height: 5rem;
+		height: 6rem;
 	}
-
 
 	.toggle-switch {
 		position: relative;
 		display: inline-block;
-		width: 40px;
-		height: 24px;
+		width: 5rem;
+		height: 3rem;
 	}
 
 	.toggle-switch .toggle-input {
@@ -656,10 +722,10 @@
 		position: absolute;
 		top: 0;
 		left: 0;
-		width: 40px;
-		height: 24px;
+		width: 5rem;
+		height: 3rem;
 		background-color: var(--bg3);
-		border-radius: 34px;
+		border-radius: 3rem;
 		cursor: pointer;
 		transition: background-color 0.3s;
 	}
@@ -667,11 +733,11 @@
 	.toggle-switch .toggle-label::before {
 		content: '';
 		position: absolute;
-		width: 20px;
-		height: 20px;
+		width: 2.6rem;
+		height: 2.6rem;
 		border-radius: 50%;
-		top: 2px;
-		left: 2px;
+		top: 0.2rem;
+		left: 0.2rem;
 		background-color: var(--bg1);
 		box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.3);
 		transition: transform 0.3s;
@@ -682,6 +748,6 @@
 	}
 
 	.toggle-switch .toggle-input:checked + .toggle-label::before {
-		transform: translateX(16px);
+		transform: translateX(2rem);
 	}
 </style>

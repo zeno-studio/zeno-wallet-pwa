@@ -5,6 +5,8 @@
 	import {generateQRCodeSvg} from '$lib/ui/ts';
 	import { Toaster,Header,Footer } from '$lib/ui/components';
 	import { toastState } from '$lib/ui/runes';
+	import {ANKR_KEY} from '$lib/wallet/common';
+	import { QrcodeIcon,AddCircle ,BuyIcon,ScanFocus } from '$lib/svg';
 
 	let signerResponse : signerResponseType | null = $state(null);
 	signer.onmessage = (event) => {
@@ -16,10 +18,9 @@
 	let pass = $state('');
 
 import { AnkrProvider } from '@ankr.com/ankr.js';
-import { PUBLIC_ANKR_KEY } from '$env/static/public';
 import type { Blockchain } from '@ankr.com/ankr.js/dist/types';
 
-export const ankrAdvanced = new AnkrProvider(`https://rpc.ankr.com/multichain/${PUBLIC_ANKR_KEY}`);
+export const ankrAdvanced = new AnkrProvider(`https://rpc.ankr.com/multichain/${ANKR_KEY}`);
 const listOfChains: Blockchain[] = ['eth', 'base','arbitrum', 'bsc', 'optimism','polygon'];
 
 const addr1 = accountState.accountList.find(a => a.accountIndex === accountState.currentAccountIndex)?.address as string;
@@ -42,6 +43,8 @@ async function getBalance() {
 <Toaster />
 
 	<div class="appBody">
+		<div><ScanFocus   class="scan-focus"/></div>
+		
 		{signerResponse?.data}
 	
 	<button onclick={queryMid} >mid</button>
