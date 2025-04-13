@@ -26,7 +26,7 @@ export const createSettings = async () => {
 		accountState.nextPolkadotIndex = data.nextPolkadotIndex;
 		await accountState.getAccountList();
 
-		// intialize fiat
+		// intialize currency
 		chainState.currentCurrency = data.currency;
 
 		// intialize locale

@@ -1,4 +1,4 @@
-import { getElement, removeElement, dbStore, deriveEvm, derivePolkadot,isValidPassword, type Vault, type Account } from '$lib/wallet/common';
+import { getElement, removeElement, DB, deriveEvm, derivePolkadot,isValidPassword, type Vault, type Account } from '$lib/wallet/common';
 import { scrypt } from '@noble/hashes/scrypt';
 import { hexToBytes } from '@noble/ciphers/utils';
 import { managedNonce } from '@noble/ciphers/webcrypto';
@@ -163,7 +163,7 @@ async function signEvmTx(tx: any, account: Account, password?: string, salt?: st
 async function reBuildMn(): Promise<string> {
 	const phrase = midpass;
 	const chacha = managedNonce(xchacha)(phrase);
-	const vault = (await getElement(dbStore.Vault.name, 'zeno')) as Vault;
+	const vault = (await getElement(DB.Vault.name, 'zeno')) as Vault;
 	const ent = chacha.decrypt(hexToBytes(vault.ciphertext));
 	const mn = bip39.entropyToMnemonic(ent, wordlist);
 	return mn;
@@ -197,7 +197,7 @@ async function addEvmAccount(index: number) {
 }
 
 async function addEvmAccountWithPassword(index: number, password: string) {
-	const vault = (await getElement(dbStore.Vault.name, 'zeno')) as Vault;
+	const vault = (await getElement(DB.Vault.name, 'zeno')) as Vault;
 	saveMidPassNotPost(password, vault.salt);
 	const mn = await reBuildMn();
 	const newAccount = deriveEvm(index, mn)
@@ -213,7 +213,7 @@ async function addPolkadotAccount(index: number, type: KeyringType) {
 }
 
 async function addPolkadotAccountWithPassword(index: number, password: string, type: KeyringType) {
-	const vault = (await getElement(dbStore.Vault.name, 'zeno')) as Vault;
+	const vault = (await getElement(DB.Vault.name, 'zeno')) as Vault;
 	saveMidPassNotPost(password, vault.salt);
 	const mn = await reBuildMn();
 	const newAccount = derivePolkadot(index, type, mn)
@@ -227,11 +227,11 @@ async function checkPassword(password: string) {
 }
 
 async function changePassword(oldPassword: string, newPassword: string) {
-	const vault = (await getElement(dbStore.Vault.name, 'zeno')) as Vault;
+	const vault = (await getElement(DB.Vault.name, 'zeno')) as Vault;
 	if (!vault) return postMessage({ success: false });
 	const mnemonic = await restoreMn(oldPassword, vault.name);
 	if (!mnemonic) return postMessage({ success: false });
-	removeElement(dbStore.Vault.name, 'zeno');
+	removeElement(DB.Vault.name, 'zeno');
 	packMn(newPassword, mnemonic);
 	postMessage({ success: true });
 }

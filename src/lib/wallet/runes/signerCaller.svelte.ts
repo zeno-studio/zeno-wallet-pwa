@@ -1,6 +1,6 @@
 import Signer from '$lib/wallet/worker/signer.ts?worker';
 import { accountState } from '$lib/wallet/runes';
-import { getElement, dbStore, type Vault, type Account, type Settings ,type KeyringType} from '$lib/wallet/common';
+import { getElement, DB, type Vault, type Account, type Settings ,type KeyringType} from '$lib/wallet/common';
 
 export const signer = new Signer();
 
@@ -59,7 +59,7 @@ export function signTransaction(argus: any) {
 }
 
 export async function saveMidPass(password: string) {
-	const vault = (await getElement(dbStore.Vault.name, 'zeno')) as Vault;
+	const vault = (await getElement(DB.Vault.name, 'zeno')) as Vault;
 	signer.postMessage({ method: 'saveMidPass', argus: { password: password, salt: vault.salt } });
 }
 

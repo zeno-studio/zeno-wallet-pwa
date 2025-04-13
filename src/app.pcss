@@ -6,9 +6,11 @@
 	--font-size-base: 1.8rem;
 	--font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
 		'Noto Sans', sans-serif;
-	--pink-light: #fbbed3;
+	--pink100: #ffecf2;
+	--pink200: #ffb6cf;
+	--pink300: #fe76a4;
 	--pink: #FF2670;
-	--blue: #39ACD9;
+
 
 	--storm1: #DCE2E9;
 	--storm2: #AEB7CB;
@@ -51,7 +53,7 @@
 	--critical: #FF593C;
 	--critical-hovered: #FF401F;
 	--warning: #ffbf17;
-	--warning-hovered: #ffdd0d;
+	--warning-back: rgba(255, 191, 23, 0.5);
 	--shadow:rgba(0, 0, 0, 0.4);
 	--shadow-hovered:rgba(0, 0, 0, 0.5);
 
@@ -71,11 +73,11 @@
 }
 
 [data-theme="dark"] {
-	--shadow: #4d4c4c;
+	--shadow: #4c4c4c;
 	--border: #3a3a3a;
 	--bg: #141414;
 	--bg1: #272727;
-	--bg2: #313131;
+	--bg2: #434343;
 	--bg3: #5e5e5e;
 	--text: #adadad;
 	--color: #fff;
@@ -209,16 +211,16 @@ div {
 
 
 
-.icon18 {
-	height: 1.8rem;
-	width: 1.8rem;
+.icon2 {
+	height: 2rem;
+	width: 2rem;
 	color: var(--color);
 	cursor: pointer;
 }
 
-.icon18A {
-	height: 1.8rem;
-	width: 1.8rem;
+.icon2A {
+	height: 2rem;
+	width: 2rem;
 	color: var(--text);
 	cursor: pointer;
 	&:hover {
@@ -227,36 +229,36 @@ div {
 	}
 }
 
-.icon18B {
-	height: 1.8rem;
-	width: 1.8rem;
+.icon2B {
+	height: 2rem;
+	width: 2rem;
 	color: var(--blue);
 	cursor: pointer;
 }
 
-.icon18Y {
-	height: 1.8rem;
-	width: 1.8rem;
+.icon2Y {
+	height: 2rem;
+	width: 2rem;
 	color: var(--warning);
 	cursor: pointer;
 }
 
-.icon18G {
-	height: 1.8rem;
-	width: 1.8rem;
+.icon2G {
+	height: 2rem;
+	width: 2rem;
 	color: var(--success);
 	cursor: pointer;
 }
 
-.icon18P {
-	height: 1.8rem;
-	width: 1.8rem;
+.icon2P {
+	height: 2rem;
+	width: 2rem;
 	color: var(--pink);
 	cursor: pointer;
 }
-.icon18R {
-	height: 1.8rem;
-	width: 1.8rem;
+.icon2R {
+	height: 2rem;
+	width: 2rem;
 	color: red;
 	cursor: pointer;
 }
@@ -264,8 +266,8 @@ div {
 
 
 .icon2A {
-	height: 2rem;
-	width: 2rem;
+	height: 2.4rem;
+	width: 2.4rem;
 	cursor: pointer;
 
 	&:hover {
@@ -275,9 +277,9 @@ div {
 }
 
 
-.icon24-footer {
-	height: 2.4rem;
-	width: 2.4rem;
+.icon28-footer {
+	height: 2.8rem;
+	width: 2.8rem;
 	cursor: pointer;
 
 	&:hover {
@@ -323,7 +325,7 @@ div {
 	display: flex;
 	justify-content: flex-start;
 	padding: 0px;
-	font-size: 1.3rem;
+	font-size: 1.5rem;
 	font-weight: 500;
 	color: var(--text);
 }
@@ -332,8 +334,8 @@ div {
 	display: flex;
 	justify-content: flex-start;
 	padding: 0px;
-	font-size: 1.5rem;
-	font-weight: 500;
+	font-size: 1.7rem;
+	font-weight: 600;
 	color: var(--text);
 }
 
@@ -342,7 +344,7 @@ div {
 	justify-content: flex-start;
 	padding: 0px;
 	font-size: 1.7rem;
-	font-weight: 500;
+	font-weight: 600;
 	color: var(--text);
 }
 
@@ -374,28 +376,34 @@ div {
 
 
 .close {
+	position: absolute;
 	display: flex;
 	align-items: center;
-	flex-direction: row;
-	justify-content: flex-end;
-	padding: 0px;
-	background: none;
+	justify-content: center;
+	right: 0;
+	padding: 0.2rem;
+	background: var(--bg2);
+	border-radius: 50%;
 	border: none;
-}
+	width: 2.4rem;
+	height: 2.4rem;
 
+}
 
 .backdrop {
 	position: fixed;
 	top: 0;
 	left: 0;
-	width: 100%;
-	height: 100%;
+	width: 100vw;
+	height: 100vh;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: rgba(0, 0, 0, 0.5);
+	background-color: rgba(0, 0, 0, 0.25);
+	backdrop-filter: blur( 1rem );
 	z-index: 1000;
 }
+
 
 .label-top {
 	position: relative;
@@ -405,7 +413,7 @@ div {
 	font-size: 1.7rem;
 	font-weight: 600;
 	background: none;
-	height: 4.8rem;
+	height: 5rem;
 	padding: 1rem 2rem;
 	border-radius: 1.6rem;
 	width: 100%;
@@ -440,3 +448,19 @@ div {
 			color: var(--color);
 		}
 	}
+
+.scan-focus {
+	height: 20rem;
+	width: 20rem;
+	color: var(--color);
+	cursor: pointer;
+	animation: focus 1s infinite;
+}
+
+
+@keyframes focus {
+	0%   {transform: scale(1);}
+	50%  {transform: scale(1.05);}
+	100% {transform: scale(1);}
+  }
+

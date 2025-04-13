@@ -7,7 +7,7 @@
 		CopyIcon,
 		Darkmode,
 		LanguageIcon,
-		DollarIcon
+		BuyIcon
 	} from '$lib/svg';
 	import { shortenAddress6 } from '$lib/ui/ts';
 	import { toSvg } from 'jdenticon';
@@ -116,7 +116,7 @@
 			<button class="setting-bottom" onclick={() => (opt = 'currency')}>
 				<div class="item2">
 					<div class="item-l">
-						<span class="icon"> <DollarIcon class="icon18A" /></span>
+						<span class="icon"> <BuyIcon class="icon18A" /></span>
 
 						<span class="label2">Currency</span>
 					</div>
@@ -255,6 +255,7 @@
 		padding: 0.8rem 0rem;
 		background: none;
 		box-sizing: border-box;
+		margin-right: 1rem;
 	}
 	.avatar {
 		position: relative;

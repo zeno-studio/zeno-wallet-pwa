@@ -3,14 +3,15 @@
 	import { ArrowDown, CloseIcon, SearchIcon, ClockIcon, StarIcon, ScanIcon } from '$lib/svg';
 	import { page } from '$app/state';
 	import { addressBook } from '$lib/wallet/runes';
-    import { ScanButton } from '$lib/ui/components';
+    import { Scanner } from '$lib/ui/components';
 	
 	import { Header } from '$lib/ui/components';
-	let scanOpen = $state(false);
 
 	let amount = $state(10000);
 	let amount2 = $state(100);
 	let modalClose = $state(false);
+	let scanData = $state('');
+	let scanOpen = $state(false);
 
 	
 
@@ -43,9 +44,15 @@
 
 		<div class="item-container">
 			<div class="item">
-				<ScanButton />
+				<button class="button-open" onclick={() => (scanOpen = !scanOpen)}>
+					<ScanIcon class="icon2A" />
+				</button>
+				<div class="amount">
+					address:{scanData} 
+				</div>
+
 			
-				<div>{addressBook.scanedAddress}</div>
+
 			</div>
 
 			<div class="item">
@@ -72,6 +79,9 @@
 	</div>
 
 
+{#if scanOpen}
+	<Scanner bind:scanOpen bind:scanData />
+{/if}
 
 
 {#if modalClose}

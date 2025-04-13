@@ -1,4 +1,4 @@
-import { dbStore, editElement, removeElement,getElement,type Settings,type Account} from '$lib/wallet/common';
+import { DB, editElement, removeElement,getElement,type Settings,type Account} from '$lib/wallet/common';
 import { goto } from '$app/navigation';
 
 class AccountState {
@@ -27,7 +27,7 @@ class AccountState {
 
     deleteAccount() {
         if (this.editingAccountIndex !== 0) {
-            removeElement(dbStore.Account.name, this.editingAccountIndex);
+            removeElement(DB.Account.name, this.editingAccountIndex);
         }
         this.accountList = this.accountList.filter(a => a.accountIndex !== this.editingAccountIndex);
         this.setCurrentAccountIndex(this.accountList[0].accountIndex);
@@ -36,7 +36,7 @@ class AccountState {
 
     async getAccountList() {
         try {
-            const accounts = await getElement(dbStore.Account.name, "all");
+            const accounts = await getElement(DB.Account.name, "all");
             if (accounts) {
                 this.accountList = accounts as Account[];
             }
@@ -49,7 +49,7 @@ class AccountState {
         this.editingAccount.isHidden = !this.editingAccount.isHidden;
         const account =$state.snapshot(this.editingAccount);
         if (account) {
-            editElement(dbStore.Account.name, account);
+            editElement(DB.Account.name, account);
             this.accountList = this.accountList.map(a => a.accountIndex === this.editingAccountIndex ? account : a);
         }
     }

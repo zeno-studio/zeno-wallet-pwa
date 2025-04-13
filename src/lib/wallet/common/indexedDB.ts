@@ -1,4 +1,4 @@
-import { dbStore} from '$lib/wallet/common';
+import { DB} from '$lib/wallet/common';
 
 
 let db: IDBDatabase;
@@ -6,17 +6,17 @@ export function initDB() {
 	const request = indexedDB.open('ZenoDB', 1);
 	request.onupgradeneeded = () => {
 		const db = request.result;
-		if (!db.objectStoreNames.contains(dbStore.Vault.name)) {
-			db.createObjectStore(dbStore.Vault.name, { keyPath: dbStore.Vault.keypath });
+		if (!db.objectStoreNames.contains(DB.Vault.name)) {
+			db.createObjectStore(DB.Vault.name, { keyPath: DB.Vault.keypath });
 		}
-        if (!db.objectStoreNames.contains(dbStore.Account.name)) {
-			db.createObjectStore(dbStore.Account.name, { keyPath: dbStore.Account.keypath });
+        if (!db.objectStoreNames.contains(DB.Account.name)) {
+			db.createObjectStore(DB.Account.name, { keyPath: DB.Account.keypath });
 		}
-        if (!db.objectStoreNames.contains(dbStore.History.name)) {
-			db.createObjectStore(dbStore.History.name, { keyPath: dbStore.History.keypath });
+        if (!db.objectStoreNames.contains(DB.History.name)) {
+			db.createObjectStore(DB.History.name, { keyPath: DB.History.keypath });
 		}
-        if (!db.objectStoreNames.contains(dbStore.AddressBook.name)) {
-            db.createObjectStore(dbStore.AddressBook.name, {keyPath: dbStore.AddressBook.keypath});
+        if (!db.objectStoreNames.contains(DB.AddressBook.name)) {
+            db.createObjectStore(DB.AddressBook.name, {keyPath: DB.AddressBook.keypath});
         }
 	};
 	request.onsuccess = () => db = request.result;

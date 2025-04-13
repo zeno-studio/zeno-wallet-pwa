@@ -2,7 +2,7 @@ import {
 	addElement,
 	getElement,
 	removeElement,
-	dbStore,
+	DB,
 	type Account,
 	type Vault,
 	type KeyringType,
@@ -30,7 +30,7 @@ import {
 } from '@polkadot-labs/hdkd-helpers';
 
 export const packVaultToJson = async (): Promise<string> => {
-	const vault = (await getElement(dbStore.Vault.name, 'all')) as Vault[];
+	const vault = (await getElement(DB.Vault.name, 'all')) as Vault[];
 	return JSON.stringify(vault);
 };
 
@@ -47,7 +47,7 @@ export const packMn = (password: string, mn: string): boolean => {
 		Version: 'v1',
 	};	
 	try {
-		addElement(dbStore.Vault.name, store);
+		addElement(DB.Vault.name, store);
 		return true;
 	}
 	catch (e) {
@@ -57,7 +57,7 @@ export const packMn = (password: string, mn: string): boolean => {
 	
 
 export const restoreMn = async (password: string, vaultName: string): Promise<string | null> => {
-	const vault = (await getElement(dbStore.Vault.name, vaultName)) as Vault;
+	const vault = (await getElement(DB.Vault.name, vaultName)) as Vault;
 	const phrase = scrypt(password, hexToBytes(vault.salt), { N: 2 ** 16, r: 8, p: 1, dkLen: 32 }); // vault.salt, { N: 2 ** 16, r: 8, p: 1, dkLen: 32 });
 	const chacha = managedNonce(xchacha)(phrase);
 	try {
@@ -71,7 +71,7 @@ export const restoreMn = async (password: string, vaultName: string): Promise<st
 };
 
 export const isValidPassword = async (password: string): Promise<boolean> => {
-	const vault = (await getElement(dbStore.Vault.name, 'zeno')) as Vault;
+	const vault = (await getElement(DB.Vault.name, 'zeno')) as Vault;
 	const phrase = scrypt(password, hexToBytes(vault.salt), { N: 2 ** 16, r: 8, p: 1, dkLen: 32 }); // vault.salt, { N: 2 ** 16, r: 8, p: 1, dkLen: 32 });
 	const chacha = managedNonce(xchacha)(phrase);
 	try {
@@ -126,7 +126,7 @@ export const deriveEvm = (index: number, mn: string): Account | null => {
 				derivePath: `m/44'/60'/0'/0/${index - 1}`,
 				keyringType: 'secp256k1',
 			};
-			addElement(dbStore.Account.name, newAccount);
+			addElement(DB.Account.name, newAccount);
 			return newAccount;
 		}
 		return null
@@ -180,7 +180,7 @@ export const derivePolkadot = (
 		keyringType: type,
 	};
 	try {
-		addElement(dbStore.Account.name, newAccount);
+		addElement(DB.Account.name, newAccount);
 		return newAccount;
 	}
 	catch (e) {

@@ -179,6 +179,7 @@
 		top: 0px;
 		background: transparent;
 		backdrop-filter: blur(30px);
+		z-index: 100;
 	}
 	.nav-wrapper {
 		position: relative;

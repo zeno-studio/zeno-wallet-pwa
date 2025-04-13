@@ -11,24 +11,24 @@
 		<div class="menu">
 			<a href="/" class:active={page.route.id == '/'} aria-label="Asset">
 				<div class="set">
-					<HomeIcon class="icon24-footer" />
+					<HomeIcon class="icon28-footer" />
 				</div>
 			</a>
 
 			<a href="/#/apps" class:active={page.route.id == '/apps'} aria-label="Apps">
 				<div class="set">
-					<AppsFilled class="icon24-footer" />
+					<AppsFilled class="icon28-footer" />
 				</div>
 			</a>
 			<a href="/#/nft" class:active={page.route.id == '/nft'} aria-label="NFT">
 				<div class="set">
-					<HeartFilled class="icon24-footer" />
+					<HeartFilled class="icon28-footer" />
 				</div>
 			</a>
 
 			<a href="/#/settings" class:active={page.route.id == '/settings'} aria-label="Settings">
 				<div class="set">
-					<SettingFilled class="icon24-footer" />
+					<SettingFilled class="icon28-footer" />
 				</div>
 			</a>
 		</div>
