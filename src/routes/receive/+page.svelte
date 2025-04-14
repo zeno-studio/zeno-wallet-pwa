@@ -111,7 +111,7 @@
 		<div class="item-container3">
 			<button class="copy" onclick={handleCopy}>
 				<span id="address">{accountState.currentAccount?.address}</span>&nbsp;
-				<CopyIcon class="icon18A" />
+				<CopyIcon class="icon2A" />
 			</button>
 		</div>
 	{/if}
@@ -157,7 +157,7 @@
 		padding: 1rem;
 		border-radius: 1.6rem;
 		background: var(--bg);
-		border: 1px solid var(--border);
+		border: 1px solid var(--bg3);
 		margin-bottom: 1rem;
 	}
 
@@ -204,7 +204,7 @@
 		padding: 0.5rem 1rem;
 		border-top-left-radius: 1.6rem;
 		border-bottom-left-radius: 1.6rem;
-		border: 1px solid var(--bg3);
+		border: 1px solid var(--hover2);
 		background: none;
 		color: var(--text);
 		cursor: pointer;
@@ -219,7 +219,7 @@
 		padding: 0.5rem 1rem;
 		border-top-right-radius: 1.6rem;
 		border-bottom-right-radius: 1.6rem;
-		border: 1px solid var(--bg3);
+		border: 1px solid var(--hover2);
 		background: none;
 		color: var(--text);
 		cursor: pointer;
@@ -237,7 +237,7 @@
 		height: 300px;
 		justify-content: center;
 		align-items: center;
-		border: 1px solid var(--border);
+		border: 1px solid var(--bg3);
 	}
 	a {
 		font-size: 1.3rem;

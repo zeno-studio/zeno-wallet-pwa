@@ -78,18 +78,18 @@
 							<img class="chain-logo" src="/token/dot.svg" alt="" />
 						{/if}
 					</div>
-					<span class="label2">{accountState.currentAccount?.name} </span>
+					<span class="label-xs">{accountState.currentAccount?.name} </span>
 				</div>
 
-				<div class="item-r"><ArrowForward class="icon18A" /></div>
+				<div class="item-r"><ArrowForward class="icon2A" /></div>
 			</div>
 		</button>
 		<!-- Theme -->
 		<div class="setting-top">
 			<div class="item">
 				<div class="item-l">
-					<span class="icon"> <Darkmode class="icon18P" /></span>
-					<span class="label2">Theme</span>
+					<span class="icon"> <Darkmode class="icon2A" /></span>
+					<span class="label-xs">Theme</span>
 				</div>
 				<div class="item-r"><SwitchTheme /></div>
 			</div>
@@ -98,107 +98,107 @@
 		<button class="setting-medium" onclick={() => (langOpen = !langOpen)}>
 			<div class="item">
 				<div class="item-l">
-					<span class="icon"> <LanguageIcon class="icon18P" /></span>
+					<span class="icon"> <LanguageIcon class="icon2" /></span>
 
-					<span class="label2">Language</span>
+					<span class="label-xs">Language</span>
 				</div>
-				<div class="item-r"><ArrowForward class="icon18A" /></div>
+				<div class="item-r"><ArrowForward class="icon2A" /></div>
 			</div>
 		</button>
 		<!-- Currency -->
 		<button class="setting-bottom" onclick={() => (fiatOpen = !fiatOpen)}>
 			<div class="item">
 				<div class="item-l">
-					<span class="icon"> <BuyIcon class="icon18P" /></span>
+					<span class="icon"> <BuyIcon class="icon2" /></span>
 
-					<span class="label2">Currency</span>
+					<span class="label-xs">Currency</span>
 				</div>
 
-				<div class="item-r"><ArrowForward class="icon18A" /></div>
+				<div class="item-r"><ArrowForward class="icon2A" /></div>
 			</div>
 		</button>
 		<!-- manage account -->
 		<a class="setting-top" href="/#/settings/account_manage">
 			<div class="item">
 				<div class="item-l">
-					<span class="icon"> <AccountIcon class="icon18B" /></span>
+					<span class="icon"> <AccountIcon class="icon2" /></span>
 
-					<span class="label2">Manage Account</span>
+					<span class="label-xs">Manage Account</span>
 				</div>
 
-				<div class="item-r"><ArrowForward class="icon18A" /></div>
+				<div class="item-r"><ArrowForward class="icon2A" /></div>
 			</div>
 		</a>
 		<!-- Security & Privacy -->
 		<a class="setting-medium" href="/#/settings/security">
 			<div class="item">
 				<div class="item-l">
-					<span class="icon"> <SafeGuardIcon class="icon18B" /></span>
+					<span class="icon"> <SafeGuardIcon class="icon2" /></span>
 
-					<span class="label2">Security & Privacy</span>
+					<span class="label-xs">Security & Privacy</span>
 				</div>
 
-				<div class="item-r"><ArrowForward class="icon18A" /></div>
+				<div class="item-r"><ArrowForward class="icon2A" /></div>
 			</div>
 		</a>
 		<!-- Backup Wallet -->
 		<a class="setting-bottom" href="/#/settings/backup">
 			<div class="item">
 				<div class="item-l">
-					<span class="icon"> <CloudIcon class="icon18B" /></span>
+					<span class="icon"> <CloudIcon class="icon2" /></span>
 
-					<span class="label2">Backup Wallet</span>
+					<span class="label-xs">Backup Wallet</span>
 				</div>
 
-				<div class="item-r"><ArrowForward class="icon18A" /></div>
+				<div class="item-r"><ArrowForward class="icon2A" /></div>
 			</div>
 		</a>
 		<!--Active Chain -->
 		<a class="setting-top" href="/#/settings/active_chains">
 			<div class="item">
 				<div class="item-l">
-					<span class="icon"> <ExplorerIcon class="icon18P" /></span>
+					<span class="icon"> <ExplorerIcon class="icon2" /></span>
 
-					<span class="label2">Active Chains</span>
+					<span class="label-xs">Active Chains</span>
 				</div>
 
-				<div class="item-r"><ArrowForward class="icon18A" /></div>
+				<div class="item-r"><ArrowForward class="icon2A" /></div>
 			</div>
 		</a>
 		<!--Address Book -->
 		<a class="setting-medium" href="/#/settings/address_book">
 			<div class="item">
 				<div class="item-l">
-					<span class="icon"> <BookIcon class="icon18P" /></span>
+					<span class="icon"> <BookIcon class="icon2" /></span>
 
-					<span class="label2">Address Book</span>
+					<span class="label-xs">Address Book</span>
 				</div>
 
-				<div class="item-r"><ArrowForward class="icon18A" /></div>
+				<div class="item-r"><ArrowForward class="icon2A" /></div>
 			</div>
 		</a>
 		<!--Active App -->
 		<a class="setting-bottom" href="/#/settings/active_apps">
 			<div class="item">
 				<div class="item-l">
-					<span class="icon"> <AppsIcon class="icon18P" /></span>
+					<span class="icon"> <AppsIcon class="icon2" /></span>
 
-					<span class="label2">Active Apps</span>
+					<span class="label-xs">Active Apps</span>
 				</div>
 
-				<div class="item-r"><ArrowForward class="icon18A" /></div>
+				<div class="item-r"><ArrowForward class="icon2A" /></div>
 			</div>
 		</a>
 
 		<a class="setting1" href="/#/settings/about">
 			<div class="item">
 				<div class="item-l">
-					<span class="icon"> <QuestionIcon class="icon18P" /></span>
+					<span class="icon"> <QuestionIcon class="icon2" /></span>
 
-					<span class="label2">About</span>
+					<span class="label-xs">About</span>
 				</div>
 
-				<div class="item-r"><ArrowForward class="icon18A" /></div>
+				<div class="item-r"><ArrowForward class="icon2A" /></div>
 			</div>
 		</a>
 	</div>
@@ -206,8 +206,7 @@
 	<Footer />
 
 {#if langOpen}
-	<!-- svelte-ignore a11y_interactive_supports_focus -->
-	<!-- svelte-ignore a11y_click_events_have_key_events -->
+
 	<div class="backdrop" role="dialog" transition:fade={{ duration: 200 }} onclick={handleBackdropClick}>
 		<div
 			id="language"
@@ -215,7 +214,7 @@
 			out:fade={{ duration: 120 }}
 			class={{ modal: !isSmallScreen.current, 'modal-m': isSmallScreen.current }}
 		>
-			<button class="close" onclick={() => (langOpen = false)}><CloseIcon class="icon18A" /></button
+			<button class="close" onclick={() => (langOpen = false)}><CloseIcon class="icon2A" /></button
 			>
 			<LanguageSelector />
 		</div>
@@ -223,8 +222,7 @@
 {/if}
 
 {#if fiatOpen}
-	<!-- svelte-ignore a11y_interactive_supports_focus -->
-	<!-- svelte-ignore a11y_click_events_have_key_events -->
+
 	<div class="backdrop" role="dialog" transition:fade={{ duration: 200 }} onclick={handleBackdropClick}>
 		<div
 			id="fiat"
@@ -232,7 +230,7 @@
 			out:fade={{ duration: 120 }}
 			class={{ modal: !isSmallScreen.current, 'modal-m': isSmallScreen.current }}
 		>
-			<button class="close" onclick={() => (fiatOpen = false)}><CloseIcon class="icon18A" /></button
+			<button class="close" onclick={() => (fiatOpen = false)}><CloseIcon class="icon2A" /></button
 			>
 			<CurrencySelector />
 		</div>
@@ -303,7 +301,7 @@
 		border-radius: 50%;
 		padding: 0px;
 		background-color: #fff;
-		border: 2px solid var(--border);
+		border: 2px solid var(--bg3);
 	}
 
 .chain-logo{
@@ -328,7 +326,7 @@
 		padding: 2rem;
 		background: var(--bg1);
 		border-radius: 1.6rem;
-		border: 1px solid var(--border);
+		border: 1px solid var(--bg3);
 	}
 	.modal-m {
 		box-sizing: border-box;
@@ -341,7 +339,7 @@
 		padding: 2rem;
 		background: var(--bg1);
 		border-radius: 1.6rem;
-		border: 1px solid var(--border);
+		border: 1px solid var(--bg3);
 	}
 
 	.icon {
@@ -352,24 +350,10 @@
 		margin-right: 2rem;
 	}
 
-	.setting {
-		box-sizing: border-box;
-		width: 100%;
-		flex-direction: column;
-		background: none;
-		border-radius: 1.6rem;
-		padding: 1rem;
-		cursor: pointer;
-		margin-bottom: 0.8rem;
-		border: 1px solid transparent;
-	}
-
-	.setting:hover {
-		cursor: pointer;
-		border: 1px solid var(--bg3);
-	}
-
 	.setting1 {
+		display: flex;
+		justify-content: center;
+		align-items: center;
 		box-sizing: border-box;
 		width: 100%;
 		flex-direction: column;
@@ -437,9 +421,5 @@
 		border: none;
 		height: 5rem;
 	}
-	.label2{
-		font-size: 1.5rem;
-		font-weight: 500;
-		color: var(--color);
-	}
+
 </style>

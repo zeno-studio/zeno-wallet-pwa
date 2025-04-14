@@ -50,7 +50,7 @@
 		height: 6.4rem;
 		background: transparent;
 		backdrop-filter: blur(30px);
-		border-top: 1px solid var(--border);
+		border-top: 1px solid var(--bg3);
 
 	}
 	.menu {

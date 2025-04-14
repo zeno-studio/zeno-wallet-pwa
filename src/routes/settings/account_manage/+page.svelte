@@ -20,7 +20,7 @@
 
 			Manage Accounts
 			<a class="arrowBack" href="/#/settings">
-				<ArrowBack class="icon18A"/>
+				<ArrowBack class="icon2A"/>
 			</a>
 		</div>
 		{/if}
@@ -87,7 +87,7 @@
 		padding: 1rem;
 		cursor: pointer;
 		margin-bottom: 0.8rem;
-		border: 1px solid var(--bg3)
+		border: 1px solid var(--hover2)
 	}
 	
 	.Account-container{

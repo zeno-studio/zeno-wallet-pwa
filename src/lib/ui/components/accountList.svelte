@@ -36,8 +36,7 @@
 		{#each accountState.accountList as account}
 			{#if !account.isHidden}
 				<div class="accountList">
-					<!-- svelte-ignore a11y_click_events_have_key_events -->
-					<!-- svelte-ignore a11y_no_static_element_interactions -->
+	
 					<div
 						class="entry"
 						class:selected={account.accountIndex === accountState.currentAccountIndex}
@@ -46,11 +45,11 @@
 						<div class="avatar">
 							{@html generateAvatar(account.address)}
 							{#if account.addressType === 'POLKADOT'}
-								<img class="chain-logo" src="/token/dot.svg" alt="" />
+								<img class="chain-logo" src="/chain/polkadot.svg" alt="" />
 							{/if}
 						</div>
 						<div class="content">
-							<span class="label">{account.name} </span>
+							<span class="label-s" class:selected={account.accountIndex === accountState.currentAccountIndex}>{account.name} </span>
 							<span class="address">{shortenAddress6(account.address)} </span>
 						</div>
 						<button
@@ -60,7 +59,7 @@
 								e.stopPropagation();
 								gotoAccount(account.accountIndex);
 							}}
-							><EditIcon class="icon18A" />
+							><EditIcon class="icon2A" />
 						</button>
 					</div>
 				</div>
@@ -72,8 +71,7 @@
 		{#each accountState.accountList as account}
 			{#if account.isHidden}
 				<div class="accountList">
-					<!-- svelte-ignore a11y_click_events_have_key_events -->
-					<!-- svelte-ignore a11y_no_static_element_interactions -->
+		
 					<div
 						class="entry"
 						class:selected={account.accountIndex === accountState.currentAccountIndex}
@@ -83,18 +81,18 @@
 							{@html generateAvatar(account.address)}
 
 							{#if account.addressType === 'POLKADOT'}
-								<img class="chain-logo" src="/token/dot.svg" alt="" />
+								<img class="chain-logo" src="/chain/polkadot.svg" alt="" />
 							{/if}
 						</div>
 						<div class="content">
-							<span class="label">{account.name} </span>
+							<span class="label-s">{account.name} </span>
 							<span class="address">{shortenAddress6(account.address)} </span>
 						</div>
 						<button
 							class="entry-right"
 							class:selected={account.accountIndex === accountState.currentAccountIndex}
 							onclick={() => gotoAccount(account.accountIndex)}
-							><EditIcon class="icon18A" />
+							><EditIcon class="icon2" />
 						</button>
 					</div>
 				</div>
@@ -112,8 +110,9 @@
 		bottom: 0;
 		right: 0;
 		border-radius: 50%;
-		padding: 0px;
-		background-color: #fff;
+		padding: 2px;
+		margin: 0;
+		background-color: var(--pink);
 	}
 	.entry {
 		padding: 0.4rem;
@@ -124,13 +123,11 @@
 		box-sizing: border-box;
 		width: 100%;
 		flex-direction: row;
-		background: var(--bg1);
+		background: var(--bg2);
 		border: none;
 		border-radius: 1.6rem;
 		cursor: pointer;
 		&:active {
-			background: var(--bg2);
-			color: var(--color);
 			transform: translateY(1px);
 		}
 	}
@@ -140,10 +137,14 @@
 		align-items: center;
 		justify-content: center;
 		right: 1rem;
+		width: 3rem;
+		height: 3rem;
 		border: none;
 		background: none;
 		cursor: pointer;
 		margin-right: 1rem;
+		border-radius: 50%;
+		background: var(--bg5);
 	}
 
 	.list-container {
@@ -163,7 +164,7 @@
 	}
 	.address {
 		font-size: 1.2rem;
-		font-weight: 600;
+		font-weight: 500;
 		color: var(--text);
 	}
 	.avatar {
@@ -177,7 +178,6 @@
 		border-radius: 50%;
 		padding: 0px;
 		background-color: #fff;
-		border: 2px solid var(--border);
 	}
 
 	.accountList {
@@ -190,15 +190,10 @@
 		border: none;
 	}
 	.selected {
-		background: var(--green3);
-	}
-	.label {
-		margin: 0px;
-		padding: 0px;
-		font-size: 1.5rem;
-		font-weight: 600;
+		background: var(--bg3);
 		color: var(--color);
 	}
+
 
 	/* tab */
 	.tabs {
@@ -207,7 +202,7 @@
 		background-color: var(--bg2);
 		padding: 0.4rem;
 		border-radius: 1.6rem;
-		border: 1px solid var(--border);
+		border: 1px solid var(--bg3);
 		width: 30rem;
 		margin: 0 auto;
 	}

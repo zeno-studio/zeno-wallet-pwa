@@ -95,8 +95,7 @@
 <button class="bottom-button" onclick={() => (modalOpen = true)}> Create account </button>
 
 {#if modalOpen}
-	<!-- svelte-ignore a11y_interactive_supports_focus -->
-	<!-- svelte-ignore a11y_click_events_have_key_events -->
+
 	<div
 		class="backdrop"
 		role="dialog"
@@ -113,7 +112,7 @@
 				<div class="step1" in:fly={{ duration: 300, x: -100 }}>
 					<div class="top1">
 						<button class="close" onclick={close}>
-							<CloseIcon class="icon18A" />
+							<CloseIcon class="icon2A" />
 						</button>
 					</div>
 					<div class="title">Notifications</div>
@@ -148,10 +147,10 @@
 				<div class="step2" in:fly={{ duration: 300, x: 100 }}>
 					<div class="top">
 						<button class="button-empty" onclick={() => (notice = false)}>
-							<ArrowBack class="icon18A" />
+							<ArrowBack class="icon2A" />
 						</button>
 						<button class="top-right" onclick={close}>
-							<CloseIcon class="icon18A" />
+							<CloseIcon class="icon2A" />
 						</button>
 					</div>
 					<div class="title">Set Your Password</div>
@@ -177,9 +176,9 @@
 						{/if}
 						<button class="eye" onclick={() => (passwordShow = !passwordShow)}>
 							{#if passwordShow}
-								<EyeIcon class="icon18A" />
+								<EyeIcon class="icon2A" />
 							{:else}
-								<EyeOffIcon class="icon18A" />
+								<EyeOffIcon class="icon2A" />
 							{/if}
 						</button>
 					</div>
@@ -317,7 +316,7 @@
 		padding: 2rem;
 		background: var(--bg1);
 		border-radius: 1.6rem;
-		border: 1px solid var(--border);
+		border: 1px solid var(--bg3);
 	}
 	.modal-m {
 		display: flex;
@@ -331,7 +330,7 @@
 		padding: 2rem;
 		background: var(--bg1);
 		border-radius: 1.6rem;
-		border: 1px solid var(--border);
+		border: 1px solid var(--bg3);
 	}
 
 	.label2 {
@@ -514,7 +513,7 @@
 		height: 1.3em;
 		width: 1.3em;
 		background: none;
-		border: 1px solid var(--bg3);
+		border: 1px solid var(--hover2);
 		border-radius: 0.6rem;
 		box-shadow:
 			0px 0px 1px rgba(0, 0, 0, 0.3),

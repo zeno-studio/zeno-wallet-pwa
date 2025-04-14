@@ -3,19 +3,19 @@
 	import { NavPanel, NavLeft } from '$lib/ui/components';
 	import { clickOutside, isSmallScreen} from '$lib/ui/ts';
 	import { accountState } from '$lib/wallet/runes';
-	import { EditIcon, SettingFilled } from '$lib/svg';
+	import { EditIcon, SettingFilled} from '$lib/svg';
 	import { toSvg } from 'jdenticon';
 	import { goto } from '$app/navigation';
 	import { fade, fly } from 'svelte/transition';
 
 	let isHidden = $state(false);
-	let accountPanel = $state(false);
+	let accountDropDown = $state(false);
 	let Panel = $state(false);
 	let name = $state('');
 
 	function selectedAccount(i: number) {
 		accountState.setCurrentAccountIndex(i);
-		accountPanel = false;
+		accountDropDown = false;
 	}
 
 	function generateAvatar(address: string) {
@@ -23,13 +23,13 @@
 	}
 
 	function gotoAccount(i: number) {
-		goto('#/setting/account_detail');
+		goto('#/settings/account_detail');
 		accountState.editingAccountIndex = i;
 	}
 
 	function gotoSetting() {
-		goto('#/setting/account_manage');
-		accountPanel = false;
+		goto('#/settings/account_manage');
+		accountDropDown = false;
 	}
 
 	$effect(() => {
@@ -40,12 +40,12 @@
 	});
 	function handleKeydown(event: KeyboardEvent) {
 		if (event.key === 'Escape') {
-			accountPanel = false;
+			accountDropDown = false;
 		}
 	}
 
 	$effect(() => {
-		if (accountPanel) {
+		if (accountDropDown) {
 			window.addEventListener('keydown', handleKeydown);
 			return () => window.removeEventListener('keydown', handleKeydown);
 		}
@@ -53,19 +53,19 @@
 </script>
 
 <div class="nav">
-	<div class="nav-wrapper">
+	<div class="nav-container">
 		<a class="logo-link" href="/"><img class="logo" src="/favicon.svg" alt="logo" /></a>
 
 		{#if isSmallScreen.current}
 			<div class="accountLeft">
-				<button class="accountButton" onclick={() => (accountPanel = !accountPanel)}>
+				<button class="accountButton" onclick={() => (accountDropDown = !accountDropDown)}>
 					{#if accountState.accountList.length === 0}
 						have no account
 					{:else}
 						{name}
 					{/if}
 
-					<ArrowDown class="icon2A" />
+					<ArrowDown class="icon18" />
 				</button>
 			</div>
 		{/if}
@@ -79,11 +79,11 @@
 					<div class="avatar">
 						{@html generateAvatar(accountState.currentAccount?.address!)}
 						{#if accountState.currentAccount?.addressType === 'POLKADOT'}
-							<img class="chain-logo" src="/token/dot.svg" alt="" />
+							<img class="chain-logo" src="/chain/polkadot.svg" alt="" />
 						{/if}
 					</div>
 					{name}
-					<ArrowDown class="icon2A" />
+					<ArrowDown class="icon18A" />
 				{/if}
 			</button>
 		{/if}
@@ -91,40 +91,41 @@
 </div>
 <NavPanel bind:Panel />
 
+
 {#if isSmallScreen.current}
-	{#if accountPanel}
+	{#if accountDropDown}
 		<div
-			class="subMenu"
+			class="dropdown"
 			in:fly={{ duration: 200, y: 50 }}
 			out:fade={{ duration: 120 }}
 			use:clickOutside
-			onoutclick={() => (accountPanel = !accountPanel)}
+			onoutclick={() => (accountDropDown = !accountDropDown)}
 		>
-			<div class="container">
-				<div class="label-switch">Switch Account</div>
-				<button class="setting-button" onclick={gotoSetting}
-					><SettingFilled class="icon18A" />
+			<label class="dropdown-label">
+				<div class="label-xs" style="margin-left: 1rem;">Switch Account</div>
+				<button class="setting-btn" onclick={gotoSetting}
+					><SettingFilled class="icon2A" />
 				</button>
-			</div>
+			</label>
 			{#if !isHidden}
 				{#each accountState.accountList as account}
 					{#if !account.isHidden}
-						<div class="accountList">
+						<div class="account-entry">
 							<button
-								class="label-left"
+								class="account-btn"
 								class:selected={account.accountIndex === accountState.currentAccountIndex}
 								onclick={() => selectedAccount(account.accountIndex)}
 							>
-								<div class="avatar">{@html generateAvatar(account.address)}</div>
-								<div class="content">
-									<span class="label">{account.name} </span>
-								</div>
+								<div class="avatar-drop">{@html generateAvatar(account.address)}</div>
+							
+									<span class="label-name">{account.name} </span>
+								
 							</button>
 							<button
 								class="label-right"
 								class:selected={account.accountIndex === accountState.currentAccountIndex}
 								onclick={() => gotoAccount(account.accountIndex)}
-								><EditIcon class="icon18A" />
+								><EditIcon class="icon2A" />
 							</button>
 						</div>
 					{/if}
@@ -141,22 +142,18 @@
 		justify-content: center;
 		margin-right: 0.8rem;
 	}
+	.label-name{
+		font-size: 1.6rem;
+		font-weight: 500;
+	}
+
 	.logo {
 		height: 3.2rem;
 		width: 3.2rem;
 		color: var(--color);
 		fill: var(--pink);
 	}
-	.label-switch {
-		display: flex;
-		align-items: center;
-		justify-content: flex-start;
-		width: 100%;
-		font-size: 1.3rem;
-		font-weight: 600;
-		margin-left: 1rem;
-		color: var(--color);
-	}
+
 	.chain-logo {
 		position: absolute;
 		box-sizing: border-box;
@@ -165,8 +162,8 @@
 		bottom: 0;
 		right: 0;
 		border-radius: 50%;
-		padding: 0px;
-		background-color: #fff;
+		padding: 1px;
+		background:var(--pink) ;
 	}
 	.nav {
 		box-sizing: border-box;
@@ -178,10 +175,10 @@
 		height: 6.4rem;
 		top: 0px;
 		background: transparent;
-		backdrop-filter: blur(30px);
+		backdrop-filter: blur(2rem);
 		z-index: 100;
 	}
-	.nav-wrapper {
+	.nav-container {
 		position: relative;
 		display: flex;
 		justify-content: flex-start;
@@ -190,14 +187,15 @@
 		width: 96%;
 	}
 	.logo {
-		border-radius: 0.6rem;
+		border-radius: 0.8rem;
 		width: 3.6rem;
 		height: 3.6rem;
 		padding: 0px;
 		border: none;
 		background: none;
 	}
-	.subMenu {
+
+	.dropdown {
 		box-sizing: border-box;
 		display: flex;
 		flex-direction: column;
@@ -211,30 +209,21 @@
 		border-radius: 1.6rem;
 		padding: 2rem;
 		z-index: 1000;
-		border: 1px solid var(--border);
-		margin: 0rem;
+		border: 1px solid var(--bg3);
+		margin: 0;
 	}
 
-	.navRight {
-		display: flex;
-		justify-content: flex-end;
-		align-items: center;
-		position: absolute;
-		right: 0;
-		border: none;
-		box-sizing: border-box;
-	}
+	
 	.accountButton {
 		display: flex;
 		justify-content: flex-start;
-		align-items: flex-end;
-		font-size: 1.7rem;
-		font-weight: 600;
-		height: 2.4rem;
+		align-items: center;
+		font-size: 1.6rem;
+		font-weight: 500;
 		border: none;
 		background: none;
 		box-sizing: border-box;
-		color: var(--text);
+		color: var(--color);
 	}
 
 	.accountButton:hover {
@@ -249,17 +238,19 @@
 		justify-content: flex-start;
 		align-items: center;
 		color: var(--text);
-		font-size: 1.5rem;
-		font-weight: 600;
+		font-size: 1.4rem;
+		font-weight: 500;
 		border-radius: 2rem;
-		border: 1px solid var(--border);
-		background: var(--bg1);
+		border: 1px solid var(--bg3);
+		background: var(--bg2);
 		color: var(--text);
 	}
 	.accountButtonRight:hover {
 		cursor: pointer;
 		color: var(--color);
 	}
+
+
 
 	.accountLeft {
 		display: flex;
@@ -269,7 +260,7 @@
 		width: 100%;
 	}
 
-	.container {
+	.dropdown-label {
 		position: relative;
 		display: flex;
 		flex-direction: row;
@@ -279,18 +270,18 @@
 		padding: 1rem;
 		margin: 0rem;
 	}
-	.setting-button {
+	.setting-btn {
 		display: flex;
 		justify-content: flex-end;
 		align-items: center;
 		position: absolute;
 		right: 1rem;
 		padding: 0rem;
-		margin: 0rem;
+		margin-right: 1rem;
 		border: none;
 		background: none;
 	}
-	.content {
+	.account-content {
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
@@ -300,20 +291,30 @@
 		position: relative;
 		box-sizing: border-box;
 		flex-shrink: 0;
-		width: 3rem;
-		height: 3rem;
-		margin-left: -0.4rem;
-		margin-right: 0.8rem;
+		width: 2.6rem;
+		height: 2.6rem;
+		margin: 0.2rem 0.8rem 0.2rem -0.3rem;
 		border-radius: 50%;
 		padding: 0px;
 		background-color: #fff;
-		border: 2px solid var(--border);
 	}
 
-	.accountList {
-		display: grid;
-		grid-template-columns: 1fr 5rem;
-		padding: 0rem;
+	.avatar-drop {
+		position: relative;
+		box-sizing: border-box;
+		flex-shrink: 0;
+		width: 4rem;
+		height: 4rem;
+		margin-left: 1rem;
+		margin-right: 1rem;
+		border-radius: 50%;
+		padding: 0px;
+		background-color: #fff;
+	}
+
+	.account-entry {
+		position: relative;
+		display: flex;
 		justify-content: flex-start;
 		box-sizing: border-box;
 		width: 100%;
@@ -328,45 +329,49 @@
 	.label {
 		margin: 0px;
 		padding: 0px;
-		font-size: 1.5rem;
+		font-size: 1.6rem;
 	}
-	.label-left {
+	.account-btn {
 		display: flex;
-		font-size: 1.7rem;
-		font-weight: 600;
-		padding: 1rem;
 		align-items: center;
 		justify-content: flex-start;
 		flex-direction: row;
-		background: var(--bg1);
+		font-size: 1.6rem;
+		font-weight: 500;
+		width: 100%;
+		height: 6rem;
+		padding: 1rem;
+		background: var(--bg2);
 		border: none;
-		border-top-left-radius: 1.6rem;
-		border-bottom-left-radius: 1.6rem;
+		border-radius: 2rem;
 		cursor: pointer;
 		color: var(--color);
 		&:hover {
-			background: var(--bg2);
+			background: var(--bg3);
+		}
+		&:active {
+			transform: translateY(1px);
 		}
 		&.selected {
-			background: var(--success);
+			background: var(--pink200);
+			color: var(--pink);
 		}
 	}
+
 	.label-right {
+		position: absolute;
+		right: 1.5rem;
 		display: flex;
+		flex-shrink: 0;
 		align-items: center;
 		justify-content: center;
-		height: 100%;
-		background: var(--bg1);
+		background: var(--bg4);
+		width: 3rem;
+		height: 3rem;
 		border: none;
-		border-top-right-radius: 1.6rem;
-		border-bottom-right-radius: 1.6rem;
+		border-radius: 50%;
 		cursor: pointer;
 		color: var(--color);
-		&:hover {
-			background: var(--bg2);
-		}
-		&.selected {
-			background: var(--success);
-		}
 	}
+
 </style>
