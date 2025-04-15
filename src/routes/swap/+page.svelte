@@ -32,7 +32,7 @@
 				</button>
 			</div>
 			<div class="item-r">
-				<SettingFilled class="icon18A" />
+				<SettingFilled class="icon2A" />
 			</div>
 		</div>
 	</div>

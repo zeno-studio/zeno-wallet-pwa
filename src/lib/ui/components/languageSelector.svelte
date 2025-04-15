@@ -16,7 +16,7 @@
 			</div>
 
 			<div class="item-r" class:active={lang === userlocale.locale}>
-				<CheckIcon class="icon18A" />
+				<CheckIcon class="icon2A" />
 			</div>
 		</button>
 	{/each}
@@ -40,15 +40,15 @@
 		flex-direction: row;
 		width: 100%;
 		font-size: 1.6rem;
-		font-weight: 600;
-		padding: 0.6rem;
+		font-weight: 500;
+		padding: 0.8rem;
 		background: none;
 		border: none;
 		color: var(--color);
 	}
 
 	.active {
-		fill: var(--success);
+		fill: var(--pink);
 	}
 
 	.container {

@@ -329,7 +329,7 @@
 		padding: 16px;
 		background: var(--bg1);
 		border-radius: 16px;
-		border: 1px solid var(--border);
+		border: 1px solid var(--bg3);
 	}
 	.modal-mobile {
 		position: fixed;
@@ -342,7 +342,7 @@
 		padding: 20px;
 		background: var(--bg1);
 		border-radius: 16px;
-		border: 1px solid var(--border);
+		border: 1px solid var(--bg3);
 		z-index: 1001;
 	}
 

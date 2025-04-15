@@ -59,17 +59,16 @@
 </script>
 
 {#if scanOpen}
-	<!-- svelte-ignore a11y_click_events_have_key_events -->
-	<!-- svelte-ignore a11y_no_static_element_interactions -->
+
 	<div class="backdrop" transition:fade={{ duration: 200 }} onclick={handleBackdropClick}>
 		<div class={{ modal: !isSmallScreen.current, 'modal-m': isSmallScreen.current }}>
-			<!-- svelte-ignore a11y_media_has_caption -->
+	
 			<video id="preview"> </video>
 			<div id="preview-focus" class={{ 'preview-pc': !isSmallScreen.current, 'preview-m': isSmallScreen.current }}>
 				<ScanFocus class="scan-focus" />
 			</div>
 			<div class="close-btn" onclick={close}>
-				<CloseIcon class="icon18A" />
+				<CloseIcon class="icon2A" />
 			</div>
 			{#if isSmallScreen.current}
 				<div class="foot"></div>
@@ -91,7 +90,7 @@
 		margin: 0;
 		overflow: hidden;
 		border-radius: 1.6rem;
-		border: 1px solid var(--border);
+		border: 1px solid var(--bg3);
 	}
 	.modal-m {
 		box-sizing: border-box;

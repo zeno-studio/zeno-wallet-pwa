@@ -134,7 +134,7 @@
 			<div class="copied">Copied</div>
 		{:else}
 			<button class="copyicon" onclick={copyAddress}>
-				<CopyIcon class="icon18A" />
+				<CopyIcon class="icon2A" />
 			</button>
 		{/if}
 	</div>
@@ -167,7 +167,7 @@
 					</div>
 				{:else}
 					<button class="edit-btn" onclick={() => (nameEdit = true)}
-						><EditIcon class="icon18A" /></button
+						><EditIcon class="icon2A" /></button
 					>
 				{/if}
 			</div>
@@ -194,11 +194,11 @@
 
 			{#if memoShow}
 				<button class="item-r" onclick={() => (memoShow = !memoShow)}
-					><ArrowDown class="icon18A" /></button
+					><ArrowDown class="icon2A" /></button
 				>
 			{:else}
 				<button class="item-r" onclick={() => (memoShow = !memoShow)}
-					><ArrowForward class="icon18A" /></button
+					><ArrowForward class="icon2A" /></button
 				>
 			{/if}
 		</div>
@@ -216,7 +216,7 @@
 					<div class="memo-content">
 						{accountState.editingAccount?.memo}
 						<button class="memo-edit" onclick={() => (memoEdit = true)}>
-							<EditIcon class="icon18A" />
+							<EditIcon class="icon2A" />
 						</button>
 					</div>
 				{/if}
@@ -250,8 +250,7 @@
 </div>
 
 {#if modalOpen}
-	<!-- svelte-ignore a11y_interactive_supports_focus -->
-	<!-- svelte-ignore a11y_click_events_have_key_events -->
+
 	<div
 		class="backdrop"
 		role="dialog"
@@ -270,7 +269,7 @@
 			{#if !isSmallScreen.current}
 				<div class="close-warp">
 					<button class="close" onclick={() => (modalOpen = false)}>
-						<CloseIcon class="icon18A" />
+						<CloseIcon class="icon2A" />
 					</button>
 				</div>
 			{/if}
@@ -400,7 +399,7 @@
 		padding: 1rem 2rem;
 		background: var(--bg1);
 		border-radius: 1.6rem;
-		border: 1px solid var(--border);
+		border: 1px solid var(--bg3);
 	}
 	.modal-m {
 		gap: 1rem;
@@ -414,12 +413,12 @@
 		background: var(--bg1);
 		border-top-right-radius: 1.6rem;
 		border-top-left-radius: 1.6rem;
-		border: 1px solid var(--border);
+		border: 1px solid var(--bg3);
 	}
 	.tap {
 		width: 15%;
 		height: 0.4rem;
-		background: var(--bg3);
+		background: var(--hover2);
 		border-radius: 0.2rem;
 	}
 	.close-warp {
@@ -508,7 +507,7 @@
 	.input-name {
 		width: 30rem;
 		padding: 1rem 1rem 1rem 2rem;
-		border: 1px solid var(--bg3);
+		border: 1px solid var(--hover2);
 		font-size: 1.5rem;
 		background: var(--bg2);
 		border-radius: 2rem;
@@ -522,7 +521,7 @@
 		height: 12rem;
 		padding: 1rem;
 		background: var(--bg2);
-		border: 1px solid var(--bg3);
+		border: 1px solid var(--hover2);
 		border-radius: 1.6rem;
 		box-sizing: border-box;
 		resize: none;
@@ -662,7 +661,7 @@
 		right: 0;
 		border-radius: 50%;
 		background: var(--bg2);
-		border: 1px solid var(--border);
+		border: 1px solid var(--bg3);
 	}
 
 	.setting-top {
@@ -724,7 +723,7 @@
 		left: 0;
 		width: 5rem;
 		height: 3rem;
-		background-color: var(--bg3);
+		background-color: var(--hover2);
 		border-radius: 3rem;
 		cursor: pointer;
 		transition: background-color 0.3s;

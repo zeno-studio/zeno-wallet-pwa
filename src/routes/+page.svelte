@@ -60,7 +60,7 @@ metadata.description = 'Assets';
 						accountState.isBackup = true;
 					}}
 				>
-					<CloseIcon class="icon18A" />
+					<CloseIcon class="icon2A" />
 				</button>
 				<button class="backup-button"> Backup Your Recovery Phrase </button>
 			</div>

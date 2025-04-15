@@ -139,7 +139,7 @@
 		border-radius: 1.6rem;
 		margin-left: 0.8rem;
 		&:hover {
-			box-shadow: 1px 4px 6px var(--shadow);
+			box-shadow: 1px 4px 6px var(--bg4);
 			transform: scale(1.1);
 		}
 	}

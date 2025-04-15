@@ -134,7 +134,7 @@ let {currentAddress} = $props();
 		border-radius: 16px;
 		margin-left: 8px;
         &:hover {
-              box-shadow: 1px 4px 6px var(--shadow);
+              box-shadow: 1px 4px 6px var(--bg4);
               transform: scale(1.1);
         }
 	}

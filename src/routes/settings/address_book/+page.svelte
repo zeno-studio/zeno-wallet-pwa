@@ -118,7 +118,7 @@
 
 			Manage Accounts
 			<a class="arrowBack" href="/#/settings">
-				<ArrowBack class="icon18A"/>
+				<ArrowBack class="icon2A"/>
 			</a>
 		</div>
 		{/if}
@@ -158,7 +158,7 @@
 				</div>
 			</button>
 			<button class="label-right" onclick={() => deleteAddressEntry(addressEntry)}
-				><DeleteIcon class="icon18A" />
+				><DeleteIcon class="icon2A" />
 			</button>
 		</div>
 	{/each}
@@ -169,8 +169,7 @@
 </div>
 
 {#if modalOpen}
-	<!-- svelte-ignore a11y_interactive_supports_focus -->
-	<!-- svelte-ignore a11y_click_events_have_key_events -->
+
 	<div
 		class="backdrop"
 		role="dialog"
@@ -184,7 +183,7 @@
 			class={{ modal: !isSmallScreen.current, 'modal-m': isSmallScreen.current }}
 		>
 			<button class="close" onclick={close}>
-				<CloseIcon class="icon18A" />
+				<CloseIcon class="icon2A" />
 			</button>
 			<div class="title">Add Address Entry</div>
 			<div class="form">
@@ -282,7 +281,7 @@
 		padding: 2rem;
 		background: var(--bg1);
 		border-radius: 1.6rem;
-		border: 1px solid var(--border);
+		border: 1px solid var(--bg3);
 	}
 	.modal-m {
 		gap: 1rem;
@@ -295,7 +294,7 @@
 		padding: 2rem;
 		background: var(--bg1);
 		border-radius: 1.6rem;
-		border: 1px solid var(--border);
+		border: 1px solid var(--bg3);
 	}
 	.bottom-d {
 		gap: 1rem;
@@ -341,7 +340,7 @@
 	.input-search {
 		width: 100%;
 		padding: 1rem 2rem;
-		border: 1px solid var(--border);
+		border: 1px solid var(--bg3);
 		border-radius: 2rem;
 		background: var(--bg1);
 		color: var(--text);
@@ -350,7 +349,7 @@
 		outline: none;
 		transition: all 0.3s ease;
 		&:focus {
-			border-color: var(--bg3);
+			border-color: var(--hover2);
 		}
 	}
 	.addressList1 {
@@ -425,7 +424,7 @@
 		border-radius: 50%;
 		background: #fff;
 		padding: 0px;
-		border: 1px solid var(--border);
+		border: 1px solid var(--bg3);
 	}
 	.avatar2 {
 		position: relative;
@@ -440,7 +439,7 @@
 		background-color: var(--pink);
 		color: #fff;
 		padding: 0px;
-		border: 1px solid var(--border);
+		border: 1px solid var(--bg3);
 	}
 
 	.addressList2 {
@@ -546,7 +545,7 @@
 		padding: 1.6rem;
 		background: var(--bg1);
 		border-radius: 2rem;
-		border: 1px solid var(--border);
+		border: 1px solid var(--bg3);
 		overflow: hidden;
 	}
 

@@ -120,8 +120,7 @@
 </button>
 
 {#if modalList === 'pass'}
-	<!-- svelte-ignore a11y_interactive_supports_focus -->
-	<!-- svelte-ignore a11y_click_events_have_key_events -->
+
 
 	<div
 		class="backdrop"
@@ -137,7 +136,7 @@
 		>
 			<div class="top1">
 				<button class="close" onclick={close}>
-					<CloseIcon class="icon18A" />
+					<CloseIcon class="icon2A" />
 				</button>
 			</div>
 			<div class="title">Add New Account</div>
@@ -163,9 +162,9 @@
 				{/if}
 				<button class="eye" onclick={() => (passwordShow = !passwordShow)}>
 					{#if passwordShow}
-						<EyeIcon class="icon18A" />
+						<EyeIcon class="icon2A" />
 					{:else}
-						<EyeOffIcon class="icon18A" />
+						<EyeOffIcon class="icon2A" />
 					{/if}
 				</button>
 			</div>
@@ -203,8 +202,7 @@
 {/if}
 
 {#if modalList === 'nopass'}
-	<!-- svelte-ignore a11y_interactive_supports_focus -->
-	<!-- svelte-ignore a11y_click_events_have_key_events -->
+
 
 	<div
 		class="backdrop"
@@ -220,7 +218,7 @@
 		>
 			<div class="top1">
 				<button class="close" onclick={close}>
-					<CloseIcon class="icon18A" />
+					<CloseIcon class="icon2A" />
 				</button>
 			</div>
 			<div class="title">Add New Account</div>
@@ -293,7 +291,7 @@
 		padding: 2rem;
 		background: var(--bg1);
 		border-radius: 1.6rem;
-		border: 1px solid var(--border);
+		border: 1px solid var(--bg3);
 	}
 	.modal-m {
 		position: fixed;
@@ -306,7 +304,7 @@
 		padding: 2rem;
 		background: var(--bg1);
 		border-radius: 1.6rem;
-		border: 1px solid var(--border);
+		border: 1px solid var(--bg3);
 	}
 	.gray-button {
 		display: flex;
