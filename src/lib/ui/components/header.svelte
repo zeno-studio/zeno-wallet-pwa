@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { ArrowDown } from '$lib/svg';
 	import { NavPanel, NavLeft } from '$lib/ui/components';
-	import { clickOutside, isSmallScreen} from '$lib/ui/ts';
+	import { clickOutside, isSmallScreen } from '$lib/ui/ts';
 	import { accountState } from '$lib/wallet/runes';
-	import { EditIcon, SettingFilled} from '$lib/svg';
+	import { EditIcon, SettingFilled } from '$lib/svg';
 	import { toSvg } from 'jdenticon';
 	import { goto } from '$app/navigation';
 	import { fade, fly } from 'svelte/transition';
@@ -91,7 +91,6 @@
 </div>
 <NavPanel bind:Panel />
 
-
 {#if isSmallScreen.current}
 	{#if accountDropDown}
 		<div
@@ -103,9 +102,7 @@
 		>
 			<label class="dropdown-label">
 				<div class="label-xs" style="margin-left: 1rem;">Switch Account</div>
-				<button class="setting-btn" onclick={gotoSetting}
-					><SettingFilled class="icon2A" />
-				</button>
+				<button class="setting-btn" onclick={gotoSetting}><SettingFilled class="icon2A" /> </button>
 			</label>
 			{#if !isHidden}
 				{#each accountState.accountList as account}
@@ -117,9 +114,8 @@
 								onclick={() => selectedAccount(account.accountIndex)}
 							>
 								<div class="avatar-drop">{@html generateAvatar(account.address)}</div>
-							
-									<span class="label-name">{account.name} </span>
-								
+
+								<span class="label-name">{account.name} </span>
 							</button>
 							<button
 								class="label-right"
@@ -142,7 +138,7 @@
 		justify-content: center;
 		margin-right: 0.8rem;
 	}
-	.label-name{
+	.label-name {
 		font-size: 1.6rem;
 		font-weight: 500;
 	}
@@ -163,7 +159,7 @@
 		right: 0;
 		border-radius: 50%;
 		padding: 1px;
-		background:var(--pink) ;
+		background: var(--pink);
 	}
 	.nav {
 		box-sizing: border-box;
@@ -213,7 +209,6 @@
 		margin: 0;
 	}
 
-	
 	.accountButton {
 		display: flex;
 		justify-content: flex-start;
@@ -250,8 +245,6 @@
 		color: var(--color);
 	}
 
-
-
 	.accountLeft {
 		display: flex;
 		flex-direction: row;
@@ -281,12 +274,7 @@
 		border: none;
 		background: none;
 	}
-	.account-content {
-		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-		width: 100%;
-	}
+
 	.avatar {
 		position: relative;
 		box-sizing: border-box;
@@ -325,11 +313,6 @@
 	}
 	.selected {
 		background: var(--success);
-	}
-	.label {
-		margin: 0px;
-		padding: 0px;
-		font-size: 1.6rem;
 	}
 	.account-btn {
 		display: flex;
@@ -373,5 +356,4 @@
 		cursor: pointer;
 		color: var(--color);
 	}
-
 </style>

@@ -117,6 +117,7 @@ export interface ZenoKeystore {
 
 
 
+
 export interface Chain {
 	chainId: number;
 	name: string;
@@ -202,9 +203,83 @@ export interface TransferResult {
 }
 
 export type WalletBackupData = {
-	vaults: Vault;
+	vaults: Vault[];
 	accounts: Account[];
 	addressBook: AddressEntry[];
 	History: History[];
 	settings: Settings;
 };
+
+export interface EIP1193Request {
+	method: string;
+	params?: any[];
+  }
+  
+  export interface MessagePayload {
+	type: string;
+	id?: string;
+	payload?: EIP1193Request | any;
+	result?: any;
+	error?: string;
+	event?: string;
+  }export interface EIP1193Request {
+	method: string;
+	params?: any[];
+  }
+  
+  export interface MessagePayload {
+	type: string;
+	id?: string;
+	payload?: EIP1193Request | any;
+	result?: any;
+	error?: string;
+	event?: string;
+  }export interface EIP1193Request {
+	method: string;
+	params?: any[];
+  }
+  
+  export interface MessagePayload {
+	type: string;
+	id?: string;
+	payload?: EIP1193Request | any;
+	result?: any;
+	error?: string;
+	event?: string;
+  }export interface EIP1193Request {
+	method: string;
+	params?: any[];
+  }
+  
+  export interface MessagePayload {
+	type: string;
+	id?: string;
+	payload?: EIP1193Request | any;
+	result?: any;
+	error?: string;
+	event?: string;
+  }export interface EIP1193Request {
+	method: string;
+	params?: any[];
+  }
+  
+  export interface MessagePayload {
+	type: string;
+	id?: string;
+	payload?: EIP1193Request | any;
+	result?: any;
+	error?: string;
+	event?: string;
+  }export interface EIP1193Request {
+	method: string;
+	params?: any[];
+  }
+  
+  export interface MessagePayload {
+	type: string;
+	id?: string;
+	payload?: EIP1193Request | any;
+	result?: any;
+	error?: string;
+	event?: string;
+  }

@@ -3,7 +3,6 @@ import {
 	getElement,
 	removeElement,
 	DB,
-    type keystore,
 	type Account,
 	type Vault,
 	type WalletBackupData,
@@ -49,58 +48,14 @@ export const restoreWallet = async (backup: string) => {
 };
 
 
-export const exportKeystoreV1 = async (vaultName: "EVM" | "POLKADOT"): Promise<keystore | undefined> => {
+export const exportKeystoreV1 = async (vaultName: "EVM" | "POLKADOT"): Promise<string | null> => {
 	const vault = (await getElement(DB.Vault.name, vaultName)) as Vault;
-	let key:keystore | undefined;
-    
-    if (vaultName === "EVM") {
-        const account = (await getElement(DB.Account.name, 1)) as Account;
-        key =  {
-            version: 3,
-            id: vault.uuid,
-            address: account.address,
-            crypto: {
-                cipher: 'XChaCha20-Poly1305-managedNonce',
-                ciphertext: vault.ciphertext,
-                cipherparams: { iv: '' },
-                kdf: 'scrypt',
-                kdfparams: {
-                    n: 65536,
-                    r: 8,
-                    p: 1,
-                    dklen: 32,
-                    salt: vault.salt,
-                },
-                mac: '',
-            }
-        };
-    } else if (vaultName === "POLKADOT") {
-        const account = (await getElement(DB.Account.name, 101)) as Account;
-        key =  {
-            version: 3,
-            id: vault.uuid,
-            address: account.address,
-            crypto: {
-                cipher: 'XChaCha20-Poly1305-managedNonce',
-                ciphertext: vault.ciphertext,
-                cipherparams: { iv: '' },
-                kdf: 'scrypt',
-                kdfparams: {
-                    n: 65536,
-                    r: 8,
-                    p: 1,
-                    dklen: 32,
-                    salt: vault.salt,
-                },
-                mac: '',
-            }
-        };
-    }
-    
+    if (!vault) return null;
+    const  key = vault.salt.concat(vault.ciphertext);
     return key;
 };
 
-function downloadKeystore(keystore: keystore) {
+function downloadKeystore(keystore: string) {
     const jsonString = JSON.stringify(keystore, null, 2);
     const blob = new Blob([jsonString], { type: "application/json" });
     const url = window.URL.createObjectURL(blob);
@@ -108,3 +63,9 @@ function downloadKeystore(keystore: keystore) {
     link.href = url;
     link.download = `custom-keystore-${Date.now()}.json`; 
 }
+
+function decodeVault(input: string): { salt: string; ciphertext: string } {
+    const salt = input.slice(0, 32);
+    const ciphertext = input.slice(32);
+    return { salt, ciphertext };
+  }
