@@ -300,14 +300,14 @@
 						/>
 					{/if}
 
-					<div class="label-s">
+					<div class="label-m">
 						<label class="container">
 							<input bind:checked={terms} type="checkbox" />
 							<div class="checkmark"></div>
 						</label>
 						I agree to the<a href="/#/setting/about/terms"> Terms of Service </a>
 					</div>
-					<div class="label-s">
+					<div class="label-m">
 						Password strength:
 						{#if psStrength === 'weak'}
 							<span class="weak">{psStrength}</span>
@@ -434,12 +434,13 @@
 		flex-direction: column;
 		justify-content: flex-start;
 		position: fixed;
-		top: 2rem;
-		height: 100vh;
+		bottom: 0;
+		height: 92%;
 		width: 100vw;
 		padding: 2rem;
 		background: var(--bg1);
-		border-radius: 1.6rem;
+		border-top-left-radius: 1.6rem;
+		border-top-right-radius: 1.6rem;
 		border: 1px solid var(--bg3);
 	}
 

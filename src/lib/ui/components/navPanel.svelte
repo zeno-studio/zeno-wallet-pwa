@@ -8,19 +8,18 @@
 		Darkmode,
 		LanguageIcon,
 		BuyIcon,
-		EditIcon, 
+		EditIcon
 	} from '$lib/svg';
 	import { shortenAddress6 } from '$lib/ui/ts';
 	import { toSvg } from 'jdenticon';
 	import { accountState } from '$lib/wallet/runes';
 	import { goto } from '$app/navigation';
 	import { fade, fly } from 'svelte/transition';
-	import { LanguageSelector, CurrencySelector, SwitchTheme, } from '$lib/ui/components';
+	import { LanguageSelector, CurrencySelector, SwitchTheme } from '$lib/ui/components';
 	import ArrowBack from '$lib/svg/arrow-back.svelte';
 
 	let { Panel = $bindable(false) } = $props();
 	let account = $state(false);
-
 
 	type Opt = 'main' | 'language' | 'currency';
 
@@ -40,9 +39,9 @@
 		accountState.editingAccountIndex = accountState.currentAccountIndex;
 	}
 	function generateAvatar(address: string) {
-		return toSvg(address, 40);
+		return toSvg(address, 44);
 	}
-	
+
 	function selectedAccount(i: number) {
 		accountState.setCurrentAccountIndex(i);
 	}
@@ -50,6 +49,18 @@
 		goto('#/settings/account_detail');
 		accountState.editingAccountIndex = i;
 	}
+	function handleKeydown(event: KeyboardEvent) {
+		if (event.key === 'Escape') {
+			Panel = false;
+		}
+	}
+
+	$effect(() => {
+		if (Panel) {
+			window.addEventListener('keydown', handleKeydown);
+			return () => window.removeEventListener('keydown', handleKeydown);
+		}
+	});
 </script>
 
 {#if !isSmallScreen.current}
@@ -58,6 +69,10 @@
 			class="panel-desktop"
 			in:fly={{ x: 360, duration: 500 }}
 			out:fly={{ x: 360, duration: 500 }}
+			onkeydown={handleKeydown}
+			role="dialog"
+			aria-modal="true"
+			tabindex="-1"
 		>
 			<button class="closeButton" onclick={() => (Panel = !Panel)}>
 				<ChevronsRight />
@@ -65,7 +80,7 @@
 		</div>
 		<div class="panelMain" in:fly={{ x: 360, duration: 500 }} out:fly={{ x: 360, duration: 500 }}>
 			{#if opt === 'main'}
-				<div class="panal-content" in:fly={{ x: 360, duration: 300 }} >
+				<div class="panal-content" in:fly={{ x: 360, duration: 300 }}>
 					<div class="item">
 						<div class="item-l">
 							<button class="avatar" onclick={gotoAccount}>
@@ -106,7 +121,7 @@
 						<div class="item2">
 							<div class="item-l">
 								<span class="icon"> <Darkmode class="icon2A" /></span>
-								<span class="label-xs">Theme</span>
+								<span class="label-s">Theme</span>
 							</div>
 							<div class="item-r"><SwitchTheme /></div>
 						</div>
@@ -117,7 +132,7 @@
 							<div class="item-l">
 								<span class="icon"> <LanguageIcon class="icon2A" /></span>
 
-								<span class="label-xs">Language</span>
+								<span class="label-s">Language</span>
 							</div>
 							<div class="item-r"><ArrowForward class="icon2A" /></div>
 						</div>
@@ -128,7 +143,7 @@
 							<div class="item-l">
 								<span class="icon"> <BuyIcon class="icon2A" /></span>
 
-								<span class="label-xs">Currency</span>
+								<span class="label-s">Currency</span>
 							</div>
 
 							<div class="item-r"><ArrowForward class="icon2A" /></div>
@@ -138,18 +153,18 @@
 						<div class="item2">
 							<div class="item-l">
 								<span class="icon"> <BuyIcon class="icon2" /></span>
-			
-								<span class="label-xs">Switch Account</span>
+
+								<span class="label-s">Switch Account</span>
 							</div>
-			
+
 							<div class="item-r"><ArrowForward class="icon2A" /></div>
 						</div>
 					</button>
-				</div>	
+				</div>
 			{/if}
 
 			{#if opt === 'language'}
-				<div class="panal-content" in:fly={{ x: 360, duration: 300 }} >
+				<div class="panal-content" in:fly={{ x: 360, duration: 300 }}>
 					<div class="panel-content-top">
 						<button class="empty-btn" onclick={() => (opt = 'main')}>
 							<ArrowBack class="icon2A" />
@@ -159,12 +174,12 @@
 				</div>
 			{/if}
 			{#if opt === 'currency'}
-				<div class="panal-content" in:fly={{ x: 360, duration: 300 }} >
+				<div class="panal-content" in:fly={{ x: 360, duration: 300 }}>
 					<div class="panel-content-top">
 						<button class="empty-btn" onclick={() => (opt = 'main')}>
-						<ArrowBack class="icon2A" />
-					</button>
-				</div>
+							<ArrowBack class="icon2A" />
+						</button>
+					</div>
 					<CurrencySelector />
 				</div>
 			{/if}
@@ -179,9 +194,8 @@
 								onclick={() => selectedAccount(account.accountIndex)}
 							>
 								<div class="avatar-drop">{@html generateAvatar(account.address)}</div>
-							
-									<span class="label-name">{account.name} </span>
-								
+
+								<span class="label-name">{account.name} </span>
 							</button>
 							<button
 								class="label-right"
@@ -224,9 +238,9 @@
 		bottom: 0.8rem;
 		width: 38rem;
 		display: flex;
-		z-index: 100;
 		border-radius: 1.6rem;
 		background: transparent;
+		z-index: 400;
 	}
 	.panel-desktop:hover {
 		transform: scaleX(0.95);
@@ -277,7 +291,7 @@
 		transition: margin-right 250ms ease 0s;
 		box-sizing: border-box;
 		background: var(--bg);
-		z-index: 101;
+		z-index: 401;
 	}
 
 	.closeButton {

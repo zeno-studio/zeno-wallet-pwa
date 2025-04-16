@@ -30,7 +30,7 @@
 				<h5>Please Create or Import an Account</h5>
 			</div>
 		{:else}
-			<div class="Account-container">
+			<div class="account-container">
 				<AccountList />
 			</div>
 
@@ -90,7 +90,7 @@
 		border: 1px solid var(--hover2)
 	}
 	
-	.Account-container{
+	.account-container{
 		width: 100%;
 		height: 100%;
 		margin-bottom: 9rem;
@@ -106,6 +106,7 @@
 		max-width: 48rem;
 		background-color: var(--bg);
 		box-sizing: border-box;
+		z-index: 200;
 	}
 
 	.bottomA-s {
@@ -121,6 +122,7 @@
 		max-width: 48rem;
 		width: 95%;
 		background-color: var(--bg);
+		z-index: 200;
 	}
 
 	.bottomB {
@@ -132,6 +134,7 @@
 		flex-direction: column;
 		max-width: 48rem;
 		background-color: var(--bg);
+		z-index: 200;
 	}
 
 	.bottomB-s {
@@ -147,6 +150,7 @@
 		max-width: 48rem;
 		width: 95%;
 		background-color: var(--bg);
+		z-index: 200;
 	}
 
 </style>

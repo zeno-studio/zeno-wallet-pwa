@@ -89,11 +89,12 @@
   navigation: auto;
 }
 
+
+
 /* Body */
 html {
 	font-size: 62.5%;
 	font-family: var(--font-family-base);
-	touch-action: manipulation;
 }
 
 body {
@@ -101,17 +102,18 @@ body {
 	line-height: 1.618;
 	color: var(--text);
 	background-color: var(--bg);
-	margin: 0;
-	padding: 0;
-	border: 0;
-	box-sizing: border-box;
-	overscroll-behavior-y: contain;
+}
 
+html, body {
+    overscroll-behavior-y: contain; 
+    height: 100%;
+    margin: 0;
 }
 
 body::-webkit-scrollbar {
 	display: none;
 }
+
 
 a,
 button,
@@ -340,13 +342,13 @@ div {
 
 .title {
 		display: flex;
-		font-size: 2.1rem;
+		font-size: 2rem;
 		font-weight: 700;
 		color: var(--text);
 		margin-bottom: 2rem;
 }
 
-.label-xs {
+.label-s {
 	display: flex;
 	justify-content: flex-start;
 	font-size: 1.4rem;
@@ -354,7 +356,7 @@ div {
 	color: var(--text);
 }
 
-.label-s {
+.label-m {
 	display: flex;
 	justify-content: flex-start;
 	font-size: 1.6rem;
@@ -362,7 +364,7 @@ div {
 	color: var(--text);
 }
 
-.label-m {
+.label-l {
 	display: flex;
 	justify-content: flex-start;
 	font-size: 1.8rem;
@@ -370,18 +372,10 @@ div {
 	color: var(--text);
 }
 
-.label-l {
-	display: flex;
-	justify-content: flex-start;
-	font-size: 2rem;
-	font-weight: 500;
-	color: var(--text);
-}
-
 .label-xl {
 	display: flex;
 	justify-content: flex-start;
-	font-size: 2.4rem;
+	font-size: 2rem;
 	font-weight: 500;
 	color: var(--text);
 }
@@ -428,6 +422,7 @@ div {
 	justify-content: center;
 	align-items: center;
 	background-color: rgba(0, 0, 0, 0.25);
+	/* backdrop-filter: blur( 1rem ); */
 	z-index: 1000;
 }
 

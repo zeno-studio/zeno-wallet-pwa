@@ -125,8 +125,12 @@
 	<div
 		class="backdrop"
 		role="dialog"
+		aria-modal="true"
+		aria-labelledby="addAccount"
 		transition:fade={{ duration: 200 }}
 		onclick={handleBackdropClick}
+		onkeydown={handleKeydown}
+		tabindex="-1"
 	>
 		<div
 			id="addAccount"
@@ -267,19 +271,7 @@
 		font-size: 1.3rem;
 		font-weight: 600;
 	}
-	:global(.backdrop) {
-		position: fixed;
-	top: 0;
-	left: 0;
-	width: 100vw;
-	height: 100vh;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	background-color: rgba(0, 0, 0, 0.25);
-	backdrop-filter: blur( 1rem );
-	z-index: 1000;
-  }
+
 	.modal {
 		box-sizing: border-box;
 		flex-direction: column;
@@ -312,7 +304,7 @@
 		align-items: center;
 		background: var(--storm3);
 		color: #fff;
-		font-size: 1.8rem;
+		font-size: 1.6rem;
 		font-weight: 600;
 		height: 4.8rem;
 		border: none;
@@ -344,6 +336,7 @@
 		padding: 1rem;
 		cursor: pointer;
 		outline: none;
+		z-index: 200;
 		&:focus {
 			outline: none;
 		}
@@ -355,7 +348,7 @@
 	.start {
 		flex-direction: column;
 		color: #fff;
-		font-size: 1.7rem;
+		font-size: 1.6rem;
 		font-weight: 600;
 		height: 4.8rem;
 		border: none;
