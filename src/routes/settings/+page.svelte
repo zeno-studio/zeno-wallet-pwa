@@ -78,7 +78,7 @@
 							<img class="chain-logo" src="/token/dot.svg" alt="" />
 						{/if}
 					</div>
-					<span class="label-xs">{accountState.currentAccount?.name} </span>
+					<span class="label-s">{accountState.currentAccount?.name} </span>
 				</div>
 
 				<div class="item-r"><ArrowForward class="icon2A" /></div>
@@ -89,7 +89,7 @@
 			<div class="item">
 				<div class="item-l">
 					<span class="icon"> <Darkmode class="icon2A" /></span>
-					<span class="label-xs">Theme</span>
+					<span class="label-s">Theme</span>
 				</div>
 				<div class="item-r"><SwitchTheme /></div>
 			</div>
@@ -100,7 +100,7 @@
 				<div class="item-l">
 					<span class="icon"> <LanguageIcon class="icon2" /></span>
 
-					<span class="label-xs">Language</span>
+					<span class="label-s">Language</span>
 				</div>
 				<div class="item-r"><ArrowForward class="icon2A" /></div>
 			</div>
@@ -111,7 +111,7 @@
 				<div class="item-l">
 					<span class="icon"> <BuyIcon class="icon2" /></span>
 
-					<span class="label-xs">Currency</span>
+					<span class="label-s">Currency</span>
 				</div>
 
 				<div class="item-r"><ArrowForward class="icon2A" /></div>
@@ -123,7 +123,7 @@
 				<div class="item-l">
 					<span class="icon"> <AccountIcon class="icon2" /></span>
 
-					<span class="label-xs">Manage Account</span>
+					<span class="label-s">Manage Account</span>
 				</div>
 
 				<div class="item-r"><ArrowForward class="icon2A" /></div>
@@ -135,7 +135,7 @@
 				<div class="item-l">
 					<span class="icon"> <SafeGuardIcon class="icon2" /></span>
 
-					<span class="label-xs">Security & Privacy</span>
+					<span class="label-s">Security & Privacy</span>
 				</div>
 
 				<div class="item-r"><ArrowForward class="icon2A" /></div>
@@ -147,7 +147,7 @@
 				<div class="item-l">
 					<span class="icon"> <CloudIcon class="icon2" /></span>
 
-					<span class="label-xs">Backup Wallet</span>
+					<span class="label-s">Backup Wallet</span>
 				</div>
 
 				<div class="item-r"><ArrowForward class="icon2A" /></div>
@@ -159,7 +159,7 @@
 				<div class="item-l">
 					<span class="icon"> <ExplorerIcon class="icon2" /></span>
 
-					<span class="label-xs">Active Chains</span>
+					<span class="label-s">Active Chains</span>
 				</div>
 
 				<div class="item-r"><ArrowForward class="icon2A" /></div>
@@ -171,7 +171,7 @@
 				<div class="item-l">
 					<span class="icon"> <BookIcon class="icon2" /></span>
 
-					<span class="label-xs">Address Book</span>
+					<span class="label-s">Address Book</span>
 				</div>
 
 				<div class="item-r"><ArrowForward class="icon2A" /></div>
@@ -183,7 +183,7 @@
 				<div class="item-l">
 					<span class="icon"> <AppsIcon class="icon2" /></span>
 
-					<span class="label-xs">Active Apps</span>
+					<span class="label-s">Active Apps</span>
 				</div>
 
 				<div class="item-r"><ArrowForward class="icon2A" /></div>
@@ -195,7 +195,7 @@
 				<div class="item-l">
 					<span class="icon"> <QuestionIcon class="icon2" /></span>
 
-					<span class="label-xs">About</span>
+					<span class="label-s">About</span>
 				</div>
 
 				<div class="item-r"><ArrowForward class="icon2A" /></div>

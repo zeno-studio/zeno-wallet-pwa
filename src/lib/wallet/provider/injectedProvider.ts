@@ -1,6 +1,6 @@
-import { cryptoWaitReady } from '@polkadot/util-crypto';
 
-await cryptoWaitReady(); // 初始化波卡加密库
+
+
 
 export class InjectedProvider {
   // 以太坊属性

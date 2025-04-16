@@ -256,6 +256,8 @@
 		role="dialog"
 		transition:fade={{ duration: 200 }}
 		onclick={handleBackdropClick}
+		onkeydown={handleKeydown}
+		tabindex="-1"
 	>
 		<div
 			id="addAccount"

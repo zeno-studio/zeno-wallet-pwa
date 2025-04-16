@@ -4,6 +4,7 @@
 	import { toSvg } from 'jdenticon';
 	import { goto } from '$app/navigation';
 	import { shortenAddress6 } from '$lib/ui/ts';
+	import { onMount } from 'svelte';
 
 	let tab = $state<'active' | 'hidden'>('active');
 
@@ -12,13 +13,17 @@
 	}
 
 	function generateAvatar(address: string) {
-		return toSvg(address, 30);
+		return toSvg(address, 34);
 	}
 
 	function gotoAccount(i: number) {
 		goto('#/settings/account_detail');
 		accountState.editingAccountIndex = i;
 	}
+
+
+
+
 </script>
 
 <div class="list-container">
@@ -36,11 +41,18 @@
 		{#each accountState.accountList as account}
 			{#if !account.isHidden}
 				<div class="accountList">
-	
 					<div
 						class="entry"
 						class:selected={account.accountIndex === accountState.currentAccountIndex}
 						onclick={() => selectedAccount(account.accountIndex)}
+						onkeydown={(e) => {
+							if (e.key === 'Enter' || e.key === ' ') {
+								e.preventDefault();
+								selectedAccount(account.accountIndex);
+							}
+						}}
+						role="button"
+						tabindex="0"
 					>
 						<div class="avatar">
 							{@html generateAvatar(account.address)}
@@ -49,16 +61,22 @@
 							{/if}
 						</div>
 						<div class="content">
-							<span class="label-s" class:selected={account.accountIndex === accountState.currentAccountIndex}>{account.name} </span>
-							<span class="address">{shortenAddress6(account.address)} </span>
+							<span
+								class="label-m"
+								class:selected={account.accountIndex === accountState.currentAccountIndex}
+								style="font-weight: 600;"
+								>{account.name}
+							</span>
+							<span class="address" class:selected={account.accountIndex === accountState.currentAccountIndex}>{shortenAddress6(account.address)} </span>
 						</div>
 						<button
 							class="entry-right"
-							class:selected={account.accountIndex === accountState.currentAccountIndex}
 							onclick={(e) => {
 								e.stopPropagation();
 								gotoAccount(account.accountIndex);
 							}}
+							aria-label="edit account"
+							tabindex="0"
 							><EditIcon class="icon2A" />
 						</button>
 					</div>
@@ -71,11 +89,18 @@
 		{#each accountState.accountList as account}
 			{#if account.isHidden}
 				<div class="accountList">
-		
 					<div
 						class="entry"
 						class:selected={account.accountIndex === accountState.currentAccountIndex}
 						onclick={() => selectedAccount(account.accountIndex)}
+						onkeydown={(e) => {
+							if (e.key === 'Enter' || e.key === ' ') {
+								e.preventDefault();
+								selectedAccount(account.accountIndex);
+							}
+						}}
+						role="button"
+						tabindex="0"
 					>
 						<div class="avatar">
 							{@html generateAvatar(account.address)}
@@ -85,13 +110,17 @@
 							{/if}
 						</div>
 						<div class="content">
-							<span class="label-s">{account.name} </span>
-							<span class="address">{shortenAddress6(account.address)} </span>
+							<span class="label-m" style="font-weight: 600;"
+								class:selected={account.accountIndex === accountState.currentAccountIndex}>{account.name}
+							</span>
+							<span class="address" class:selected={account.accountIndex === accountState.currentAccountIndex}>{shortenAddress6(account.address)} </span>
 						</div>
 						<button
 							class="entry-right"
-							class:selected={account.accountIndex === accountState.currentAccountIndex}
-							onclick={() => gotoAccount(account.accountIndex)}
+							onclick={(e) => {
+								e.stopPropagation();
+								gotoAccount(account.accountIndex);
+							}}
 							><EditIcon class="icon2" />
 						</button>
 					</div>
@@ -122,11 +151,14 @@
 		justify-content: flex-start;
 		box-sizing: border-box;
 		width: 100%;
+		height: 6.8rem;
 		flex-direction: row;
 		background: var(--bg2);
 		border: none;
 		border-radius: 1.6rem;
 		cursor: pointer;
+		outline: none;
+	
 		&:active {
 			transform: translateY(1px);
 		}
@@ -137,14 +169,14 @@
 		align-items: center;
 		justify-content: center;
 		right: 1rem;
-		width: 3rem;
-		height: 3rem;
+		width: 3.5rem;
+		height: 3.5rem;
 		border: none;
 		background: none;
 		cursor: pointer;
 		margin-right: 1rem;
 		border-radius: 50%;
-		background: var(--bg5);
+		background: var(--bg);
 	}
 
 	.list-container {
@@ -160,7 +192,6 @@
 		flex-direction: column;
 		align-items: flex-start;
 		width: 100%;
-	
 	}
 	.address {
 		font-size: 1.2rem;
@@ -190,19 +221,17 @@
 		border: none;
 	}
 	.selected {
-		background: var(--bg3);
-		color: var(--color);
+		background: var(--storm2);
+		color: #000;
 	}
-
 
 	/* tab */
 	.tabs {
 		display: flex;
 		position: relative;
-		background-color: var(--bg2);
+		background-color: none;
 		padding: 0.4rem;
-		border-radius: 1.6rem;
-		border: 1px solid var(--bg3);
+
 		width: 30rem;
 		margin: 0 auto;
 	}
@@ -215,7 +244,7 @@
 		display: none;
 	}
 	.container input[type='radio']:checked + label {
-		color: var(--color);
+		color: #fff;
 	}
 
 	.tab {
@@ -224,12 +253,10 @@
 		justify-content: center;
 		height: 3.6rem;
 		width: 15rem;
-		font-size: 1.3rem;
-		color: var(--text);
-		font-weight: 700;
-		border-radius: 1.6rem;
+		font-size: 1.4rem;
+		font-weight: 600;
 		cursor: pointer;
-		transition: color 0.15s ease-in;
+		transition: color 0.1s ease-in;
 	}
 
 	.container input[id='radio-1']:checked ~ .glider {
@@ -246,9 +273,9 @@
 		left: 0.4rem;
 		height: 3.6rem;
 		width: 15rem;
-		background-color: var(--bg);
+		background-color: var(--storm3);
 		z-index: 1;
-		border-radius: 1.2rem;
+		border-radius: 2rem;
 		transition: 0.25s ease-out;
 	}
 </style>

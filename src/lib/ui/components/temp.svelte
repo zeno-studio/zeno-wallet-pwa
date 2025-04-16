@@ -14,7 +14,7 @@
 		color: var(--color);
 		fill: var(--pink);
 	}
-	.label-switch {
+	.label-mwitch {
 		display: flex;
 		align-items: center;
 		justify-content: flex-start;
