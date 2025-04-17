@@ -42,7 +42,7 @@
   left: 3px;
   bottom: 3px;
   z-index: 2;
-  background-color: var(--bg1);
+  background-color: var(--bg2);
   transition: .4s;
 }
 
@@ -68,7 +68,7 @@
 
 
 .input:checked + .slider {
-  background-color: var(--bg1);
+  background-color: var(--bg2);
 }
 
 .input:focus + .slider {

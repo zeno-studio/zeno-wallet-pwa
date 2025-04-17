@@ -11,6 +11,7 @@
 	import { fade, fly } from 'svelte/transition';
 	import { checkPasswordStrength } from '$lib/ui/ts';
 	import { goto } from '$app/navigation';
+	import { Gesture } from '@use-gesture/vanilla';
 
 	let modalOpen = $state(false);
 	let type = $state('EVM');
@@ -28,6 +29,9 @@
 		}
 	});
 
+	let modalBody = $state<HTMLElement | null>(null);
+	let y = $state(0);
+
 	let mn = $state<string | null>(null);
 	let mnValid = $state<boolean | null>(null);
 
@@ -41,6 +45,8 @@
 		notice = false;
 		terms = false;
 		type = 'EVM';
+		modalBody = null;
+		y = 0;
 	}
 
 	function validMn(mn: string | null) {
@@ -140,6 +146,23 @@
 			return () => window.removeEventListener('keydown', handleKeydown);
 		}
 	});
+	$effect(() => {
+		if (modalBody && modalOpen) {
+			const gesture = new Gesture(modalBody, {
+				onDrag: ({ movement: [, my], velocity: [, vy], direction: [, dy] }) => {
+					if (my > 0) y = my;
+					if (my > 200 && vy > 0.5 && dy > 0) {
+						modalOpen = false;
+						y = 0;
+					}
+				},
+				onDragEnd: () => {
+					if (modalOpen && y > 0) y = 0;
+				}
+			});
+			return () => gesture.destroy();
+		}
+	});
 </script>
 
 <button class="bottom-button" onclick={() => (modalOpen = true)}> Import account </button>
@@ -151,12 +174,19 @@
 		role="dialog"
 		transition:fade={{ duration: 200 }}
 		onclick={handleBackdropClick}
+		onkeydown={handleKeydown}
+		tabindex="-1"
 	>
 		<div
+			bind:this={modalBody}
 			id="importAccount"
 			in:fly={{ duration: 200, y: 50 }}
 			out:fade={{ duration: 120 }}
 			class={{ modal: !isSmallScreen.current, 'modal-m': isSmallScreen.current }}
+			role="dialog"
+			aria-modal="true"
+			tabindex="-1"
+			style="transform: translateY({y}px)"
 		>
 			<!-- step 1 notification-->
 			{#if !notice}
@@ -179,7 +209,7 @@
 						</span>
 					</div>
 
-					<div class="label-m">Choose Account Type</div>
+					<div class="label-m" style="margin: 2rem;font-weight: 600;">Choose Account Type</div>
 					<div class="radio">
 						<label class="radio-label">
 							<input type="radio" bind:group={type} value="EVM" />
@@ -253,7 +283,7 @@
 					</div>
 					<div class="title">Set Your Password</div>
 
-					<div class="lable2">Your password:</div>
+					<div class="label2">Your password:</div>
 					<div class="ps-container">
 						{#if passwordShow}
 							<input
@@ -281,7 +311,7 @@
 						</button>
 					</div>
 
-					<div class="lable2">Repeat your password:</div>
+					<div class="label2">Repeat your password:</div>
 					{#if passwordShow}
 						<input
 							id="password2"
@@ -300,14 +330,14 @@
 						/>
 					{/if}
 
-					<div class="label-m">
+					<div class="label2">
 						<label class="container">
 							<input bind:checked={terms} type="checkbox" />
 							<div class="checkmark"></div>
 						</label>
 						I agree to the<a href="/#/setting/about/terms"> Terms of Service </a>
 					</div>
-					<div class="label-m">
+					<div class="label2">
 						Password strength:
 						{#if psStrength === 'weak'}
 							<span class="weak">{psStrength}</span>
@@ -369,7 +399,7 @@
 		font-size: 1.3rem;
 		font-weight: 600;
 	}
-	.lable2 {
+	.label2 {
 		display: flex;
 		justify-content: flex-start;
 		font-size: 1.3rem;
@@ -377,6 +407,7 @@
 		width: 70%;
 	}
 	.top1 {
+		flex-shrink: 0;
 		position: relative;
 		display: flex;
 		flex-direction: row;
@@ -385,6 +416,9 @@
 		width: 100%;
 		background: none;
 		border: none;
+		margin: 0;
+		padding: 0;
+		height: 2rem;
 	}
 	.alert3 {
 		display: flex;
@@ -392,6 +426,7 @@
 		border: none;
 	}
 	.top {
+		flex-shrink: 0;
 		position: relative;
 		display: flex;
 		flex-direction: row;
@@ -400,6 +435,10 @@
 		width: 100%;
 		background: none;
 		border: none;
+		margin: 0;
+		padding: 0;
+		height: 2rem;
+
 	}
 	.top-right {
 		position: absolute;
@@ -421,12 +460,13 @@
 		justify-content: flex-start;
 		position: fixed;
 		color: var(--text);
-		height: 85%;
+		height: 99%;
 		width: 38.4rem;
-		padding: 2rem;
+		padding: 2rem 2rem 8rem 2rem;
 		background: var(--bg1);
 		border-radius: 1.6rem;
 		border: 1px solid var(--bg3);
+		touch-action: none;
 	}
 	.modal-m {
 		display: flex;
@@ -434,14 +474,16 @@
 		flex-direction: column;
 		justify-content: flex-start;
 		position: fixed;
-		bottom: 0;
-		height: 92%;
+		top: 5rem;
+		height: 100vh;
 		width: 100vw;
-		padding: 2rem;
+		padding: 2rem 2rem 8rem 2rem;
 		background: var(--bg1);
 		border-top-left-radius: 1.6rem;
 		border-top-right-radius: 1.6rem;
 		border: 1px solid var(--bg3);
+		touch-action: none;
+
 	}
 
 	.bottom-button {
@@ -572,7 +614,7 @@
 		font-size: 1.5rem;
 		font-weight: 500;
 		width: 80%;
-		height: 10rem;
+		height: 20rem;
 		border-radius: 1.6rem;
 		background: var(--bg2);
 		border: 1px solid var(--bg3);
@@ -670,7 +712,7 @@
 		height: 1.3em;
 		width: 1.3em;
 		background: none;
-		border: 1px solid var(--hover2);
+		border: 2px solid var(--success);
 		border-radius: 0.6rem;
 		box-shadow:
 			0px 0px 1px rgba(0, 0, 0, 0.3),

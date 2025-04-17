@@ -89,7 +89,7 @@
 		align-items: center;
 		height: 100%;
 		width: 100%;
-		background: var(--bg1);
+		background: var(--bg2);
 		border: none;
 		border-radius: 2rem;
 		&:hover {

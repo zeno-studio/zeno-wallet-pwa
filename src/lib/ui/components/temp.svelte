@@ -120,7 +120,7 @@
 		font-weight: 500;
 		border-radius: 2rem;
 		border: 1px solid var(--bg3);
-		background: var(--bg1);
+		background: var(--bg2);
 		color: var(--text);
 	}
 	.accountButtonRight:hover {
@@ -205,7 +205,7 @@
 		align-items: center;
 		justify-content: flex-start;
 		flex-direction: row;
-		background: var(--bg1);
+		background: var(--bg2);
 		border: none;
 		border-top-left-radius: 1.6rem;
 		border-bottom-left-radius: 1.6rem;
@@ -223,7 +223,7 @@
 		align-items: center;
 		justify-content: center;
 		height: 100%;
-		background: var(--bg1);
+		background: var(--bg2);
 		border: none;
 		border-top-right-radius: 1.6rem;
 		border-bottom-right-radius: 1.6rem;

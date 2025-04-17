@@ -221,7 +221,7 @@
 	box-sizing: border-box;
 	width: 100%;
 	flex-direction: column;
-	background: var(--bg1);
+	background: var(--bg2);
 	border-radius: 1.6rem;
 	padding: 1rem;
 	margin-bottom: 1rem;
@@ -327,7 +327,7 @@
 		width: 92%;
 		max-width: 398px;
 		padding: 16px;
-		background: var(--bg1);
+		background: var(--bg2);
 		border-radius: 16px;
 		border: 1px solid var(--bg3);
 	}
@@ -340,7 +340,7 @@
 		height: 100vh;
 		width: 100vw;
 		padding: 20px;
-		background: var(--bg1);
+		background: var(--bg2);
 		border-radius: 16px;
 		border: 1px solid var(--bg3);
 		z-index: 1001;

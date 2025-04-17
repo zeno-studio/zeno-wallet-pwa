@@ -134,12 +134,11 @@
 	.chain-logo {
 		position: absolute;
 		box-sizing: border-box;
-		width: 1.5rem;
-		height: 1.5rem;
+		width: 1.8rem;
+		height: 1.8rem;
 		bottom: 0;
 		right: 0;
 		border-radius: 50%;
-		padding: 2px;
 		margin: 0;
 		background-color: var(--pink);
 	}
@@ -231,7 +230,6 @@
 		position: relative;
 		background-color: none;
 		padding: 0.4rem;
-
 		width: 30rem;
 		margin: 0 auto;
 	}
@@ -244,7 +242,7 @@
 		display: none;
 	}
 	.container input[type='radio']:checked + label {
-		color: #fff;
+		color: #000;
 	}
 
 	.tab {
@@ -252,7 +250,7 @@
 		align-items: center;
 		justify-content: center;
 		height: 3.6rem;
-		width: 15rem;
+		width: 10rem;
 		font-size: 1.4rem;
 		font-weight: 600;
 		cursor: pointer;
@@ -273,7 +271,7 @@
 		left: 0.4rem;
 		height: 3.6rem;
 		width: 15rem;
-		background-color: var(--storm3);
+		background-color: var(--storm2);
 		z-index: 1;
 		border-radius: 2rem;
 		transition: 0.25s ease-out;

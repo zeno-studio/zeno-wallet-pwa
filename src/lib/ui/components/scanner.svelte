@@ -100,7 +100,7 @@
 		height: 100%;
 		width: 100%;
 		padding: 0;
-		background: var(--bg1);
+		background: var(--bg2);
 	}
 	
 	.preview-pc {
