@@ -12,6 +12,7 @@
 	import { CloseIcon, EyeIcon, EyeOffIcon } from '$lib/svg';
 	import { accountState } from '$lib/wallet/runes';
 	import { fade, fly } from 'svelte/transition';
+	import { Gesture } from '@use-gesture/vanilla';
 
 	let modalList = $state<'' | 'nopass' | 'pass'>('');
 	let type = $state('EVM');
@@ -19,12 +20,18 @@
 	let passwordShow = $state(false);
 	let isValidPs = $state<boolean | null>(null);
 	let exceed = $state<number[]>([0, 0, 0]);
+	let modalBody1 = $state<HTMLElement | null>(null);
+	let modalBody2 = $state<HTMLElement | null>(null);
+	let y = $state(0);
 
 	function close() {
 		isValidPs = null;
 		password = null;
 		passwordShow = false;
 		modalList = '';
+		modalBody1 = null;
+		modalBody2 = null;
+		y = 0;
 	}
 
 	async function checkModalList() {
@@ -96,6 +103,41 @@
 			return () => window.removeEventListener('keydown', handleKeydown);
 		}
 	});
+
+	$effect(() => {
+		if (modalBody1) {
+			const gesture = new Gesture(modalBody1, {
+				onDrag: ({ movement: [, my], velocity: [, vy], direction: [, dy] }) => {
+					if (my > 0) y = my;
+					if (my > 200 && vy > 0.5 && dy > 0) {
+						modalList = '';
+						y = 0;
+					}
+				},
+				onDragEnd: () => {
+					if (modalList === 'pass' && y > 0) y = 0;
+				}
+			});
+			return () => gesture.destroy();
+		}
+		if (modalBody2) {
+			const gesture = new Gesture(modalBody2, {
+				onDrag: ({ movement: [, my], velocity: [, vy], direction: [, dy] }) => {
+					if (my > 0) y = my;
+					if (my > 200 && vy > 0.5 && dy > 0) {
+						modalList = '';
+						y = 0;
+					}
+				},
+				onDragEnd: () => {
+					if (modalList === 'nopass' && y > 0) y = 0;
+				}
+			});
+			return () => gesture.destroy();
+		}
+	});
+
+
 </script>
 
 <button
@@ -120,8 +162,6 @@
 </button>
 
 {#if modalList === 'pass'}
-
-
 	<div
 		class="backdrop"
 		role="dialog"
@@ -133,16 +173,23 @@
 		tabindex="-1"
 	>
 		<div
+			bind:this={modalBody1}
 			id="addAccount"
 			in:fly={{ duration: 200, y: 50 }}
 			out:fade={{ duration: 120 }}
 			class={{ modal: !isSmallScreen.current, 'modal-m': isSmallScreen.current }}
+			role="dialog"
+			aria-modal="true"
+			tabindex="-1"
+			style="transform: translateY({y}px)"
 		>
-			<div class="top1">
-				<button class="close" onclick={close}>
-					<CloseIcon class="icon2A" />
-				</button>
-			</div>
+		{#if isSmallScreen.current}
+		<div class="drag-bar"></div>
+	{:else}
+		<div class="close-container">
+			<button class="close-btn" onclick={close}><CloseIcon class="icon2A" /></button>
+		</div>
+	{/if}
 			<div class="title">Add New Account</div>
 			<div class="container">
 				{#if passwordShow}
@@ -150,7 +197,7 @@
 						id="password"
 						class="input-password"
 						type="text"
-						placeholder="Please input your password"
+						placeholder="Password"
 						autocomplete="off"
 						bind:value={password}
 					/>
@@ -159,7 +206,7 @@
 						id="password"
 						class="input-password"
 						type="password"
-						placeholder="Please input your password"
+						placeholder="Password"
 						autocomplete="off"
 						bind:value={password}
 					/>
@@ -181,7 +228,7 @@
 				{/if}
 			</div>
 
-			<div class="label-l-margin">Choose Account Type</div>
+			<div class="label-m" style="margin: 2rem;font-weight: 600;">Choose Account Type</div>
 			<div class="radio">
 				<label class="radio-label">
 					<input type="radio" bind:group={type} value="EVM" />
@@ -206,28 +253,37 @@
 {/if}
 
 {#if modalList === 'nopass'}
-
-
 	<div
 		class="backdrop"
 		role="dialog"
+		aria-modal="true"
+		aria-labelledby="addAccount"
 		transition:fade={{ duration: 200 }}
 		onclick={handleBackdropClick}
+		onkeydown={handleKeydown}
+		tabindex="-1"
 	>
 		<div
 			id="addAccount"
+			bind:this={modalBody2}
 			in:fly={{ duration: 200, y: 50 }}
 			out:fade={{ duration: 120 }}
 			class={{ modal: !isSmallScreen.current, 'modal-m': isSmallScreen.current }}
+			role="dialog"
+			aria-modal="true"
+			tabindex="-1"
+			style="transform: translateY({y}px)"
 		>
-			<div class="top1">
-				<button class="close" onclick={close}>
-					<CloseIcon class="icon2A" />
-				</button>
-			</div>
+		{#if isSmallScreen.current}
+		<div class="drag-bar"></div>
+	{:else}
+		<div class="close-container">
+			<button class="close-btn" onclick={close}><CloseIcon class="icon2A" /></button>
+		</div>
+	{/if}
 			<div class="title">Add New Account</div>
 
-			<div class="label-l-margin">Choose Account Type</div>
+			<div class="label-m" style="margin: 2rem;font-weight: 600;">Choose Account Type</div>
 			<div class="radio">
 				<label class="radio-label">
 					<input type="radio" bind:group={type} value="EVM" />
@@ -245,16 +301,7 @@
 {/if}
 
 <style lang="postcss">
-	.top1 {
-		position: relative;
-		display: flex;
-		flex-direction: row;
-		justify-content: flex-end;
-		align-items: center;
-		width: 100%;
-		background: none;
-		border: none;
-	}
+
 
 	.radio {
 		display: flex;
@@ -273,29 +320,31 @@
 	}
 
 	.modal {
+		display: flex;
 		box-sizing: border-box;
 		flex-direction: column;
 		justify-content: flex-start;
 		position: fixed;
 		color: var(--text);
-		height: 70%;
+		height: 80%;
 		width: 38.4rem;
-		padding: 2rem;
+		padding: 2rem 2rem 8rem 2rem;
 		background: var(--bg1);
 		border-radius: 1.6rem;
 		border: 1px solid var(--bg3);
 	}
 	.modal-m {
-		position: fixed;
-		top: calc(100vh - 50rem);
+		display: flex;
 		box-sizing: border-box;
 		flex-direction: column;
 		justify-content: flex-start;
-		height: 100vh;
+		position: fixed;
+		bottom: 0;
 		width: 100vw;
-		padding: 2rem;
+		padding: 2rem 2rem 12rem 2rem;
 		background: var(--bg1);
-		border-radius: 1.6rem;
+		border-top-left-radius: 1.6rem;
+		border-top-right-radius: 1.6rem;
 		border: 1px solid var(--bg3);
 	}
 	.gray-button {
@@ -329,7 +378,7 @@
 		font-weight: 600;
 		height: 4.8rem;
 		border: none;
-		border-radius: 1.6rem;
+		border-radius: 2.4rem;
 		background: var(--pink);
 		box-sizing: border-box;
 		width: 100%;
@@ -346,7 +395,9 @@
 	}
 
 	.start {
-		flex-direction: column;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 		color: #fff;
 		font-size: 1.6rem;
 		font-weight: 600;
@@ -381,5 +432,37 @@
 	}
 	.container {
 		width: 100%;
+	}
+
+	.drag-bar {
+		display: flex;
+		flex-shrink: 0;
+		justify-content: center;
+		align-items: center;
+		width: 4rem;
+		height: 0.5rem;
+		background: rgb(160, 160, 160);
+		border-radius: 1rem;
+		margin-top: -1rem;
+		margin-bottom: 2rem;
+	}
+	.close-container {
+		display: flex;
+		justify-content: flex-end;
+		width: 100%;
+		background: none;
+		border: none;
+		cursor: pointer;
+		margin-bottom: 2rem;
+	}
+	.close-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin: 0;
+		padding: 0;
+		background: none;
+		border: none;
+		cursor: pointer;
 	}
 </style>

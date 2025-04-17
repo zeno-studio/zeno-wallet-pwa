@@ -31,6 +31,8 @@ export { default as CopiedIcon} from "./copied.svelte";
 export { default as DownloadIcon } from "./download.svelte";
 export { default as DiscordIcon} from "./discord.svelte";
 export { default as DeleteIcon } from "./delete.svelte";
+export { default as DiscoverIcon } from "./discover.svelte";
+export { default as DiscoverFilled } from "./discover-filled.svelte";
 export { default as Darkmode} from "./darkmode.svelte";
 export { default as EyeIcon } from "./eye.svelte";
 export { default as EyeOffIcon } from "./eye-off.svelte";

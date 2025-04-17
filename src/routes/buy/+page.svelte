@@ -45,7 +45,7 @@
 		box-sizing: border-box;
 		width: 100%;
 		flex-direction: column;
-		background: var(--bg1);
+		background: var(--bg2);
 		border-radius: 1.6rem;
 		padding: 1rem;
 		margin-bottom: 1rem;

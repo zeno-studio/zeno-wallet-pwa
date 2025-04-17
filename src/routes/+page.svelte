@@ -82,7 +82,7 @@ metadata.description = 'Assets';
 	box-sizing: border-box;
 	width: 100%;
 	flex-direction: column;
-	background: var(--bg1);
+	background: var(--bg2);
 	border-radius: 1.6rem;
 	padding: 1rem;
 	margin-bottom: 1rem;
@@ -105,7 +105,7 @@ metadata.description = 'Assets';
 	}
 
 	.text1 {
-		aspect-ratio: 1 / 0.8;
+		aspect-ratio: 1 / 1;
 		border-radius: 1.6rem;
 		border: 0px;
 		color: var(--color);

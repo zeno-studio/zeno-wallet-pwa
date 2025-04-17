@@ -37,7 +37,7 @@
 		width: 100%;
 		font-size: 1.6rem;
 		font-weight: 500;
-		padding: 0.6rem;
+		padding: 1rem;
 		background: none;
 		border: none;
 		color: var(--color);
@@ -57,7 +57,7 @@
 		margin-bottom: 1px;
 	}
 	.item-button:hover {
-		background: var(--bg2);
+		background: var(--bg3);
 		border-radius: 0.8rem;
 	}
 </style>

@@ -223,13 +223,7 @@
 		padding: 2px;
 		background-color: var(--pink);
 	}
-	.button-empty {
-		margin-top: 0.6rem;
-		padding: 0;
-		height: 2rem;
-		border: none;
-		background: none;
-	}
+
 	.panel-desktop {
 		position: fixed;
 		display: flex;
@@ -422,7 +416,7 @@
 		box-sizing: border-box;
 		width: 100%;
 		flex-direction: column;
-		background: var(--bg1);
+		background: var(--bg2);
 		border-radius: 1.6rem;
 		padding: 1rem;
 		cursor: pointer;
@@ -445,7 +439,7 @@
 		flex-direction: column;
 		box-sizing: border-box;
 		width: 100%;
-		background: var(--bg1);
+		background: var(--bg2);
 		border-top-left-radius: 1.6rem;
 		border-top-right-radius: 1.6rem;
 		padding: 1rem;
@@ -462,7 +456,7 @@
 		flex-direction: column;
 		box-sizing: border-box;
 		width: 100%;
-		background: var(--bg1);
+		background: var(--bg2);
 		padding: 1rem;
 		cursor: pointer;
 		margin-bottom: 1px;
@@ -477,7 +471,7 @@
 		flex-direction: column;
 		box-sizing: border-box;
 		width: 100%;
-		background: var(--bg1);
+		background: var(--bg2);
 		border-bottom-left-radius: 1.6rem;
 		border-bottom-right-radius: 1.6rem;
 		padding: 1rem;
@@ -493,11 +487,7 @@
 		margin-left: 1rem;
 		margin-right: 2rem;
 	}
-	.label2 {
-		font-size: 1.5rem;
-		font-weight: 500;
-		color: var(--color);
-	}
+
 	.avatar-drop {
 		position: relative;
 		box-sizing: border-box;

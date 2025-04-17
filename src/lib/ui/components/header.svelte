@@ -1,15 +1,12 @@
 <script lang="ts">
 	import { ArrowDown } from '$lib/svg';
-	import { NavPanel, NavLeft } from '$lib/ui/components';
+	import { NavPanel, NavLeft, Modal } from '$lib/ui/components';
 	import { isSmallScreen } from '$lib/ui/ts';
 	import { accountState } from '$lib/wallet/runes';
 	import { EditIcon, SettingFilled } from '$lib/svg';
 	import { toSvg } from 'jdenticon';
 	import { goto } from '$app/navigation';
-	import { fade, fly } from 'svelte/transition';
-	import { Gesture } from '@use-gesture/vanilla';
 
-	let isHidden = $state(false);
 	let accountDropDown = $state(false);
 	let Panel = $state(false);
 	let name = $state('');
@@ -32,55 +29,16 @@
 		goto('#/settings/account_manage');
 		accountDropDown = false;
 	}
-	function handleBackdropClick(event: MouseEvent) {
-		if (event.target === event.currentTarget) {
-			accountDropDown = false;
-		}
-	}
-
-	function handleKeydown(event: KeyboardEvent) {
-		if (event.key === 'Escape') {
-			accountDropDown = false;
-			Panel = false;
-		}
-	}
-
-	let accountModal = $state<HTMLElement | null>(null);
-	let y = $state(0);
 
 	function toggleModal() {
-    accountDropDown = !accountDropDown;
-    y = 0; 
-  }
-
-
-	$effect(() => {
-		if (accountModal && accountDropDown) {
-			const gesture = new Gesture(accountModal, {
-				onDrag: ({ movement: [, my], velocity: [, vy], direction: [, dy] }) => {
-					if (my > 0) y = my;
-					if (my > 200 && vy > 0.5 && dy > 0) {accountDropDown = false; y = 0;}
-				},
-				onDragEnd: () => {
-					if (accountDropDown && y > 0) y = 0;
-				}
-			});
-			return () => gesture.destroy();
-		}
-	});
+		accountDropDown = !accountDropDown;
+	}
 
 	$effect(() => {
 		const account = accountState.accountList.find(
 			(a) => a.accountIndex === accountState.currentAccountIndex
 		);
 		if (account) name = account.name;
-	});
-
-	$effect(() => {
-		if (accountDropDown) {
-			window.addEventListener('keydown', handleKeydown);
-			return () => window.removeEventListener('keydown', handleKeydown);
-		}
 	});
 </script>
 
@@ -122,64 +80,45 @@
 </div>
 <NavPanel bind:Panel />
 
-{#if isSmallScreen.current}
-	{#if accountDropDown}
-		<div
-			class="backdrop"
-			role="dialog"
-			transition:fade={{ duration: 200 }}
-			onclick={handleBackdropClick}
-			onkeydown={handleKeydown}
-			tabindex="-1"
-		>
-			<div
-				bind:this={accountModal}
-				class="dropdown"
-				role="dialog"
-				aria-modal="true"
-				in:fly={{ duration: 200, y: 50 }}
-				out:fade={{ duration: 120 }}
-				tabindex="-1"
-				style="transform: translateY({y}px)"
-			>
-				<div class="drag-bar"></div>
-				<div class="dropdown-label">
-					<div class="label-m" style="margin-left: 1rem; font-weight: 600;">Switch Account</div>
-					<button class="setting-btn" onclick={gotoSetting}
-						><SettingFilled class="icon2A" />
-					</button>
-				</div>
-				{#if !isHidden}
-					{#each accountState.accountList as account}
-						{#if !account.isHidden}
-							<div class="account-entry">
-								<button
-									class="account-btn"
-									class:selected={account.accountIndex === accountState.currentAccountIndex}
-									onclick={() => selectedAccount(account.accountIndex)}
-								>
-									<div class="avatar-drop">{@html generateAvatar(account.address, 33)}</div>
-
-									<span
-										class="label-m"
-										style="font-weight: 600"
-										class:selected={account.accountIndex === accountState.currentAccountIndex}
-										>{account.name}
-									</span>
-								</button>
-								<button
-									class="label-right"
-									class:selected={account.accountIndex === accountState.currentAccountIndex}
-									onclick={() => gotoAccount(account.accountIndex)}
-									><EditIcon class="icon2A" />
-								</button>
-							</div>
+{#snippet list()}
+	<div class="dropdown-label">
+		<div class="label-m" style="margin-left: 1rem; font-weight: 600;">Switch Account</div>
+		<button class="setting-btn" onclick={gotoSetting}><SettingFilled class="icon2A" /> </button>
+	</div>
+	{#each accountState.accountList as account}
+		{#if !account.isHidden}
+			<div class="account-entry">
+				<button
+					class="account-btn"
+					class:selected={account.accountIndex === accountState.currentAccountIndex}
+					onclick={() => selectedAccount(account.accountIndex)}
+				>
+					<div class="avatar-drop">{@html generateAvatar(account.address, 33)}
+						{#if account.addressType === 'POLKADOT'}
+							<img class="chain-logo2" src="/chain/polkadot.svg" alt="" />
 						{/if}
-					{/each}
-				{/if}
+					</div>
+
+					<span
+						class="label-m"
+						style="font-weight: 600"
+						class:selected={account.accountIndex === accountState.currentAccountIndex}
+						>{account.name}
+					</span>
+				</button>
+				<button
+					class="label-right"
+					class:selected={account.accountIndex === accountState.currentAccountIndex}
+					onclick={() => gotoAccount(account.accountIndex)}
+					><EditIcon class="icon2A" />
+				</button>
 			</div>
-		</div>
-	{/if}
+		{/if}
+	{/each}
+{/snippet}
+
+{#if isSmallScreen.current}
+	<Modal bind:modalName={accountDropDown} mode="full" content={list} />
 {/if}
 
 <style lang="postcss">
@@ -203,9 +142,19 @@
 		bottom: 0;
 		right: 0;
 		border-radius: 50%;
-		padding: 1px;
 		background: var(--pink);
 	}
+	.chain-logo2 {
+		position: absolute;
+		box-sizing: border-box;
+		width: 1.5rem;
+		height: 1.5rem;
+		bottom: 0;
+		right: 0;
+		border-radius: 50%;
+		background: var(--pink);
+	}
+
 	.nav {
 		box-sizing: border-box;
 		display: flex;
@@ -236,34 +185,6 @@
 		background: none;
 	}
 
-	.dropdown {
-		box-sizing: border-box;
-		display: flex;
-		flex-direction: column;
-		justify-content: flex-start;
-		align-items: center;
-		position: fixed;
-		top: 6.4rem;
-		width: 100%;
-		height: 100vh;
-		background: var(--bg);
-		border-radius: 1.6rem;
-		padding: 2rem;
-		z-index: 1000;
-		border: 1px solid var(--bg3);
-		margin: 0;
-	}
-	.drag-bar {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		width: 4rem;
-		height: 0.5rem;
-		background: rgb(160, 160, 160);
-		border-radius: 1rem;
-		margin-top: -1rem;
-		margin-bottom: 2rem;
-	}
 	.accountButton {
 		display: flex;
 		justify-content: flex-start;
