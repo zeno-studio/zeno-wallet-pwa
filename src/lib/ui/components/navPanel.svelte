@@ -8,7 +8,11 @@
 		Darkmode,
 		LanguageIcon,
 		BuyIcon,
-		EditIcon
+		EditIcon,
+		XIcon,
+		GithubIcon,
+		DiscordIcon,
+		TelegramIcon
 	} from '$lib/svg';
 	import { shortenAddress6 } from '$lib/ui/ts';
 	import { toSvg } from 'jdenticon';
@@ -19,9 +23,7 @@
 	import ArrowBack from '$lib/svg/arrow-back.svelte';
 
 	let { Panel = $bindable(false) } = $props();
-	let account = $state(false);
-
-	type Opt = 'main' | 'language' | 'currency';
+	type Opt = 'main' | 'language' | 'currency' | 'account';
 
 	let opt: Opt = $state('main');
 
@@ -38,8 +40,8 @@
 		goto('#/settings/account_detail');
 		accountState.editingAccountIndex = accountState.currentAccountIndex;
 	}
-	function generateAvatar(address: string) {
-		return toSvg(address, 44);
+	function generateAvatar(address: string, size: number) {
+		return toSvg(address, size);
 	}
 
 	function selectedAccount(i: number) {
@@ -87,7 +89,7 @@
 								{#if accountState.accountList.length === 0}
 									0
 								{:else}
-									{@html generateAvatar(accountState.currentAccount?.address ?? '')}
+									{@html generateAvatar(accountState.currentAccount?.address ?? '', 50)}
 								{/if}
 								{#if accountState.currentAccount?.addressType === 'POLKADOT'}
 									<img class="chain-logo" src="/chain/polkadot.svg" alt="" />
@@ -117,49 +119,64 @@
 						</div>
 					</div>
 					<!-- Theme -->
-					<div class="setting-top">
-						<div class="item2">
-							<div class="item-l">
-								<span class="icon"> <Darkmode class="icon2A" /></span>
-								<span class="label-s">Theme</span>
+					<div class="setting">
+						<div class="setting-entry">
+							<div class="icon-container" style="background: var(--accent-blue-back)">
+								<Darkmode class="icon16B" />
+							</div>
+							<div class="item-content">
+								<div class="label-s">Theme</div>
 							</div>
 							<div class="item-r"><SwitchTheme /></div>
 						</div>
+
+						<div class="setting-dividing"></div>
+
+						<button class="setting-entry" onclick={() => (opt = 'language')}>
+							<div class="icon-container" style="background: var(--accent-blue-back)">
+								<LanguageIcon class="icon16B" />
+							</div>
+							<div class="item-content">
+								<div class="label-s">Language</div>
+							</div>
+							<div class="item-r"><ArrowForward class="icon2A" /></div>
+						</button>
+						<div class="setting-dividing"></div>
+						<button class="setting-entry" onclick={() => (opt = 'currency')}>
+							<div class="icon-container" style="background: var(--accent-blue-back)">
+								<BuyIcon class="icon16B" />
+							</div>
+							<div class="item-content">
+								<div class="label-s">Currency</div>
+							</div>
+							<div class="item-r"><ArrowForward class="icon2A" /></div>
+						</button>
 					</div>
-					<!-- Language -->
-					<button class="setting-medium" onclick={() => (opt = 'language')}>
-						<div class="item2">
-							<div class="item-l">
-								<span class="icon"> <LanguageIcon class="icon2A" /></span>
-
-								<span class="label-s">Language</span>
+					<div class="setting">
+						<button class="setting-entry" onclick={() => (opt = 'account')}>
+							<div class="icon-container" style="background: var(--accent-pink-back)">
+								<BuyIcon class="icon16PK" />
+							</div>
+							<div class="item-content">
+								<div class="label-s">Switch Account</div>
 							</div>
 							<div class="item-r"><ArrowForward class="icon2A" /></div>
+						</button>
+					</div>
+					<div class="social">
+						<div class="social-icon">
+							<a href="https://x.com/0xa5d48801" target="_blank"><XIcon /></a>
 						</div>
-					</button>
-					<!-- Currency -->
-					<button class="setting-bottom" onclick={() => (opt = 'currency')}>
-						<div class="item2">
-							<div class="item-l">
-								<span class="icon"> <BuyIcon class="icon2A" /></span>
-
-								<span class="label-s">Currency</span>
-							</div>
-
-							<div class="item-r"><ArrowForward class="icon2A" /></div>
+						<div class="social-icon">
+							<a href="https://github.com/boboskii" target="_blank"><GithubIcon /></a>
 						</div>
-					</button>
-					<button class="setting1" onclick={() => (account = true)}>
-						<div class="item2">
-							<div class="item-l">
-								<span class="icon"> <BuyIcon class="icon2" /></span>
-
-								<span class="label-s">Switch Account</span>
-							</div>
-
-							<div class="item-r"><ArrowForward class="icon2A" /></div>
+						<div class="social-icon">
+							<a href="https://github.com/boboskii" target="_blank"><DiscordIcon /></a>
 						</div>
-					</button>
+						<div class="social-icon">
+							<a href="https://github.com/boboskii" target="_blank"><TelegramIcon /></a>
+						</div>
+					</div>
 				</div>
 			{/if}
 
@@ -183,30 +200,37 @@
 					<CurrencySelector />
 				</div>
 			{/if}
+			{#if opt === 'account'}
+				<div class="panal-content" in:fly={{ x: 360, duration: 300 }}>
+					<div class="panel-content-top">
+						<button class="empty-btn" onclick={() => (opt = 'main')}>
+							<ArrowBack class="icon2A" />
+						</button>
+					</div>
+					{#each accountState.accountList as account}
+						{#if !account.isHidden}
+							<div class="account-entry">
+								<button
+									class="account-btn"
+									class:selected={account.accountIndex === accountState.currentAccountIndex}
+									onclick={() => selectedAccount(account.accountIndex)}
+								>
+									<div class="avatar-drop">{@html generateAvatar(account.address, 32)}</div>
 
-			{#if account}
-				{#each accountState.accountList as account}
-					{#if !account.isHidden}
-						<div class="account-entry">
-							<button
-								class="account-btn"
-								class:selected={account.accountIndex === accountState.currentAccountIndex}
-								onclick={() => selectedAccount(account.accountIndex)}
-							>
-								<div class="avatar-drop">{@html generateAvatar(account.address)}</div>
-
-								<span class="label-name">{account.name} </span>
-							</button>
-							<button
-								class="label-right"
-								class:selected={account.accountIndex === accountState.currentAccountIndex}
-								onclick={() => gotoAccount2(account.accountIndex)}
-								><EditIcon class="icon2A" />
-							</button>
-						</div>
-					{/if}
-				{/each}
+									<span class="label-name">{account.name} </span>
+								</button>
+								<button
+									class="label-right"
+									class:selected={account.accountIndex === accountState.currentAccountIndex}
+									onclick={() => gotoAccount2(account.accountIndex)}
+									><EditIcon class="icon2A" />
+								</button>
+							</div>
+						{/if}
+					{/each}
+				</div>
 			{/if}
+			
 		</div>
 	{/if}
 {/if}
@@ -221,7 +245,7 @@
 		right: 0;
 		border-radius: 50%;
 		padding: 2px;
-		background-color: var(--pink);
+		background-color: var(--primary);
 	}
 
 	.panel-desktop {
@@ -239,8 +263,7 @@
 	.panel-desktop:hover {
 		transform: scaleX(0.95);
 		transition: ease-in 0.5s;
-		background: var(--bg5);
-		backdrop-filter: blur(2rem);
+		background: rgba(128, 128, 128, 0.05);
 	}
 
 	.panal-content {
@@ -250,6 +273,8 @@
 		align-items: flex-start;
 		width: 100%;
 		height: 100%;
+		overflow: scroll;
+		scrollbar-width: none;
 	}
 	.panel-content-top {
 		display: flex;
@@ -314,19 +339,6 @@
 		color: var(--color);
 		margin-bottom: 2rem;
 	}
-
-	.item2 {
-		position: relative;
-		display: flex;
-		flex-direction: row;
-		justify-content: flex-start;
-		align-items: center;
-		width: 100%;
-		padding: 0px;
-		background: none;
-		border: none;
-		color: var(--color);
-	}
 	.account-name {
 		display: flex;
 		font-size: 1.6rem;
@@ -357,6 +369,9 @@
 		margin-right: 1rem;
 	}
 	.avatar {
+		display: flex;
+		justify-content: center;
+		align-items: center;
 		position: relative;
 		box-sizing: border-box;
 		flex-shrink: 0;
@@ -409,84 +424,6 @@
 		color: var(--text);
 		margin-right: 0.4rem;
 	}
-	.setting1 {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		box-sizing: border-box;
-		width: 100%;
-		flex-direction: column;
-		background: var(--bg2);
-		border-radius: 1.6rem;
-		padding: 1rem;
-		cursor: pointer;
-		margin-bottom: 0.8rem;
-		border: none;
-		height: 4rem;
-	}
-
-	.setting1:hover,
-	.setting-medium:hover,
-	.setting-top:hover,
-	.setting-bottom:hover {
-		background: var(--bg2);
-	}
-
-	.setting-top {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		flex-direction: column;
-		box-sizing: border-box;
-		width: 100%;
-		background: var(--bg2);
-		border-top-left-radius: 1.6rem;
-		border-top-right-radius: 1.6rem;
-		padding: 1rem;
-		cursor: pointer;
-		margin-bottom: 0.1rem;
-		border: none;
-		height: 4rem;
-	}
-
-	.setting-medium {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		flex-direction: column;
-		box-sizing: border-box;
-		width: 100%;
-		background: var(--bg2);
-		padding: 1rem;
-		cursor: pointer;
-		margin-bottom: 1px;
-		border: none;
-		height: 4rem;
-	}
-
-	.setting-bottom {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		flex-direction: column;
-		box-sizing: border-box;
-		width: 100%;
-		background: var(--bg2);
-		border-bottom-left-radius: 1.6rem;
-		border-bottom-right-radius: 1.6rem;
-		padding: 1rem;
-		cursor: pointer;
-		margin-bottom: 0.8rem;
-		border: none;
-		height: 4rem;
-	}
-	.icon {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		margin-left: 1rem;
-		margin-right: 2rem;
-	}
 
 	.avatar-drop {
 		position: relative;
@@ -506,27 +443,32 @@
 		display: flex;
 		justify-content: flex-start;
 		box-sizing: border-box;
+		flex-shrink: 0;
 		width: 100%;
 		flex-direction: row;
 		background: none;
 		border: none;
-		margin-bottom: 0.8rem;
+		padding: 0;
+		cursor: pointer;
+		margin-bottom: 0.4rem;
 	}
 	.account-btn {
 		display: flex;
 		align-items: center;
 		justify-content: flex-start;
 		flex-direction: row;
-		font-size: 1.6rem;
-		font-weight: 500;
+
+		font-size: 1.2rem;
+		font-weight: 600;
 		width: 100%;
 		height: 6rem;
 		padding: 1rem;
-		background: var(--bg2);
+		background: var(--bg1);
 		border: none;
 		border-radius: 2rem;
 		cursor: pointer;
-		color: var(--color);
+		color: var(--text);
+
 		&:hover {
 			background: var(--bg3);
 		}
@@ -534,10 +476,13 @@
 			transform: translateY(1px);
 		}
 		&.selected {
-			background: var(--pink200);
-			color: var(--pink);
+			background: var(--bg3);
+			color: var(--color);
+			border:2px solid var(--accent-blue)
 		}
 	}
+
+	
 	.label-right {
 		position: absolute;
 		right: 1.5rem;
@@ -545,12 +490,78 @@
 		flex-shrink: 0;
 		align-items: center;
 		justify-content: center;
-		background: var(--bg4);
+		background: var(--bg3);
 		width: 3rem;
 		height: 3rem;
 		border: none;
 		border-radius: 50%;
 		cursor: pointer;
 		color: var(--color);
+	}
+
+	.setting {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		box-sizing: border-box;
+		width: 100%;
+		background: var(--bg1);
+		border-radius: 1.6rem;
+		padding: 0rem 1.5rem 0rem 2rem;
+		cursor: pointer;
+		border: none;
+		margin-bottom: 0.8rem;
+		max-height: 30rem;
+	}
+
+	.setting-entry {
+		position: relative;
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-start;
+		align-items: center;
+		width: 100%;
+		padding: 0;
+		background: none;
+		border: none;
+		color: var(--color);
+		margin: 1rem 0 1rem 0;
+		cursor: pointer;
+	}
+	.setting-dividing {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		box-sizing: border-box;
+		width: 100%;
+		height: 1px;
+		background: var(--bg);
+		border-radius: 1.6rem;
+		padding: 0;
+		margin: 0rem;
+		border: none;
+	}
+	.icon-container {
+		box-sizing: border-box;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 3rem;
+		width: 3rem;
+		border: none;
+		border-radius: 1rem;
+		margin-right: 2rem;
+	}
+	.social {
+		margin-top: 2rem;
+		width: 100%;
+		justify-content: center;
+		align-items: center;
+	}
+	.social-icon {
+		width: 48px;
+		height: 24px;
 	}
 </style>

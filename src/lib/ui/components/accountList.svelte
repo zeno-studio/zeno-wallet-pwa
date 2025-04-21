@@ -4,7 +4,6 @@
 	import { toSvg } from 'jdenticon';
 	import { goto } from '$app/navigation';
 	import { shortenAddress6 } from '$lib/ui/ts';
-	import { onMount } from 'svelte';
 
 	let tab = $state<'active' | 'hidden'>('active');
 
@@ -61,13 +60,13 @@
 							{/if}
 						</div>
 						<div class="content">
-							<span
+							<div
 								class="label-m"
-								class:selected={account.accountIndex === accountState.currentAccountIndex}
+								class:selected2={account.accountIndex === accountState.currentAccountIndex}
 								style="font-weight: 600;"
 								>{account.name}
-							</span>
-							<span class="address" class:selected={account.accountIndex === accountState.currentAccountIndex}>{shortenAddress6(account.address)} </span>
+							</div>
+							<div class="address" class:selected2={account.accountIndex === accountState.currentAccountIndex}>{shortenAddress6(account.address)} </div>
 						</div>
 						<button
 							class="entry-right"
@@ -110,10 +109,10 @@
 							{/if}
 						</div>
 						<div class="content">
-							<span class="label-m" style="font-weight: 600;"
-								class:selected={account.accountIndex === accountState.currentAccountIndex}>{account.name}
-							</span>
-							<span class="address" class:selected={account.accountIndex === accountState.currentAccountIndex}>{shortenAddress6(account.address)} </span>
+							<div class="label-m" style="font-weight: 600;"
+								class:selected2={account.accountIndex === accountState.currentAccountIndex}>{account.name}
+							</div>
+							<div class="address" class:selected2={account.accountIndex === accountState.currentAccountIndex}>{shortenAddress6(account.address)} </div>
 						</div>
 						<button
 							class="entry-right"
@@ -140,7 +139,7 @@
 		right: 0;
 		border-radius: 50%;
 		margin: 0;
-		background-color: var(--pink);
+		background-color: var(--primary);
 	}
 	.entry {
 		padding: 0.4rem;
@@ -152,7 +151,7 @@
 		width: 100%;
 		height: 6.8rem;
 		flex-direction: row;
-		background: var(--bg2);
+		background: var(--bg1);
 		border: none;
 		border-radius: 1.6rem;
 		cursor: pointer;
@@ -220,8 +219,11 @@
 		border: none;
 	}
 	.selected {
-		background: var(--storm2);
-		color: #000;
+		background:var(--bg3);
+		border:2px solid var(--accent-blue)
+	}
+	.selected2 {
+		color: var(--color);
 	}
 
 	/* tab */
@@ -232,6 +234,8 @@
 		padding: 0.4rem;
 		width: 30rem;
 		margin: 0 auto;
+		border-radius: 2.2rem;
+		background: var(--bg4);
 	}
 
 	.tabs * {
@@ -242,7 +246,7 @@
 		display: none;
 	}
 	.container input[type='radio']:checked + label {
-		color: #000;
+		color: var(--color);
 	}
 
 	.tab {
@@ -250,7 +254,7 @@
 		align-items: center;
 		justify-content: center;
 		height: 3.6rem;
-		width: 10rem;
+		width: 15rem;
 		font-size: 1.4rem;
 		font-weight: 600;
 		cursor: pointer;
@@ -271,7 +275,7 @@
 		left: 0.4rem;
 		height: 3.6rem;
 		width: 15rem;
-		background-color: var(--storm2);
+		background-color: var(--bg1);
 		z-index: 1;
 		border-radius: 2rem;
 		transition: 0.25s ease-out;

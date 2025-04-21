@@ -134,7 +134,7 @@
 		box-sizing: border-box;
 		width: 100%;
 		flex-direction: column;
-		background: var(--bg2);
+		background: var(--bg1);
 		border-radius: 1.6rem;
 		padding: 3rem 1rem 1rem 1rem;
 		margin-bottom: 0.8rem;
@@ -245,7 +245,7 @@
 	}
 
 	.active1 {
-		background: var(--bg2);
+		background: var(--bg1);
 		color: var(--color);
 	}
 	#address {
@@ -268,7 +268,7 @@
 		width: 100%;
 		display: flex;
 		justify-content: center;
-		background: var(--blue);
+		background: var(--secondary);
 		border: none;
 		border-radius: 1.6rem;
 		color: #fff;

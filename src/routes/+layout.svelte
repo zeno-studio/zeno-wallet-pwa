@@ -43,11 +43,6 @@
 
 	detectSWUpdate();
 
-
-	document.addEventListener('touchmove', e => {
-		e.preventDefault();
-	}, { passive: false })
-
 </script>
 
 <noscript>You need to enable JavaScript to run this app.</noscript>
@@ -121,7 +116,7 @@
 		font-weight: 600;
 		width: 100%;
 		color: #fff;
-		background: var(--pink);
+		background: var(--primary);
 		border: none;
 		padding: 1.5rem 2rem;
 		cursor: pointer;
@@ -138,14 +133,14 @@
 		font-weight: 600;
 		width: 100%;
 		color: var(--color);
-		background: var(--bg2);
+		background: var(--bg1);
 		border: none;
 		padding: 1.5rem 2rem;
 		cursor: pointer;
 		height: 6rem;
 		margin-bottom: 0.8rem;
 		border-radius: 1.6rem;
-		border: 1px solid var(--bg4);
+		border: 1px solid var(--bg3);
 	
 	}
 </style>

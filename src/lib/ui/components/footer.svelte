@@ -1,7 +1,7 @@
 <script>
 	import { page } from '$app/state';
 	import { MediaQuery } from 'svelte/reactivity';
-	import { AssetFilled,AppsFilled,HeartFilled,SettingFilled,HomeIcon  } from '$lib/svg';
+	import { AssetFilled,AppsFilled,HeartFilled,SettingFilled,HomeIcon,NftFilled  } from '$lib/svg';
 
 	const isSmallScreen = new MediaQuery('(max-width: 768px)');
 </script>
@@ -22,7 +22,7 @@
 			</a>
 			<a href="/#/nft" class:active={page.route.id == '/nft'} aria-label="NFT">
 				<div class="set">
-					<HeartFilled class="icon28-footer" />
+					<NftFilled class="icon28-footer" />
 				</div>
 			</a>
 
@@ -73,6 +73,6 @@
 		font-weight: 500;
 	}
 	.active {
-		color: var(--pink);
+		color: var(--primary);
 	}
 </style>

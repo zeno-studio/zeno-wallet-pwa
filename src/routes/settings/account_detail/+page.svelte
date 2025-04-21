@@ -6,7 +6,6 @@
 		ArrowForward,
 		ArrowDown,
 		ArrowBack,
-		CloseIcon,
 		AlertBox,
 		EditIcon
 	} from '$lib/svg';
@@ -16,9 +15,9 @@
 	import { DB, editElement } from '$lib/wallet/common';
 	import { slide } from 'svelte/transition';
 	import { shortenAddress6 } from '$lib/ui/ts';
-	import { fade, fly } from 'svelte/transition';
 	import { Header } from '$lib/ui/components';
 	import { metadata } from '$lib/ui/runes';
+	import { Modal } from '$lib/ui/components';
 
 	metadata.title = 'Settings';
 	metadata.description = 'Settings';
@@ -81,36 +80,19 @@
 	function generateAvatar(address: string) {
 		return toSvg(address, 100);
 	}
-
-	function handleKeydown(event: KeyboardEvent) {
-		if (event.key === 'Escape') {
-			modalOpen = false;
-		}
-	}
-
-	function handleBackdropClick(event: MouseEvent) {
-		if (event.target === event.currentTarget) {
-			modalOpen = false;
-		}
-	}
-
-	$effect(() => {
-		if (modalOpen) {
-			window.addEventListener('keydown', handleKeydown);
-			return () => window.removeEventListener('keydown', handleKeydown);
-		}
-	});
 </script>
 
 {#if !isSmallScreen.current}
 	<Header />
 {/if}
 <div class={{ appBody: isSmallScreen.current, 'appBody-d': !isSmallScreen.current }}>
-	<div class="top">
+	<div class="label-top">
 		<a class="top-back" href="/#/settings/account_manage">
 			<ArrowBack class="icon2A" />
-		</a>
+		</a>Account Information
 	</div>
+	<div class="setting-dividing2"></div>
+
 	<div class="item-container2">
 		<div class="avatar">
 			{#if accountState.editingAccountIndex === 0}
@@ -138,59 +120,49 @@
 			</button>
 		{/if}
 	</div>
-	<!--name -->
 
-	{#if accountState.editingAccountIndex === 0}
-		<div class="setting-top">
-			<div class="item">
-				<div class="item-l">
-					<span class="label-m">Please select an account</span>
-				</div>
+	<div class="setting">
+		<!--name -->
+		{#if accountState.editingAccountIndex === 0}
+			<div class="setting-entry">
+				<span class="label-m" style="color: var(--text)"> Please select an account</span>
 			</div>
-		</div>
-	{:else}
-		<div class="setting-top">
-			<div class="item">
-				<div class="item-l">
-					{#if nameEdit}
-						<input class="input-name" maxlength="20" type="text" bind:value={name} />
-					{:else}
-						<span class="label-m"
-							>Account Name:
-							<span class="label-name">{accountState.editingAccount?.name}</span>
-						</span>
-					{/if}
-				</div>
+		{:else}
+			<div class="setting-entry">
+				{#if nameEdit}
+					<input class="input-name" maxlength="20" type="text" bind:value={name} />
+				{:else}
+					<span class="label-m" style="color: var(--text)">
+						Account Name:
+						<span class="label-name">{accountState.editingAccount?.name}</span>
+					</span>
+				{/if}
+
 				{#if nameEdit}
 					<div class="item-r">
 						<button class="save" onclick={saveName}>Save</button>
 					</div>
 				{:else}
+				<div class="item-r">
 					<button class="edit-btn" onclick={() => (nameEdit = true)}
 						><EditIcon class="icon2A" /></button
 					>
+				</div>
 				{/if}
 			</div>
+		{/if}
+		<div class="setting-dividing"></div>
+		<!--index -->
+		<div class="setting-entry">
+			<span class="label-m" style="color: var(--text)">
+				Account Index:
+				<span class="label-name">{accountState.editingAccountIndex}</span>
+			</span>
 		</div>
-	{/if}
-
-	<!--index -->
-	<div class="setting-medium">
-		<div class="item">
-			<div class="item-l">
-				<span class="label-m"
-					>Account Index:
-					<span class="label-name">{accountState.editingAccountIndex}</span>
-				</span>
-			</div>
-		</div>
-	</div>
-	<!--memo -->
-	<div class="memo">
-		<div class="item">
-			<div class="item-l">
-				<span class="label-m">Memo</span>
-			</div>
+		<div class="setting-dividing"></div>
+		<!--memo -->
+		<div class="setting-entry">
+			<span class="label-m" style="color: var(--text)">Memo</span>
 
 			{#if memoShow}
 				<button class="item-r" onclick={() => (memoShow = !memoShow)}
@@ -205,19 +177,17 @@
 
 		{#if memoShow}
 			<div class="wrap" transition:slide>
-				{#if memoEdit}
+				{#if !memoEdit}
+				<div class="memo-content">
+					{accountState.editingAccount?.memo}
+					<button class="memo-edit" onclick={() => (memoEdit = true)}>
+						<EditIcon class="icon2A" />
+					</button>
+				</div>
+				{:else}
 					<div class="memo-wrap">
 						<textarea class="memo-input" maxlength="100" bind:value={memo}></textarea>
-						<div class="memo-edit">
-							<button class="memo-save" onclick={saveMemo}>Save</button>
-						</div>
-					</div>
-				{:else}
-					<div class="memo-content">
-						{accountState.editingAccount?.memo}
-						<button class="memo-edit" onclick={() => (memoEdit = true)}>
-							<EditIcon class="icon2A" />
-						</button>
+						<button class="memo-save" onclick={saveMemo}>Save</button>
 					</div>
 				{/if}
 			</div>
@@ -225,11 +195,9 @@
 	</div>
 
 	<!--hidden -->
-	<div class="setting1">
-		<div class="item">
-			<div class="item-l">
-				<span class="label-m">Hidden Account</span>
-			</div>
+	<div class="setting">
+		<div class="setting-entry">
+			<span class="label-m" style="color: var(--text)">Hidden Account</span>
 
 			<div class="item-r">
 				<div class="toggle-switch">
@@ -246,53 +214,28 @@
 		</div>
 	</div>
 
-	<button class="delete" onclick={() => (modalOpen = true)}>Remove Account</button>
+	<div class="setting">
+		<button class="delete" onclick={() => (modalOpen = true)}>Remove Account</button>
+	</div>
 </div>
 
-{#if modalOpen}
-
-	<div
-		class="backdrop"
-		role="dialog"
-		transition:fade={{ duration: 200 }}
-		onclick={handleBackdropClick}
-		onkeydown={handleKeydown}
-		tabindex="-1"
-	>
-		<div
-			id="addAccount"
-			in:fly={{ duration: 200, y: 50 }}
-			out:fade={{ duration: 120 }}
-			class={{ modal: !isSmallScreen.current, 'modal-m': isSmallScreen.current }}
-		>
-			{#if isSmallScreen.current}
-				<div class="tap"></div>
-			{/if}
-			{#if !isSmallScreen.current}
-				<div class="close-warp">
-					<button class="close" onclick={() => (modalOpen = false)}>
-						<CloseIcon class="icon2A" />
-					</button>
-				</div>
-			{/if}
-
-			<div class="title">Remove Account</div>
-			<div class="alert-warp">
-				<AlertBox class="icon18Y" />
-			</div>
-
-			<div class="tip2">
-				If you want to recover this account later, you should save the account index. This account's
-				index is:
-			</div>
-			<h1>{accountState.editingAccountIndex}</h1>
-			<div class="container">
-				<button class="cancel" onclick={() => (modalOpen = false)}>Cancel</button>
-				<button class="action" onclick={deleteAccount}>Delete</button>
-			</div>
-		</div>
+{#snippet removeAccount()}
+	<div class="title">Remove Account</div>
+	<div class="alert-wrap">
+		<AlertBox class="icon16Y" />
 	</div>
-{/if}
+	<div class="tip2">
+		If you want to recover this account later, you should save the account index. This account's
+		index is:
+	</div>
+	<h1>{accountState.editingAccountIndex}</h1>
+	<div class="container">
+		<button class="cancel" onclick={() => (modalOpen = false)}>Cancel</button>
+		<button class="action" onclick={deleteAccount}>Delete</button>
+	</div>
+{/snippet}
+
+<Modal bind:modalName={modalOpen} mode="half" content={removeAccount} />
 
 <style lang="postcss">
 	.appBody-d {
@@ -311,15 +254,6 @@
 		max-width: 48rem;
 		padding: 1rem 1rem 0rem 1rem;
 	}
-	.top {
-		display: flex;
-		justify-content: flex-start;
-		align-items: center;
-		width: 100%;
-		height: 5rem;
-		background: none;
-		border: none;
-	}
 
 	.tip2 {
 		display: flex;
@@ -329,7 +263,7 @@
 		font-size: 1.5rem;
 		font-weight: 500;
 		width: 70%;
-		border: 2px dashed var(--warning);
+		border: 2px dashed var(--accent-yellow);
 		border-radius: 1.6rem;
 		padding: 1rem;
 		width: 70%;
@@ -344,30 +278,12 @@
 		margin-bottom: 1rem;
 	}
 
-	.item {
-		position: relative;
-		display: flex;
-		flex-direction: row;
-		justify-content: flex-start;
-		align-items: center;
-		width: 100%;
-		font-size: 1.7rem;
-		font-weight: 500;
-		padding: 0;
-		margin: 0;
-		background: none;
-		border: none;
-		color: var(--color);
-	}
-	.item-l {
-		margin-left: 1rem;
-	}
 	.item-r {
 		display: flex;
 		align-items: center;
 		justify-content: flex-end;
 		position: absolute;
-		right: 0px;
+		right: 0;
 		padding: 0;
 		margin: 0;
 		border: none;
@@ -386,58 +302,16 @@
 		border-radius: 50%;
 		box-sizing: border-box;
 		border: none;
-		background: var(--bg2);
+		background: var(--bg3);
 	}
 
-	.modal {
-		gap: 1rem;
-		box-sizing: border-box;
-		flex-direction: column;
-		justify-content: flex-start;
-		position: fixed;
-		color: var(--text);
-		height: 70%;
-		width: 38.4rem;
-		padding: 1rem 2rem;
-		background: var(--bg2);
-		border-radius: 1.6rem;
-		border: 1px solid var(--bg3);
-	}
-	.modal-m {
-		gap: 1rem;
-		position: fixed;
-		bottom: 0;
-		box-sizing: border-box;
-		flex-direction: column;
-		justify-content: flex-start;
-		width: 100vw;
-		padding: 1rem 2rem 8rem 2rem;
-		background: var(--bg2);
-		border-top-right-radius: 1.6rem;
-		border-top-left-radius: 1.6rem;
-		border: 1px solid var(--bg3);
-	}
-	.tap {
-		width: 15%;
-		height: 0.4rem;
-		background: var(--hover2);
-		border-radius: 0.2rem;
-	}
-	.close-warp {
-		position: relative;
-		box-sizing: border-box;
-		width: 100%;
-		padding: 0.4rem;
-		height: 2.4rem;
-		margin-top: 1rem;
-	}
-	.alert-warp {
+	.alert-wrap {
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		width: 3rem;
 		height: 3rem;
-		background: var(--warning-back);
+		background: var(--accent-yellow-back);
 		border-radius: 50%;
 	}
 	.address-container {
@@ -461,8 +335,8 @@
 		cursor: pointer;
 	}
 	.copied {
-		font-size: 1.5rem;
-		font-weight: 600;
+		font-size: 1.4rem;
+		font-weight: 500;
 		color: #fff;
 		background: var(--success);
 		display: flex;
@@ -476,7 +350,7 @@
 		cursor: pointer;
 	}
 	.address {
-		font-size: 1.5rem;
+		font-size: 1.4rem;
 		font-weight: 600;
 		color: var(--text);
 		margin-right: 0.8rem;
@@ -488,13 +362,15 @@
 		width: 100%;
 		background: none;
 		border: none;
+		margin-bottom: 1rem;
 	}
 	.top-back {
+		position: absolute;
+		left: 1rem;
 		display: flex;
 		align-items: center;
-		justify-content: flex-start;
 		border: none;
-		background:none;
+		background: none;
 	}
 	.save {
 		padding: 0.4rem 0.8rem;
@@ -509,29 +385,33 @@
 	.input-name {
 		width: 30rem;
 		padding: 1rem 1rem 1rem 2rem;
-		border: 1px solid var(--hover2);
-		font-size: 1.5rem;
-		background: var(--bg2);
+		border: 1px solid var(--border);
+		font-size: 1.4rem;
+		background: var(--bg3);
 		border-radius: 2rem;
 		box-sizing: border-box;
+		&:active,
+		&:focus {
+			border: 1px solid var(--accent-blue);
+			outline: none;
+		}
 	}
 	.memo-input {
-		font-size: 1.5rem;
-		margin-top: 1rem;
+		font-size: 1.4rem;
 		position: relative;
 		width: 100%;
 		height: 12rem;
 		padding: 1rem;
-		background: var(--bg2);
-		border: 1px solid var(--hover2);
+		background: var(--bg3);
+		border: 1px solid var(--border);
 		border-radius: 1.6rem;
 		box-sizing: border-box;
 		resize: none;
 	}
 	.memo-save {
 		position: absolute;
-		bottom: 0rem;
-		right: 0rem;
+		bottom: 1rem;
+		right: 1rem;
 		padding: 0.4rem 1rem;
 		font-size: 1.5rem;
 		color: #fff;
@@ -547,26 +427,14 @@
 		width: 80%;
 		gap: 1rem;
 	}
-	.memo {
-		box-sizing: border-box;
-		width: 100%;
-		flex-direction: column;
-		background: var(--bg2);
-		border-bottom-left-radius: 1.6rem;
-		border-bottom-right-radius: 1.6rem;
-		padding: 1.2rem 1rem;
-		height: 6rem;
-		margin-bottom: 0.8rem;
-		border: none;
-	}
+
 	.memo-content {
 		position: relative;
 		display: flex;
 		justify-content: flex-start;
 		align-items: flex-start;
-		margin-top: 1rem;
 		padding: 1rem;
-		font-size: 1.5rem;
+		font-size: 1.4rem;
 		font-weight: 500;
 		height: 12rem;
 		width: 100%;
@@ -576,9 +444,10 @@
 		border: 1px solid transparent;
 	}
 	.label-name {
-		font-size: 1.7rem;
+		font-size: 1.6rem;
 		font-weight: 600;
 		margin-left: 1rem;
+		color: var(--color);
 	}
 
 	.memo-wrap {
@@ -593,36 +462,30 @@
 		position: absolute;
 		height: 3rem;
 		width: 3rem;
-		background: var(--bg2);
+		background: var(--bg1);
 		bottom: 1rem;
 		right: 1rem;
 		padding: 0.4rem;
 		border-radius: 50%;
 		box-sizing: border-box;
-		border:none;
+		border: none;
 	}
 
 	.delete {
 		display: flex;
 		justify-content: flex-start;
 		align-items: center;
-		font-size: 1.7rem;
-		font-weight: 600;
+		font-size: 1.6rem;
+		font-weight: 500;
 		width: 100%;
-		color: var(--pink);
-		background: var(--bg2);
+		color: red;
+		background: none;
 		border: none;
-		padding: 1.5rem 2rem;
 		cursor: pointer;
-		height: 6rem;
-		margin-bottom: 0.8rem;
 		border-radius: 1.6rem;
-		&:hover {
-			background: var(--bg2);
-		}
+		height: 5rem;
+		padding: 0rem;
 	}
-
-
 
 	.avatar {
 		flex-shrink: 0;
@@ -630,15 +493,15 @@
 		width: 12rem;
 		height: 12rem;
 		background: #fff;
-		border: 3px solid var(--bg2);
+		border: 3px solid var(--bg1);
 	}
 	.cancel {
 		color: var(--text);
-		font-size: 1.7rem;
-		font-weight: 600;
+		font-size: 1.6rem;
+		font-weight: 500;
 		border: none;
 		border-radius: 1.6rem;
-		background: var(--bg2);
+		background: var(--bg1);
 		box-sizing: border-box;
 		width: 100%;
 		padding: 1rem;
@@ -646,11 +509,11 @@
 	}
 	.action {
 		color: #fff;
-		font-size: 1.7rem;
-		font-weight: 600;
+		font-size: 1.6rem;
+		font-weight: 500;
 		border: none;
 		border-radius: 1.6rem;
-		background: var(--pink);
+		background: var(--primary);
 		box-sizing: border-box;
 		width: 100%;
 		padding: 1rem;
@@ -662,50 +525,67 @@
 		bottom: 0;
 		right: 0;
 		border-radius: 50%;
-		background: var(--bg2);
+		background: var(--bg1);
 		border: 1px solid var(--bg3);
 	}
 
-	.setting-top {
+	.setting {
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		flex-direction: column;
 		box-sizing: border-box;
 		width: 100%;
-		background: var(--bg2);
-		border-top-left-radius: 1.6rem;
-		border-top-right-radius: 1.6rem;
-		padding: 1rem;
-		margin-bottom: 0.1rem;
-		border: none;
-		height: 6rem;
-	}
-
-	.setting-medium {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		flex-direction: column;
-		box-sizing: border-box;
-		width: 100%;
-		background: var(--bg2);
-		padding: 1rem;
-		margin-bottom: 1px;
-		border: none;
-		height: 6rem;
-	}
-
-	.setting1 {
-		box-sizing: border-box;
-		width: 100%;
-		flex-direction: column;
-		background: var(--bg2);
+		background: var(--bg1);
 		border-radius: 1.6rem;
-		padding: 1rem;
-		margin-bottom: 0.8rem;
+		padding: 0rem 1.5rem 0rem 2rem;
+		cursor: pointer;
 		border: none;
-		height: 6rem;
+		margin-bottom: 0.8rem;
+	}
+
+	.setting-entry {
+		position: relative;
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-start;
+		align-items: center;
+		width: 100%;
+		padding: 0;
+		background: none;
+		border: none;
+		color: var(--color);
+		margin: 1.2rem 0 1.2rem 0;
+		cursor: pointer;
+	}
+	.setting-dividing {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		box-sizing: border-box;
+		width: 100%;
+		height: 1px;
+		background: var(--bg);
+		border-radius: 1.6rem;
+		padding: 0;
+		margin: 0rem;
+		border: none;
+	}
+
+	.setting-dividing2 {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		box-sizing: border-box;
+		width: 100%;
+		height: 1px;
+		background: var(--border);
+		border-radius: 1.6rem;
+		padding: 0;
+		margin-bottom: 2rem;
+		border: none;
 	}
 
 	.toggle-switch {
@@ -725,7 +605,7 @@
 		left: 0;
 		width: 5rem;
 		height: 3rem;
-		background-color: var(--hover2);
+		background-color: var(--bg3);
 		border-radius: 3rem;
 		cursor: pointer;
 		transition: background-color 0.3s;
@@ -739,7 +619,7 @@
 		border-radius: 50%;
 		top: 0.2rem;
 		left: 0.2rem;
-		background-color: var(--bg2);
+		background-color: var(--bg1);
 		box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.3);
 		transition: transform 0.3s;
 	}

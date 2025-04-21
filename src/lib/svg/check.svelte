@@ -1,4 +1,4 @@
 <script lang="ts">
     const { class: className }: { class: string } = $props();
 </script>
-<svg xmlns="http://www.w3.org/2000/svg" class={className} viewBox="0 0 24 24"><path  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10s10-4.48 10-10S17.52 2 12 2m-2 15l-5-5l1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg>
+<svg viewBox="0 0 24 24" class={className}><g><path d="M12 1.75C6.34 1.75 1.75 6.34 1.75 12S6.34 22.25 12 22.25 22.25 17.66 22.25 12 17.66 1.75 12 1.75zm-.81 14.68l-4.1-3.27 1.25-1.57 2.47 1.98 3.97-5.47 1.62 1.18-5.21 7.15z"></path></g></svg>

@@ -5,82 +5,50 @@
 :root {
 	--font-size-base: 1.8rem;
 	--font-family-base: Basel, -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-	--pink100: #ffecf2;
-	--pink200: #ffb6cf;
-	--pink300: #fe76a4;
-	--pink: #FF2670;
+	--polkadot: #FF2670;
+	--primary: #1d9bf0;
+	--secondary:rgb(249, 71, 133);
+	/* --secondary: #F0991D; */
+	--success: #52CC93;	
+	--critical: #F01E1D;	
 
-
-	--storm1: #DCE2E9;
-	--storm2: #AEB7CB;
-	--storm3: #6E7391;
-	--storm4: #393D54;
-	--green1: #effaf8;
-	--green2: #cdf2ec;
-	--green3: #9de7da;
-	--green4: #05c4a2;
-	--purple1: #f4f0fb;
-	--purple2: #e5d3fd;
-	--purple3: #cbaaff;
-	--purple4: #9e62ff;
-	--pink1: #feedfd;
-	--pink2: #fec6ff;
-	--pink3: #fca2fe;
-	--pink4: #fc72ff;
-	--blue1: #f4f6fc;
-	--blue2: #b4e8ff;
-	--blue3: #7dd5fc;
-	--blue4: #2abdff;
-	--brown1: #F7F6F1;
-	--brown2: #E2E0CD;
-	--brown3: #dcaa26;
-	--brown4: #996F01;
-	--orange1: #FEF5EA;
-	--orange2: #FFE8BC;
-	--orange3: #FF8934;
-	--orange4: #FF4D00;
-	--red1: #FFF2F1;
-	--red2: #FDCFC4;
-	--red3: #FF5F52;
-	--red4: #FF0000;
-
-
-	--accent: #3396ff;
-	--accent-hovered: #2270ff;
-	--success: #21c95e;
-	--success-hovered: #15863C;
-	--critical: #FF593C;
-	--critical-hovered: #FF401F;
-	--warning: #ffbf17;
-	--warning-back: rgba(255, 191, 23, 0.5);
-	--bg4:rgba(0, 0, 0, 0.4);
-	--bg4-hovered:rgba(0, 0, 0, 0.5);
-
-
-
-
-
+	--accent-yellow:rgba(255, 182, 72, 1);
+	--accent-yellow-back:rgba(241, 186, 0, 0.1);
+	--accent-cyan:rgba(18, 205, 217, 1);
+	--accent-cyan-back:rgba(18, 205, 217, 0.1);
+	--accent-green:rgba(34, 176, 125, 1);
+	--accent-green-back:rgba(34, 176, 125, 0.1);
+	--accent-purple:rgba(181, 72, 198, 1);
+	--accent-purple-back:rgba(181, 72, 198, 0.1);
+	--accent-blue:rgba(50, 167, 226, 1);
+	--accent-blue-back:rgba(50, 167, 226, 0.1);
+	--accent-pink:rgba(253, 86, 141, 1);
+	--accent-pink-back:rgba(253, 86, 141, 0.1);
+	--accent-orange:rgba(255, 135, 0, 1);
+	--accent-orange-back:rgba(255, 135, 0, 0.1);
 
 }
 
 [data-theme="light"] {
-	--bg: #fff;
-	--bg1: #f9f9f9;
+	--border: #d2d2d2;
+	--shadow: rgba(255, 255, 255, 0.2);
+	--bg: #f3f5f8;
+	--bg1: #fff;
 	--bg2: #f2f2f2;
-	--bg3: #e7e7e7;
-	--bg4: #d7d7d7;
-	--bg5:rgba(255, 255, 255, 0.3);
+	--bg3: #eeeeee;
+	--bg4: #dedede;
 	--text: #696969;
 	--color: #131313;
 }
 
 [data-theme="dark"] {
+	--border: #404040;
+	--shadow: rgba(13, 13, 13, 0.5);
 	--bg: #131313;
-	--bg1: #191919;
-	--bg2: #202020;
-	--bg3: #393939;
-	--bg4: #505050;
-	--bg5:rgba(19, 19, 19, 0.3);
+	--bg1: #1e1e1e;
+	--bg2: #252525;
+	--bg3: #333333;
+	--bg4: #404040;
 	--text: #adadad;
 	--color: #fff;
 }
@@ -220,14 +188,14 @@ div {
 }
 
 
-.icon18 {
+.icon16 {
 	height: 2rem;
 	width: 2rem;
-	color: var(--color);
+	color: var(--text);
 	cursor: pointer;
 }
 
-.icon18A {
+.icon16A {
 	height: 2rem;
 	width: 2rem;
 	color: var(--text);
@@ -256,37 +224,62 @@ div {
 	}
 }
 
-.icon2B {
-	height: 2rem;
-	width: 2rem;
-	color: var(--blue);
+.icon16A{
+	height: 1.6rem;
+	width: 1.6rem;
+	color: var(--color);
 	cursor: pointer;
 }
 
-.icon2Y {
-	height: 2rem;
-	width: 2rem;
-	color: var(--warning);
+.icon16B {
+	height: 1.6rem;
+	width: 1.6rem;
+	color: var(--accent-blue);
+	cursor: pointer;
+}
+.icon16C {
+	height: 1.6rem;
+	width: 1.6rem;
+	color: var(--accent-cyan);
 	cursor: pointer;
 }
 
-.icon2G {
-	height: 2rem;
-	width: 2rem;
-	color: var(--success);
+.icon16Y {
+	height: 1.6rem;
+	width: 1.6rem;
+	color: var(--accent-yellow);
 	cursor: pointer;
 }
 
-.icon2P {
-	height: 2rem;
-	width: 2rem;
-	color: var(--pink);
+.icon16G {
+	height: 1.6rem;
+	width: 1.6rem;
+	color: var(--accent-green);
 	cursor: pointer;
 }
-.icon2R {
-	height: 2rem;
-	width: 2rem;
-	color: red;
+
+.icon16PP {
+	height: 1.6rem;
+	width: 1.6rem;
+	color: var(--accent-purple);
+	cursor: pointer;
+}
+.icon16PK {
+	height: 1.6rem;
+	width: 1.6rem;
+	color: var(--accent-pink);
+	cursor: pointer;
+}
+.icon16O {
+	height: 1.6rem;
+	width: 1.6rem;
+	color: var(--accent-orange);
+	cursor: pointer;
+}
+.icon16S {
+	height: 1.6rem;
+	width: 1.6rem;
+	color: var(--accent-grey);
 	cursor: pointer;
 }
 
@@ -311,11 +304,11 @@ div {
 
 	&:hover {
 		transform: scale(1.1);
-		color: var(--pink);
+		color: var(--primary);
 	}
 	&:active {
 		transform: scale(1.1);
-		color: var(--pink);
+		color: var(--primary);
 	}
 }
 
@@ -329,7 +322,7 @@ div {
 .icon3Y{
 	height: 3rem;
 	width: 3rem;
-	color: var(--warning);
+	color: var(--accent-yellow);
 	cursor: pointer;
 }
 
@@ -345,7 +338,7 @@ div {
 		font-size: 2rem;
 		font-weight: 700;
 		color: var(--text);
-		margin-bottom: 2rem;
+		margin-bottom: 3rem;
 }
 
 .label-s {
@@ -430,17 +423,16 @@ div {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	font-size: 1.8rem;
+	font-size: 1.6rem;
 	font-weight: 600;
-	background: var(--bg2);
+	background: none;
 	height: 5rem;
 	padding: 1rem 2rem;
 	border-radius: 1.6rem;
 	width: 100%;
 	box-sizing: border-box;
-	color: var(--color);
-	margin-bottom: 2rem;
-	border: 1px solid var(--bg4);
+	color: var(--text);
+	border: none;
 
 
 
@@ -457,17 +449,17 @@ div {
 		font-size: 1.6rem;
 		width: 80%;
 		border-radius: 2rem;
-		background: var(--bg2);
-		border: 1px solid var(--bg3);
+		background: var(--bg1);
+		border: 2px solid var(--bg3);
 		color: var(--text);
 		&:focus {
 			outline: none;
-			border: 1px solid var(--pink);
+			border: 2px solid var(--accent-blue);
 			color: var(--color);
 		}
 		&:active {
 			outline: none;
-			border: 1px solid var(--bg4);
+			border: 2px solid var(--accent-blue);
 			color: var(--color);
 		}
 	}

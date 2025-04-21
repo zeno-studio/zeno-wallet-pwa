@@ -6,9 +6,11 @@
 	import { Toaster,Header,Footer } from '$lib/ui/components';
 	import { toastState } from '$lib/ui/runes';
 	import {ANKR_KEY} from '$lib/wallet/common';
-	import { QrcodeIcon,AddCircle ,BuyIcon,ScanFocus } from '$lib/svg';
+	import { onMount } from 'svelte';
+	import { QrcodeIcon,AddCircle ,BuyIcon,ScanFocus,NftIcon,NftFilled } from '$lib/svg';
 
 	let signerResponse : signerResponseType | null = $state(null);
+	let assetList : any[] = $state([]);
 	signer.onmessage = (event) => {
 		signerResponse = event.data;
 	};
@@ -16,6 +18,7 @@
 		console.log(restoreMn(password,mn));
 	}
 	let pass = $state('');
+	let rates = $state<{ usd: number; eur: number }>({ usd: 0, eur: 0 });
 
 import { AnkrProvider } from '@ankr.com/ankr.js';
 import type { Blockchain } from '@ankr.com/ankr.js/dist/types';
@@ -25,16 +28,20 @@ const listOfChains: Blockchain[] = ['eth', 'base','arbitrum', 'bsc', 'optimism',
 
 const addr1 = accountState.accountList.find(a => a.accountIndex === accountState.currentAccountIndex)?.address as string;
 
-async function getBalance() {
+async function getBalance(){
  const addr = accountState.accountList.find(a => a.accountIndex === accountState.currentAccountIndex)?.address as string;
 
-    return await ankrAdvanced.getAccountBalance(
+     return  await ankrAdvanced.getAccountBalance(
 {    blockchain:listOfChains,
-    walletAddress:"0x8fF448Ed0C027DbE9F5AdD62e6fAEE439EAc0259"}
+    walletAddress:addr}
 )
+
 }
 
-
+onMount(async () => {
+    const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=tether&vs_currencies=usd,eur');
+    rates = await res.json();
+  });
 
 
 </script>
@@ -43,7 +50,8 @@ async function getBalance() {
 <Toaster />
 
 	<div class="appBody">
-		<div><ScanFocus   class="scan-focus"/></div>
+		<div><NftIcon   class="icon2A"/></div>
+		<div><NftFilled   class="icon3"/></div>
 		
 		{signerResponse?.data}
 	
@@ -69,9 +77,10 @@ async function getBalance() {
 		</select>
 	</div>
 	{#await getBalance() then balance}
-		{balance.assets}
-	{/await}
+		{balance.totalBalanceUsd}
+		{console.log(balance)}
 
+	{/await}
 	<button onclick={() => toastState.add('title', 'message')}>toast</button>
 	<input type="file" />
 	<input type="file" capture='environment' accept="image/*" />

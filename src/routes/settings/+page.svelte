@@ -24,7 +24,7 @@
 	metadata.description = 'Settings';
 
 	function generateAvatar(address: string) {
-		return toSvg(address, 60);
+		return toSvg(address, 50);
 	}
 	function gotoAccount() {
 		goto(`#/settings/account_detail`);
@@ -40,148 +40,149 @@
 {/if}
 <div class={{ appBody: isSmallScreen.current, 'appBody-d': !isSmallScreen.current }}>
 	<!-- currentAccount -->
-	{#if isSmallScreen.current}
-		<div class="label-top">Settings</div>
-	{/if}
+
 	<button class="account" onclick={gotoAccount}>
 		<div class="item">
-			<div class="item-l">
-				<div class="avatar">
-					{#if accountState.accountList.length === 0}
-						0
-					{:else}
-						{@html generateAvatar(accountState.currentAccount?.address ?? '')}
+			<div class="avatar">
+				{#if accountState.accountList.length === 0}
+					0
+				{:else}
+					{@html generateAvatar(accountState.currentAccount?.address ?? '')}
 					{/if}
 					{#if accountState.currentAccount?.addressType === 'POLKADOT'}
 						<img class="chain-logo" src="/token/dot.svg" alt="" />
 					{/if}
 				</div>
 				<span class="label-m" style="font-weight: 600">{accountState.currentAccount?.name} </span>
-			</div>
+			
 
 			<div class="item-r"><ArrowForward class="icon2A" /></div>
 		</div>
 	</button>
+
 	<!-- Theme -->
-	<div class="setting-top">
-		<div class="item">
-			<div class="item-l">
-				<span class="icon"> <Darkmode class="icon2" /></span>
-				<span class="label-m">Theme</span>
+	<div class="setting">
+		<div class="setting-entry">
+			<div class="icon-container" style="background: var(--accent-blue-back)">
+				<Darkmode class="icon16B" />
+			</div>
+			<div class="item-content">
+				<div class="label-m">Dark mode</div>
 			</div>
 			<div class="item-r"><SwitchTheme /></div>
 		</div>
+
+		<div class="setting-dividing"></div>
+
+		<button class="setting-entry" onclick={() => (langOpen = !langOpen)}>
+			<div class="icon-container" style="background: var(--accent-blue-back)">
+				<LanguageIcon class="icon16B" />
+			</div>
+			<div class="item-content">
+				<div class="label-m">Language</div>
+			</div>
+			<div class="item-r"><ArrowForward class="icon2A" /></div>
+		</button>
+		<div class="setting-dividing"></div>
+		<button class="setting-entry" onclick={() => (currencyOpen = !currencyOpen)}>
+			<div class="icon-container" style="background: var(--accent-blue-back)">
+				<BuyIcon class="icon16B" />
+			</div>
+			<div class="item-content">
+				<div class="label-m">Currency</div>
+			</div>
+			<div class="item-r"><ArrowForward class="icon2A" /></div>
+		</button>
 	</div>
-	<!-- Language -->
-	<button class="setting-medium" onclick={() => (langOpen = !langOpen)}>
-		<div class="item">
-			<div class="item-l">
-				<span class="icon"> <LanguageIcon class="icon2" /></span>
 
-				<span class="label-m">Language</span>
+	<!-- group2 -->
+	<div class="setting">
+		<a class="setting-entry" href="/#/settings/account_manage">
+			<div class="icon-container" style="background: var(--accent-pink-back)">
+				<AccountIcon class="icon16PK" />
+			</div>
+			<div class="item-content">
+				<div class="label-m">Manage Account</div>
 			</div>
 			<div class="item-r"><ArrowForward class="icon2A" /></div>
-		</div>
-	</button>
-	<!-- Currency -->
-	<button class="setting-bottom" onclick={() => (currencyOpen = !currencyOpen)}>
-		<div class="item">
-			<div class="item-l">
-				<span class="icon"> <BuyIcon class="icon2" /></span>
+		</a>
 
-				<span class="label-m">Currency</span>
+		<div class="setting-dividing"></div>
+
+		<a class="setting-entry" href="/#/settings/security">
+			<div class="icon-container" style="background: var(--accent-pink-back)">
+				<SafeGuardIcon class="icon16PK" />
 			</div>
-
-			<div class="item-r"><ArrowForward class="icon2A" /></div>
-		</div>
-	</button>
-	<!-- manage account -->
-	<a class="setting-top" href="/#/settings/account_manage">
-		<div class="item">
-			<div class="item-l">
-				<span class="icon"> <AccountIcon class="icon2" /></span>
-
-				<span class="label-m">Manage Account</span>
+			<div class="item-content">
+				<div class="label-m">Security & Privacy</div>
 			</div>
-
 			<div class="item-r"><ArrowForward class="icon2A" /></div>
-		</div>
-	</a>
-	<!-- Security & Privacy -->
-	<a class="setting-medium" href="/#/settings/security">
-		<div class="item">
-			<div class="item-l">
-				<span class="icon"> <SafeGuardIcon class="icon2" /></span>
-
-				<span class="label-m">Security & Privacy</span>
+		</a>
+		<div class="setting-dividing"></div>
+		<a class="setting-entry" href="/#/settings/backup">
+			<div class="icon-container" style="background: var(--accent-pink-back)">
+				<CloudIcon class="icon16PK" />
 			</div>
-
-			<div class="item-r"><ArrowForward class="icon2A" /></div>
-		</div>
-	</a>
-	<!-- Backup Wallet -->
-	<a class="setting-bottom" href="/#/settings/backup">
-		<div class="item">
-			<div class="item-l">
-				<span class="icon"> <CloudIcon class="icon2" /></span>
-
-				<span class="label-m">Backup Wallet</span>
+			<div class="item-content">
+				<div class="label-m">Backup Wallet</div>
 			</div>
-
 			<div class="item-r"><ArrowForward class="icon2A" /></div>
-		</div>
-	</a>
-	<!--Active Chain -->
-	<a class="setting-top" href="/#/settings/active_chains">
-		<div class="item">
-			<div class="item-l">
-				<span class="icon"> <ExplorerIcon class="icon2" /></span>
+		</a>
+		<div class="setting-dividing"></div>
+	</div>
 
-				<span class="label-m">Active Chains</span>
+	<!--group3 -->
+	<div class="setting">
+		<a class="setting-entry" href="/#/settings/active_chains">
+			<div class="icon-container" style="background: var(--accent-cyan-back)">
+				<ExplorerIcon class="icon16C" />
 			</div>
-
-			<div class="item-r"><ArrowForward class="icon2A" /></div>
-		</div>
-	</a>
-	<!--Address Book -->
-	<a class="setting-medium" href="/#/settings/address_book">
-		<div class="item">
-			<div class="item-l">
-				<span class="icon"> <BookIcon class="icon2" /></span>
-
-				<span class="label-m">Address Book</span>
+			<div class="item-content">
+				<div class="label-m">Active Chains</div>
 			</div>
-
 			<div class="item-r"><ArrowForward class="icon2A" /></div>
-		</div>
-	</a>
-	<!--Active App -->
-	<a class="setting-bottom" href="/#/settings/active_apps">
-		<div class="item">
-			<div class="item-l">
-				<span class="icon"> <AppsIcon class="icon2" /></span>
+		</a>
 
-				<span class="label-m">Active Apps</span>
+		<div class="setting-dividing"></div>
+
+		<a class="setting-entry" href="/#/settings/address_book">
+			<div class="icon-container" style="background: var(--accent-orange-back)">
+				<BookIcon class="icon16O" />
 			</div>
-
-			<div class="item-r"><ArrowForward class="icon2A" /></div>
-		</div>
-	</a>
-
-	<a class="setting1" href="/#/settings/about">
-		<div class="item">
-			<div class="item-l">
-				<span class="icon"> <QuestionIcon class="icon2" /></span>
-
-				<span class="label-m">About</span>
+			<div class="item-content">
+				<div class="label-m">Address Book</div>
 			</div>
-
 			<div class="item-r"><ArrowForward class="icon2A" /></div>
-		</div>
-	</a>
+		</a>
+		<div class="setting-dividing"></div>
+		<a class="setting-entry" href="/#/settings/active_apps">
+			<div class="icon-container" style="background: var(--accent-purple-back)">
+				<AppsIcon class="icon16PP" />
+			</div>
+			<div class="item-content">
+				<div class="label-m">Active Apps</div>
+			</div>
+			<div class="item-r"><ArrowForward class="icon2A" /></div>
+		</a>
+		<div class="setting-dividing"></div>
+	</div>
+
+	<!--group4 -->
+	<div class="setting">
+		<a class="setting-entry" href="/#/settings/about">
+			<div class="icon-container" style="background: var(--accent-green-back)">
+				<QuestionIcon class="icon16G" />
+			</div>
+			<div class="item-content">
+				<div class="label-m">About</div>
+			</div>
+			<div class="item-r"><ArrowForward class="icon2A" /></div>
+		</a>
+	</div>
 </div>
 
 <Footer />
+
 
 {#snippet language()}
 	<LanguageSelector />
@@ -195,7 +196,7 @@
 <Modal bind:modalName={currencyOpen} mode="full" content={currency} />
 
 <style lang="postcss">
-	.label-m{
+	.label-m {
 		color: var(--color);
 	}
 	.appBody-d {
@@ -217,6 +218,8 @@
 	.account {
 		position: relative;
 		display: flex;
+		align-items: center;
+		justify-content: center;
 		box-sizing: border-box;
 		width: 100%;
 		flex-direction: column;
@@ -224,7 +227,7 @@
 		border: none;
 		padding: 1rem;
 		cursor: pointer;
-		margin-bottom: 0.8rem;
+		margin: 0.5rem 1rem 0.5rem 0;
 	}
 	.item {
 		position: relative;
@@ -238,9 +241,16 @@
 		border: none;
 		color: var(--color);
 	}
-
-	.item-l {
+	.icon-container {
+		box-sizing: border-box;
 		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 3rem;
+		width: 3rem;
+		border: none;
+		border-radius: 1rem;
+		margin-right: 2rem;
 	}
 
 	.item-r {
@@ -276,83 +286,48 @@
 		background-color: #fff;
 	}
 
-	.icon {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		margin-left: 1rem;
-		margin-right: 2rem;
-	}
-
-	.setting1 {
+	.setting {
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		flex-direction: column;
 		box-sizing: border-box;
 		width: 100%;
-		flex-direction: column;
-		background: var(--bg2);
+		background: var(--bg1);
 		border-radius: 1.6rem;
-		padding: 1rem;
+		padding: 0rem 1.5rem 0rem 2rem;
 		cursor: pointer;
+		border: none;
 		margin-bottom: 0.8rem;
+	}
+
+	.setting-entry {
+		position: relative;
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-start;
+		align-items: center;
+		width: 100%;
+		padding: 0;
+		background: none;
 		border: none;
-		height: 5rem;
+		color: var(--color);
+		margin: 1.2rem 0 1.2rem 0;
+		cursor: pointer;
 	}
-
-	.setting1:hover,
-	.setting-medium:hover,
-	.setting-top:hover,
-	.setting-bottom:hover {
-		background: var(--bg2);
-	}
-
-	.setting-top {
+	.setting-dividing {
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		flex-direction: column;
 		box-sizing: border-box;
 		width: 100%;
-		background: var(--bg2);
-		border-top-left-radius: 1.6rem;
-		border-top-right-radius: 1.6rem;
-		padding: 1rem;
-		cursor: pointer;
-		margin-bottom: 0.1rem;
+		height: 1px;
+		background: var(--bg);
+		border-radius: 1.6rem;
+		padding: 0;
+		margin: 0rem;
 		border: none;
-		height: 5rem;
 	}
 
-	.setting-medium {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		flex-direction: column;
-		box-sizing: border-box;
-		width: 100%;
-		background: var(--bg2);
-		padding: 1rem;
-		cursor: pointer;
-		margin-bottom: 1px;
-		border: none;
-		height: 5rem;
-	}
-
-	.setting-bottom {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		flex-direction: column;
-		box-sizing: border-box;
-		width: 100%;
-		background: var(--bg2);
-		border-bottom-left-radius: 1.6rem;
-		border-bottom-right-radius: 1.6rem;
-		padding: 1rem;
-		cursor: pointer;
-		margin-bottom: 0.8rem;
-		border: none;
-		height: 5rem;
-	}
 </style>

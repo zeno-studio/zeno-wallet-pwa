@@ -221,7 +221,7 @@
 	box-sizing: border-box;
 	width: 100%;
 	flex-direction: column;
-	background: var(--bg2);
+	background: var(--bg1);
 	border-radius: 1.6rem;
 	padding: 1rem;
 	margin-bottom: 1rem;
@@ -282,7 +282,7 @@
 	}
 
 	.active1 {
-		background: var(--bg2);
+		background: var(--bg1);
 		color: var(--color);
 	}
 
@@ -327,7 +327,7 @@
 		width: 92%;
 		max-width: 398px;
 		padding: 16px;
-		background: var(--bg2);
+		background: var(--bg1);
 		border-radius: 16px;
 		border: 1px solid var(--bg3);
 	}
@@ -340,7 +340,7 @@
 		height: 100vh;
 		width: 100vw;
 		padding: 20px;
-		background: var(--bg2);
+		background: var(--bg1);
 		border-radius: 16px;
 		border: 1px solid var(--bg3);
 		z-index: 1001;
@@ -381,7 +381,7 @@
 		margin: 16px 8px;
 		padding-left: 1rem;
 		border-radius: 20px;
-		background: var(--bg2);
+		background: var(--bg1);
 		border: none;
 		color: var(--color);
 	}
@@ -403,7 +403,7 @@
 		color: var(--color);
 	}
 	.token-lable:hover {
-		background: var(--bg2);
+		background: var(--bg1);
 		border-radius: 16px;
 	}
 	.token-detail {
@@ -421,7 +421,7 @@
 		border-radius: 20px;
 		margin: 0px;
 		padding: 0px;
-		background: var(--blue4);
+		background: var(--secondary4);
 		border: none;
 		cursor: pointer;
 		color: #fff;

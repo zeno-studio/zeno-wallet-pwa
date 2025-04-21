@@ -188,25 +188,39 @@
 			tabindex="-1"
 			style="transform: translateY({y}px)"
 		>
+		{#if isSmallScreen.current}
+			<div class="drag-bar"></div>
+		{/if}
 			<!-- step 1 notification-->
 			{#if !notice}
 				<div class="step1" in:fly={{ duration: 300, x: -100 }}>
-					<div class="top1">
-						<button class="close" onclick={close}>
-							<CloseIcon class="icon2A" />
-						</button>
+					{#if !isSmallScreen.current}
+					<div class="top">
+						<button class="close-btn" onclick={close}><CloseIcon class="icon2A" /></button>
 					</div>
+				{/if}
+
 					<div class="title">Notifications</div>
 
-					<div class="tip2">
-						<span class="alert3"><HelpFilled class="icon18G" /></span>
-						<span>
-							To copy-paste or type your recovery phrase on-screen may risk exposing it. If you've used a Zeno account before, consider importing your keystore for a safer option.</span>
-						<span>
-							<button class="paste" onclick={() => goto('/#/setting')}>
-								switch to keystore importer
-							</button>
-						</span>
+					<div class="tip">
+						<div class="tip-icon">
+							<div class="tip-icon-container" style="background-color: var(--accent-orange-back);">
+								<AlertTriangle class="icon16O" />
+							</div>
+						</div>
+						<div class="tip-text">
+							To copy-paste or type your recovery phrase on-screen may risk exposing it.
+						</div>
+					</div>
+					<div class="tip">
+						<div class="tip-icon">
+							<div class="tip-icon-container" style="background-color: var(--accent-orange-back);">
+								<AlertTriangle class="icon16O" />
+							</div>
+						</div>
+						<div class="tip-text">
+							If you've used a Zeno account before, consider importing your keystore for a safer option.
+						</div>
 					</div>
 
 					<div class="label-m" style="margin: 2rem;font-weight: 600;">Choose Account Type</div>
@@ -229,23 +243,30 @@
 
 			{#if !mnValid && notice}
 				<div class="step1" in:fly={{ duration: 300, x: 100 }}>
-					<div class="top">
-						<button class="button-empty" onclick={() => (notice = false)}>
-							<ArrowBack class="icon2A" />
-						</button>
-						<button class="top-right" onclick={close}>
-							<CloseIcon class="icon2A" />
-						</button>
-					</div>
+
+					{#if isSmallScreen.current}
+						<div class="top">	
+							<button class="back-btn" onclick={() => (notice = false)}>
+								<ArrowBack class="icon2A" />
+							</button>
+						</div>
+					{:else}
+						<div class="top">
+							<button class="back-btn" onclick={() => (notice = false)}>
+								<ArrowBack class="icon2A" />
+							</button>
+							<button class="close-btn" onclick={close}><CloseIcon class="icon2A" /></button>
+						</div>
+					{/if}
 					<div class="title">Import Recovery Phrase</div>
 
-					<span class="tip">
+					<span class="tip3">
 						Restore an existing wallet with your 12 or 24-word recovery phrase
 					</span>
 					<textarea
 						id="mn"
 						class="input-mn"
-						placeholder="write your recovery phrase,use space to separate words,or you can click the paste button below"
+						placeholder="Use space to separate words"
 						bind:value={mn}
 					></textarea>
 
@@ -261,7 +282,7 @@
 
 					{#if mnValid === false}
 						<div class="alert">
-							<AlertTriangle class="icon18R" />
+							<AlertTriangle class="icon16O" />
 							&nbsp Invalid recovery phrase
 						</div>
 					{/if}
@@ -273,14 +294,20 @@
 			<!-- step 3 ps-->
 			{#if mnValid && notice}
 				<div class="step2" in:fly={{ duration: 300, x: 100 }}>
-					<div class="top">
-						<button class="button-empty" onclick={() => (mnValid = null)}>
-							<ArrowBack class="icon2A" />
-						</button>
-						<button class="top-right" onclick={close}>
-							<CloseIcon class="icon2A" />
-						</button>
-					</div>
+					{#if isSmallScreen.current}
+						<div class="top">	
+							<button class="back-btn" onclick={() => (mnValid = null)}>
+								<ArrowBack class="icon2A" />
+							</button>
+						</div>
+					{:else}
+						<div class="top">
+							<button class="back-btn" onclick={() => (mnValid = null)}>
+								<ArrowBack class="icon2A" />
+							</button>
+							<button class="close-btn" onclick={close}><CloseIcon class="icon2A" /></button>
+						</div>
+					{/if}
 					<div class="title">Set Your Password</div>
 
 					<div class="label2">Your password:</div>
@@ -406,53 +433,16 @@
 		font-weight: 600;
 		width: 70%;
 	}
-	.top1 {
-		flex-shrink: 0;
-		position: relative;
-		display: flex;
-		flex-direction: row;
-		justify-content: flex-end;
-		align-items: center;
-		width: 100%;
-		background: none;
-		border: none;
-		margin: 0;
-		padding: 0;
-		height: 2rem;
-	}
-	.alert3 {
-		display: flex;
-		background: none;
-		border: none;
-	}
-	.top {
-		flex-shrink: 0;
-		position: relative;
-		display: flex;
-		flex-direction: row;
-		justify-content: flex-start;
-		align-items: center;
-		width: 100%;
-		background: none;
-		border: none;
-		margin: 0;
-		padding: 0;
-		height: 2rem;
 
-	}
-	.top-right {
-		position: absolute;
-		right: 0;
+	.alert {
+		display: flex;
 		background: none;
 		border: none;
-		cursor: pointer;
+		font-size: 1.4rem;
+		font-weight: 500;
+		color: var(--accent-orange);
 	}
-	.button-empty {
-		background: none;
-		border: none;
-		cursor: pointer;
-	}
-
+	
 	.modal {
 		display: flex;
 		box-sizing: border-box;
@@ -474,7 +464,7 @@
 		flex-direction: column;
 		justify-content: flex-start;
 		position: fixed;
-		top: 5rem;
+		top: 1rem;
 		height: 100vh;
 		width: 100vw;
 		padding: 2rem 2rem 8rem 2rem;
@@ -490,13 +480,13 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		color: #fff;
-		font-size: 1.8rem;
+		color:var(--color);
+		font-size: 1.6rem;
 		font-weight: 600;
 		height: 4.8rem;
-		border: none;
 		border-radius: 1.6rem;
-		background: var(--storm4);
+		background: var(--bg3);
+		border: 1px solid var(--bg4);
 		box-sizing: border-box;
 		width: 100%;
 		padding: 1rem;
@@ -508,18 +498,22 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		color: #fff;
-		font-size: 1.7rem;
+		color:var(--color);
+		font-size: 1.6rem;
 		font-weight: 600;
 		height: 4.8rem;
 		border: none;
 		border-radius: 1.6rem;
-		background: var(--storm3);
+		background: var(--bg2);
 		box-sizing: border-box;
 		width: 80%;
-		padding: 2rem;
+		padding: 2rem;			
 		margin-top: 2rem;
+		border: 1px solid var(--border);
 		cursor: pointer;
+		&:hover {
+			background: var(--bg3);
+		}
 	}
 	.submit {
 		display: flex;
@@ -527,12 +521,12 @@
 		justify-content: center;
 		align-items: center;
 		color: #fff;
-		font-size: 1.7rem;
+		font-size: 1.6rem;
 		font-weight: 600;
 		height: 4.8rem;
 		border: none;
 		border-radius: 1.6rem;
-		background: var(--pink);
+		background: var(--primary);
 		box-sizing: border-box;
 		width: 80%;
 		margin-top: 2rem;
@@ -554,7 +548,7 @@
 		border: none;
 		border-radius: 0.8rem;
 		color: #fff;
-		background: var(--warning);
+		background: var(--accent-yellow);
 		margin-left: 1rem;
 	}
 	.strong {
@@ -586,7 +580,39 @@
 		align-items: center;
 		gap: 1rem;
 	}
-	.tip {
+
+	.tip{
+		display:grid;
+		grid-template-columns: 5rem 1fr;
+		color: var(--text);
+		width: 80%;
+		padding: 1rem;
+		border-radius: 1.6rem;
+		background: var(--accent-blue-back);
+	}
+
+	.tip-icon{
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.tip-icon-container{
+		height: 3rem;
+		width: 3rem;
+		border-radius: 1.6rem;
+	}
+	.tip-text{
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-start;
+		align-items: center;
+		font-size: 1.4rem;
+		font-weight: 500;
+		margin-left: 0.5rem;
+	}
+
+
+	.tip3 {
 		font-size: 1.3rem;
 		color: var(--text);
 		text-align: center;
@@ -600,7 +626,7 @@
 		font-size: 1.3rem;
 		font-weight: 500;
 		width: 70%;
-		border: 2px dashed var(--warning);
+		border: 2px dashed var(--accent-yellow);
 		border-radius: 1.6rem;
 		padding: 1rem;
 		width: 70%;
@@ -611,25 +637,23 @@
 		word-break: break-all;
 		white-space: pre-wrap;
 		padding: 1rem;
-		font-size: 1.5rem;
+		font-size: 1.4rem;
 		font-weight: 500;
 		width: 80%;
 		height: 20rem;
 		border-radius: 1.6rem;
-		background: var(--bg2);
-		border: 1px solid var(--bg3);
+		background: var(--bg3);
+		border: 1.5px solid var(--border);
 		resize: none;
 		overflow-wrap: break-word;
 		text-align: left;
-		line-height: 1.6;
+		line-height: 1.8;
 		&:focus {
-			outline: none;
-			border: 1px solid var(--hover2);
+			border: 1.5px solid var(--accent-blue);
 			color: var(--color);
 		}
 		&:active {
-			outline: none;
-			border: 1px solid var(--hover2);
+			border: 1.5px solid var(--accent-blue);
 			color: var(--color);
 		}
 	}
@@ -640,7 +664,7 @@
 		align-items: center;
 		font-size: 1.3rem;
 		border-radius: 1.6rem;
-		background: var(--storm3);
+		background: var(--accent-blue);
 		border: none;
 		cursor: pointer;
 		padding: 0.4rem 1rem;
@@ -653,7 +677,7 @@
 		align-items: center;
 		font-size: 1.3rem;
 		border-radius: 1.6rem;
-		background: var(--pink);
+		background: var(--primary);
 		border: none;
 		cursor: pointer;
 		padding: 0.4rem 1rem;
@@ -685,6 +709,49 @@
 	}
 	.ps-container {
 		width: 100%;
+	}
+	.drag-bar {
+		display: flex;
+		flex-shrink: 0;
+		justify-content: center;
+		align-items: center;
+		width: 4rem;
+		height: 0.5rem;
+		background: rgb(160, 160, 160);
+		border-radius: 1rem;
+		margin-top: -1rem;
+		margin-bottom: 2rem;
+	}
+	.top {
+		display: flex;
+		align-items: center;
+		position: relative;
+		width: 100%;
+		background: none;
+		border: none;
+		cursor: pointer;
+		margin-top: 1rem;
+		margin-bottom: 2rem;
+	}
+	.back-btn {
+		display: flex;
+		position: absolute;
+		left: 0;
+		margin: 0;
+		padding: 0;
+		background: none;
+		border: none;
+		cursor: pointer;
+	}
+	.close-btn {
+		display: flex;
+		position: absolute;
+		right: 0;
+		margin: 0;
+		padding: 0;
+		background: none;
+		border: none;
+		cursor: pointer;
 	}
 
 	/* Create a custom checkbox */

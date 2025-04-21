@@ -1,14 +1,13 @@
 <script lang="ts">
 	import { userlocale, availableLanguages } from '$lib/ui/runes';
 	import { CheckIcon} from '$lib/svg';
-	import { slide } from 'svelte/transition';
 	const langs = [...availableLanguages.keys()];
 	function setLanguage(lang: string) {
 		userlocale.setLocale(lang);
 	}
 </script>
 
-<div class="container" transition:slide>
+<div class="container">
 	{#each langs as lang}
 		<button class="item-button" onclick={() => setLanguage(lang)}>
 			<div class="item-l">
@@ -33,6 +32,7 @@
 	fill: none;
 	border: none;
 	background: none;
+	margin-right: 1rem;
 }
 	.item-button {
 		position: relative;
@@ -48,9 +48,8 @@
 	}
 
 	.active {
-		fill: var(--pink);
+		fill: var(--success);
 	}
-
 	.container {
 		display: flex;
 		flex-direction: column;
@@ -61,7 +60,7 @@
 		margin-bottom: 1px;
 	}
 	.item-button:hover {
-		background: var(--bg3);
+		background: var(--bg2);
 		border-radius: 0.8rem;
 	}
 
