@@ -136,25 +136,39 @@
 			tabindex="-1"
 			style="transform: translateY({y}px)"
 		>
+		{#if isSmallScreen.current}
+		<div class="drag-bar"></div>
+	{/if}
 			<!-- step 1 notification-->
 			{#if !notice}
 				<div class="step1" in:fly={{ duration: 300, x: -100 }}>
-					<div class="top1">
-						<button class="close" onclick={close}>
-							<CloseIcon class="icon2A" />
-						</button>
+					{#if !isSmallScreen.current}
+					<div class="top">
+						<button class="close-btn" onclick={close}><CloseIcon class="icon2A" /></button>
 					</div>
+				{/if}
 					<div class="title">Notifications</div>
-
-					<div class="tip2">
-						<span class="alert3"><HelpFilled class="icon18G" /></span>
-						<span>
-							Zeno wallet does not store your password. If you forget it, you will lose access to
-							your funds, and we cannot recover it for you. Use a strong password and store it
-							securely (e.g., in a password manager). Always back up your recovery phrase—it's the
-							only way to restore your wallet if your password is lost.
-						</span>
+					<div class="tip">
+						<div class="tip-icon">
+							<div class="tip-icon-container" style="background-color: var(--accent-orange-back);">
+								<AlertTriangle class="icon16O" />
+							</div>
+						</div>
+						<div class="tip-text">
+							Zeno wallet does not store your password. If you forget it, we cannot recover it for you.
+						</div>
 					</div>
+					<div class="tip">
+						<div class="tip-icon">
+							<div class="tip-icon-container" style="background-color: var(--accent-orange-back);">
+								<AlertTriangle class="icon16O" />
+							</div>
+						</div>
+						<div class="tip-text">
+							Always back up your recovery phrase, it's the only way to restore your wallet if your password is lost.
+						</div>
+					</div>
+
 					<div class="label-m" style="margin: 2rem;font-weight: 600;">Choose Account Type</div>
 					<div class="radio">
 						<label class="radio-label">
@@ -174,14 +188,20 @@
 			<!-- step 2 mn-->
 			{#if notice}
 				<div class="step2" in:fly={{ duration: 300, x: 100 }}>
-					<div class="top">
-						<button class="button-empty" onclick={() => (notice = false)}>
-							<ArrowBack class="icon2A" />
-						</button>
-						<button class="top-right" onclick={close}>
-							<CloseIcon class="icon2A" />
-						</button>
-					</div>
+					{#if isSmallScreen.current}
+						<div class="top">	
+							<button class="back-btn" onclick={() => (notice = false)}>
+								<ArrowBack class="icon2A" />
+							</button>
+						</div>
+					{:else}
+						<div class="top">
+							<button class="back-btn" onclick={() => (notice = false)}>
+								<ArrowBack class="icon2A" />
+							</button>
+							<button class="close-btn" onclick={close}><CloseIcon class="icon2A" /></button>
+						</div>
+					{/if}
 					<div class="title">Set Your Password</div>
 
 					<div class="label2">Your password:</div>
@@ -298,48 +318,38 @@
 		font-size: 1.3rem;
 		font-weight: 600;
 	}
-	.top1 {
-		flex-shrink: 0;
-		position: relative;
-		display: flex;
-		flex-direction: row;
-		justify-content: flex-end;
-		align-items: center;
-		width: 100%;
-		background: none;
-		border: none;
-		margin: 0;
-		padding: 0;
-		height: 2rem;
-	}
 
 	.top {
-		flex-shrink: 0;
-		position: relative;
 		display: flex;
-		flex-direction: row;
-		justify-content: flex-start;
 		align-items: center;
+		position: relative;
 		width: 100%;
 		background: none;
 		border: none;
+		cursor: pointer;
+		margin-top: 1rem;
+		margin-bottom: 2rem;
+	}
+	.back-btn {
+		display: flex;
+		position: absolute;
+		left: 0;
 		margin: 0;
 		padding: 0;
-		height: 2rem;
+		background: none;
+		border: none;
+		cursor: pointer;
 	}
-	.top-right {
+	.close-btn {
+		display: flex;
 		position: absolute;
 		right: 0;
+		margin: 0;
+		padding: 0;
 		background: none;
 		border: none;
 		cursor: pointer;
 	}
-	.button-empty {
-		background: none;
-		border: none;
-		cursor: pointer;
-	}
-
 	
 	.modal {
 		display: flex;
@@ -364,7 +374,7 @@
 		flex-direction: column;
 		justify-content: flex-start;
 		position: fixed;
-		top: 5rem;
+		top: 1rem;
 		height: 100vh;
 		width: 100vw;
 		padding: 2rem 2rem 8rem 2rem;
@@ -393,34 +403,58 @@
 		font-size: 1.3rem;
 		font-weight: 500;
 		width: 70%;
-		border: 2px dashed var(--warning);
+		border: 2px dashed var(--accent-yellow);
 		border-radius: 1.6rem;
 		padding: 1rem;
 		width: 70%;
 	}
+
+	.tip{
+		display:grid;
+		grid-template-columns: 5rem 1fr;
+		color: var(--text);
+		width: 80%;
+		padding: 1rem;
+		border-radius: 1.6rem;
+		background: var(--accent-blue-back);
+	}
+
+	.tip-icon{
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.tip-icon-container{
+		height: 3rem;
+		width: 3rem;
+		border-radius: 1.6rem;
+	}
+	.tip-text{
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-start;
+		align-items: center;
+		font-size: 1.4rem;
+		font-weight: 500;
+		margin-left: 0.5rem;
+	}
+
 
 	.bottom-button {
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		color: #fff;
-		font-size: 1.8rem;
+		font-size: 1.6rem;
 		font-weight: 600;
 		height: 4.8rem;
 		border: none;
 		border-radius: 1.6rem;
-		background: var(--pink);
+		background: var(--primary);
 		box-sizing: border-box;
 		width: 100%;
 		padding: 1rem;
 		cursor: pointer;
-		outline: none;
-		&:focus {
-			outline: none;
-		}
-		&:active {
-			outline: none;
-		}
 	}
 
 	.start {
@@ -428,18 +462,22 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		color: #fff;
-		font-size: 1.7rem;
+		color:var(--color);
+		font-size: 1.6rem;
 		font-weight: 600;
 		height: 4.8rem;
 		border: none;
 		border-radius: 1.6rem;
-		background: var(--storm3);
+		background: var(--bg2);
 		box-sizing: border-box;
 		width: 80%;
-		padding: 2rem;
+		padding: 2rem;			
 		margin-top: 2rem;
+		border: 1px solid var(--border);
 		cursor: pointer;
+		&:hover {
+			background: var(--bg3);
+		}
 	}
 	.submit {
 		display: flex;
@@ -452,7 +490,7 @@
 		height: 4.8rem;
 		border: none;
 		border-radius: 1.6rem;
-		background: var(--pink);
+		background: var(--primary);
 		box-sizing: border-box;
 		width: 80%;
 		margin-top: 2rem;
@@ -474,7 +512,7 @@
 		border: none;
 		border-radius: 0.8rem;
 		color: #fff;
-		background: var(--warning);
+		background: var(--accent-yellow);
 		margin-left: 1rem;
 	}
 	.strong {
@@ -507,8 +545,18 @@
 		gap: 1rem;
 	}
 
-	
-
+	.drag-bar {
+		display: flex;
+		flex-shrink: 0;
+		justify-content: center;
+		align-items: center;
+		width: 4rem;
+		height: 0.5rem;
+		background: rgb(160, 160, 160);
+		border-radius: 1rem;
+		margin-top: -1rem;
+		margin-bottom: 2rem;
+	}
 	
 	.eye {
 		display: flex;

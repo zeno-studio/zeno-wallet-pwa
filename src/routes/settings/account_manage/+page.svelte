@@ -169,4 +169,6 @@
 		border-top-left-radius: 1.6rem;
 		border-top-right-radius: 1.6rem;
 	}
+
+	
 </style>

@@ -54,7 +54,7 @@
 						{name}
 					{/if}
 
-					<ArrowDown class="icon18" />
+					<ArrowDown class="icon16" />
 				</button>
 			</div>
 		{/if}
@@ -72,7 +72,7 @@
 						{/if}
 					</div>
 					{name}
-					<ArrowDown class="icon18A" />
+					<ArrowDown class="icon16A" />
 				{/if}
 			</button>
 		{/if}
@@ -99,12 +99,12 @@
 						{/if}
 					</div>
 
-					<span
+					<div
 						class="label-m"
 						style="font-weight: 600"
-						class:selected={account.accountIndex === accountState.currentAccountIndex}
+						class:selected2={account.accountIndex === accountState.currentAccountIndex}
 						>{account.name}
-					</span>
+					</div>
 				</button>
 				<button
 					class="label-right"
@@ -132,7 +132,7 @@
 		height: 3.2rem;
 		width: 3.2rem;
 		color: var(--color);
-		fill: var(--pink);
+		fill: var(--primary);
 	}
 	.chain-logo {
 		position: absolute;
@@ -142,7 +142,7 @@
 		bottom: 0;
 		right: 0;
 		border-radius: 50%;
-		background: var(--pink);
+		background: var(--primary);
 	}
 	.chain-logo2 {
 		position: absolute;
@@ -152,7 +152,7 @@
 		bottom: 0;
 		right: 0;
 		border-radius: 50%;
-		background: var(--pink);
+		background: var(--primary);
 	}
 
 	.nav {
@@ -194,7 +194,7 @@
 		border: none;
 		background: none;
 		box-sizing: border-box;
-		color: var(--color);
+		color: var(--text);
 		cursor: pointer;
 	}
 
@@ -209,7 +209,7 @@
 		font-weight: 500;
 		border-radius: 2rem;
 		border: 1px solid var(--bg3);
-		background: var(--bg2);
+		background: var(--bg1);
 		color: var(--text);
 		z-index: 300;
 	}
@@ -284,10 +284,7 @@
 		border: none;
 		margin-bottom: 0.8rem;
 	}
-	.selected {
-		background: var(--storm2);
-		color: #000;
-	}
+	
 	.account-btn {
 		display: flex;
 		align-items: center;
@@ -304,14 +301,20 @@
 		cursor: pointer;
 		color: var(--color);
 		&:hover {
-			background: var(--storm2);
+			background: var(--bg3);
 		}
 		&:active {
 			transform: translateY(1px);
 		}
-		&.selected {
-			background: var(--storm2);
+	
+	}
+	.selected {
+			background: var(--bg3);
+		color: var(--color);
+		border:2px solid var(--accent-blue)
 		}
+	.selected2 {
+		color: var(--color);
 	}
 
 	.label-right {
@@ -321,7 +324,7 @@
 		flex-shrink: 0;
 		align-items: center;
 		justify-content: center;
-		background: var(--bg4);
+		background: var(--bg3);
 		width: 3.5rem;
 		height: 3.5rem;
 		border: none;

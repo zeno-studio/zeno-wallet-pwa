@@ -219,9 +219,9 @@
 
 			<div class="form-label">
 				{#if isValidAddress === false}
-					<AlertTriangle class="icon18Y" /> <span class="alert">Invalid Address</span>
+					<AlertTriangle class="icon16Y" /> <span class="alert">Invalid Address</span>
 				{:else if error}
-					<AlertTriangle class="icon18Y" /> <span class="alert">{error}</span>
+					<AlertTriangle class="icon16Y" /> <span class="alert">{error}</span>
 				{/if}
 			</div>
 
@@ -279,7 +279,7 @@
 		height: 70%;
 		width: 38.4rem;
 		padding: 2rem;
-		background: var(--bg2);
+		background: var(--bg1);
 		border-radius: 1.6rem;
 		border: 1px solid var(--bg3);
 	}
@@ -292,7 +292,7 @@
 		height: 100vh;
 		width: 100vw;
 		padding: 2rem;
-		background: var(--bg2);
+		background: var(--bg1);
 		border-radius: 1.6rem;
 		border: 1px solid var(--bg3);
 	}
@@ -307,7 +307,7 @@
 		background-color: var(--bg);
 	}
 	.alert {
-		color: var(--warning);
+		color: var(--accent-yellow);
 		display: flex;
 		align-items: center;
 		margin: 1rem;
@@ -342,7 +342,7 @@
 		padding: 1rem 2rem;
 		border: 1px solid var(--bg3);
 		border-radius: 2rem;
-		background: var(--bg2);
+		background: var(--bg1);
 		color: var(--text);
 		font-size: 1.4rem;
 		height: 100%;
@@ -363,7 +363,7 @@
 		flex-direction: row;
 		background: none;
 		border: none;
-		background: var(--bg2);
+		background: var(--bg1);
 		color: var(--text);
 		border-radius: 1.6rem;
 		margin-bottom: 0.8rem;
@@ -436,7 +436,7 @@
 		margin-left: 1rem;
 		margin-right: 2rem;
 		border-radius: 50%;
-		background-color: var(--pink);
+		background-color: var(--primary);
 		color: #fff;
 		padding: 0px;
 		border: 1px solid var(--bg3);
@@ -478,7 +478,7 @@
 		align-items: center;
 		justify-content: flex-start;
 		flex-direction: row;
-		background: var(--bg2);
+		background: var(--bg1);
 		border: none;
 		height: 4.8rem;
 		border-top-left-radius: 1.6rem;
@@ -493,7 +493,7 @@
 		align-items: center;
 		justify-content: center;
 		height: 100%;
-		background: var(--bg2);
+		background: var(--bg1);
 		border: none;
 		border-top-right-radius: 1.6rem;
 		border-bottom-right-radius: 1.6rem;
@@ -526,7 +526,7 @@
 		height: 4.8rem;
 		border: none;
 		border-radius: 1.6rem;
-		background: var(--storm4);
+		background: var(--secondary);
 		box-sizing: border-box;
 		width: 100%;
 		padding: 1rem;
@@ -543,7 +543,7 @@
 		height: 90%;
 		width: 38.4rem;
 		padding: 1.6rem;
-		background: var(--bg2);
+		background: var(--bg1);
 		border-radius: 2rem;
 		border: 1px solid var(--bg3);
 		overflow: hidden;
@@ -554,7 +554,7 @@
 		font-size: 1.5rem;
 		width: 80%;
 		border-radius: 1.6rem;
-		background: var(--bg2);
+		background: var(--bg1);
 		border: none;
 	}
 
@@ -564,7 +564,7 @@
 		height: 10rem;
 		width: 80%;
 		border-radius: 1.6rem;
-		background: var(--bg2);
+		background: var(--bg1);
 		border: none;
 		resize: none;
 	}
@@ -575,7 +575,7 @@
 		font-weight: 600;
 		border: none;
 		border-radius: 1.6rem;
-		background: var(--bg2);
+		background: var(--bg1);
 		box-sizing: border-box;
 		width: 100%;
 		padding: 1rem;
@@ -587,7 +587,7 @@
 		font-weight: 600;
 		border: none;
 		border-radius: 1.6rem;
-		background: var(--pink);
+		background: var(--primary);
 		box-sizing: border-box;
 		width: 100%;
 		padding: 1rem;

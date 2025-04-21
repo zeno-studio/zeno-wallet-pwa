@@ -131,7 +131,7 @@
 		flex-direction: column;
 		justify-content: flex-start;
 		position: fixed;
-		top: 5rem;
+		top: 1rem;
 		height: 100vh;
 		width: 100vw;
 		padding: 2rem 2rem 8rem 2rem;

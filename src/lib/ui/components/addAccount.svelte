@@ -332,6 +332,7 @@
 		background: var(--bg1);
 		border-radius: 1.6rem;
 		border: 1px solid var(--bg3);
+		touch-action: none;
 	}
 	.modal-m {
 		display: flex;
@@ -346,6 +347,7 @@
 		border-top-left-radius: 1.6rem;
 		border-top-right-radius: 1.6rem;
 		border: 1px solid var(--bg3);
+		touch-action: none;
 	}
 	.gray-button {
 		display: flex;
@@ -379,7 +381,7 @@
 		height: 4.8rem;
 		border: none;
 		border-radius: 2.4rem;
-		background: var(--pink);
+		background: var(--primary);
 		box-sizing: border-box;
 		width: 100%;
 		padding: 1rem;
@@ -404,7 +406,7 @@
 		height: 4.8rem;
 		border: none;
 		border-radius: 1.6rem;
-		background: var(--pink);
+		background: var(--primary);
 		box-sizing: border-box;
 		width: 80%;
 		margin-top: 3.2rem;

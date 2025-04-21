@@ -29,6 +29,7 @@
 		fill: none;
 		border: none;
 		background: none;
+		margin-right: 1rem;
 	}
 	.item-button {
 		position: relative;
@@ -44,7 +45,7 @@
 	}
 
 	.active {
-		fill: var(--pink);
+		fill: var(--success);
 	}
 
 	.container {
