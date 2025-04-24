@@ -87,7 +87,7 @@
 		padding: 1rem;
 		cursor: pointer;
 		margin-bottom: 0.8rem;
-		border: 1px solid var(--hover2);
+		border: 1px solid var(--border);
 	}
 
 	.account-container {

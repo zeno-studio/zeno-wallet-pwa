@@ -163,7 +163,7 @@
 		align-items: center;
 		flex-direction: column;
 		font-size: 1rem;
-		background: var(--bg1);
+		background: var(--bg2);
 	}
 	.menu2 {
 		width: 100%;
@@ -203,7 +203,7 @@
 		justify-content: flex-start;
 		box-sizing: border-box;
 		right: 0;
-		background: var(--bg4);
+		background: var(--bg3);
 		padding: 0;
 		margin: 0;
 		width: 8rem;
@@ -291,7 +291,7 @@
 		height: 4rem;
 		width: 8rem;
 		margin-left: 0.2rem;
-		background-color: var(--bg1);
+		background-color: var(--bg);
 		z-index: 1;
 		border-radius: 2rem;
 		transition: 0.25s ease-out;

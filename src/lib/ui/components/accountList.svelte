@@ -231,7 +231,7 @@
 		display: flex;
 		position: relative;
 		background-color: none;
-		padding: 0.4rem;
+		padding: 0.2rem;
 		width: 30rem;
 		margin: 0 auto;
 		border-radius: 2.2rem;
@@ -272,10 +272,10 @@
 	.glider {
 		position: absolute;
 		display: flex;
-		left: 0.4rem;
+		left: 0.2rem;
 		height: 3.6rem;
 		width: 15rem;
-		background-color: var(--bg1);
+		background-color: var(--bg);
 		z-index: 1;
 		border-radius: 2rem;
 		transition: 0.25s ease-out;
