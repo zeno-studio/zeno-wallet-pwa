@@ -103,7 +103,7 @@
 		padding: 2rem 2rem 8rem 2rem;
 		background: var(--bg1);
 		border-radius: 1.6rem;
-		border: 1px solid var(--bg3);
+		border: 1px solid var(--border);
 		touch-action: none;
 		overflow-y: scroll;
 		scrollbar-width: none;
@@ -120,7 +120,7 @@
 		padding: 2rem 2rem 8rem 2rem;
 		background: var(--bg1);
 		border-radius: 1.6rem;
-		border: 1px solid var(--bg3);
+		border: 1px solid var(--border);
 		touch-action: none;
 		overflow-y: scroll;
 		scrollbar-width: none;
@@ -138,7 +138,7 @@
 		background: var(--bg1);
 		border-top-left-radius: 1.6rem;
 		border-top-right-radius: 1.6rem;
-		border: 1px solid var(--bg3);
+		border: 1px solid var(--border);
 		touch-action: none;
 		overflow-y: scroll;
 		scrollbar-width: none;
@@ -155,7 +155,7 @@
 		background: var(--bg1);
 		border-top-left-radius: 1.6rem;
 		border-top-right-radius: 1.6rem;
-		border: 1px solid var(--bg3);
+		border: 1px solid var(--border);
 		touch-action: none;
 		overflow-y: scroll;
 		scrollbar-width: none;

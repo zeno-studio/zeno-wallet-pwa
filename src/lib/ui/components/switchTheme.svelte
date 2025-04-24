@@ -35,7 +35,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color:var(--bg3);
+  background-color:var(--bg4);
   transition: .4s;
   border-radius: 2.8rem;
 

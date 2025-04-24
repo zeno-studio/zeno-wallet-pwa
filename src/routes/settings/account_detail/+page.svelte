@@ -87,7 +87,7 @@
 {/if}
 <div class={{ appBody: isSmallScreen.current, 'appBody-d': !isSmallScreen.current }}>
 	<div class="label-top">
-		<a class="top-back" href="/#/settings/account_manage">
+		<a class="arrowBack" href="/#/settings/account_manage">
 			<ArrowBack class="icon2A" />
 		</a>Account Information
 	</div>
@@ -364,14 +364,7 @@
 		border: none;
 		margin-bottom: 1rem;
 	}
-	.top-back {
-		position: absolute;
-		left: 1rem;
-		display: flex;
-		align-items: center;
-		border: none;
-		background: none;
-	}
+
 	.save {
 		padding: 0.4rem 0.8rem;
 		font-size: 1.5rem;
@@ -573,20 +566,6 @@
 		border: none;
 	}
 
-	.setting-dividing2 {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		flex-direction: column;
-		box-sizing: border-box;
-		width: 100%;
-		height: 1px;
-		background: var(--border);
-		border-radius: 1.6rem;
-		padding: 0;
-		margin-bottom: 2rem;
-		border: none;
-	}
 
 	.toggle-switch {
 		position: relative;

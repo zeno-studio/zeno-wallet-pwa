@@ -1,21 +1,23 @@
-export const en = `
-These Terms of Use (“Agreement”) set forth the general terms and conditions of your use of the SubWallet extension application, mobile application, and web dashboard application ("SubWallet Application") and any of its related products and services (collectively, “Services”). 
+export const terms_en = `
+# **Terms of Use**
+
+These Terms of Use (“Agreement”) set forth the general terms and conditions of your use of the ZenoWallet extension application, mobile application, and web dashboard application ("ZenoWallet Application") and any of its related products and services (collectively, “Services”). 
 
 This Agreement is legally binding between you (“User”, “you” or “your”) and this application developer (“Operator”, “we”, “us” or “our”). If you are entering into this Agreement on behalf of a business or other legal entity, you represent that you have the authority to bind such an entity to this Agreement, in which case the terms “User”, “you” or “your” shall refer to such entity. 
 
-If you do not have such authority, or if you do not agree with the terms of this Agreement, you must not accept this Agreement and may not access and use the SubWallet Application and Services. By accessing and using the SubWallet Application and Services, you acknowledge that you have read, understood, and agree to be bound by the terms of this Agreement. You acknowledge that this Agreement is a contract between you and the Operator, even though it is electronic and is not physically signed by you, and it governs your use of the SubWallet Application and Services.
+If you do not have such authority, or if you do not agree with the terms of this Agreement, you must not accept this Agreement and may not access and use the ZenoWallet Application and Services. By accessing and using the ZenoWallet Application and Services, you acknowledge that you have read, understood, and agree to be bound by the terms of this Agreement. You acknowledge that this Agreement is a contract between you and the Operator, even though it is electronic and is not physically signed by you, and it governs your use of the ZenoWallet Application and Services.
 
 This Agreement is written in various languages. If there is any dispute, the English language shall prevail.
 
 #### **Accounts and membership**
 
-If you create a wallet in the SubWallet Application, you are responsible for maintaining the security of your wallet and you are fully responsible for all activities that occur with the wallet and any other actions taken in connection with it. You should understand that we do not have access to any wallet-related information on our side, nor are we able to send it to any other party. 
+If you create a wallet in the ZenoWallet Application, you are responsible for maintaining the security of your wallet and you are fully responsible for all activities that occur with the wallet and any other actions taken in connection with it. You should understand that we do not have access to any wallet-related information on our side, nor are we able to send it to any other party. 
 
-All such information is stored locally on your device(s) which we do not have access to and you bear full responsibility for its (their) safety. Your wallet private keys/seed phrases are not backed up along with other data so if you delete SubWallet Application, it will be impossible to restore your keys from a backup.
+All such information is stored locally on your device(s) which we do not have access to and you bear full responsibility for its (their) safety. Your wallet private keys/seed phrases are not backed up along with other data so if you delete ZenoWallet Application, it will be impossible to restore your keys from a backup.
 
 #### **Privacy Policy**
 
-We respect your privacy and are committed to protecting it through our compliance with this privacy policy (“Policy”). This Policy describes the types of information we may collect from you or that you may provide on the SubWallet Application, SubWallet.App website, and any of their related products and services, and our practices for collecting, using, maintaining, protecting, and disclosing that information. By accessing and using the Services, you acknowledge that you have read, understood, and agree to be bound by the terms of this Policy. This Policy does not apply to the practices of companies that we do not own or control, or to individuals that we do not employ or manage. 
+We respect your privacy and are committed to protecting it through our compliance with this privacy policy (“Policy”). This Policy describes the types of information we may collect from you or that you may provide on the ZenoWallet Application, ZenoWallet website, and any of their related products and services, and our practices for collecting, using, maintaining, protecting, and disclosing that information. By accessing and using the Services, you acknowledge that you have read, understood, and agree to be bound by the terms of this Policy. This Policy does not apply to the practices of companies that we do not own or control, or to individuals that we do not employ or manage. 
 
 ##### **Information category**
 
@@ -27,7 +29,7 @@ Your Sensitive information is not collected or stored by us. In particular, it i
 
 *Personal information & Non-personal information*
 
-You can access and use the Services without telling us who you are or revealing any information by which someone could identify you as a specific, identifiable individual. In other words, no Personal information is collected by our Services. This applies to all categories of users, including children under the age of 18. Please note that our extension and app have been uploaded to the Store on desktop browsers (Chrome, Brave, Edge & Firefox) and mobile (App Store and Play Store). These stores may track some of your information and activities including but not limited to log data, cookies, etc.
+You can access and use the Services without telling us who you are or revealing any information by which someone could identify you as a specific, identifiable individual. In other words, no Personal information is collected by our Services. 
 
 ##### **Disclosure of information**
 
@@ -43,13 +45,13 @@ Some browsers incorporate a Do Not Track feature that signals to websites you vi
 
 #### **Links to other resources**
 
-Although the SubWallet Application and Services may link to other resources (such as websites, other applications, etc.), we are not, directly or indirectly, implying any approval, association, sponsorship, endorsement, or affiliation with any linked resource, unless specifically stated herein. We are not responsible for examining or evaluating, and we do not warrant the offerings of any businesses or individuals or the content of their resources. 
+Although the ZenoWallet Application and Services may link to other resources (such as websites, other applications, etc.), we are not, directly or indirectly, implying any approval, association, sponsorship, endorsement, or affiliation with any linked resource, unless specifically stated herein. We are not responsible for examining or evaluating, and we do not warrant the offerings of any businesses or individuals or the content of their resources. 
 
-We do not assume any responsibility or liability for the actions, products, services, and content of any other third parties. You should carefully review the legal statements and other conditions of use of any resource that you access through a link in the SubWallet Application. Your linking to any other off-site resources is at your own risk.
+We do not assume any responsibility or liability for the actions, products, services, and content of any other third parties. You should carefully review the legal statements and other conditions of use of any resource that you access through a link in the ZenoWallet Application. Your linking to any other off-site resources is at your own risk.
 
 #### **Prohibited uses**
 
-In addition to other terms as set forth in the Agreement, you are prohibited from using the SubWallet Application and Services:
+In addition to other terms as set forth in the Agreement, you are prohibited from using the ZenoWallet Application and Services:
 
 1. For any unlawful purpose
 2. To solicit others to perform or participate in any unlawful acts
@@ -57,18 +59,18 @@ In addition to other terms as set forth in the Agreement, you are prohibited fro
 4. To infringe upon or violate our intellectual property rights or the intellectual property rights of others
 5. To harass, abuse, insult, harm, defame, slander, disparage, intimidate, or discriminate based on gender, sexual orientation, religion, ethnicity, race, age, national origin, or disability
 6. To submit false or misleading information
-7. To upload or transmit viruses or any other type of malicious code that will or may be used in any way that will affect the functionality or operation of the SubWallet Application and Services, third-party products and services, or the Internet
+7. To upload or transmit viruses or any other type of malicious code that will or may be used in any way that will affect the functionality or operation of the ZenoWallet Application and Services, third-party products and services, or the Internet
 8. To spam, phish, pharm, pretext, spider, crawl, or scrape
 9. For any obscene or immoral purpose
-10. To interfere with or circumvent the security features of the SubWallet Application and Services, third-party products and services, or the Internet.
+10. To interfere with or circumvent the security features of the ZenoWallet Application and Services, third-party products and services, or the Internet.
     
 #### **Intellectual property rights**
 
 “Intellectual Property Rights” means all present and future rights conferred by statute, common law, or equity in or in relation to any copyright and related rights, trademarks, designs, patents, inventions, goodwill, and the right to sue for passing off, rights to inventions, rights to use, and all other intellectual property rights, in each case whether registered or unregistered and including all applications and rights to apply for and be granted, rights to claim priority from, such rights and all similar or equivalent rights or forms of protection and any other results of intellectual activity which subsist or will subsist now or in the future in any part of the world.
 
-This Agreement does not transfer to you any intellectual property owned by the Operator or third parties, and all rights, titles, and interests in and to such property will remain (as between the parties) solely with the Operator. All trademarks, service marks, graphics, and logos used in connection with the SubWallet Application and Services, are trademarks or registered trademarks of the Operator or its licensors.
+This Agreement does not transfer to you any intellectual property owned by the Operator or third parties, and all rights, titles, and interests in and to such property will remain (as between the parties) solely with the Operator. All trademarks, service marks, graphics, and logos used in connection with the ZenoWallet Application and Services, are trademarks or registered trademarks of the Operator or its licensors.
 
-Other trademarks, service marks, graphics, and logos used in connection with the SubWallet Application and Services may be the trademarks of other third parties. Your use of the SubWallet Application and Services grants you no right or license to reproduce or otherwise use any of the Operator or third-party trademarks.
+Other trademarks, service marks, graphics, and logos used in connection with the ZenoWallet Application and Services may be the trademarks of other third parties. Your use of the ZenoWallet Application and Services grants you no right or license to reproduce or otherwise use any of the Operator or third-party trademarks.
 
 #### **Limitation of liability**
 
@@ -76,7 +78,7 @@ To the fullest extent permitted by applicable law, in no event will the Operator
 
 #### **Indemnification**
 
-You agree to indemnify and hold the Operator and its affiliates, directors, officers, employees, agents, suppliers, and licensors harmless from and against any liabilities, losses, damages, or costs, including reasonable attorneys’ fees, incurred in connection with or arising from any third-party allegations, claims, actions, disputes, or demands asserted against any of them as a result of or relating to your use of the SubWallet Application and Services or any willful misconduct on your part.
+You agree to indemnify and hold the Operator and its affiliates, directors, officers, employees, agents, suppliers, and licensors harmless from and against any liabilities, losses, damages, or costs, including reasonable attorneys’ fees, incurred in connection with or arising from any third-party allegations, claims, actions, disputes, or demands asserted against any of them as a result of or relating to your use of the ZenoWallet Application and Services or any willful misconduct on your part.
 
 #### **Severability**
 
@@ -88,19 +90,19 @@ The formation, interpretation, and performance of this Agreement and any dispute
 
 #### **Changes and amendments**
 
-We reserve the right to modify this Agreement or its terms related to the SubWallet Application and Services at any time at our discretion. When we do, we will revise the updated date at the bottom of this page. We may also provide notice to you in other ways at our discretion, such as through the contact information you have provided.
+We reserve the right to modify this Agreement or its terms related to the ZenoWallet Application and Services at any time at our discretion. When we do, we will revise the updated date at the bottom of this page. We may also provide notice to you in other ways at our discretion, such as through the contact information you have provided.
 
-An updated version of this Agreement will be effective immediately upon the posting of the revised Agreement unless otherwise specified. Your continued use of the SubWallet Application and Services after the effective date of the revised Agreement (or such other act specified at that time) will constitute your consent to those changes.
+An updated version of this Agreement will be effective immediately upon the posting of the revised Agreement unless otherwise specified. Your continued use of the ZenoWallet Application and Services after the effective date of the revised Agreement (or such other act specified at that time) will constitute your consent to those changes.
 
 #### **Acceptance of these terms**
 
-You acknowledge that you have read this Agreement and agree to all its terms and conditions. By accessing and using the SubWallet Application and Services you agree to be bound by this Agreement. If you do not agree to abide by the terms of this Agreement, you are not authorized to access or use the SubWallet Application and Services.
+You acknowledge that you have read this Agreement and agree to all its terms and conditions. By accessing and using the ZenoWallet Application and Services you agree to be bound by this Agreement. If you do not agree to abide by the terms of this Agreement, you are not authorized to access or use the ZenoWallet Application and Services.
 
 #### **Contacting us**
 
 If you have any questions, concerns, or complaints regarding this Agreement, we encourage you to contact us using the details below:
 
-**Email:** [**agent@subwallet.app**](mailto:agent@subwallet.app)
+**Email:** [**zenostudio@proton.me**](mailto:zenostudio@proton.me)
 
-Last modified Jan 10, 2024.
+Last modified may 5, 2025.
 `;

@@ -324,7 +324,7 @@
 		flex-shrink: 0;
 		align-items: center;
 		justify-content: center;
-		background: var(--bg3);
+		background: var(--bg4);
 		width: 3.5rem;
 		height: 3.5rem;
 		border: none;
