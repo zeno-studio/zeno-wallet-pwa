@@ -1,8 +1,26 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" fill="none">
-  <rect width="256" height="256" fill="#52CC93" ry="30" />
-  <ellipse stroke="#FFF" fill="#FFF" cx="186" cy="80" rx="32" ry="32"/>
-  <path d="M115 92c41 0 75 31 75 70H40c0-39 34-70 75-70z" fill="#FFF" stroke="#FFF"/>
-  <ellipse stroke="#FFF" fill="#FFF" cx="70" cy="187" rx="18" ry="18"/>
-  <ellipse stroke="#FFF" fill="#FFF" cx="161" cy="187" rx="18" ry="18"/>
-  <ellipse stroke="#FFF" fill="#52CC93" cx="199" cy="83" rx="6" ry="9"/>
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .bg { fill: #1d9bf0; }
+    .filled { fill: #fff; }
+    .stroked { stroke: #fff; stroke-width: 5; fill: none; }
+    .path { stroke: #fff; stroke-width: 10; fill: none; }
+  </style>
+  <rect width="500" height="500" class="bg" />
+  <ellipse class="filled" cx="375" cy="125" rx="30" ry="30"/>
+  <ellipse class="filled" cx="375" cy="375" rx="30" ry="30"/>
+  <ellipse class="stroked" cx="380" cy="291.66" rx="10" ry="10"/>
+  <ellipse class="stroked" cx="380" cy="208.33" rx="10" ry="10"/>
+  <ellipse class="filled" cx="125" cy="125" rx="30" ry="30"/>
+  <ellipse class="filled" cx="125" cy="375" rx="30" ry="30"/>
+  <ellipse class="stroked" cx="125" cy="291.66" rx="10" ry="10"/>
+  <ellipse class="stroked" cx="125" cy="208.33" rx="10" ry="10"/>
+  <ellipse class="filled" cx="208.33" cy="125" rx="30" ry="30"/>
+  <ellipse class="filled" cx="291.66" cy="125" rx="30" ry="30"/>
+  <ellipse class="stroked" cx="208.33" cy="208.33" rx="10" ry="10"/>
+  <ellipse class="filled" cx="291.66" cy="208.33" rx="30" ry="30"/>
+  <ellipse class="filled" cx="208.33" cy="291.66" rx="30" ry="30"/>
+  <ellipse class="stroked" cx="291.66" cy="291.66" rx="10" ry="10"/>
+  <ellipse class="filled" cx="208.33" cy="375" rx="30" ry="30"/>
+  <ellipse class="filled" cx="291.66" cy="375" rx="30" ry="30"/>
+  <path class="path" d="M125 125L375 125L125 375L375 375"/>
 </svg>
