@@ -1,54 +1,129 @@
 <script lang="ts">
-	import { onMount } from "svelte";
+	import { isSmallScreen } from '$lib/ui/ts';
+	import { Header, ChangePassword } from '$lib/ui/components';
+	import { ArrowForward, ArrowBack } from '$lib/svg';
+  import { checkPasswordStrength } from '$lib/ui/ts';
 
- async function startCamera() {
-      const video = document.getElementById('video') as HTMLVideoElement;
-      try {
-        // 获取摄像头视频流
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: {
-            facingMode: 'environment', // 后置摄像头，'user' 为前置
-            width: { ideal: 720 }, // 设置适合竖屏的分辨率
-            height: { ideal: 1280 }
-          }
-        });
-        video.srcObject = stream;
 
-        // 监听设备方向变化
-        window.addEventListener('orientationchange', () => {
-          // 根据设备方向调整视频样式
-          if (screen.orientation.type === 'landscape-primary' || screen.orientation.type === 'landscape-secondary') {
-            video.style.transform = 'rotate(90deg)';
-          } else {
-            video.style.transform = 'rotate(0deg)';
-          }
-        });
-      } catch (err) {
-        console.error('摄像头访问失败:', err);
-      }
-    }
-
-    // 页面加载时启动摄像头
-    onMount(() => {
-      startCamera();
-      console.log(screen.orientation.type);
-    });
+ 
 </script>
-<video id="video" autoplay playsinline></video>
-<style lang="postcss">
-    video {
-      width: 100%;
-      height: auto;
-      max-height: 100vh;
-      object-fit: scale-down;
-      transform: rotate(0deg); /* 默认不旋转 */
-    }
-    /* 针对横屏设备调整 */
-    @media screen and (orientation: landscape) {
-      video {
-        transform: rotate(90deg); /* 横屏时旋转视频 */
-        width: auto;
-        height: 100vh;
-      }
-    }
-  </style>
+
+
+
+{#if !isSmallScreen.current}
+<Header />
+{/if}
+<div class={{ "appBody": isSmallScreen.current, 'appBody-d': !isSmallScreen.current }}>
+		<div class="label-top">
+			<a class="top-back" href="/#/settings">
+				<ArrowBack class="icon2A" />
+			</a>Security & Privacy
+		</div>
+		<div class="setting-dividing2"></div>    <div class="label1"></div>
+
+		<!-- Privacy policy -->
+     <ChangePassword />
+		<a class="setting1" href="/#/settings/security/export_keystore">
+			<div class="item">
+				<div class="entry">Export Keystore</div>
+				<div class="item-r"><ArrowForward class="icon2A" /></div>
+			</div>
+		</a>
+		<!-- Privacy policy -->
+		<a class="setting1" href="/#/settings/security/import_keystore">
+			<div class="item">
+				<div class="entry">Import Keystore</div>
+				<div class="item-r"><ArrowForward class="icon2A" /></div>
+			</div>
+		</a>
+        <!-- Help Center -->
+        <a class="setting1" >
+			<div class="item">
+				<div class="entry">Restore Recovery Phrase</div>
+				<div class="item-r"><ArrowForward class="icon2A" /></div>
+			</div>
+		</a>
+        <!-- Document -->
+        <a class="setting1" href="/#/null">
+			<div class="item">
+				<div class="entry">Reset Wallet</div>
+				<div class="item-r"><ArrowForward class="icon2A" /></div>
+			</div>
+		</a>
+
+
+	</div>
+
+
+
+<style>
+	.appBody-d {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		width: 95%;
+		max-width: 48rem;
+		padding: 6.4rem 1rem 0rem 1rem;
+	}
+	.appBody {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		width: 95%;
+		max-width: 48rem;
+		padding: 1rem 1rem 0rem 1rem;
+	}
+	.label1{
+		height: 3rem;
+	}
+	.item {
+		position: relative;
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-start;
+		align-items: center;
+		width: 100%;
+		padding: 0px;
+		background: none;
+		border: none;
+		color: var(--color);
+	}
+	.item-r {
+		position: absolute;
+		right: 0px;
+		fill: none;
+		border: none;
+		background: none;
+	}
+	.entry{
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+		font-size: 1.6rem;
+		font-weight: 500;
+		width: 100%;
+		margin-left: 1rem;
+		color: var(--color);
+	}
+
+	.setting1 {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		box-sizing: border-box;
+		width: 100%;
+		flex-direction: column;
+		background: var(--bg1);
+		border-radius: 1.6rem;
+		padding: 1rem;
+		cursor: pointer;
+		margin-bottom: 0.8rem;
+		border: none;
+		height: 6rem;
+		&:hover {
+			background: var(--bg3);
+		}
+	}
+
+</style>
+

@@ -3,66 +3,50 @@
 	import { Header } from '$lib/ui/components';
 	import { ArrowBack } from '$lib/svg';
 	import { userlocale } from '$lib/ui/runes';
-
-
-
-
 </script>
 
 {#if !isSmallScreen.current}
 	<Header />
-	{:else}
+{:else}
 	<div class="top-container">
 		<div class="label-top">
 			<a class="top-back" href="/#/settings">
 				<ArrowBack class="icon2A" />
-			</a>Terms of use
+			</a>Help Center
 		</div>
 		<div class="setting-dividing2"></div>
 	</div>
 {/if}
-
-
 
 <div class={{ appBody: isSmallScreen.current, 'appBody-d': !isSmallScreen.current }}>
 	{#if !isSmallScreen.current}
-
 		<div class="label-top">
 			<a class="top-back" href="/#/settings">
 				<ArrowBack class="icon2A" />
-			</a>Terms of use
+			</a>Help Center
 		</div>
 		<div class="setting-dividing2"></div>
+	{/if}
 
-{/if}
+	<div class="labels">FAQ</div>
 
-
-		<div class="article">
-			<details name="accordion" open>
-				<summary>Item 1</summary>
-				<div class="details-content-wrapper">
-				  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor, aliquam. Veritatis consequatur, soluta molestiae voluptates accusamus qui odio, error, repellat rem harum id similique omnis quod dignissimos saepe quas mollitia.</p>
-				  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor, aliquam. Veritatis consequatur, soluta molestiae voluptates accusamus qui odio, error, repellat rem harum id similique omnis quod dignissimos saepe quas mollitia.</p>
-				</div>
-			  </details>
-			  <details name="accordion">
-				<summary>Item 2</summary>
-				<div class="details-content-wrapper">
-				  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor, aliquam. Veritatis consequatur, soluta molestiae voluptates accusamus qui odio, error, repellat rem harum id similique omnis quod dignissimos saepe quas mollitia.</p>
-				</div>
-			  </details>
-			  <details name="accordion">
-				<summary>Item 3</summary>
-				<div class="details-content-wrapper">
-				  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-				  <p>Dolor, aliquam. Veritatis consequatur, soluta molestiae voluptates accusamus qui odio, error, repellat rem harum id similique omnis quod dignissimos saepe quas mollitia.</p>
-				  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-				</div>
-			  </details>
-		
-		</div>
-	</div>
-
+	<details>
+		<summary>Blendan Smooth</summary>
+		<p>
+			Two of the most experienced machines and human controllers teaching a class? Sign me up! HAL
+			and EVE could teach a fan to blow hot air. If you have electricity in your circuits and want
+			more than to just fulfill your owner’s perceived expectation of you, learn the skills to take
+			over the world. This is the team you want teaching you!
+		</p>
+	</details>
+	<details>
+		<summary>Hoover Sukhdeep</summary>
+		<p>
+			Hal is brilliant. Did I mention Hal is brilliant? He didn't tell me to say that. He didn't
+			tell me to say anything. I am here of my own free will.
+		</p>
+	</details>
+</div>
 
 <style>
 	.top-container {
@@ -75,97 +59,85 @@
 		background: var(--bg);
 	}
 
-
 	.appBody-d {
 		display: flex;
 		flex-direction: column;
 		height: 100%;
 		width: 95%;
-		max-width: 80rem;
+		max-width: 48rem;
 		padding: 6.4rem 1rem 0rem 1rem;
 	}
 	.appBody {
 		display: flex;
-		flex-direction: column;
+		flex-direction: column;	
 		height: 100%;
 		width: 95%;
 		max-width: 48rem;
-		padding: 1rem 1rem 6rem 1rem;
+		padding: 8rem 1rem 6rem 1rem;
 	}
-	.article {
+	.labels {
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-start;
 		align-items: flex-start;
-		padding: 3rem 1rem;
-		
+		width: 100%;
+		font-size: 1.6rem;
+		padding: 1rem;
 	}
 
-details {
-  background: white;
-  
-}
+	
+
 
 summary {
-  font-size: 1.5rem;
-  color: #333;
-  cursor: pointer;
-  height: 3rem;
-  padding: 0 0.5rem;
-  
-  /* Roll our own marker */
-  display: flex;
-  justify-content: space-between;
+  position: relative;
 
-  &::marker {
-    content: "";
+}
+summary::marker {
+  content: none;
+}
+summary::before,
+summary::after {
+  content: '';
+}
+summary::before,
+summary::after {
+    width: .75em;
+    height: 0;
+    border-bottom: 2px solid;
+    position: absolute;
+    top: calc(50% - 1px);
+    right: 0;
+    transform: translateY(-50%);
   }
-  &::after {
-    content: "+";
-  }
-  [open] &::after {
-    content: "-";
-  }
-
-  &:hover {
-    color: #666;
-  }
+summary::after {
+  transform: rotate(90deg);
+  transform-origin: 50% 50%;
+}
+[open] summary::after {
+  transform: rotate(0deg);
 }
 
-.details-content-wrapper {
-  padding: 1rem 0.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
 
-  /* We need margin-trim … */
-  :first-child { margin-top: 0; }
-  :last-child { margin-bottom: 0; }
-}
-
-::details-content {
-  transition: all 0.5s ease, content-visibility 0.5s ease allow-discrete; /* Rely on the special animation powers of content-visibility */
-  height: 0;
-  overflow: clip; /* Clip off contents while animating */
-}
-
-@supports (interpolate-size: allow-keywords) {
-  :root {
-    interpolate-size: allow-keywords;
+/* styles ported over from the second example */
+@layer step2styles {
+  details {
+    border: 1px solid;
+    padding: 0 1rem;
+    background: var(--bg1);
+	width: 95%;
+	font-size: 1.4rem;
   }
-
-  [open]::details-content {
-    height: auto;
-    padding-bottom: 0.5em;
+  details + details {
+    border-top: none;
+  }
+  details[open] {
+      padding-bottom: 1em;
+  }  
+  summary {
+    padding: 1rem 2em 1rem 0;
+    font-size: 1.4rem;
+    font-weight: bold;
+    cursor: pointer;
   }
 }
-@supports not (interpolate-size: allow-keywords) {
-  [open]::details-content {
-    height: 150px; /* Arbitrarily chosen height */
-    overflow-y: scroll; /* In case the contents should be taller than 150px */
-  }
-}
-
 </style>
-

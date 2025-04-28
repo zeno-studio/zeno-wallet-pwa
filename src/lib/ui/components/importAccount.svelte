@@ -6,11 +6,10 @@
 		isValidMn,
 		type Settings
 	} from '$lib/wallet/common';
-	import { EyeIcon, EyeOffIcon, CloseIcon, AlertTriangle, ArrowBack, HelpFilled } from '$lib/svg';
+	import { EyeIcon, EyeOffIcon, CloseIcon, AlertTriangle, ArrowBack } from '$lib/svg';
 	import { accountState, saveMidPass } from '$lib/wallet/runes';
 	import { fade, fly } from 'svelte/transition';
 	import { checkPasswordStrength } from '$lib/ui/ts';
-	import { goto } from '$app/navigation';
 	import { Gesture } from '@use-gesture/vanilla';
 
 	let modalOpen = $state(false);
