@@ -13,6 +13,7 @@ export { default as ImportAccount } from "./importAccount.svelte";
 export { default as Scanner } from "./scanner.svelte";
 export { default as CurrencySelector } from "./currencySelector.svelte";
 export { default as Modal } from "./modal.svelte";
+export { default as ChangePassword } from "./changePassword.svelte";
 
 
 

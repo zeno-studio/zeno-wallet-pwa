@@ -134,8 +134,8 @@
 	<!--group3 -->
 	<div class="setting">
 		<a class="setting-entry" href="/#/settings/active_chains">
-			<div class="icon-container" style="background: var(--accent-cyan-back)">
-				<ExplorerIcon class="icon16C" />
+			<div class="icon-container" style="background: var(--accent-purple-back)">
+				<ExplorerIcon class="icon16PP" />
 			</div>
 			<div class="item-content">
 				<div class="label-m">Active Chains</div>
@@ -146,8 +146,8 @@
 		<div class="setting-dividing"></div>
 
 		<a class="setting-entry" href="/#/settings/address_book">
-			<div class="icon-container" style="background: var(--accent-orange-back)">
-				<BookIcon class="icon16O" />
+			<div class="icon-container" style="background: var(--accent-purple-back)">
+				<BookIcon class="icon16PP" />
 			</div>
 			<div class="item-content">
 				<div class="label-m">Address Book</div>

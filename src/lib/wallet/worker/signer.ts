@@ -13,8 +13,7 @@ import { packMn, restoreMn, type KeyringType } from '$lib/wallet/common';
 let isLocked = true;
 let isAutoLock = true;
 let timeout = 1000 * 60 * 15;
-const psReplacer = hexToBytes('0000000000000000000000000000000000000000000000000000000000000000');
-let midpass = psReplacer;
+let midpass:Uint8Array = new Uint8Array(32);
 onmessage = ({ data }) => {
 	switch (data.method) {
 		case 'isLocked':
@@ -80,7 +79,7 @@ function setTime(time: number) {
 			isLocked = true;
 		}, timeout);
 		setTimeout(() => {
-			midpass = psReplacer;
+			midpass.fill(0);
 		}, timeout + 60000);
 		postMessage({
 			success: true
@@ -96,7 +95,7 @@ function saveMidPass(password: string, salt: string) {
 			isLocked = true;
 		}, timeout);
 		setTimeout(() => {
-			midpass = psReplacer;
+			midpass.fill(0);
 		}, timeout + 60000);
 		postMessage({
 			success: true
@@ -116,7 +115,7 @@ function saveMidPassNotPost(password: string, salt: string) {
 			isLocked = true;
 		}, timeout);
 		setTimeout(() => {
-			midpass = psReplacer;
+			midpass.fill(0);
 		}, timeout + 60000);;
 	}
 }
@@ -139,18 +138,18 @@ async function signEvmTx(tx: any, account: Account, password?: string, salt?: st
 	}
 
 	// if wallet is not locked
-	if ((!isAutoLock || !isLocked) && midpass !== psReplacer) {
+	if ((!isAutoLock || !isLocked) && !midpass.every(byte => byte === 0)) {
 		const mn = await reBuildMn();
 		signEvmTransaction(tx, account, mn);
 	}
-	if ((!isAutoLock || !isLocked) && midpass === psReplacer && ps !== undefined && s !== undefined) {
+	if ((!isAutoLock || !isLocked) && midpass.every(byte => byte === 0) && ps !== undefined && s !== undefined) {
 		saveMidPass(ps, s);
 		const mn = await reBuildMn();
 		signEvmTransaction(tx, account, mn);
 	}
 	if (
 		(!isAutoLock || !isLocked) &&
-		midpass === psReplacer &&
+		midpass.every(byte => byte === 0) &&
 		(ps === undefined || s === undefined)
 	) {
 		postMessage({
