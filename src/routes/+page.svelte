@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {  CreateAccount, ImportAccount, Footer, Header } from '$lib/ui/components';
+	import {  CreateAccount, ImportAccount, Footer, Header,Modal,ChainSelector } from '$lib/ui/components';
 	import {
 		ReceiveIcon,
 		CloseIcon,
@@ -14,6 +14,7 @@
 	let tab = $state<'token' | 'nft' | 'activity'>('token');
 	metadata.title = 'Assets';
 	metadata.description = 'Assets';
+	let modalOpen =$state(false)
 </script>
 
 <Header />
@@ -82,7 +83,7 @@
 				<span class="glider"></span>
 			</div>
 		</div>
-		<button class="chain">
+		<button class="chain" onclick={()=>{modalOpen=true}}>
 			<img class="icon-chain" src="/chain/polkadot.svg" alt="" />
 			<ArrowDown class="icon2A" />
 		</button>
@@ -99,6 +100,12 @@
 	</div>
 </div>
 <Footer />
+
+{#snippet chain()}
+<ChainSelector  />
+{/snippet}
+
+<Modal bind:modalName={modalOpen} mode="half" content={chain} />
 
 <style lang="postcss">
 	.appBody {

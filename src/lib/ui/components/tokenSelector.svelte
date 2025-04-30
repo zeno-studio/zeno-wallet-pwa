@@ -1,19 +1,8 @@
 <script lang="ts">
 	import { PinIcon, SearchIcon, StarIcon } from '$lib/svg';
 	import { accountState, chainState } from '$lib/wallet/runes';
-	import { type ERC20Asset, type CurrencyAsset, ethereumTonkens, Currencies } from '$lib/wallet/common';
+	import { ethereumTonkens} from '$lib/wallet/common';
 
-	let pinnedtoken = new Set();
-	let tokenlist = new Map<string, ERC20Asset | CurrencyAsset>([]);
-	const tokens = [...tokenlist];
-
-	function createTokenList() {
-		tokenlist.set(
-			chainState.currentChain.nativeCurrency.symbol,
-			Currencies.get(chainState.currentChain.id) as CurrencyAsset
-		);
-		ethereumTonkens.forEach((token) => tokenlist.set(token.symbol, token));
-	}
 </script>
 
 <div class="container">

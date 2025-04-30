@@ -19,6 +19,7 @@ export type Settings = {
 	hiddenApps: App[];
 	hiddenChains: number[];
 	currency: string;
+	fiat: string;
 	isBackup: boolean;
 };
 
@@ -33,15 +34,16 @@ export const defaultSettings: Settings = {
 	activeApps: [],
 	hiddenApps: [],
 	hiddenChains: [],
-	currency: 'USD',
+	currency: 'ETH',
+	fiat: 'USD',
 	isBackup: false,
 };
 
 export type AccessStatus = 'APPROVED' | 'DENIED';
 export type HexString = `0x${string}`;
-export type AddressType = 'EVM' |'POLKADOT'|'';
+export type AddressType = 'EVM' | 'POLKADOT' | '';
 export type KeyringType = 'secp256k1' | 'ed25519' | 'sr25519';
-export type AccountType = 'local' | 'passkey' | 'hardware' ;
+export type AccountType = 'local' | 'passkey' | 'hardware';
 
 export interface Account {
 	name: string;
@@ -98,26 +100,6 @@ export interface Vault {
 // 	}
 //   }
 
-export interface ZenoKeystore {
-	wallet: string;
-	crypto: {
-	  cipher: string,
-	  ciphertext: string,
-	  kdf: string,
-	  kdfparams: {
-		n: number,
-		r: number,
-		p: number,
-		dklen: number,
-		salt: string
-	  },
-	}
-}
-
-
-
-
-
 export interface Chain {
 	chainId: number;
 	name: string;
@@ -127,63 +109,37 @@ export interface Chain {
 		decimals: number;
 	};
 	rpcUrls: {
-		http: string[];
-		webSocket?: string[];
-	};
-	blockExplorers: {
-		url: string[];
-	};
-	contracts?: {
-		multicall3: {
-			address: string;
-			blockCreated: number;
+		http: {
+			public: string;
+			custom?: string;
+		};
+		webSocket?: {
+			public?: string;
+			custom?: string;
 		};
 	};
-	logoPath: string;
+	blockExplorers: string;
+	multicall3?: {
+		address: string;
+		blockCreated: number;
+	};
+	contracts?: any;
 	testnet: boolean;
 }
 
-export interface Fiat {
+export type Fiat = {
 	name: string;
 	symbol: string;
-	iconPath: string;
 }
 
-export interface CurrencyAsset {
-	type: 'currency';
+export type Token = {
 	chainId: number;
+	type: 'currency' | 'erc-20' | 'erc-777' | 'erc-1155' | "other";
+	decimals: number;
 	symbol: string;
 	name: string;
-	decimals: number;
-	iconPath: string;
-}
-
-export interface NFTAsset {
-	type: NFTAssetType;
-	chainId: number;
-	symbol: string;
-	name: string;
-	decimals: number;
-	tokenId: number;
-	uri: string;
-	contract: string;
-}
-
-export interface ERC20Asset {
-	type: 'erc-20';
-	chainId: number;
-	symbol: string;
-	name: string;
-	decimals: number;
-	iconPath: string;
-	contract: string;
-}
-
-export type AssetType = NFTAssetType | TokenType;
-
-export type NFTAssetType = 'erc-721' | 'erc-1155';
-
-export type TokenType = 'currency' | 'erc-20';
+	contract?: string;
+};
 
 export type TxParticipant = {
 	address: string;
@@ -213,73 +169,13 @@ export type WalletBackupData = {
 export interface EIP1193Request {
 	method: string;
 	params?: any[];
-  }
-  
-  export interface MessagePayload {
+}
+
+export interface MessagePayload {
 	type: string;
 	id?: string;
 	payload?: EIP1193Request | any;
 	result?: any;
 	error?: string;
 	event?: string;
-  }export interface EIP1193Request {
-	method: string;
-	params?: any[];
-  }
-  
-  export interface MessagePayload {
-	type: string;
-	id?: string;
-	payload?: EIP1193Request | any;
-	result?: any;
-	error?: string;
-	event?: string;
-  }export interface EIP1193Request {
-	method: string;
-	params?: any[];
-  }
-  
-  export interface MessagePayload {
-	type: string;
-	id?: string;
-	payload?: EIP1193Request | any;
-	result?: any;
-	error?: string;
-	event?: string;
-  }export interface EIP1193Request {
-	method: string;
-	params?: any[];
-  }
-  
-  export interface MessagePayload {
-	type: string;
-	id?: string;
-	payload?: EIP1193Request | any;
-	result?: any;
-	error?: string;
-	event?: string;
-  }export interface EIP1193Request {
-	method: string;
-	params?: any[];
-  }
-  
-  export interface MessagePayload {
-	type: string;
-	id?: string;
-	payload?: EIP1193Request | any;
-	result?: any;
-	error?: string;
-	event?: string;
-  }export interface EIP1193Request {
-	method: string;
-	params?: any[];
-  }
-  
-  export interface MessagePayload {
-	type: string;
-	id?: string;
-	payload?: EIP1193Request | any;
-	result?: any;
-	error?: string;
-	event?: string;
-  }
+}

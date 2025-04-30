@@ -5,12 +5,11 @@ export const westend: Chain = {
 	name: 'Westend',
 	nativeCurrency: { name: 'wnd', symbol: 'WND', decimals: 18 },
 	rpcUrls: {
-		http: ['https://westend-asset-hub-eth-rpc.polkadot.io']
+		http: {
+			public: 'https://westend-asset-hub-eth-rpc.polkadot.io'
+		}
 	},
-	blockExplorers: {
-		url: ['https://westend.subscan.io']
-	},
-	logoPath: '',
+	blockExplorers: 'https://westend.subscan.io',
   testnet: true,
 };
 
@@ -19,18 +18,15 @@ export const base: Chain = {
 	name: 'Base',
 	nativeCurrency: { name: 'eth_base', symbol: 'ETH', decimals: 18 },
 	rpcUrls: {
-		http: ['https://mainnet.base.org']
-	},
-	blockExplorers: {
-		url: ['https://basescan.org']
-	},
-	contracts: {
-		multicall3: {
-			address: '0xca11bde05977b3631167028862be2a173976ca11',
-			blockCreated: 5022
+		http: {
+			public: 'https://mainnet.base.org'
 		}
 	},
-	logoPath: '/chain/base.svg',
+	blockExplorers: 'https://basescan.org',
+	multicall3: {
+		address: '0xca11bde05977b3631167028862be2a173976ca11',
+		blockCreated: 5022
+	},
   testnet: false,
 };
 
@@ -39,18 +35,15 @@ export const ethereum: Chain = {
 	name: 'Ethereum',
 	nativeCurrency: { name: 'eth', symbol: 'ETH', decimals: 18 },
 	rpcUrls: {
-		http: ['https://eth.merkle.io']
-	},
-	blockExplorers: {
-		url: ['https://etherscan.io']
-	},
-	contracts: {
-		multicall3: {
-			address: '0xca11bde05977b3631167028862be2a173976ca11',
-			blockCreated: 14353601
+		http: {
+			public: 'https://eth.merkle.io'
 		}
 	},
-	logoPath: '/chain/ethereum.svg',
+	blockExplorers: 'https://etherscan.io',
+	multicall3: {
+		address: '0xca11bde05977b3631167028862be2a173976ca11',
+		blockCreated: 14353601
+	},
   testnet: false,
 };
 
@@ -59,18 +52,15 @@ export const optimism: Chain = {
 	name: 'OP Mainnet',
 	nativeCurrency: { name: 'eth_op', symbol: 'ETH', decimals: 18 },
 	rpcUrls: {
-		http: ['https://mainnet.optimism.io']
-	},
-	blockExplorers: {
-		url: ['https://optimistic.etherscan.io']
-	},
-	contracts: {
-		multicall3: {
-			address: '0xca11bde05977b3631167028862be2a173976ca11',
-			blockCreated: 4286263
+		http: {
+			public: 'https://mainnet.optimism.io'
 		}
 	},
-	logoPath: '/token/op.svg',
+	blockExplorers: 'https://optimistic.etherscan.io',
+	multicall3: {
+		address: '0xca11bde05977b3631167028862be2a173976ca11',
+		blockCreated: 4286263
+	},
   testnet: false,
 };
 
@@ -79,18 +69,15 @@ export const bsc: Chain = {
 	name: 'BNB Smart Chain',
 	nativeCurrency: { decimals: 18, name: 'bnb', symbol: 'BNB' },
 	rpcUrls: {
-		http: ['https://rpc.ankr.com/bsc']
-	},
-	blockExplorers: {
-		url: ['https://bscscan.com']
-	},
-	contracts: {
-		multicall3: {
-			address: '0xca11bde05977b3631167028862be2a173976ca11',
-			blockCreated: 15921452
+		http: {
+			public: 'https://rpc.ankr.com/bsc'
 		}
 	},
-	logoPath: '/token/bnb.svg',
+	blockExplorers: 'https://bscscan.com',
+	multicall3: {
+		address: '0xca11bde05977b3631167028862be2a173976ca11',
+		blockCreated: 15921452
+	},
   testnet: false,
 };
 
@@ -99,18 +86,15 @@ export const polygon: Chain = {
 	name: 'Polygon',
 	nativeCurrency: { name: 'pol', symbol: 'POL', decimals: 18 },
 	rpcUrls: {
-		http: ['https://polygon-rpc.com']
-	},
-	blockExplorers: {
-		url: ['https://polygonscan.com']
-	},
-	contracts: {
-		multicall3: {
-			address: '0xca11bde05977b3631167028862be2a173976ca11',
-			blockCreated: 25770160
+		http: {
+			public: 'https://polygon-rpc.com'
 		}
 	},
-	logoPath: '/chain/polygon.svg',
+	blockExplorers: 'https://polygonscan.com',
+	multicall3: {
+		address: '0xca11bde05977b3631167028862be2a173976ca11',
+		blockCreated: 25770160
+	},
   testnet: false,
 };
 
@@ -123,18 +107,15 @@ export const sonic: Chain = {
 		symbol: 'S'
 	},
 	rpcUrls: {
-		http: ['https://rpc.soniclabs.com']
-	},
-	blockExplorers: {
-		url: ['https://sonicscan.org/']
-	},
-	contracts: {
-		multicall3: {
-			address: '0xca11bde05977b3631167028862be2a173976ca11',
-			blockCreated: 60
+		http: {
+			public: 'https://rpc.soniclabs.com'
 		}
 	},
-	logoPath: '/chain/sonic.svg',
+	blockExplorers: 'https://sonicscan.org',
+	multicall3: {
+		address: '0xca11bde05977b3631167028862be2a173976ca11',
+		blockCreated: 60
+	},
   testnet: false,
 };
 
@@ -143,38 +124,32 @@ export const arbitrum: Chain = {
 	name: 'Arbitrum One',
 	nativeCurrency: { name: 'eth_arbitrum', symbol: 'ETH', decimals: 18 },
 	rpcUrls: {
-		http: ['https://arb1.arbitrum.io/rpc']
-	},
-	blockExplorers: {
-		url: ['https://arbiscan.io']
-	},
-	contracts: {
-		multicall3: {
-			address: '0xca11bde05977b3631167028862be2a173976ca11',
-			blockCreated: 7654707
+		http: {
+			public: 'https://arb1.arbitrum.io/rpc'
 		}
 	},
-	logoPath: '/token/arb.svg',
+	blockExplorers: 'https://arbiscan.io',
+	multicall3: {
+		address: '0xca11bde05977b3631167028862be2a173976ca11',
+		blockCreated: 7654707
+	},
   testnet: false,
 };
 
 export const sepolia: Chain = {
-	chainId: 11_155_111,
+	chainId: 11155111,
 	name: 'Sepolia',
 	nativeCurrency: { name: 'Sepolia Ether', symbol: 'ETH', decimals: 18 },
 	rpcUrls: {
-		http: ['https://sepolia.drpc.org']
-	},
-	blockExplorers: {
-		url: ['https://sepolia.etherscan.io']
-	},
-	contracts: {
-		multicall3: {
-			address: '0xca11bde05977b3631167028862be2a173976ca11',
-			blockCreated: 751532
+		http: {
+			public: 'https://sepolia.drpc.org'
 		}
 	},
-	logoPath: '',
+	blockExplorers: 'https://sepolia.etherscan.io',
+	multicall3: {
+		address: '0xca11bde05977b3631167028862be2a173976ca11',
+		blockCreated: 751532
+	},
   testnet: true,
 };
 

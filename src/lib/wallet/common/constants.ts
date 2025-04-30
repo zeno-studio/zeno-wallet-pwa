@@ -26,6 +26,10 @@ export const DB = {
   AddressBook: {
     name: 'AddressBook',
     keypath: 'address'
+  },
+  Chains: {
+    name: 'Chains',
+    keypath: 'chainId'
   }
   
 }
