@@ -28,11 +28,10 @@ export const createSettings = async () => {
 
 		// intialize currency
 		chainState.currentCurrency = data.currency;
+		chainState.currentFiat = data.fiat;
 
 		// intialize locale
 		userlocale.locale = data.locale;
-
-		// intialize applist
 	}
 	if (!settings) {
 		const systemLanguage = getLanguage();
@@ -45,5 +44,6 @@ export const createSettings = async () => {
 			const newSettings = { ...defaultSettings, locale: 'en' };
 			localStorage.setItem('settings', JSON.stringify(newSettings));
 		}
+		chainState.initChains() 
 	}
 };

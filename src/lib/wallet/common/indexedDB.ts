@@ -17,7 +17,10 @@ export function initDB() {
 		}
         if (!db.objectStoreNames.contains(DB.AddressBook.name)) {
             db.createObjectStore(DB.AddressBook.name, {keyPath: DB.AddressBook.keypath});
-        }
+		}
+        if (!db.objectStoreNames.contains(DB.Chains.name)) {
+			db.createObjectStore(DB.Chains.name, {keyPath: DB.Chains.keypath});
+		}
 	};
 	request.onsuccess = () => db = request.result;
 	request.onerror = (err) => console.error(`IndexedDB error: ${request.error}`, err);

@@ -2,9 +2,10 @@
 	import { isSmallScreen } from '$lib/ui/ts';
 	import { fade, fly } from 'svelte/transition';
 	import { Gesture } from '@use-gesture/vanilla';
-	import { CloseIcon } from '$lib/svg';
+	import { CloseIcon, ArrowBack } from '$lib/svg';
 
 	type Mode = 'full' | 'half';
+	let page = $state(1);
 
 	let { modalName = $bindable(), mode, content } = $props();
 
@@ -66,9 +67,9 @@
 		<div
 			bind:this={modalBody}
 			class={{
-				"modal": !isSmallScreen.current && mode === 'full',
+				modal: !isSmallScreen.current && mode === 'full',
 				'modal-m': isSmallScreen.current && mode === 'full',
-				"modal2": !isSmallScreen.current && mode === 'half',
+				modal2: !isSmallScreen.current && mode === 'half',
 				'modal-m2': isSmallScreen.current && mode === 'half'
 			}}
 			role="dialog"
@@ -80,11 +81,27 @@
 		>
 			{#if isSmallScreen.current}
 				<div class="drag-bar"></div>
+				{#if page > 1}
+					<div class="top">
+						<button class="back-btn" onclick={() => (page -= 1)}>
+							<ArrowBack class="icon2A" />
+						</button>
+					</div>
+				{/if}
 			{:else}
-				<div class="close-container">
+				{#if page > 1}
+					<div class="top">
+						<button class="back-btn" onclick={() => (page -= 1)}>
+							<ArrowBack class="icon2A" />
+						</button>
+						<button class="close-btn" onclick={closeModal}><CloseIcon class="icon2A" /></button>
+					</div>
+				{/if}
+				<div class="top">
 					<button class="close-btn" onclick={closeModal}><CloseIcon class="icon2A" /></button>
 				</div>
 			{/if}
+
 			{@render content()}
 		</div>
 	</div>
@@ -182,10 +199,31 @@
 		cursor: pointer;
 		margin-bottom: 2rem;
 	}
-	.close-btn {
+	.top {
 		display: flex;
 		align-items: center;
-		justify-content: center;
+		position: relative;
+		width: 100%;
+		background: none;
+		border: none;
+		cursor: pointer;
+		margin-top: 1rem;
+		margin-bottom: 2rem;
+	}
+	.back-btn {
+		display: flex;
+		position: absolute;
+		left: 0;
+		margin: 0;
+		padding: 0;
+		background: none;
+		border: none;
+		cursor: pointer;
+	}
+	.close-btn {
+		display: flex;
+		position: absolute;
+		right: 0;
 		margin: 0;
 		padding: 0;
 		background: none;

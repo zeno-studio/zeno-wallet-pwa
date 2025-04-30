@@ -11,7 +11,6 @@ import {
 	type AddressEntry,
 } from '$lib/wallet/common';
 
-
 import { HDKey } from '@scure/bip32';
 import * as bip39 from '@scure/bip39';
 import { bytesToHex, hexToBytes } from '@noble/ciphers/utils';
