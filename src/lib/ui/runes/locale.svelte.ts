@@ -25,7 +25,7 @@ export const availableLanguages = new Map<string, string>([
 	['ru', 'Русский']
 ]);
 
-async function loadTranslation(locale: string): Promise<Record<string, string>> {
+const loadTranslation= async(locale: string): Promise<Record<string, string>>  => {
 	try {
 		const translationModule = await import(`$lib/ui/locales/${locale}.json`);
 		return translationModule.default || {};
@@ -34,10 +34,11 @@ async function loadTranslation(locale: string): Promise<Record<string, string>> 
 		return fallbackModule.default;
 	}
 }
-export async function translation(
+
+export  const translation = async (
 	key: Array<string>,
 	locale: string
-): Promise<Map<string, string>> {
+): Promise<Map<string, string>>  => {
 	const translations = await loadTranslation(locale);
 	const keyMap = new Map<string, string>();
 
@@ -48,7 +49,7 @@ export async function translation(
 	return keyMap;
 }
 
-export function getLanguage(): string {
+export const getLanguage= (): string  => {
 	let language = window.navigator.languages
 		? window.navigator.languages[0]
 		: window.navigator.language || window.navigator.userLanguage;

@@ -101,11 +101,14 @@
 </div>
 <Footer />
 
-{#snippet chain()}
-<ChainSelector  />
-{/snippet}
 
-<Modal bind:modalName={modalOpen} mode="half" content={chain} />
+
+
+
+<Modal bind:modalName={modalOpen} mode="full" >
+<ChainSelector />
+</Modal>
+
 
 <style lang="postcss">
 	.appBody {

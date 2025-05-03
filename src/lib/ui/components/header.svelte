@@ -11,26 +11,26 @@
 	let Panel = $state(false);
 	let name = $state('');
 
-	function selectedAccount(i: number) {
+	const selectedAccount=(i: number)=> {
 		accountState.setCurrentAccountIndex(i);
 		accountDropDown = false;
 	}
 
-	function generateAvatar(address: string, size: number) {
+	const generateAvatar=(address: string, size: number)=> {
 		return toSvg(address, size);
 	}
 
-	function gotoAccount(i: number) {
+	const gotoAccount=(i: number)=> {
 		goto('#/settings/account_detail');
 		accountState.editingAccountIndex = i;
 	}
 
-	function gotoSetting() {
+	const gotoSetting=()=> {
 		goto('#/settings/account_manage');
 		accountDropDown = false;
 	}
 
-	function toggleModal() {
+	const toggleModal=()=> {
 		accountDropDown = !accountDropDown;
 	}
 
@@ -80,7 +80,9 @@
 </div>
 <NavPanel bind:Panel />
 
-{#snippet list()}
+
+{#if isSmallScreen.current}
+	<Modal bind:modalName={accountDropDown} mode="full" >
 	<div class="dropdown-label">
 		<div class="label-m" style="margin-left: 1rem; font-weight: 600;">Switch Account</div>
 		<button class="setting-btn" onclick={gotoSetting}><SettingFilled class="icon2A" /> </button>
@@ -115,10 +117,7 @@
 			</div>
 		{/if}
 	{/each}
-{/snippet}
-
-{#if isSmallScreen.current}
-	<Modal bind:modalName={accountDropDown} mode="full" content={list} />
+</Modal>
 {/if}
 
 <style lang="postcss">

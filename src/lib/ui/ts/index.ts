@@ -5,3 +5,4 @@ export * from "./mediaQuery"
 export * from "./qrSvg"
 export * from "./dom"
 export * from "./checkPasswordStrength";
+export * from "./type";

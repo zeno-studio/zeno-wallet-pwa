@@ -7,15 +7,15 @@
 
 	let tab = $state<'active' | 'hidden'>('active');
 
-	function selectedAccount(i: number) {
+	const selectedAccount = (i: number) => {
 		accountState.setCurrentAccountIndex(i);
 	}
 
-	function generateAvatar(address: string) {
+	const generateAvatar = (address: string)  =>{
 		return toSvg(address, 34);
 	}
 
-	function gotoAccount(i: number) {
+	const gotoAccount=(i: number) => {
 		goto('#/settings/account_detail');
 		accountState.editingAccountIndex = i;
 	}

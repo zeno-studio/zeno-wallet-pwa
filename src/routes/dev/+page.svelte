@@ -9,6 +9,8 @@
 	import { onMount } from 'svelte';
 	import { QrcodeIcon,AddCircle ,BuyIcon,ScanFocus,NftIcon,NftFilled } from '$lib/svg';
 
+	let modalOpen = $state(false);
+
 	let signerResponse : signerResponseType | null = $state(null);
 	let assetList : any[] = $state([]);
 	signer.onmessage = (event) => {
@@ -22,6 +24,7 @@
 
 import { AnkrProvider } from '@ankr.com/ankr.js';
 import type { Blockchain } from '@ankr.com/ankr.js/dist/types';
+
 
 export const ankrAdvanced = new AnkrProvider(`https://rpc.ankr.com/multichain/${ANKR_KEY}`);
 const listOfChains: Blockchain[] = ['eth', 'base','arbitrum', 'bsc', 'optimism','polygon'];
@@ -63,6 +66,7 @@ onMount(async () => {
 		<button onclick={() => setAutoLock(false)}>setauto</button>
 		<button onclick={() => saveMidPass("Qian7855")}>saveMidPass</button>
 		<button onclick={() => res("sian7855","default")}>restoreMn</button>
+		<button onclick={() => modalOpen =!modalOpen}>modal</button>
 	<div class="item">
 		<label for="pet-select">Choose a pet:</label>
 
@@ -93,6 +97,8 @@ onMount(async () => {
 
 </div>
 <Footer />
+
+
 
 <style lang="postcss">
 		.appBody {

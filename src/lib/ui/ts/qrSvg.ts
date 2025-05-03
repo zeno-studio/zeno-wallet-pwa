@@ -14,11 +14,11 @@ interface ArenaOptions {
   content?: string;
 }
 
-export function generateQRCodeSvg(
+export const generateQRCodeSvg=(
   value: string,
   options: QrOptions = {},
   arena?: ArenaOptions
-): string {
+): string  =>{
   const {
     errorCorrection = 'medium',
     version,

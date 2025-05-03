@@ -27,7 +27,7 @@ const createMediaQuery = (query: string) => {
   };
 };
 
-export function createDarkMode(defaultValue?: boolean): CreateDarkModeOutput {
+export const createDarkMode=(defaultValue?: boolean): CreateDarkModeOutput => {
 
   const isDarkOS = createMediaQuery(COLOR_SCHEME_QUERY);
   const prevIsDarkOs = $state({ matches: isDarkOS.matches });

@@ -1,15 +1,17 @@
 <script lang="ts">
-	import { isSmallScreen } from '$lib/ui/ts';
 	import { createEvmAccount, createPolkadotAccount, type Settings } from '$lib/wallet/common';
-	import { CloseIcon, EyeIcon, EyeOffIcon, AlertTriangle, ArrowBack, HelpFilled } from '$lib/svg';
+	import { EyeIcon, EyeOffIcon, AlertTriangle, ArrowBack, HelpFilled } from '$lib/svg';
 	import { checkPasswordStrength } from '$lib/ui/ts';
 	import { accountState, saveMidPass } from '$lib/wallet/runes';
-	import { fade, fly } from 'svelte/transition';
-	import { Gesture } from '@use-gesture/vanilla';
+	import { fly } from 'svelte/transition';
+	import { getContext } from 'svelte';
+	import { type ModalContext } from '$lib/ui/ts';
+	const { isModalOpen, closeModal, updatePageTitle, currentPage } =
+		getContext<ModalContext>('modal');
 
-	let modalOpen = $state(false);
+	updatePageTitle(1, 'Notifications');
+
 	let type = $state('EVM');
-	let notice = $state(false);
 	let terms = $state(false);
 	let password = $state<string | null>(null);
 	let password2 = $state<string | null>(null);
@@ -21,21 +23,8 @@
 			return '';
 		}
 	});
-	let modalBody = $state<HTMLElement | null>(null);
-	let y = $state(0);
 
-	function close() {
-		modalOpen = false;
-		password = null;
-		password2 = null;
-		passwordShow = false;
-		notice = false;
-		terms = false;
-		modalBody = null;
-		y = 0;
-	}
-
-	async function createEvm(password: string) {
+	const createEvm = async (password: string) => {
 		const settings = JSON.parse(localStorage.getItem('settings')!) as Settings;
 		try {
 			if (createEvmAccount(1, password)) {
@@ -46,14 +35,14 @@
 				settings.nextAccountIndex++;
 				localStorage.setItem('settings', JSON.stringify(settings));
 				saveMidPass(password);
-				close();
+				closeModal();
 			}
 		} catch (e) {
 			console.error('Error when creating account', e);
 		}
-	}
+	};
 
-	async function createPolkadot(password: string) {
+	const createPolkadot = async (password: string) => {
 		const settings = JSON.parse(localStorage.getItem('settings')!) as Settings;
 		try {
 			if (createPolkadotAccount(101, password, 'sr25519')) {
@@ -63,234 +52,160 @@
 				settings.currentAccountIndex = 101;
 				settings.nextPolkadotIndex++;
 				localStorage.setItem('settings', JSON.stringify(settings));
+				saveMidPass(password);
+				closeModal();
 			}
 		} catch (e) {
 			console.error('Error when creating account', e);
 		}
-	}
+	};
 
-	function handleCreate() {
+	const handleCreate = () => {
 		if (type === 'EVM') {
 			createEvm(password!);
 		} else if (type === 'POLKADOT') {
 			createPolkadot(password!);
 		}
-	}
-	function handleBackdropClick(event: MouseEvent) {
-		if (event.target === event.currentTarget) {
-			modalOpen = false;
-		}
-	}
-
-	function handleKeydown(event: KeyboardEvent) {
-		if (event.key === 'Escape') {
-			modalOpen = false;
-		}
-	}
-
+	};
 
 	$effect(() => {
-		if (modalBody && modalOpen) {
-			const gesture = new Gesture(modalBody, {
-				onDrag: ({ movement: [, my], velocity: [, vy], direction: [, dy] }) => {
-					if (my > 0) y = my;
-					if (my > 200 && vy > 0.5 && dy > 0) {
-						modalOpen = false;
-						y = 0;
-					}
-				},
-				onDragEnd: () => {
-					if (modalOpen && y > 0) y = 0;
-				}
-			});
-			return () => gesture.destroy();
-		}
-	});
-
-	$effect(() => {
-		if (modalOpen) {
-			window.addEventListener('keydown', handleKeydown);
-			return () => window.removeEventListener('keydown', handleKeydown);
+		if (!isModalOpen()) {
+			password = null;
+			password2 = null;
+			passwordShow = false;
+			terms = false;
 		}
 	});
 </script>
 
-<button class="bottom-button" onclick={() => (modalOpen = true)}> Create account </button>
-
-{#if modalOpen}
-	<div
-		class="backdrop"
-		role="dialog"
-		transition:fade={{ duration: 200 }}
-		onclick={handleBackdropClick}
-		onkeydown={handleKeydown}
-		tabindex="-1"
-	>
-		<div
-			bind:this={modalBody}
-			in:fly={{ duration: 200, y: 50 }}
-			out:fade={{ duration: 120 }}
-			class={{ "modal": !isSmallScreen.current, 'modal-m': isSmallScreen.current }}
-			role="dialog"
-			aria-modal="true"
-			tabindex="-1"
-			style="transform: translateY({y}px)"
-		>
-		{#if isSmallScreen.current}
-		<div class="drag-bar"></div>
-	{/if}
-			<!-- step 1 notification-->
-			{#if !notice}
-				<div class="step1" in:fly={{ duration: 300, x: -100 }}>
-					{#if !isSmallScreen.current}
-					<div class="top">
-						<button class="close-btn" onclick={close}><CloseIcon class="icon2A" /></button>
-					</div>
-				{/if}
-					<div class="title">Notifications</div>
-					<div class="tip">
-						<div class="tip-icon">
-							<div class="tip-icon-container" style="background-color: var(--accent-orange-back);">
-								<AlertTriangle class="icon16O" />
-							</div>
-						</div>
-						<div class="tip-text">
-							Zeno wallet does not store your password. If you forget it, we cannot recover it for you.
-						</div>
-					</div>
-					<div class="tip">
-						<div class="tip-icon">
-							<div class="tip-icon-container" style="background-color: var(--accent-orange-back);">
-								<AlertTriangle class="icon16O" />
-							</div>
-						</div>
-						<div class="tip-text">
-							Always back up your recovery phrase, it's the only way to restore your wallet if your password is lost.
-						</div>
-					</div>
-
-					<div class="label-m" style="margin: 2rem;font-weight: 600;">Choose Account Type</div>
-					<div class="radio">
-						<label class="radio-label">
-							<input type="radio" bind:group={type} value="EVM" />
-							ETHEREUM
-						</label>
-
-						<label class="radio-label">
-							<input type="radio" bind:group={type} value="POLKADOT" />
-							POLKADOT
-						</label>
-					</div>
-					<button class="start" onclick={() => (notice = true)}>Continue</button>
+<!-- step 1 notification-->
+{#if currentPage() === 1}
+	<div class="step1" in:fly={{ duration: 300, x: -100 }}>
+		<div class="tip">
+			<div class="tip-icon">
+				<div class="tip-icon-container" style="background-color: var(--accent-orange-back);">
+					<AlertTriangle class="icon16O" />
 				</div>
+			</div>
+			<div class="tip-text">
+				Zeno wallet does not store your password. If you forget it, we cannot recover it for you.
+			</div>
+		</div>
+		<div class="tip">
+			<div class="tip-icon">
+				<div class="tip-icon-container" style="background-color: var(--accent-orange-back);">
+					<AlertTriangle class="icon16O" />
+				</div>
+			</div>
+			<div class="tip-text">
+				Always back up your recovery phrase, it's the only way to restore your wallet if your
+				password is lost.
+			</div>
+		</div>
+
+		<div class="label-m" style="margin: 2rem;font-weight: 600;">Choose Account Type</div>
+		<div class="radio">
+			<label class="radio-label">
+				<input type="radio" bind:group={type} value="EVM" />
+				ETHEREUM
+			</label>
+
+			<label class="radio-label">
+				<input type="radio" bind:group={type} value="POLKADOT" />
+				POLKADOT
+			</label>
+		</div>
+		<button class="start" onclick={() => updatePageTitle(2, 'Set Your Password')}>Continue</button>
+	</div>
+{/if}
+
+<!-- step 2 mn-->
+{#if currentPage() === 2}
+	<div class="step2" in:fly={{ duration: 300, x: 100 }}>
+		<div class="label2">Your password:</div>
+		<div class="ps-container">
+			{#if passwordShow}
+				<input
+					id="password"
+					class="input-password"
+					type="text"
+					autocomplete="off"
+					bind:value={password}
+				/>
+			{:else}
+				<input
+					id="password"
+					class="input-password"
+					type="password"
+					autocomplete="off"
+					bind:value={password}
+				/>
 			{/if}
+			<button class="eye" onclick={() => (passwordShow = !passwordShow)}>
+				{#if passwordShow}
+					<EyeIcon class="icon2A" />
+				{:else}
+					<EyeOffIcon class="icon2A" />
+				{/if}
+			</button>
+		</div>
 
-			<!-- step 2 mn-->
-			{#if notice}
-				<div class="step2" in:fly={{ duration: 300, x: 100 }}>
-					{#if isSmallScreen.current}
-						<div class="top">	
-							<button class="back-btn" onclick={() => (notice = false)}>
-								<ArrowBack class="icon2A" />
-							</button>
-						</div>
-					{:else}
-						<div class="top">
-							<button class="back-btn" onclick={() => (notice = false)}>
-								<ArrowBack class="icon2A" />
-							</button>
-							<button class="close-btn" onclick={close}><CloseIcon class="icon2A" /></button>
-						</div>
-					{/if}
-					<div class="title">Set Your Password</div>
+		<div class="label2">Repeat your password:</div>
+		{#if passwordShow}
+			<input
+				id="password2"
+				class="input-password"
+				type="text"
+				autocomplete="off"
+				bind:value={password2}
+			/>
+		{:else}
+			<input
+				id="password2"
+				class="input-password"
+				type="password"
+				autocomplete="off"
+				bind:value={password2}
+			/>
+		{/if}
 
-					<div class="label2">Your password:</div>
-					<div class="ps-container">
-						{#if passwordShow}
-							<input
-								id="password"
-								class="input-password"
-								type="text"
-								autocomplete="off"
-								bind:value={password}
-							/>
-						{:else}
-							<input
-								id="password"
-								class="input-password"
-								type="password"
-								autocomplete="off"
-								bind:value={password}
-							/>
-						{/if}
-						<button class="eye" onclick={() => (passwordShow = !passwordShow)}>
-							{#if passwordShow}
-								<EyeIcon class="icon2A" />
-							{:else}
-								<EyeOffIcon class="icon2A" />
-							{/if}
-						</button>
-					</div>
-
-					<div class="label2">Repeat your password:</div>
-					{#if passwordShow}
-						<input
-							id="password2"
-							class="input-password"
-							type="text"
-							autocomplete="off"
-							bind:value={password2}
-						/>
-					{:else}
-						<input
-							id="password2"
-							class="input-password"
-							type="password"
-							autocomplete="off"
-							bind:value={password2}
-						/>
-					{/if}
-
-					<div class="label2">
-						<label class="container">
-							<input bind:checked={terms} type="checkbox" />
-							<div class="checkmark"></div>
-						</label>
-						I agree to the<a href="/#/setting/about/terms"> Terms of Service </a>
-					</div>
-					<div class="label2">
-						Password strength:
-						{#if psStrength === 'weak'}
-							<span class="weak">{psStrength}</span>
-						{:else if password === null || psStrength === ''}
-							<span class="weak"></span>
-						{:else if psStrength === 'medium'}
-							<span class="medium">{psStrength}</span>
-						{:else if psStrength === 'strong'}
-							<span class="strong">{psStrength}</span>
-						{/if}
-					</div>
-					{#if psStrength === 'weak' && password === password2}
-						<div class="tip2">
-							At least 8 characters long, containing at least 1 uppercase letter, 1 numeric digit,
-							and 1 special character.
-						</div>
-					{/if}
-
-					{#if password === null && password2 === null}
-						<button class="start"> Setting your password</button>
-					{:else if password !== password2}
-						<button class="start"> Password not match</button>
-					{:else if password === password2 && !terms && psStrength !== 'weak'}
-						<button class="start"> Please agree to the terms</button>
-					{:else if password === password2 && psStrength === 'weak'}
-						<button class="start"> Password too weak</button>
-					{:else if password === password2 && terms && psStrength !== 'weak'}
-						<button class="submit" onclick={handleCreate}> Submit</button>
-					{/if}
-				</div>
+		<div class="label2">
+			<label class="container">
+				<input bind:checked={terms} type="checkbox" />
+				<div class="checkmark"></div>
+			</label>
+			I agree to the<a href="/#/setting/about/terms"> Terms of Service </a>
+		</div>
+		<div class="label2">
+			Password strength:
+			{#if psStrength === 'weak'}
+				<span class="weak">{psStrength}</span>
+			{:else if password === null || psStrength === ''}
+				<span class="weak"></span>
+			{:else if psStrength === 'medium'}
+				<span class="medium">{psStrength}</span>
+			{:else if psStrength === 'strong'}
+				<span class="strong">{psStrength}</span>
 			{/if}
 		</div>
+		{#if psStrength === 'weak' && password === password2}
+			<div class="tip2">
+				At least 8 characters long, containing at least 1 uppercase letter, 1 numeric digit, and 1
+				special character.
+			</div>
+		{/if}
+
+		{#if password === null && password2 === null}
+			<button class="start"> Setting your password</button>
+		{:else if password !== password2}
+			<button class="start"> Password not match</button>
+		{:else if password === password2 && !terms && psStrength !== 'weak'}
+			<button class="start"> Please agree to the terms</button>
+		{:else if password === password2 && psStrength === 'weak'}
+			<button class="start"> Password too weak</button>
+		{:else if password === password2 && terms && psStrength !== 'weak'}
+			<button class="submit" onclick={handleCreate}> Submit</button>
+		{/if}
 	</div>
 {/if}
 
@@ -319,74 +234,6 @@
 		font-weight: 600;
 	}
 
-	.top {
-		display: flex;
-		align-items: center;
-		position: relative;
-		width: 100%;
-		background: none;
-		border: none;
-		cursor: pointer;
-		margin-top: 1rem;
-		margin-bottom: 2rem;
-	}
-	.back-btn {
-		display: flex;
-		position: absolute;
-		left: 0;
-		margin: 0;
-		padding: 0;
-		background: none;
-		border: none;
-		cursor: pointer;
-	}
-	.close-btn {
-		display: flex;
-		position: absolute;
-		right: 0;
-		margin: 0;
-		padding: 0;
-		background: none;
-		border: none;
-		cursor: pointer;
-	}
-	
-	.modal {
-		display: flex;
-		box-sizing: border-box;
-		flex-direction: column;
-		justify-content: flex-start;
-		position: fixed;
-		color: var(--text);
-		height: 99%;
-		width: 38.4rem;
-		padding: 2rem 2rem 8rem 2rem;
-		background: var(--bg1);
-		border-radius: 1.6rem;
-		border: 1px solid var(--bg3);
-		touch-action: none;
-		overflow-y: scroll;
-		scrollbar-width: none;
-	}
-	.modal-m {
-		display: flex;
-		box-sizing: border-box;
-		flex-direction: column;
-		justify-content: flex-start;
-		position: fixed;
-		top: 1rem;
-		height: 100vh;
-		width: 100vw;
-		padding: 2rem 2rem 8rem 2rem;
-		background: var(--bg1);
-		border-top-left-radius: 1.6rem;
-		border-top-right-radius: 1.6rem;
-		border: 1px solid var(--bg3);
-		touch-action: none;
-		overflow-y: scroll;
-		scrollbar-width: none;
-	}
-
 	.label2 {
 		display: flex;
 		justify-content: flex-start;
@@ -409,8 +256,8 @@
 		width: 70%;
 	}
 
-	.tip{
-		display:grid;
+	.tip {
+		display: grid;
 		grid-template-columns: 5rem 1fr;
 		color: var(--text);
 		width: 80%;
@@ -419,17 +266,17 @@
 		background: var(--accent-blue-back);
 	}
 
-	.tip-icon{
+	.tip-icon {
 		display: flex;
 		align-items: center;
 		justify-content: center;
 	}
-	.tip-icon-container{
+	.tip-icon-container {
 		height: 3rem;
 		width: 3rem;
 		border-radius: 1.6rem;
 	}
-	.tip-text{
+	.tip-text {
 		display: flex;
 		flex-direction: row;
 		justify-content: flex-start;
@@ -439,30 +286,12 @@
 		margin-left: 0.5rem;
 	}
 
-
-	.bottom-button {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		color: #fff;
-		font-size: 1.6rem;
-		font-weight: 600;
-		height: 4.8rem;
-		border: none;
-		border-radius: 1.6rem;
-		background: var(--primary);
-		box-sizing: border-box;
-		width: 100%;
-		padding: 1rem;
-		cursor: pointer;
-	}
-
 	.start {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		color:var(--color);
+		color: var(--color);
 		font-size: 1.6rem;
 		font-weight: 600;
 		height: 4.8rem;
@@ -471,7 +300,7 @@
 		background: var(--bg2);
 		box-sizing: border-box;
 		width: 80%;
-		padding: 2rem;			
+		padding: 2rem;
 		margin-top: 2rem;
 		border: 1px solid var(--border);
 		cursor: pointer;
@@ -545,19 +374,6 @@
 		gap: 1rem;
 	}
 
-	.drag-bar {
-		display: flex;
-		flex-shrink: 0;
-		justify-content: center;
-		align-items: center;
-		width: 4rem;
-		height: 0.5rem;
-		background: rgb(160, 160, 160);
-		border-radius: 1rem;
-		margin-top: -1rem;
-		margin-bottom: 2rem;
-	}
-	
 	.eye {
 		display: flex;
 		border: none;

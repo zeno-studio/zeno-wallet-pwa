@@ -72,7 +72,7 @@ onmessage = ({ data }) => {
 	}
 };
 
-function setTime(time: number) {
+const setTime=(time: number)=> {
 	timeout = time * 60 * 1000;
 	if (isAutoLock) {
 		setTimeout(() => {
@@ -87,7 +87,7 @@ function setTime(time: number) {
 	}
 }
 
-function saveMidPass(password: string, salt: string) {
+const saveMidPass=(password: string, salt: string)=> {
 	midpass = scrypt(password, hexToBytes(salt), { N: 2 ** 16, r: 8, p: 1, dkLen: 32 })
 	isLocked = false;
 	if (isAutoLock) {
@@ -107,7 +107,7 @@ function saveMidPass(password: string, salt: string) {
 	}
 }
 
-function saveMidPassNotPost(password: string, salt: string) {
+const saveMidPassNotPost=(password: string, salt: string)=> {
 	midpass = scrypt(password, hexToBytes(salt), { N: 2 ** 16, r: 8, p: 1, dkLen: 32 })
 	isLocked = false;
 	if (isAutoLock) {
@@ -121,7 +121,7 @@ function saveMidPassNotPost(password: string, salt: string) {
 }
 
 
-async function signEvmTx(tx: any, account: Account, password?: string, salt?: string) {
+const signEvmTx=async(tx: any, account: Account, password?: string, salt?: string)=> {
 	const ps = password ?? password;
 	const s = salt ?? salt;
 	// if wallet is locked
@@ -159,7 +159,7 @@ async function signEvmTx(tx: any, account: Account, password?: string, salt?: st
 	}
 }
 
-async function reBuildMn(): Promise<string> {
+const reBuildMn=async(): Promise<string> => {
 	const phrase = midpass;
 	const chacha = managedNonce(xchacha)(phrase);
 	const vault = (await getElement(DB.Vault.name, 'zeno')) as Vault;
@@ -168,7 +168,7 @@ async function reBuildMn(): Promise<string> {
 	return mn;
 }
 
-function signEvmTransaction(tx: any, account: Account, mn: string) {
+const signEvmTransaction=(tx: any, account: Account, mn: string)=> {
 	const hdKey_ = HDKey.fromMasterSeed(bip39.mnemonicToSeedSync(mn));
 	const hdKey = hdKey_.derive(account.derivePath as string);
 	const privateKey = hdKey.privateKey;
@@ -188,14 +188,14 @@ function signEvmTransaction(tx: any, account: Account, mn: string) {
 	}
 }
 
-async function addEvmAccount(index: number) {
+const addEvmAccount=async(index: number) =>{
 	const mn = await reBuildMn();
 	const newAccount = deriveEvm(index, mn)
 	if (newAccount) postMessage({ success: true, data: newAccount });
 	else postMessage({ success: false });
 }
 
-async function addEvmAccountWithPassword(index: number, password: string) {
+const addEvmAccountWithPassword=async(index: number, password: string) =>{
 	const vault = (await getElement(DB.Vault.name, 'zeno')) as Vault;
 	saveMidPassNotPost(password, vault.salt);
 	const mn = await reBuildMn();
@@ -204,14 +204,14 @@ async function addEvmAccountWithPassword(index: number, password: string) {
 	else postMessage({ success: false });
 }
 
-async function addPolkadotAccount(index: number, type: KeyringType) {
+const addPolkadotAccount=async(index: number, type: KeyringType) =>{
 	const mn = await reBuildMn();
 	const newAccount = derivePolkadot(index, type, mn)
 	if (newAccount) postMessage({ success: true, data: newAccount });
 	else postMessage({ success: false });
 }
 
-async function addPolkadotAccountWithPassword(index: number, password: string, type: KeyringType) {
+const addPolkadotAccountWithPassword=async(index: number, password: string, type: KeyringType) => {
 	const vault = (await getElement(DB.Vault.name, 'zeno')) as Vault;
 	saveMidPassNotPost(password, vault.salt);
 	const mn = await reBuildMn();
@@ -220,12 +220,12 @@ async function addPolkadotAccountWithPassword(index: number, password: string, t
 	else postMessage({ success: false });
 }	
 
-async function checkPassword(password: string) {
+const checkPassword=async(password: string) =>{
 	const isValid = await isValidPassword(password);
 	postMessage({ success: true, data: isValid });
 }
 
-async function changePassword(oldPassword: string, newPassword: string) {
+const changePassword=async(oldPassword: string, newPassword: string)=> {
 	const vault = (await getElement(DB.Vault.name, 'zeno')) as Vault;
 	if (!vault) return postMessage({ success: false });
 	const mnemonic = await restoreMn(oldPassword, vault.name);

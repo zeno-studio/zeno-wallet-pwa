@@ -15,15 +15,15 @@ export type signerRequestType = {
 	argus?: any;
 };
 
-export function isLocked() {
+export const isLocked=() =>{
 	signer.postMessage({ method: 'isLocked' });
 }
 
-export function lockSigner() {
+export const lockSigner=() => {
 	signer.postMessage({ method: 'lockSigner' });
 }
 
-export function setTime(time: number, type?: string) {
+export const setTime=(time: number, type?: string)=> {
 	signer.postMessage({ method: 'setTime', argus: { time: time } });
 	if (type === 'save') {
 		const data = localStorage.getItem('settings');
@@ -34,11 +34,11 @@ export function setTime(time: number, type?: string) {
 		}
 	}
 }
-export function queryTime() {
+export const queryTime=() =>{
 	signer.postMessage({ method: 'queryTime' });
 }
 
-export function setAutoLock(autoLock: boolean, type?: string) {
+export const setAutoLock=(autoLock: boolean, type?: string) =>{
 	signer.postMessage({ method: 'setAutoLock', argus: { autoLock: autoLock } });
 	if (type === 'save') {
 		const data = localStorage.getItem('settings');
@@ -50,24 +50,24 @@ export function setAutoLock(autoLock: boolean, type?: string) {
 	}
 }
 
-export function isAutoLock() {
+export const isAutoLock=()=> {
 	signer.postMessage({ method: 'isAutoLock' });
 }
 
-export function signTransaction(argus: any) {
+export const signTransaction=(argus: any)=> {
 	signer.postMessage({ method: 'signEvmTx', argus });
 }
 
-export async function saveMidPass(password: string) {
+export const saveMidPass= async(password: string)=> {
 	const vault = (await getElement(DB.Vault.name, 'zeno')) as Vault;
 	signer.postMessage({ method: 'saveMidPass', argus: { password: password, salt: vault.salt } });
 }
 
-export function queryMid() {
+export const queryMid=()=> {
 	signer.postMessage({ method: 'queryMid' });
 }
 
-export async function addEvmAccount() {
+export const addEvmAccount=async()=> {
 	const result = (await addEvmAccountWorker()) as signerResponseType | null;
 	try {
 		if (result?.success === true) {
@@ -85,7 +85,7 @@ export async function addEvmAccount() {
 	}
 }
 
-function addEvmAccountWorker() {
+const addEvmAccountWorker=()=>{
 	return new Promise((resolve) => {
 		signer.onmessage = (event) => {
 			resolve(event.data);
@@ -98,7 +98,7 @@ function addEvmAccountWorker() {
 	});
 }
 
-export async function addEvmAccountWithPassword(password: string) {
+export const addEvmAccountWithPassword=async(password: string)=> {
 	const result = (await addEvmAccountPasswordWorker(password)) as signerResponseType | null;
 	try {
 		if (result?.success === true) {
@@ -117,7 +117,7 @@ export async function addEvmAccountWithPassword(password: string) {
 	}
 }
 
-function addEvmAccountPasswordWorker(password: string) {
+const addEvmAccountPasswordWorker=(password: string)=> {
 	return new Promise((resolve) => {
 		signer.onmessage = (event) => {
 			resolve(event.data); 
@@ -134,7 +134,7 @@ function addEvmAccountPasswordWorker(password: string) {
 }
 
 
-function addPolkadotAccountWorker(type: KeyringType) {
+const addPolkadotAccountWorker=(type: KeyringType) =>{
 	return new Promise((resolve) => {
 		signer.onmessage = (event) => {
 			resolve(event.data);
@@ -147,7 +147,7 @@ function addPolkadotAccountWorker(type: KeyringType) {
 	});
 }
 
-export async function addPolkadotAccount(type: KeyringType) {
+export const addPolkadotAccount=async(type: KeyringType) =>{
 	const result = (await addPolkadotAccountWorker(type)) as signerResponseType | null;
 	try {
 		if (result?.success === true) {
@@ -165,7 +165,7 @@ export async function addPolkadotAccount(type: KeyringType) {
 	}
 }
 
-function addPolkadotAccountPasswordWorker(password: string, type: KeyringType) {
+const addPolkadotAccountPasswordWorker=(password: string, type: KeyringType) =>{
 	return new Promise((resolve) => {
 		signer.onmessage = (event) => {
 			resolve(event.data); // 接收 Worker 返回的结果
@@ -183,7 +183,7 @@ function addPolkadotAccountPasswordWorker(password: string, type: KeyringType) {
 	});
 }
 
-export async function addPolkadotAccountWithPassword(password: string, type: KeyringType) {
+export const addPolkadotAccountWithPassword=async(password: string, type: KeyringType) =>{
 	const result = (await addPolkadotAccountPasswordWorker(password, type)) as signerResponseType | null;
 	try {
 		if (result?.success === true) {
@@ -202,7 +202,7 @@ export async function addPolkadotAccountWithPassword(password: string, type: Key
 	}
 }
 
-export function checkPassword(password: string) {
+export const checkPassword=(password: string)=> {
 	return new Promise((resolve) => {
 		signer.onmessage = (event) => {
 			resolve(event.data);
@@ -211,7 +211,7 @@ export function checkPassword(password: string) {
 	});
 }
 
-export function checkIsLocked() {
+export const checkIsLocked=()=> {
 	return new Promise((resolve) => {
 		signer.onmessage = (event) => {
 			resolve(event.data);
@@ -220,7 +220,7 @@ export function checkIsLocked() {
 	});
 }
 
-export function changePassword(oldPassword: string, newPassword: string) {
+export const changePassword=(oldPassword: string, newPassword: string) =>{
 	return new Promise((resolve) => {
 		signer.onmessage = (event) => {
 			resolve(event.data);
