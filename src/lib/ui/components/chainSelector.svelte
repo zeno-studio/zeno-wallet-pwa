@@ -1,21 +1,26 @@
 <script lang="ts">
 	import { chainState } from '$lib/wallet/runes';
 	import { EditIcon } from '$lib/svg';
-	import { shortenAddress6 } from '$lib/ui/ts';
+	import { getContext } from 'svelte';
+	import { type ModalContext } from '$lib/ui/ts';
+	const { isModalOpen, closeModal, updatePageTitle, currentPage } =getContext<ModalContext>('modal');
+
+	updatePageTitle(1, 'Select a network');
 
 	let page = $state(1)
 	let edit_http = $state(false);
 	let edit_wss = $state(false);
 	let rpc = $state('');
 
-	function editChain(i: number) {
+	const editChain=(i: number) =>{
 		chainState.setCurrentChain(i);
-		page = 2;
+		updatePageTitle(2, chainState.currentChain!.name);
 	}
+
 </script>
 
 <div class="list-container">
-	{#if page === 1}
+	{#if currentPage()=== 1}
 		{#each chainState.Chains as chain}
 			<div class="chainList">
 				<div
@@ -44,12 +49,7 @@
 						>
 							{chain.name}
 						</div>
-						<div
-							class="address"
-							class:selected2={chain.chainId === chainState.currentChain?.chainId}
-						>
-							{chain.name}
-						</div>
+						
 					</div>
 					<button
 						class="entry-right"
@@ -66,13 +66,8 @@
 		{/each}
 	{/if}
 
-	{#if page === 2}
-		<div>
-			{chainState.currentChain?.name}
-		</div>
-		<div>
-			{chainState.currentChain?.chainId}
-		</div>
+	{#if currentPage()=== 2}
+		
 		<button
 			onclick={() => {
 				edit_http = !edit_http;
@@ -99,15 +94,15 @@
 				}}>save</button
 			>
 		{/if}
-			<button >return</button> 
+			<button onclick={closeModal} >return</button> 
 		{/if}
 </div>
 
 <style lang="postcss">
 	.chain-logo {
 		box-sizing: border-box;
-		width: 1.8rem;
-		height: 1.8rem;
+		width: 4rem;
+		height: 4rem;
 		border-radius: 50%;
 		margin: 0;
 	}
@@ -161,11 +156,7 @@
 		align-items: flex-start;
 		width: 100%;
 	}
-	.address {
-		font-size: 1.2rem;
-		font-weight: 500;
-		color: var(--text);
-	}
+
 	.avatar {
 		position: relative;
 		box-sizing: border-box;
@@ -192,6 +183,8 @@
 		width: 100%;
 		background: none;
 		border: none;
+		overflow-y: scroll;
+		scrollbar-width: none;
 	}
 	.selected {
 		background: var(--bg3);

@@ -1,7 +1,7 @@
 
 
 
-export function checkPasswordStrength(password: string) {
+export const checkPasswordStrength=(password: string)=> {
     const isLongEnough = password.length > 7;
     const isStrongLength = password.length > 9;
     const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);

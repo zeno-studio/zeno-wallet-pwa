@@ -2,7 +2,7 @@
 	import { userlocale, availableLanguages } from '$lib/ui/runes';
 	import { CheckIcon} from '$lib/svg';
 	const langs = [...availableLanguages.keys()];
-	function setLanguage(lang: string) {
+	const setLanguage=(lang: string)=> {
 		userlocale.setLocale(lang);
 	}
 </script>

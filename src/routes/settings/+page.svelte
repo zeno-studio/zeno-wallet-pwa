@@ -184,16 +184,13 @@
 <Footer />
 
 
-{#snippet language()}
+<Modal bind:modalName={langOpen} mode="full" >
 	<LanguageSelector />
-{/snippet}
+</Modal>
 
-{#snippet currency()}
+<Modal bind:modalName={currencyOpen} mode="full" >
 	<CurrencySelector />
-{/snippet}
-
-<Modal bind:modalName={langOpen} mode="full" content={language} />
-<Modal bind:modalName={currencyOpen} mode="full" content={currency} />
+</Modal>
 
 <style lang="postcss">
 	.label-m {

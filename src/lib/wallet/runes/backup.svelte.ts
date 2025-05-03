@@ -57,7 +57,7 @@ export const exportKeystoreV1 = async (vaultName: "EVM" | "POLKADOT"): Promise<s
     return key;
 };
 
-function downloadKeystore(keystore: string) {
+const downloadKeystore=(keystore: string) =>{
     const jsonString = JSON.stringify(keystore, null, 2);
     const blob = new Blob([jsonString], { type: "application/json" });
     const url = window.URL.createObjectURL(blob);
@@ -66,14 +66,14 @@ function downloadKeystore(keystore: string) {
     link.download = `custom-keystore-${Date.now()}.json`; 
 }
 
-function decodeVault(input: string): { salt: string; ciphertext: string } {
+const decodeVault=(input: string): { salt: string; ciphertext: string }=> {
     const salt = input.slice(0, 32);
     const ciphertext = input.slice(32);
     return { salt, ciphertext };
   }
 
 
-  function convertToJsonFile(salt: Uint8Array, ciphertext: Uint8Array, filename: string = 'encrypted.json'): void {
+const convertToJsonFile=(salt: Uint8Array, ciphertext: Uint8Array, filename: string = 'encrypted.json'): void=> {
     // 验证输入
     if (!(salt instanceof Uint8Array) || !(ciphertext instanceof Uint8Array)) {
         throw new Error('salt and ciphertext must be Uint8Array');
@@ -101,7 +101,7 @@ function decodeVault(input: string): { salt: string; ciphertext: string } {
     URL.revokeObjectURL(url);
 }
 
-async function parseJsonFile(file: File): Promise<{ salt: Uint8Array, ciphertext: Uint8Array }> {
+const parseJsonFile=async(file: File): Promise<{ salt: Uint8Array, ciphertext: Uint8Array }> =>{
     // 验证文件类型
     if (!file.type.includes('json')) {
         throw new Error('File must be a JSON file');

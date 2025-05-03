@@ -8,7 +8,7 @@
 
 	let { scanOpen = $bindable(), scanData = $bindable() } = $props();
 
-	async function startCamera() {
+	const startCamera=async()=> {
 		await tick();
 
 		const preview = document.getElementById('preview') as HTMLVideoElement;
@@ -28,7 +28,7 @@
 		});
 	}
 
-	async function close() {
+	const close=async()=> {
 		const preview = document.getElementById('preview') as HTMLVideoElement;
 		if (!preview) return;
 		const stream = preview.srcObject as MediaStream;
@@ -36,13 +36,13 @@
 		scanOpen = false;
 	}
 
-	function handleKeydown(event: KeyboardEvent) {
+	const handleKeydown=(event: KeyboardEvent) =>{
 		if (event.key === 'Escape') {
 			close();
 		}
 	}
 
-	function handleBackdropClick(event: MouseEvent) {
+	const handleBackdropClick=(event: MouseEvent) =>{
 		if (event.target === event.currentTarget) {
 			close();
 		}

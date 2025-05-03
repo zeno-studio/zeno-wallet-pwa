@@ -28,7 +28,7 @@
 	let opt: Opt = $state('main');
 
 	let copied = $state(false);
-	function copyAddress() {
+	const copyAddress=() =>{
 		if (!accountState.currentAccount) return;
 		navigator.clipboard.writeText(accountState.currentAccount.address);
 		copied = true;
@@ -36,22 +36,22 @@
 			copied = false;
 		}, 3000);
 	}
-	function gotoAccount() {
+	const gotoAccount=() =>{
 		goto('#/settings/account_detail');
 		accountState.editingAccountIndex = accountState.currentAccountIndex;
 	}
-	function generateAvatar(address: string, size: number) {
+	const generateAvatar=(address: string, size: number) =>{
 		return toSvg(address, size);
 	}
 
-	function selectedAccount(i: number) {
+	const selectedAccount=(i: number)=> {
 		accountState.setCurrentAccountIndex(i);
 	}
-	function gotoAccount2(i: number) {
+	const gotoAccount2=(i: number) =>{
 		goto('#/settings/account_detail');
 		accountState.editingAccountIndex = i;
 	}
-	function handleKeydown(event: KeyboardEvent) {
+	const handleKeydown=(event: KeyboardEvent)=> {
 		if (event.key === 'Escape') {
 			Panel = false;
 		}

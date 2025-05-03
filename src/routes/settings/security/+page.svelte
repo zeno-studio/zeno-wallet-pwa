@@ -1,10 +1,25 @@
 <script lang="ts">
 	import { isSmallScreen } from '$lib/ui/ts';
-	import { Header, ChangePassword } from '$lib/ui/components';
+	import { Header, Modal,ChangePassword } from '$lib/ui/components';
 	import { ArrowForward, ArrowBack } from '$lib/svg';
-  import { checkPasswordStrength } from '$lib/ui/ts';
+	import { accountState, checkIsLocked, type signerResponseType } from '$lib/wallet/runes';
+	
+	let needpass = $state<'' | 'neednot' | 'need'>('');
+	let restoreModal = $state(false);
+	let changePsModal = $state(false);
 
+	const checkRestoreModal = async () => {
+		const result = (await checkIsLocked()) as signerResponseType | null;
+		if (result?.data === false) {
+			needpass = 'neednot';
+			restoreModal = true;
+		}
 
+		if (result?.data === true) {
+			needpass = 'need';
+			restoreModal = true;
+		}
+	};
  
 </script>
 
@@ -22,27 +37,33 @@
 		<div class="setting-dividing2"></div>    <div class="label1"></div>
 
 		<!-- Privacy policy -->
-     <ChangePassword />
+		<button class="setting1" onclick={()=>changePsModal=true} >
+			<div class="item">
+				<div class="entry">Change Password</div>
+				<div class="item-r"><ArrowForward class="icon2A" /></div>
+			</div>
+		</button>
+
 		<a class="setting1" href="/#/settings/security/export_keystore">
 			<div class="item">
 				<div class="entry">Export Keystore</div>
 				<div class="item-r"><ArrowForward class="icon2A" /></div>
 			</div>
 		</a>
-		<!-- Privacy policy -->
+		<!-- Import Keystore -->
 		<a class="setting1" href="/#/settings/security/import_keystore">
 			<div class="item">
 				<div class="entry">Import Keystore</div>
 				<div class="item-r"><ArrowForward class="icon2A" /></div>
 			</div>
 		</a>
-        <!-- Help Center -->
-        <a class="setting1" >
+        <!-- Restore mn -->
+        <button class="setting1" onclick={()=>restoreModal=true} >
 			<div class="item">
 				<div class="entry">Restore Recovery Phrase</div>
 				<div class="item-r"><ArrowForward class="icon2A" /></div>
 			</div>
-		</a>
+		</button>
         <!-- Document -->
         <a class="setting1" href="/#/null">
 			<div class="item">

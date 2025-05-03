@@ -15,6 +15,8 @@ export { default as CurrencySelector } from "./currencySelector.svelte";
 export { default as Modal } from "./modal.svelte";
 export { default as ChangePassword } from "./changePassword.svelte";
 export { default as ChainSelector } from "./chainSelector.svelte"
+export { default as Child } from "./child.svelte";
+export { default as DeleteAccount } from "./deleteAccount.svelte";
 
 
 

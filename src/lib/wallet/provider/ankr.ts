@@ -7,7 +7,7 @@ import type { Blockchain } from '@ankr.com/ankr.js/dist/types';
 export const ankrAdvanced = new AnkrProvider(`https://rpc.ankr.com/multichain/${ANKR_KEY}`);
 const listOfChains: Blockchain[] = ['eth', 'base','arbitrum', 'bsc', 'optimism','polygon'];
 
-export async function getBalance(chains:Blockchain[]){
+export const getBalance=async(chains:Blockchain[])=>{
     const addr = accountState.accountList.find(a => a.accountIndex === accountState.currentAccountIndex)?.address as string;
 
     await ankrAdvanced.getAccountBalance({
@@ -19,7 +19,7 @@ export async function getBalance(chains:Blockchain[]){
 }
 
 
-export async function getNFTs(): Promise<GetNFTsByOwnerReply> {
+export const getNFTs = async(): Promise<GetNFTsByOwnerReply> => {
     const addr = accountState.accountList.find(a => a.accountIndex === accountState.currentAccountIndex)?.address as string;
 
     return await ankrAdvanced.getNFTsByOwner({
@@ -28,7 +28,7 @@ export async function getNFTs(): Promise<GetNFTsByOwnerReply> {
     });
 }
 
-export async function getNFTMetadata(): Promise<GetNFTMetadataReply> {
+export const getNFTMetadata=async(): Promise<GetNFTMetadataReply> => {
     const addr = accountState.accountList.find(a => a.accountIndex === accountState.currentAccountIndex)?.address as string;
 
     return await ankrAdvanced.getNFTMetadata({

@@ -3,40 +3,88 @@
 	import { fade, fly } from 'svelte/transition';
 	import { Gesture } from '@use-gesture/vanilla';
 	import { CloseIcon, ArrowBack } from '$lib/svg';
+	import { setContext } from 'svelte';
+
 
 	type Mode = 'full' | 'half';
+
+	interface PageHistory {
+		page: number;
+		title: string;
+	}
+
+	let {
+		modalName = $bindable(),
+		mode,
+		children
+	} = $props<{
+		modalName: boolean;
+		mode: Mode;
+		children: () => any;
+	}>();
 	let page = $state(1);
-
-	let { modalName = $bindable(), mode, content } = $props();
-
-	function handleBackdropClick(event: MouseEvent) {
-		if (event.target === event.currentTarget) {
-			modalName = false;
-		}
-	}
-
-	function handleKeydown(event: KeyboardEvent) {
-		if (event.key === 'Escape') {
-			modalName = false;
-		}
-	}
-
+	let title = $state("");
+	let history = $state<PageHistory[]>([]); // 初始化历史栈
 	let modalBody = $state<HTMLElement | null>(null);
 	let y = $state(0);
 
-	function closeModal() {
+	
+
+	const closeModal=() =>{
 		modalName = false;
+		page = 1;
+		title = '';
+		history = []; // 重置历史栈
 		y = 0;
 	}
 
+	const updatePageTitle=(newPage: number, newTitle: string)=> {
+		page = newPage;
+		title = newTitle;
+		history = [...history, { page: newPage, title: newTitle }];
+	}
+
+    setContext('modal', {
+		isModalOpen: () => modalName,
+        currentPage:() => page,
+		closeModal,
+		updatePageTitle
+	});
+
+	const goBack=()=> {
+		if (history.length > 1) {
+			history = history.slice(0, -1);
+			const lastEntry = history[history.length - 1];
+			page = lastEntry.page;
+			title = lastEntry.title;
+		}
+	}
+
+	const handleBackdropClick=(event: MouseEvent)=> {
+		if (event.target === event.currentTarget) {
+			closeModal();
+		}
+	}
+
 	$effect(() => {
-		if (modalBody && modalName) {
+		if (modalName && !isSmallScreen.current) {
+			const handleKeydown = (event: KeyboardEvent) => {
+				if (event.key === 'Escape') {
+					closeModal();
+				}
+			};
+			window.addEventListener('keydown', handleKeydown);
+			return () => window.removeEventListener('keydown', handleKeydown);
+		}
+	});
+
+	$effect(() => {
+		if (modalBody && modalName && isSmallScreen.current) {
 			const gesture = new Gesture(modalBody, {
 				onDrag: ({ movement: [, my], velocity: [, vy], direction: [, dy] }) => {
 					if (my > 0) y = my;
 					if (my > 200 && vy > 0.5 && dy > 0) {
-						modalName = false;
-						y = 0;
+						closeModal();
 					}
 				},
 				onDragEnd: () => {
@@ -46,22 +94,15 @@
 			return () => gesture.destroy();
 		}
 	});
-
-	$effect(() => {
-		if (modalName) {
-			window.addEventListener('keydown', handleKeydown);
-			return () => window.removeEventListener('keydown', handleKeydown);
-		}
-	});
 </script>
 
 {#if modalName}
+	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<div
 		class="backdrop"
 		role="dialog"
 		transition:fade={{ duration: 200 }}
 		onclick={handleBackdropClick}
-		onkeydown={handleKeydown}
 		tabindex="-1"
 	>
 		<div
@@ -81,33 +122,46 @@
 		>
 			{#if isSmallScreen.current}
 				<div class="drag-bar"></div>
-				{#if page > 1}
-					<div class="top">
-						<button class="back-btn" onclick={() => (page -= 1)}>
-							<ArrowBack class="icon2A" />
-						</button>
-					</div>
-				{/if}
-			{:else}
-				{#if page > 1}
-					<div class="top">
-						<button class="back-btn" onclick={() => (page -= 1)}>
-							<ArrowBack class="icon2A" />
-						</button>
-						<button class="close-btn" onclick={closeModal}><CloseIcon class="icon2A" /></button>
-					</div>
-				{/if}
 				<div class="top">
-					<button class="close-btn" onclick={closeModal}><CloseIcon class="icon2A" /></button>
+					{#if page > 1}
+						<button class="back-btn" onclick={goBack}>
+							<ArrowBack class="icon2A" />
+						</button>
+					{/if}
+					<div class="model-tilte" >{title}</div>
+				</div>
+			{:else}
+				<div class="top">
+					{#if page > 1}
+						<button class="back-btn" onclick={goBack}>
+							<ArrowBack class="icon2A" />
+						</button>
+					{/if}
+					<div class="model-tilte">{title}</div>
+					<button class="close-btn" onclick={closeModal}>
+						<CloseIcon class="icon2A" />
+					</button>
 				</div>
 			{/if}
-
-			{@render content()}
+			{@render children()}
 		</div>
 	</div>
 {/if}
 
 <style lang="postcss">
+	.backdrop {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(0, 0, 0, 0.5);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		z-index: 1000;
+	}
+
 	.modal {
 		display: flex;
 		box-sizing: border-box;
@@ -125,6 +179,7 @@
 		overflow-y: scroll;
 		scrollbar-width: none;
 	}
+
 	.modal2 {
 		display: flex;
 		box-sizing: border-box;
@@ -142,6 +197,7 @@
 		overflow-y: scroll;
 		scrollbar-width: none;
 	}
+
 	.modal-m {
 		display: flex;
 		box-sizing: border-box;
@@ -160,6 +216,7 @@
 		overflow-y: scroll;
 		scrollbar-width: none;
 	}
+
 	.modal-m2 {
 		display: flex;
 		box-sizing: border-box;
@@ -178,6 +235,15 @@
 		scrollbar-width: none;
 	}
 
+	.model-tilte{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 1.8rem;
+	font-weight: 700;
+
+	}
+
 	.drag-bar {
 		display: flex;
 		flex-shrink: 0;
@@ -190,15 +256,7 @@
 		margin-top: -1rem;
 		margin-bottom: 2rem;
 	}
-	.close-container {
-		display: flex;
-		justify-content: flex-end;
-		width: 100%;
-		background: none;
-		border: none;
-		cursor: pointer;
-		margin-bottom: 2rem;
-	}
+
 	.top {
 		display: flex;
 		align-items: center;
@@ -208,8 +266,9 @@
 		border: none;
 		cursor: pointer;
 		margin-top: 1rem;
-		margin-bottom: 2rem;
+		margin-bottom: 3rem;
 	}
+
 	.back-btn {
 		display: flex;
 		position: absolute;

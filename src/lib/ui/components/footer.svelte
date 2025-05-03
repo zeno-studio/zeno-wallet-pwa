@@ -1,9 +1,9 @@
 <script>
 	import { page } from '$app/state';
-	import { MediaQuery } from 'svelte/reactivity';
-	import { AssetFilled,AppsFilled,HeartFilled,SettingFilled,HomeIcon,NftFilled  } from '$lib/svg';
+	import { isSmallScreen } from '$lib/ui/ts';
+	import { AppsFilled,SettingFilled,HomeIcon,NftFilled  } from '$lib/svg';
 
-	const isSmallScreen = new MediaQuery('(max-width: 768px)');
+	
 </script>
 
 {#if isSmallScreen.current}

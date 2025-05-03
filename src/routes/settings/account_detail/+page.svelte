@@ -6,18 +6,16 @@
 		ArrowForward,
 		ArrowDown,
 		ArrowBack,
-		AlertBox,
 		EditIcon
 	} from '$lib/svg';
 	import { accountState } from '$lib/wallet/runes';
 	import { toSvg } from 'jdenticon';
-	import { goto } from '$app/navigation';
 	import { DB, editElement } from '$lib/wallet/common';
 	import { slide } from 'svelte/transition';
 	import { shortenAddress6 } from '$lib/ui/ts';
 	import { Header } from '$lib/ui/components';
 	import { metadata } from '$lib/ui/runes';
-	import { Modal } from '$lib/ui/components';
+	import { Modal,DeleteAccount } from '$lib/ui/components';
 
 	metadata.title = 'Settings';
 	metadata.description = 'Settings';
@@ -30,7 +28,7 @@
 	let memoShow = $state(false);
 	let copied = $state(false);
 
-	function saveName() {
+	const saveName=()=>{
 		if (!name) return;
 		if (!accountState.editingAccount) return;
 		accountState.editingAccount.name = name;
@@ -44,7 +42,7 @@
 		nameEdit = false;
 	}
 
-	function saveMemo() {
+	const saveMemo=()=> {
 		if (!memo) return;
 		if (!accountState.editingAccount) return;
 		accountState.editingAccount.memo = memo;
@@ -58,7 +56,7 @@
 		memoEdit = false;
 	}
 
-	function copyAddress() {
+	const copyAddress=() =>{
 		if (!accountState.editingAccount) return;
 		navigator.clipboard.writeText(accountState.editingAccount.address);
 		copied = true;
@@ -67,17 +65,13 @@
 		}, 3000);
 	}
 
-	function deleteAccount() {
-		accountState.deleteAccount();
-		close();
-		goto('/#/settings/account_manage');
-	}
 
-	function toggleHideAccount() {
+
+	const toggleHideAccount=()=> {
 		accountState.hiddenAccounts();
 	}
 
-	function generateAvatar(address: string) {
+	const generateAvatar=(address: string) =>{
 		return toSvg(address, 100);
 	}
 </script>
@@ -219,23 +213,9 @@
 	</div>
 </div>
 
-{#snippet removeAccount()}
-	<div class="title">Remove Account</div>
-	<div class="alert-wrap">
-		<AlertBox class="icon16Y" />
-	</div>
-	<div class="tip2">
-		If you want to recover this account later, you should save the account index. This account's
-		index is:
-	</div>
-	<h1>{accountState.editingAccountIndex}</h1>
-	<div class="container">
-		<button class="cancel" onclick={() => (modalOpen = false)}>Cancel</button>
-		<button class="action" onclick={deleteAccount}>Delete</button>
-	</div>
-{/snippet}
-
-<Modal bind:modalName={modalOpen} mode="half" content={removeAccount} />
+<Modal bind:modalName={modalOpen} mode="half" >
+	<DeleteAccount/>
+</Modal>
 
 <style lang="postcss">
 	.appBody-d {
@@ -253,20 +233,6 @@
 		width: 95%;
 		max-width: 48rem;
 		padding: 1rem 1rem 0rem 1rem;
-	}
-
-	.tip2 {
-		display: flex;
-		flex-direction: column;
-		justify-content: flex-start;
-		color: var(--text);
-		font-size: 1.5rem;
-		font-weight: 500;
-		width: 70%;
-		border: 2px dashed var(--accent-yellow);
-		border-radius: 1.6rem;
-		padding: 1rem;
-		width: 70%;
 	}
 
 	.item-container2 {
@@ -305,15 +271,6 @@
 		background: var(--bg3);
 	}
 
-	.alert-wrap {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 3rem;
-		height: 3rem;
-		background: var(--accent-yellow-back);
-		border-radius: 50%;
-	}
 	.address-container {
 		display: flex;
 		flex-direction: row;
@@ -413,13 +370,7 @@
 		border-radius: 1.3rem;
 		cursor: pointer;
 	}
-	.container {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		align-items: center;
-		width: 80%;
-		gap: 1rem;
-	}
+	
 
 	.memo-content {
 		position: relative;
@@ -487,30 +438,7 @@
 		height: 12rem;
 		background: #fff;
 		border: 3px solid var(--bg1);
-	}
-	.cancel {
-		color: var(--text);
-		font-size: 1.6rem;
-		font-weight: 500;
-		border: none;
-		border-radius: 1.6rem;
-		background: var(--bg1);
-		box-sizing: border-box;
-		width: 100%;
-		padding: 1rem;
-		cursor: pointer;
-	}
-	.action {
-		color: #fff;
-		font-size: 1.6rem;
-		font-weight: 500;
-		border: none;
-		border-radius: 1.6rem;
-		background: var(--primary);
-		box-sizing: border-box;
-		width: 100%;
-		padding: 1rem;
-		cursor: pointer;
+		margin-top: 2rem;
 	}
 
 	.edit {

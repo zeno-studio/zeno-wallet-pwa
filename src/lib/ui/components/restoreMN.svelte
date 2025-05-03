@@ -1,32 +1,20 @@
 <script lang="ts">
-	import { isSmallScreen } from '$lib/ui/ts';
-    import { restoreMn } from '$lib/wallet/common/account';
-	import { EyeIcon, EyeOffIcon, ArrowForward, CloseIcon } from '$lib/svg';
-	import { checkPassword, changePassword, type signerResponseType } from '$lib/wallet/runes';
-	import { fade} from 'svelte/transition';
-	import { Gesture } from '@use-gesture/vanilla';
+	import { restoreMn } from '$lib/wallet/common/account';
+	import { getContext } from 'svelte';
+	import { type ModalContext } from '$lib/ui/ts';
+	const { isModalOpen, closeModal, updatePageTitle, currentPage } =
+		getContext<ModalContext>('modal');
 
-	let modalOpen = $state(false);
+	updatePageTitle(1, '');
+
 	let isValid = $state<boolean | null>(null);
 	let password = $state<string | null>(null);
-    let passwordShow = $state(false);
-    let mn = $state<string | null>(null);
-	let modalBody = $state<HTMLElement | null>(null);
-	let y = $state(0);
+	let passwordShow = $state(false);
+	let mnArray = $state<string[] | null>(null);
 
-	function close() {
-		modalOpen = false;
-		password = null;
-		mn = null;
-		modalBody = null;
-		isValid = null;
-		passwordShow = false;
-		y = 0;
-	}
 
-	async function GetMn(password: string) {
-        const result = await restoreMn(password, 'zeno');
-	
+	const GetMn = async (password: string) => {
+		const result = await restoreMn(password, 'zeno');
 		if (result) {
 			mn = result;
 			isValid = true;
@@ -36,131 +24,33 @@
 				isValid = null;
 			}, 3000);
 		}
-	}
+	};
 
-    function parseMnemonic(mn: string): string[] {
-     const mnemonicArray = mn.trim().split(/\s+/);
-    const length = mnemonicArray.length;
-    if (length !== 12 && length !== 24) {
-        throw new Error(`Invalid mnemonic length: ${length}. Must be 12 or 24 words`);
-    }
-    return mnemonicArray;
-}
-
-	function handleBackdropClick(event: MouseEvent) {
-		if (event.target === event.currentTarget) {
-			close();
+	const parseMnemonic = (mn: string) => {
+		const mnemonicArray = mn.trim().split(/\s+/);
+		const length = mnemonicArray.length;
+		if (length !== 12 && length !== 24) {
+			throw new Error(`Invalid mnemonic length: ${length}. Must be 12 or 24 words`);
 		}
-	}
-
-	function handleKeydown(event: KeyboardEvent) {
-		if (event.key === 'Escape') {
-			close();
-		}
-	}
+		return mnArray = mnemonicArray;
+	};
 
 	$effect(() => {
-		if (modalBody && modalOpen) {
-			const gesture = new Gesture(modalBody, {
-				onDrag: ({ movement: [, my], velocity: [, vy], direction: [, dy] }) => {
-					if (my > 0) y = my;
-					if (my > 200 && vy > 0.5 && dy > 0) {
-						modalOpen = false;
-						y = 0;
-					}
-				},
-				onDragEnd: () => {
-					if (modalOpen && y > 0) y = 0;
-				}
-			});
-			return () => gesture.destroy();
-		}
-	});
-
-	$effect(() => {
-		if (modalOpen) {
-			window.addEventListener('keydown', handleKeydown);
-			return () => window.removeEventListener('keydown', handleKeydown);
+		if (!isModalOpen()) {
+			password = null;
+			mnArray= null;
+			isValid = null;
 		}
 	});
 </script>
 
-<button class="setting1" onclick={() => (modalOpen = true)}>
-    <div class="item">
-        <div class="entry">Change Password</div>
-        <div class="item-r"><ArrowForward class="icon2A" /></div>
-    </div>
-</button>
-
-{#if modalOpen}
-	<div
-		class="backdrop"
-		role="dialog"
-		transition:fade={{ duration: 200 }}
-		onclick={handleBackdropClick}
-		onkeydown={handleKeydown}
-		tabindex="-1"
-	>
-		<div
-			bind:this={modalBody}
-			class={{ modal: !isSmallScreen.current, 'modal-m': isSmallScreen.current }}
-			role="dialog"
-			aria-modal="true"
-			tabindex="-1"
-			style="transform: translateY({y}px)"
-		>
-			{#if isSmallScreen.current}
-				<div class="drag-bar"></div>
-			{:else}
-				<div class="top">
-					<button class="close-btn" onclick={close}><CloseIcon class="icon2A" /></button>
-				</div>
-			{/if}
-
-			<div class="step2">
-				<div class="title">Change Password</div>
-
-				<div class="label2">Current Password:</div>
-				<div class="ps-container">
-					{#if passwordShow}
-						<input
-							id="password"
-							class="input-password"
-							type="text"
-							autocomplete="off"
-							bind:value={password}
-						/>
-					{:else}
-						<input
-							id="password"
-							class="input-password"
-							type="password"
-							autocomplete="off"
-							bind:value={password}
-						/>
-					{/if}
-					<button class="eye" onclick={() => (passwordShow = !passwordShow)}>
-						{#if passwordShow}
-							<EyeIcon class="icon2A" />
-						{:else}
-							<EyeOffIcon class="icon2A" />
-						{/if}
-					</button>
-				</div>
-				{#if password === null}
-					<button class="start"> Input Your Password</button>
-				{:else if isValid===false}
-					<button class="start"> Invalid  Password</button>
-				{:else}
-					<button class="submit" onclick={() => GetMn(password!)}> Submit</button>
-				{/if}
-			</div>
-		</div>
-	</div>
-{/if}
+{#each mnArray! as word,i}
+<div>i</div>
+<div>word</div>
+{/each}
 
 <style lang="postcss">
-    	.item {
+	.item {
 		position: relative;
 		display: flex;
 		flex-direction: row;
@@ -179,7 +69,7 @@
 		border: none;
 		background: none;
 	}
-	.entry{
+	.entry {
 		display: flex;
 		justify-content: flex-start;
 		align-items: center;
@@ -208,8 +98,6 @@
 			background: var(--bg3);
 		}
 	}
-	
-	
 
 	.modal {
 		display: flex;
@@ -258,7 +146,7 @@
 		margin-top: 1rem;
 		margin-bottom: 2rem;
 	}
-    .close-btn {
+	.close-btn {
 		display: flex;
 		position: absolute;
 		right: 0;
@@ -289,9 +177,6 @@
 		padding: 1rem;
 		width: 70%;
 	}
-
-	
-
 
 	.start {
 		display: flex;
@@ -361,8 +246,6 @@
 		margin-left: 1rem;
 	}
 
-
-
 	.step2 {
 		width: 100%;
 		height: 100%;
@@ -407,6 +290,4 @@
 	.ps-container {
 		width: 100%;
 	}
-
-	
 </style>

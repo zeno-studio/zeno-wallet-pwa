@@ -203,7 +203,7 @@ export const derivePolkadotAccount = async (
 
 
 
-export function detectAddressType(address: string | null | undefined): AddressType {
+export const detectAddressType=(address: string | null | undefined): AddressType =>{
 	if (address == null || address.trim() === '') {
 		return '';
 	}
