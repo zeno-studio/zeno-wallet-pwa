@@ -1,20 +1,24 @@
 <script lang="ts">
-	import {  CreateAccount, ImportAccount, Footer, Header,Modal,ChainSelector } from '$lib/ui/components';
+	import {  CreateAccount, ImportAccount, Footer, Header,Modal,ChainSelector} from '$lib/ui/components';
 	import {
 		ReceiveIcon,
 		CloseIcon,
 		SendFilled,
 		SwapIcon,
-		BuyIcon,
+		CurrencyIcon,
 		PlugFilled,
-		ArrowDown
+		ArrowDown,
+		UpIcon,UpDownIcon,DollarIcon,BridgeIcon,DownIcon
 	} from '$lib/svg';
 	import { accountState } from '$lib/wallet/runes';
 	import { metadata } from '$lib/ui/runes';
+
 	let tab = $state<'token' | 'nft' | 'activity'>('token');
 	metadata.title = 'Assets';
 	metadata.description = 'Assets';
 	let modalOpen =$state(false)
+	let createModal = $state(false);
+	let importModal = $state(false);
 </script>
 
 <Header />
@@ -27,23 +31,23 @@
 	<div class="item-container2">
 		<div class="menu1">
 			<a class="text1" href="/#/receive">
-				<ReceiveIcon class="icon3" />
+				<ReceiveIcon class="icon3B" />
 				Receive
 			</a>
 			<a class="text1" href="/#/send">
-				<SendFilled class="icon3" />
+				<UpIcon class="icon3B" />
 				Send
 			</a>
 			<a class="text1" href="/#/swap">
-				<SwapIcon class="icon3" />
+				<UpDownIcon class="icon3B" />
 				Swap
 			</a>
 			<a class="text1" href="/#/bridge">
-				<PlugFilled class="icon3" />
+				<BridgeIcon class="icon3B" />
 				Bridge
 			</a>
 			<a class="text1" href="/#/buy">
-				<BuyIcon class="icon3" />
+				<DollarIcon class="icon3B" />
 				Buy
 			</a>
 		</div>
@@ -52,8 +56,8 @@
 	<div class="item-container2">
 		{#if accountState.accountList.length === 0}
 			<div class="menu2">
-				<CreateAccount />
-				<ImportAccount />
+				<button class="bottom-button-grey" onclick={() => (createModal = true)}> Create account </button>
+				<button class="bottom-button" onclick={() => (importModal = true)}> Import account </button>
 			</div>
 		{/if}
 		{#if accountState.nextAccountIndex > 1 && accountState.isBackup === false}

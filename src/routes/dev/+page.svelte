@@ -7,7 +7,7 @@
 	import { toastState } from '$lib/ui/runes';
 	import {ANKR_KEY} from '$lib/wallet/common';
 	import { onMount } from 'svelte';
-	import { QrcodeIcon,AddCircle ,BuyIcon,ScanFocus,NftIcon,NftFilled } from '$lib/svg';
+	import { QrcodeIcon,AddCircle ,CurrencyIcon,ScanFocus,NftIcon,NftFilled } from '$lib/svg';
 
 	let modalOpen = $state(false);
 
