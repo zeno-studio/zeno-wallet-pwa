@@ -3,7 +3,7 @@
 	import { SwitchTheme, LanguageSelector, CurrencySelector } from '$lib/ui/components';
 	import {
 		ArrowForward,
-		BuyIcon,
+		CurrencyIcon,
 		LanguageIcon,
 		Darkmode,
 		SafeGuardIcon,
@@ -86,7 +86,7 @@
 		<div class="setting-dividing"></div>
 		<button class="setting-entry" onclick={() => (currencyOpen = !currencyOpen)}>
 			<div class="icon-container" style="background: var(--accent-blue-back)">
-				<BuyIcon class="icon16B" />
+				<CurrencyIcon class="icon16B" />
 			</div>
 			<div class="item-content">
 				<div class="label-m">Currency</div>

@@ -7,7 +7,7 @@
 		CopyIcon,
 		Darkmode,
 		LanguageIcon,
-		BuyIcon,
+		CurrencyIcon,
 		EditIcon,
 		XIcon,
 		GithubIcon,
@@ -144,7 +144,7 @@
 						<div class="setting-dividing"></div>
 						<button class="setting-entry" onclick={() => (opt = 'currency')}>
 							<div class="icon-container" style="background: var(--accent-blue-back)">
-								<BuyIcon class="icon16B" />
+								<CurrencyIcon class="icon16B" />
 							</div>
 							<div class="item-content">
 								<div class="label-s">Currency</div>
@@ -155,7 +155,7 @@
 					<div class="setting">
 						<button class="setting-entry" onclick={() => (opt = 'account')}>
 							<div class="icon-container" style="background: var(--accent-pink-back)">
-								<BuyIcon class="icon16PK" />
+								<CurrencyIcon class="icon16PK" />
 							</div>
 							<div class="item-content">
 								<div class="label-s">Switch Account</div>
