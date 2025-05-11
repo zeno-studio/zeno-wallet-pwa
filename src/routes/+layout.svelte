@@ -68,16 +68,18 @@
 	{@render children()}
 </main>
 
-{#snippet updateModal()}
+
+
+
+			
+<Modal bind:modalName={isUpdateModalOpen} mode="half" >
 <div class="title">Update Available</div>
 			<div class="content">A new version of the app is available. Would you like to update now?</div>
 			<div class="btn-container">
 				<button class="btn-later" onclick={updateLater}>Update Later</button>
 				<button class="btn-now" onclick={updateNow}>Update Now</button>
 			</div>
-{/snippet}
-			
-<Modal bind:modalName={isUpdateModalOpen} mode="half" content={updateModal} />
+</Modal>
 
 <style lang="postcss">
 	main {

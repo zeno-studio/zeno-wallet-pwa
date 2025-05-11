@@ -4,6 +4,9 @@ import { getElement, DB, type Vault, type Account, type Settings ,type KeyringTy
 
 export const signer = new Signer();
 
+export const closeSigner = ()=> signer.terminate();
+
+
 export type signerResponseType = {
 	success: boolean;
 	data?: any;
@@ -23,36 +26,9 @@ export const lockSigner=() => {
 	signer.postMessage({ method: 'lockSigner' });
 }
 
-export const setTime=(time: number, type?: string)=> {
-	signer.postMessage({ method: 'setTime', argus: { time: time } });
-	if (type === 'save') {
-		const data = localStorage.getItem('settings');
-		if (data) {
-			const settings = JSON.parse(data);
-			settings.timeLock = time;
-			localStorage.setItem('settings', JSON.stringify(settings));
-		}
-	}
-}
-export const queryTime=() =>{
-	signer.postMessage({ method: 'queryTime' });
-}
 
-export const setAutoLock=(autoLock: boolean, type?: string) =>{
-	signer.postMessage({ method: 'setAutoLock', argus: { autoLock: autoLock } });
-	if (type === 'save') {
-		const data = localStorage.getItem('settings');
-		if (data) {
-			const settings = JSON.parse(data);
-			settings.autoLock = autoLock;
-			localStorage.setItem('settings', JSON.stringify(settings));
-		}
-	}
-}
 
-export const isAutoLock=()=> {
-	signer.postMessage({ method: 'isAutoLock' });
-}
+
 
 export const signTransaction=(argus: any)=> {
 	signer.postMessage({ method: 'signEvmTx', argus });
@@ -216,7 +192,7 @@ export const checkIsLocked=()=> {
 		signer.onmessage = (event) => {
 			resolve(event.data);
 		};
-		isLocked();
+		signer.postMessage({ method: 'isAutoLock' });
 	});
 }
 
@@ -230,4 +206,52 @@ export const changePassword=(oldPassword: string, newPassword: string) =>{
 }
 
 
+export const setTimer=(time: number)=> {
+	signer.postMessage({ method: 'setTime', argus: { time: time } });
+	const data = localStorage.getItem('settings');
+		if (data) {
+			const settings = JSON.parse(data);
+			settings.timeLock = time;
+			localStorage.setItem('settings', JSON.stringify(settings));
+		}
+	
+}
 
+export const handleSetTimer=(time: number) =>{
+	return new Promise((resolve) => {
+		signer.onmessage = (event) => {
+			resolve(event.data);
+		};
+		setTimer(time);
+	});
+}
+
+
+export const queryTimer=() =>{
+	return new Promise((resolve) => {
+		signer.onmessage = (event) => {
+			resolve(event.data);
+		};
+		signer.postMessage({ method: 'queryTimer' });
+	});
+}
+
+
+export const setAutoLock = (autoLock: boolean) => {
+	signer.postMessage({ method: 'setAutoLock', argus: { autoLock } });
+	const data = localStorage.getItem('settings');
+	if (data) {
+		const settings = JSON.parse(data);
+		settings.autoLock = autoLock;
+		localStorage.setItem('settings', JSON.stringify(settings));
+	}
+};
+
+export const handleAutoLock=(autoLock: boolean) =>{
+	return new Promise((resolve) => {
+		signer.onmessage = (event) => {
+			resolve(event.data);
+		};
+		setAutoLock(autoLock);
+	});
+}

@@ -1,12 +1,14 @@
 <script lang="ts">
 	import { isSmallScreen } from '$lib/ui/ts';
-	import { Header, Modal,ChangePassword } from '$lib/ui/components';
+	import { Header, Modal,ChangePassword,ResetWallet } from '$lib/ui/components';
 	import { ArrowForward, ArrowBack } from '$lib/svg';
 	import { accountState, checkIsLocked, type signerResponseType } from '$lib/wallet/runes';
 	
 	let needpass = $state<'' | 'neednot' | 'need'>('');
 	let restoreModal = $state(false);
 	let changePsModal = $state(false);
+	let autolockModal = $state(false);
+	let resetWalletModal = $state(false);
 
 	const checkRestoreModal = async () => {
 		const result = (await checkIsLocked()) as signerResponseType | null;
@@ -21,6 +23,7 @@
 		}
 	};
  
+
 </script>
 
 
@@ -64,18 +67,31 @@
 				<div class="item-r"><ArrowForward class="icon2A" /></div>
 			</div>
 		</button>
+ 		<!-- Document -->
+		<button class="setting1" onclick={()=>autolockModal=true} >
+			<div class="item">
+				<div class="entry">Auto-lock timer</div>
+				<div class="item-r"><ArrowForward class="icon2A" /></div>
+			</div>
+		</button>
         <!-- Document -->
-        <a class="setting1" href="/#/null">
+		<button class="setting1" onclick={()=>resetWalletModal=true} >
 			<div class="item">
 				<div class="entry">Reset Wallet</div>
 				<div class="item-r"><ArrowForward class="icon2A" /></div>
 			</div>
-		</a>
+		</button>
 
 
 	</div>
 
+	<Modal bind:modalName={changePsModal} mode="full" >
+		<ChangePassword />
+	</Modal>
 
+	<Modal bind:modalName={resetWalletModal} mode="half" >
+		<ResetWallet />
+	</Modal>
 
 <style>
 	.appBody-d {
