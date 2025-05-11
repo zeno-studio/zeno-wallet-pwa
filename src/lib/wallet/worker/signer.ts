@@ -30,10 +30,10 @@ onmessage = ({ data }) => {
 			isAutoLock = data.argus.autoLock;
 			postMessage({ success: true, data: isAutoLock });
 			break;
-		case 'setTime':
-			setTime(data.argus.time);
+		case 'setTimer':
+			setTimer(data.argus.time);
 			break;
-		case 'queryTime':
+		case 'queryTimer':
 			postMessage({ success: true, data: timeout / (60 * 1000) });
 			break;
 		case 'saveMidPass':
@@ -72,7 +72,7 @@ onmessage = ({ data }) => {
 	}
 };
 
-const setTime=(time: number)=> {
+const setTimer=(time: number)=> {
 	timeout = time * 60 * 1000;
 	if (isAutoLock) {
 		setTimeout(() => {
@@ -85,6 +85,27 @@ const setTime=(time: number)=> {
 			success: true
 		});
 	}
+	if (!isAutoLock){
+		isAutoLock=true
+		setTimeout(() => {
+			isLocked = true;
+		}, timeout);
+		postMessage({
+			success: true
+		});
+	}
+
+}
+
+const setAutoLock=(autoLock:boolean)=>{
+	if(autoLock){
+		isAutoLock = autoLock;
+		isLocked = true
+	} else {
+		
+	}
+	
+	postMessage({ success: true});
 }
 
 const saveMidPass=(password: string, salt: string)=> {
@@ -231,7 +252,7 @@ const changePassword=async(oldPassword: string, newPassword: string)=> {
 	const mnemonic = await restoreMn(oldPassword, vault.name);
 	if (!mnemonic) return postMessage({ success: false });
 	removeElement(DB.Vault.name, 'zeno');
-	packMn(newPassword, mnemonic);
-	postMessage({ success: true });
+	const ischanged = packMn(newPassword, mnemonic);
+	postMessage({ success: ischanged });
 }
 

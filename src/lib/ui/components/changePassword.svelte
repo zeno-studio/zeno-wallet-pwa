@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { isSmallScreen } from '$lib/ui/ts';
 	import { EyeIcon, EyeOffIcon, ArrowForward, CloseIcon } from '$lib/svg';
 	import { checkPasswordStrength } from '$lib/ui/ts';
-	import { checkPassword, changePassword, type signerResponseType } from '$lib/wallet/runes';
+	import { checkPassword, changePassword, type signerResponseType} from '$lib/wallet/runes';
 	import { getContext } from 'svelte';
 	import { type ModalContext } from '$lib/ui/ts';
 	const { isModalOpen, closeModal, updatePageTitle, currentPage } =
@@ -23,15 +22,12 @@
 		}
 	});
 
-	const checkPasswordAndChange = async (currentPassword: string, newPassword: string) => {
-		const result = (await checkPassword(currentPassword)) as signerResponseType | null;
-		if (result?.data === true) {
-			const result2 = (await changePassword(
-				currentPassword,
-				newPassword
-			)) as signerResponseType | null;
-			if (result2?.data === true) {
-				close();
+	const handlePasswordChange = async (currentPassword: string, newPassword: string) => {
+		const passwordCheckResult = (await checkPassword(currentPassword)) as signerResponseType | null;
+		if (passwordCheckResult?.success) {
+			const changePasswordResult = (await changePassword(currentPassword, newPassword)) as signerResponseType | null;
+			if (changePasswordResult?.success) {
+				closeModal();
 			}
 		} else {
 			isValid = false;
@@ -53,7 +49,6 @@
 </script>
 
 <div class="step2">
-	<div class="title">Change Password</div>
 
 	<div class="label2">Current Password:</div>
 	<div class="ps-container">
@@ -148,11 +143,12 @@
 		<button class="start"> invalid current password</button>
 	{:else if password === password2 && psStrength === 'weak'}
 		<button class="start"> Password too weak</button>
-	{:else if password === password2 && psStrength !== 'weak' && currentPassword !== null}
-		<button class="submit" onclick={() => checkPasswordAndChange(currentPassword!, password!)}>
+	{:else if password === password2 && psStrength !== 'weak' && currentPassword !== null }
+		<button class="submit" onclick={() => handlePasswordChange(currentPassword!, password!)}>
 			Submit</button
 		>
 	{/if}
+
 </div>
 
 <style lang="postcss">
@@ -254,19 +250,6 @@
 		justify-content: flex-start;
 		align-items: center;
 		gap: 1rem;
-	}
-
-	.drag-bar {
-		display: flex;
-		flex-shrink: 0;
-		justify-content: center;
-		align-items: center;
-		width: 4rem;
-		height: 0.5rem;
-		background: rgb(160, 160, 160);
-		border-radius: 1rem;
-		margin-top: -1rem;
-		margin-bottom: 2rem;
 	}
 
 	.eye {

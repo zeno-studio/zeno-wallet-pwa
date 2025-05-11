@@ -84,5 +84,32 @@ export const removeElement = (store: string, key: string|number) => {
     };
 };
 
+export const resetDB = async (): Promise<boolean> => {
+    if (db) {
+        db.close();
+        console.log('ZenoDB connection closed');
+      }
+    try {
+      const request = indexedDB.deleteDatabase('ZenoDB');
+        return new Promise<boolean>((resolve) => {
+        request.onsuccess = () => {
+          console.log('ZenoDB and LocalStorage cleared successfully');
+          resolve(true);
+        };
+        request.onerror = () => {
+          console.error('Failed to delete ZenoDB:', request.error);
+          resolve(false);
+        };
+        request.onblocked = () => {
+          console.warn('Database deletion blocked. Ensure all connections to ZenoDB are closed.');
+          resolve(false);
+        };
+      });
+    } catch (error) {
+      console.error('Error resetting storage:', error);
+      return false;
+    }
+  };
+
 
 //https://github.com/falcosan/TS_IndexedDB/blob/main/db/index.ts
