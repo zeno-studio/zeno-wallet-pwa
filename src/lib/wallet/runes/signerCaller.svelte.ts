@@ -19,14 +19,102 @@ export type signerRequestType = {
 };
 
 export const isLocked=() =>{
-	signer.postMessage({ method: 'isLocked' });
+	return new Promise((resolve) => {
+		signer.onmessage = (event) => {
+			resolve(event.data);
+		};
+		signer.postMessage({ method: 'isLocked' });
+	});
+	
 }
 
 export const lockSigner=() => {
-	signer.postMessage({ method: 'lockSigner' });
+	return new Promise((resolve) => {
+		signer.onmessage = (event) => {
+			resolve(event.data);
+		};
+		signer.postMessage({ method: 'lockSigner' });
+	});
+}
+
+export const unLockSigner=(password: string) => {
+	return new Promise((resolve) => {
+		signer.onmessage = (event) => {
+			resolve(event.data);
+		};
+		signer.postMessage({ method: 'unLockSigner', argus: { password: password } });
+	});
+}
+
+export const setAutoLockWithpass=(autoLock: boolean, password: string) => {
+	signer.postMessage({ method: 'setAutoLockWithpass', argus: { autoLock, password } });
+	const data = localStorage.getItem('settings');
+	if (data) {
+		const settings = JSON.parse(data);
+		settings.autoLock = autoLock;
+		localStorage.setItem('settings', JSON.stringify(settings));
+	}
+};
+
+export const handleSetAutoLockWithpass=(autoLock: boolean,password:string) =>{
+	return new Promise((resolve) => {
+		signer.onmessage = (event) => {
+			resolve(event.data);
+		};
+		setAutoLockWithpass(autoLock,password);
+	});
+}
+
+export const setAutoLock = (autoLock: boolean) => {
+	signer.postMessage({ method: 'setAutoLock', argus: { autoLock } });
+	const data = localStorage.getItem('settings');
+	if (data) {
+		const settings = JSON.parse(data);
+		settings.autoLock = autoLock;
+		localStorage.setItem('settings', JSON.stringify(settings));
+	}
+};
+
+
+export const handleSetAutoLock=(autoLock: boolean) =>{
+	return new Promise((resolve) => {
+		signer.onmessage = (event) => {
+			resolve(event.data);
+		};
+		setAutoLock(autoLock);
+	});
 }
 
 
+
+export const setTimer=(time: number)=> {
+	signer.postMessage({ method: 'setTime', argus: { time: time } });
+	const data = localStorage.getItem('settings');
+		if (data) {
+			const settings = JSON.parse(data);
+			settings.timeLock = time;
+			localStorage.setItem('settings', JSON.stringify(settings));
+		}
+	
+}
+
+export const handleSetTimer=(time: number) =>{
+	return new Promise((resolve) => {
+		signer.onmessage = (event) => {
+			resolve(event.data);
+		};
+		setTimer(time);
+	});
+}
+
+export const queryTimer=() =>{
+	return new Promise((resolve) => {
+		signer.onmessage = (event) => {
+			resolve(event.data);
+		};
+		signer.postMessage({ method: 'queryTimer' });
+	});
+}
 
 
 
@@ -34,17 +122,13 @@ export const signTransaction=(argus: any)=> {
 	signer.postMessage({ method: 'signEvmTx', argus });
 }
 
-export const saveMidPass= async(password: string)=> {
-	const vault = (await getElement(DB.Vault.name, 'zeno')) as Vault;
-	signer.postMessage({ method: 'saveMidPass', argus: { password: password, salt: vault.salt } });
-}
-
+// test function need delete
 export const queryMid=()=> {
 	signer.postMessage({ method: 'queryMid' });
 }
 
-export const addEvmAccount=async()=> {
-	const result = (await addEvmAccountWorker()) as signerResponseType | null;
+export const handleAddEvmAccount=async()=> {
+	const result = (await addEvmAccount()) as signerResponseType | null;
 	try {
 		if (result?.success === true) {
 			const settings = JSON.parse(localStorage.getItem('settings')!) as Settings;
@@ -61,7 +145,7 @@ export const addEvmAccount=async()=> {
 	}
 }
 
-const addEvmAccountWorker=()=>{
+const addEvmAccount=()=>{
 	return new Promise((resolve) => {
 		signer.onmessage = (event) => {
 			resolve(event.data);
@@ -74,8 +158,8 @@ const addEvmAccountWorker=()=>{
 	});
 }
 
-export const addEvmAccountWithPassword=async(password: string)=> {
-	const result = (await addEvmAccountPasswordWorker(password)) as signerResponseType | null;
+export const handleAddEvmAccountWithPassword=async(password: string)=> {
+	const result = (await addEvmAccountPassword(password)) as signerResponseType | null;
 	try {
 		if (result?.success === true) {
 			const settings = JSON.parse(localStorage.getItem('settings')!) as Settings;
@@ -93,7 +177,7 @@ export const addEvmAccountWithPassword=async(password: string)=> {
 	}
 }
 
-const addEvmAccountPasswordWorker=(password: string)=> {
+const addEvmAccountPassword=(password: string)=> {
 	return new Promise((resolve) => {
 		signer.onmessage = (event) => {
 			resolve(event.data); 
@@ -110,7 +194,7 @@ const addEvmAccountPasswordWorker=(password: string)=> {
 }
 
 
-const addPolkadotAccountWorker=(type: KeyringType) =>{
+const addPolkadotAccount=(type: KeyringType) =>{
 	return new Promise((resolve) => {
 		signer.onmessage = (event) => {
 			resolve(event.data);
@@ -123,8 +207,8 @@ const addPolkadotAccountWorker=(type: KeyringType) =>{
 	});
 }
 
-export const addPolkadotAccount=async(type: KeyringType) =>{
-	const result = (await addPolkadotAccountWorker(type)) as signerResponseType | null;
+export const handleAddPolkadotAccount=async(type: KeyringType) =>{
+	const result = (await addPolkadotAccount(type)) as signerResponseType | null;
 	try {
 		if (result?.success === true) {
 			const settings = JSON.parse(localStorage.getItem('settings')!) as Settings;
@@ -141,13 +225,11 @@ export const addPolkadotAccount=async(type: KeyringType) =>{
 	}
 }
 
-const addPolkadotAccountPasswordWorker=(password: string, type: KeyringType) =>{
+const addPolkadotAccountPassword=(password: string, type: KeyringType) =>{
 	return new Promise((resolve) => {
 		signer.onmessage = (event) => {
 			resolve(event.data); // 接收 Worker 返回的结果
-		};
-
-		signer.postMessage({
+		};		signer.postMessage({
 			method: 'addPolkadotAccountWithPassword',
 			argus: {
 				index: accountState.nextPolkadotIndex,
@@ -159,8 +241,8 @@ const addPolkadotAccountPasswordWorker=(password: string, type: KeyringType) =>{
 	});
 }
 
-export const addPolkadotAccountWithPassword=async(password: string, type: KeyringType) =>{
-	const result = (await addPolkadotAccountPasswordWorker(password, type)) as signerResponseType | null;
+export const handleAddPolkadotAccountWithPassword=async(password: string, type: KeyringType) =>{
+	const result = (await addPolkadotAccountPassword(password, type)) as signerResponseType | null;
 	try {
 		if (result?.success === true) {
 			const settings = JSON.parse(localStorage.getItem('settings')!) as Settings;
@@ -205,53 +287,3 @@ export const changePassword=(oldPassword: string, newPassword: string) =>{
 	});
 }
 
-
-export const setTimer=(time: number)=> {
-	signer.postMessage({ method: 'setTime', argus: { time: time } });
-	const data = localStorage.getItem('settings');
-		if (data) {
-			const settings = JSON.parse(data);
-			settings.timeLock = time;
-			localStorage.setItem('settings', JSON.stringify(settings));
-		}
-	
-}
-
-export const handleSetTimer=(time: number) =>{
-	return new Promise((resolve) => {
-		signer.onmessage = (event) => {
-			resolve(event.data);
-		};
-		setTimer(time);
-	});
-}
-
-
-export const queryTimer=() =>{
-	return new Promise((resolve) => {
-		signer.onmessage = (event) => {
-			resolve(event.data);
-		};
-		signer.postMessage({ method: 'queryTimer' });
-	});
-}
-
-
-export const setAutoLock = (autoLock: boolean) => {
-	signer.postMessage({ method: 'setAutoLock', argus: { autoLock } });
-	const data = localStorage.getItem('settings');
-	if (data) {
-		const settings = JSON.parse(data);
-		settings.autoLock = autoLock;
-		localStorage.setItem('settings', JSON.stringify(settings));
-	}
-};
-
-export const handleAutoLock=(autoLock: boolean) =>{
-	return new Promise((resolve) => {
-		signer.onmessage = (event) => {
-			resolve(event.data);
-		};
-		setAutoLock(autoLock);
-	});
-}

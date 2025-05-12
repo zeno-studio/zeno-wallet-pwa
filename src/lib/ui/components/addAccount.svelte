@@ -1,11 +1,11 @@
 <script lang="ts">
 	import {
-		addEvmAccount,
-		addPolkadotAccount,
+		handleAddEvmAccount,
+		handleAddPolkadotAccount,
 		checkPassword,
 		type signerResponseType,
-		addEvmAccountWithPassword,
-		addPolkadotAccountWithPassword
+		handleAddEvmAccountWithPassword,
+		handleAddPolkadotAccountWithPassword,
 	} from '$lib/wallet/runes';
 	import { EyeIcon, EyeOffIcon } from '$lib/svg';
 	import { getContext } from 'svelte';
@@ -23,9 +23,9 @@
 
 	const handleAddAccount = async () => {
 		if (type === 'EVM') {
-			addEvmAccount();
+			handleAddEvmAccount();
 		} else if (type === 'POLKADOT') {
-			addPolkadotAccount('sr25519');
+			handleAddPolkadotAccount('sr25519');
 		}
 		closeModal();
 	};
@@ -35,10 +35,10 @@
 		if (result?.data === true) {
 			isValidPs = true;
 			if (type === 'EVM') {
-				addEvmAccountWithPassword(ps);
+				handleAddEvmAccountWithPassword(ps);
 			}
 			if (type === 'POLKADOT') {
-				addPolkadotAccountWithPassword(ps, 'sr25519');
+				handleAddPolkadotAccountWithPassword(ps, 'sr25519');
 			}
 			closeModal();
 		} else {
