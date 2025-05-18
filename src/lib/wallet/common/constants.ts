@@ -10,29 +10,6 @@ export const PVM_ADDRESSID20_SUFFIX = "eeeeeeeeeeeeeeeeeeeeeeee"
 
 export const ANKR_KEY="ccf92c089ee0f80ae00b09422c6f8f37af5da1eea54754feb7122ea70f7fee23"
 
-export const DB = {
-  Vault:{
-    name: 'Vault',
-    keypath: 'name'
-  },
-  Account: {
-    name: 'Account',
-    keypath: "accountIndex"
-  },
-  History: {
-    name: 'HistoryRecords',
-    keypath: 'address'
-  },
-  AddressBook: {
-    name: 'AddressBook',
-    keypath: 'address'
-  },
-  Chains: {
-    name: 'Chains',
-    keypath: 'chainId'
-  }
-  
-}
 
 
 // 这是一个 (ed|sr)25510 派生地址

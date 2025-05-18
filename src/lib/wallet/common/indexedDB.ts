@@ -1,4 +1,27 @@
-import { DB} from '$lib/wallet/common';
+
+export const DB = {
+  Vault:{
+    name: 'Vault',
+    keypath: 'name'
+  },
+  Account: {
+    name: 'Account',
+    keypath: "accountIndex"
+  },
+  History: {
+    name: 'HistoryRecords',
+    keypath: 'address'
+  },
+  AddressBook: {
+    name: 'AddressBook',
+    keypath: 'address'
+  },
+  Chains: {
+    name: 'Chains',
+    keypath: 'chainId'
+  }
+  
+}
 
 
 let db: IDBDatabase;

@@ -88,7 +88,7 @@
 					settings.currentAccountIndex = 1;
 					settings.nextAccountIndex++;
 					localStorage.setItem('settings', JSON.stringify(settings));
-					saveMidPass(ps);
+					saveMidPass(ps,false);
 					closeModal();
 				}
 			} catch (e) {
@@ -104,7 +104,7 @@
 					settings.currentAccountIndex = 101;
 					settings.nextPolkadotIndex++;
 					localStorage.setItem('settings', JSON.stringify(settings));
-					saveMidPass(ps);
+					saveMidPass(ps,false);
 					closeModal();
 				}
 			} catch (e) {

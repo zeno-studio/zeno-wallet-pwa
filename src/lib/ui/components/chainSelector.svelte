@@ -3,11 +3,9 @@
 	import { EditIcon } from '$lib/svg';
 	import { getContext } from 'svelte';
 	import { type ModalContext } from '$lib/ui/ts';
-	const { isModalOpen, closeModal, updatePageTitle, currentPage } =getContext<ModalContext>('modal');
-
+	const { closeModal, updatePageTitle, currentPage } =getContext<ModalContext>('modal');
 	updatePageTitle(1, 'Select a network');
 
-	let page = $state(1)
 	let edit_http = $state(false);
 	let edit_wss = $state(false);
 	let rpc = $state('');
@@ -168,11 +166,6 @@
 		border-radius: 50%;
 		padding: 0px;
 		background-color: #fff;
-	}
-
-	.rpc_input{
-		font-size: 1.4rem;
-		color: var(--color);
 	}
 
 	.chainList {

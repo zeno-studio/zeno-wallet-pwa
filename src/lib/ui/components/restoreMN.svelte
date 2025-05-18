@@ -16,7 +16,7 @@
 	const GetMn = async (password: string) => {
 		const result = await restoreMn(password, 'zeno');
 		if (result) {
-			mn = result;
+			parseMnemonic(result);
 			isValid = true;
 		} else {
 			isValid = false;

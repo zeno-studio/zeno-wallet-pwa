@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { EyeIcon, EyeOffIcon, AlertTriangle } from '$lib/svg';
-	import { checkPassword, type signerResponseType,closeSigner} from '$lib/wallet/runes';
+	import { checkPassword,closeSigner} from '$lib/wallet/runes';
 	import { getContext } from 'svelte';
-	import { resetDB} from '$lib/wallet/common';
+	import { resetDB, type signerResponseType,} from '$lib/wallet/common';
 	import { type ModalContext } from '$lib/ui/ts';
 
 	const { isModalOpen, closeModal, updatePageTitle, currentPage } =

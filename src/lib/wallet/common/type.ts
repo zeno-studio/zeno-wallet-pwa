@@ -14,7 +14,7 @@ export type Settings = {
 	nextAccountIndex: number;
 	nextPolkadotIndex: number;
 	autoLock: boolean;
-	timeLock: number;
+	autoLockTimer: number;
 	activeApps: App[];
 	hiddenApps: App[];
 	hiddenChains: number[];
@@ -30,7 +30,7 @@ export const defaultSettings: Settings = {
 	nextAccountIndex: 1,
 	nextPolkadotIndex: 101,
 	autoLock: true,
-	timeLock: 15, // in minutes
+	autoLockTimer: 15, // in minutes
 	activeApps: [],
 	hiddenApps: [],
 	hiddenChains: [],
@@ -60,6 +60,17 @@ export interface Account {
 	tokenid?: number;
 }
 
+export type signerResponseType = {
+	success: boolean;
+	data?: any;
+	error?: string;
+};
+
+export type signerRequestType = {
+	method: string;
+	argus?: any;
+};
+
 export interface AddressEntry {
 	name: string;
 	addressType: AddressType;
@@ -75,6 +86,8 @@ export interface Vault {
 	readonly ciphertext: string;
 	readonly Version: string;
 }
+
+
 
 // cryptoVersion: V1;
 // kdf: 'scrypt(password, salt, { N: 2 ** 16, r: 8, p: 1, dkLen: 32 })'

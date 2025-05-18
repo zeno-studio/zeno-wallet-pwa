@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { DefaultFiats,DefaultCurrencies } from '$lib/wallet/common';
+	import { DefaultFiats, DefaultCurrencies } from '$lib/wallet/common';
 	import { chainState } from '$lib/wallet/runes';
 	import { CheckIcon } from '$lib/svg';
-
 </script>
 
 <div class="container">
@@ -13,8 +12,10 @@
 			<div class="item-l">
 				{fiat.name}
 			</div>
-			<div class="item-r" class:active={fiat.name === chainState.currentFiat}>
-				<CheckIcon class="icon2A" />
+			<div class="item-r">
+				{#if fiat.name === chainState.currentFiat}
+					<CheckIcon class="icon2S" />
+				{/if}
 			</div>
 		</button>
 	{/each}
@@ -26,8 +27,10 @@
 			<div class="item-l">
 				{currency}
 			</div>
-			<div class="item-r" class:active={currency === chainState.currentCurrency}>
-				<CheckIcon class="icon2A" />
+			<div class="item-r">
+				{#if currency === chainState.currentCurrency}
+					<CheckIcon class="icon2S" />
+				{/if}
 			</div>
 		</button>
 	{/each}
@@ -67,10 +70,6 @@
 		background: none;
 		border: none;
 		color: var(--color);
-	}
-
-	.active {
-		fill: var(--success);
 	}
 
 	.container {
