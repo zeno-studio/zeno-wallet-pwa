@@ -21,8 +21,6 @@
 	}
 
 
-
-
 </script>
 
 <div class="list-container">

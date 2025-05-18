@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createEvmAccount, createPolkadotAccount, type Settings } from '$lib/wallet/common';
-	import { EyeIcon, EyeOffIcon, AlertTriangle, ArrowBack, HelpFilled } from '$lib/svg';
+	import { EyeIcon, EyeOffIcon, AlertTriangle} from '$lib/svg';
 	import { checkPasswordStrength } from '$lib/ui/ts';
 	import { accountState, saveMidPass } from '$lib/wallet/runes';
 	import { fly } from 'svelte/transition';

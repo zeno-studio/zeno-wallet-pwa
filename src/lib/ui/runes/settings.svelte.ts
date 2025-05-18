@@ -2,7 +2,7 @@ import {
 	type Settings,
 	defaultSettings,
 } from '$lib/wallet/common';
-import { accountState, chainState,setAutoLock,setTime,addressBook } from '$lib/wallet/runes';
+import { accountState, chainState,setTimer, generalState } from '$lib/wallet/runes';
 import { userlocale, getLanguage, availableLanguages } from '$lib/ui/runes';
 import {} from '$lib/wallet/runes';
 
@@ -18,8 +18,7 @@ export const createSettings = async () => {
 			document.body.setAttribute('data-theme', 'light');
 		}
 		// intialize account
-		setTime(data.timeLock);
-		setAutoLock(data.autoLock);
+		
 		accountState.isBackup = data.isBackup;
 		accountState.currentAccountIndex = data.currentAccountIndex;
 		accountState.nextAccountIndex = data.nextAccountIndex;
@@ -32,7 +31,13 @@ export const createSettings = async () => {
 
 		// intialize locale
 		userlocale.locale = data.locale;
+
+		// intialize generalState
+		setTimer(data.autoLockTimer);
+		generalState.autoLockTimer = data.autoLockTimer;
+		generalState.isAutoLock = data.autoLock;
 	}
+
 	if (!settings) {
 		const systemLanguage = getLanguage();
 		if (availableLanguages.has(systemLanguage)) {

@@ -14,8 +14,10 @@
 				{availableLanguages.get(lang)}
 			</div>
 
-			<div class="item-r" class:active={lang === userlocale.locale}>
-				<CheckIcon class="icon2A" />
+			<div class="item-r" >
+				{#if lang === userlocale.locale}
+					<CheckIcon class="icon2S" />
+				{/if}
 			</div>
 		</button>
 	{/each}
@@ -47,9 +49,6 @@
 		color: var(--color);
 	}
 
-	.active {
-		fill: var(--success);
-	}
 	.container {
 		display: flex;
 		flex-direction: column;

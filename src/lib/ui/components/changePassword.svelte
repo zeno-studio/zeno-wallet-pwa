@@ -1,8 +1,9 @@
 <script lang="ts">
-	import { EyeIcon, EyeOffIcon, ArrowForward, CloseIcon } from '$lib/svg';
+	import { EyeIcon, EyeOffIcon } from '$lib/svg';
 	import { checkPasswordStrength } from '$lib/ui/ts';
-	import { checkPassword, changePassword, type signerResponseType} from '$lib/wallet/runes';
+	import { checkPassword, changePassword, } from '$lib/wallet/runes';
 	import { getContext } from 'svelte';
+	import {type signerResponseType} from '$lib/wallet/common';
 	import { type ModalContext } from '$lib/ui/ts';
 	const { isModalOpen, closeModal, updatePageTitle, currentPage } =
 		getContext<ModalContext>('modal');

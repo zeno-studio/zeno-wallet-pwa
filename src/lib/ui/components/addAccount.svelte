@@ -1,15 +1,22 @@
 <script lang="ts">
 	import {
-		handleAddEvmAccount,
-		handleAddPolkadotAccount,
 		checkPassword,
-		type signerResponseType,
-		handleAddEvmAccountWithPassword,
-		handleAddPolkadotAccountWithPassword,
+		addEvmAccount,
+		addPolkadotAccount,
+		accountState
 	} from '$lib/wallet/runes';
 	import { EyeIcon, EyeOffIcon } from '$lib/svg';
 	import { getContext } from 'svelte';
 	import { type ModalContext } from '$lib/ui/ts';
+	import {
+		getElement,
+		DB,
+		type signerResponseType,
+		type Vault,
+		type Settings,
+		type Account,
+		type KeyringType
+	} from '$lib/wallet/common';
 
 	const { isModalOpen, closeModal, updatePageTitle } = getContext<ModalContext>('modal');
 
@@ -30,15 +37,61 @@
 		closeModal();
 	};
 
+	export const handleAddEvmAccount = async (password?: string) => {
+		let res: signerResponseType | null = null;
+		if (password) {
+			const vault = (await getElement(DB.Vault.name, 'zeno')) as Vault;
+			res = (await addEvmAccount(password, vault.salt)) as signerResponseType | null;
+		} else {
+			res = (await addEvmAccount()) as signerResponseType | null;
+		}
+
+		if (res?.success === true) {
+			const settings = JSON.parse(localStorage.getItem('settings')!) as Settings;
+			const newAccount = res.data as Account;
+			accountState.accountList = [...accountState.accountList, newAccount];
+			accountState.currentAccountIndex = settings.nextAccountIndex;
+			accountState.nextAccountIndex++;
+			settings.currentAccountIndex = settings.nextAccountIndex;
+			settings.nextAccountIndex++;
+			localStorage.setItem('settings', JSON.stringify(settings));
+		}
+	};
+
+	const handleAddPolkadotAccount = async (type: KeyringType,password?: string) => {
+		let res: signerResponseType | null = null;
+		if (password) {
+			const vault = (await getElement(DB.Vault.name, 'zeno')) as Vault;
+			res = (await addPolkadotAccount(type,password,vault.salt)) as signerResponseType | null;
+		} else {
+			res = (await addPolkadotAccount(type)) as signerResponseType | null;
+		}
+		
+		try {
+			if (res?.success === true) {
+				const settings = JSON.parse(localStorage.getItem('settings')!) as Settings;
+				const newAccount = res.data as Account;
+				accountState.accountList = [...accountState.accountList, newAccount];
+				accountState.currentAccountIndex = settings.nextPolkadotIndex;
+				accountState.nextPolkadotIndex++;
+				settings.currentAccountIndex = settings.nextPolkadotIndex;
+				settings.nextPolkadotIndex++;
+				localStorage.setItem('settings', JSON.stringify(settings));
+			}
+		} catch (e) {
+			console.error('Error when adding new account', e);
+		}
+	};
+
 	const checkPasswordAndAdd = async (ps: string) => {
 		const result = (await checkPassword(ps)) as signerResponseType | null;
 		if (result?.data === true) {
 			isValidPs = true;
 			if (type === 'EVM') {
-				handleAddEvmAccountWithPassword(ps);
+				handleAddEvmAccount(ps);
 			}
 			if (type === 'POLKADOT') {
-				handleAddPolkadotAccountWithPassword(ps, 'sr25519');
+				handleAddPolkadotAccount('sr25519',ps);
 			}
 			closeModal();
 		} else {
@@ -112,7 +165,7 @@
 	{#if password === null}
 		<button class="start"> input your password</button>
 	{:else if password !== null}
-		<button class="start" onclick={async () => await checkPasswordAndAdd(password as string)}>
+		<button class="start" onclick={async () => await checkPasswordAndAdd(password!)}>
 			Submit
 		</button>
 	{/if}
