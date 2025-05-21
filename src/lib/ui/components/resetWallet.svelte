@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { EyeIcon, EyeOffIcon, AlertTriangle } from '$lib/svg';
-	import { checkPassword,closeSigner} from '$lib/wallet/runes';
+	import { checkPassword} from '$lib/wallet/runes';
 	import { getContext } from 'svelte';
 	import { resetDB, type signerResponseType,} from '$lib/wallet/common';
 	import { type ModalContext } from '$lib/ui/ts';
@@ -19,7 +19,7 @@
 		const passwordCheckResult = (await checkPassword(password)) as signerResponseType | null;
 		if (passwordCheckResult?.data) {
 			localStorage.clear();
-            closeSigner();
+
 			resetSuccess = await resetDB();
 			if (resetSuccess) {
 				closeModal();

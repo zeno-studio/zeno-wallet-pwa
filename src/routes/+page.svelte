@@ -106,7 +106,13 @@
 <Footer />
 
 
+<Modal bind:modalName={importModal} mode="half">
+	<ImportAccount/>
+</Modal>
 
+<Modal bind:modalName={createModal} mode="half">
+	<CreateAccount />
+</Modal>
 
 
 <Modal bind:modalName={modalOpen} mode="full" >
@@ -235,6 +241,44 @@
 		margin-right: 1rem;
 		padding: 0;
 	}
+	.bottom-button {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		color: #fff;
+		font-size: 1.8rem;
+		font-weight: 600;
+		height: 4.8rem;
+		border: none;
+		border-radius: 2.4rem;
+		background: var(--primary);
+		box-sizing: border-box;
+		width: 100%;
+		padding: 1rem;
+		cursor: pointer;
+		outline: none;
+		z-index: 200;
+	}
+
+	.bottom-button-grey {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		color: var(--text);
+		font-size: 1.8rem;
+		font-weight: 600;
+		height: 4.8rem;
+		border: 1px solid var(--border);
+		border-radius: 2.4rem;
+		background: var(--bg3);
+		box-sizing: border-box;
+		width: 100%;
+		padding: 1rem;
+		cursor: pointer;
+		outline: none;
+		z-index: 200;
+		
+	}
 
 	.tab-container {
 		position: relative;
@@ -257,7 +301,7 @@
 	.tabs {
 		display: flex;
 		position: relative;
-		background-color: var(--bg4);
+		background-color: var(--bg3);
 		padding: 0;
 		width: 24.4rem;
 		margin: 0 auto;

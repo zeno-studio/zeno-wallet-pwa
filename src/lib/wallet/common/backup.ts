@@ -148,18 +148,18 @@ const parseJsonFile=async(file: File): Promise<{ salt: Uint8Array, ciphertext: U
 
 const fileInput = document.getElementById('fileInput') as HTMLInputElement;
 
-fileInput.addEventListener('change', async () => {
-    const file = fileInput.files?.[0];
-    if (!file) {
-        console.error('No file selected');
-        return;
-    }
+// fileInput.addEventListener('change', async () => {
+//     const file = fileInput.files?.[0];
+//     if (!file) {
+//         console.error('No file selected');
+//         return;
+//     }
 
-    try {
-        const { salt, ciphertext } = await parseJsonFile(file);
-        console.log('Salt:', salt); // Uint8Array(32) [1, 1, ..., 1]
-        console.log('Ciphertext:', ciphertext); // Uint8Array(64) [2, 2, ..., 2]
-    } catch (error) {
-        console.error(error.message);
-    }
-});
+//     try {
+//         const { salt, ciphertext } = await parseJsonFile(file);
+//         console.log('Salt:', salt); // Uint8Array(32) [1, 1, ..., 1]
+//         console.log('Ciphertext:', ciphertext); // Uint8Array(64) [2, 2, ..., 2]
+//     } catch (error) {
+//         console.error(error.message);
+//     }
+// });

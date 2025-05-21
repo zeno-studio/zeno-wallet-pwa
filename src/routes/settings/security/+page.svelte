@@ -2,7 +2,8 @@
 	import { isSmallScreen } from '$lib/ui/ts';
 	import { Header, Modal,ChangePassword,ResetWallet } from '$lib/ui/components';
 	import { ArrowForward, ArrowBack } from '$lib/svg';
-	import { accountState, checkIsLocked, type signerResponseType } from '$lib/wallet/runes';
+	import { accountState, checkIsLocked,  } from '$lib/wallet/runes';
+	import {type signerResponseType} from '$lib/wallet/common';
 	
 	let needpass = $state<'' | 'neednot' | 'need'>('');
 	let restoreModal = $state(false);

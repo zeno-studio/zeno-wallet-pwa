@@ -71,6 +71,8 @@ onmessage = ({ data }) => {
 	}
 };
 
+
+
 const lockSigner = () => {
 	isLocked = true;
 	midpass.fill(0);
