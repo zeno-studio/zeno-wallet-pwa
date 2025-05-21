@@ -1,26 +1,22 @@
 import Signer from '$lib/wallet/worker/signer.ts?worker';
 import { accountState } from '$lib/wallet/runes';
-import {
-	getElement,
-	DB,
-	type Vault,
-	type Account,
-	type Settings,
-	type KeyringType,
-	type signerResponseType
-} from '$lib/wallet/common';
+import {type KeyringType,} from '$lib/wallet/common';
 
 export const signer = new Signer();
 
-export const closeSigner = () => signer.terminate();
 
-export const isLocked = () => {
+export const checkIsLocked = () => {
 	return new Promise((resolve) => {
 		signer.onmessage = (event) => {
 			resolve(event.data);
 		};
 		signer.postMessage({ method: 'isLocked' });
 	});
+};
+
+export const isLocked = () => {
+		signer.postMessage({ method: 'isLocked' });
+
 };
 
 export const lockSigner = () => {
@@ -74,7 +70,11 @@ export const queryTimer = () => {
 	});
 };
 
+export const query = () => {
 
+		signer.postMessage({ method: 'queryTimer' });
+	
+};
 
 // test function need delete
 export const queryMid = () => {
@@ -121,15 +121,6 @@ export const checkPassword = (password: string) => {
 			resolve(event.data);
 		};
 		signer.postMessage({ method: 'checkPassword', argus: { password: password } });
-	});
-};
-
-export const checkIsLocked = () => {
-	return new Promise((resolve) => {
-		signer.onmessage = (event) => {
-			resolve(event.data);
-		};
-		signer.postMessage({ method: 'isLocked' });
 	});
 };
 
