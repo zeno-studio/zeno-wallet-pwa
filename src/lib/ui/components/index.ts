@@ -18,6 +18,7 @@ export { default as ChainSelector } from "./chainSelector.svelte"
 export { default as DeleteAccount } from "./deleteAccount.svelte";
 export { default as ResetWallet } from "./resetWallet.svelte";
 export { default as AutoLock } from "./autolock.svelte";
+export { default as RestoreMn } from "./restoreMn.svelte";
 
 
 

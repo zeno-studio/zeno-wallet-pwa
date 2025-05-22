@@ -1,4 +1,4 @@
-import { base, bsc, ethereum, optimism, polygon, sonic } from '$lib/wallet/common';
+
 
 export type App = {
 	id: number;

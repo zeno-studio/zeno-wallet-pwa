@@ -1,4 +1,4 @@
-import { type Fiat } from '$lib/wallet/common';
+import { type Fiat } from '../common';
 
 export const usd: Fiat = {
 	name: 'USD',

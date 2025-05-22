@@ -1,4 +1,4 @@
-import {type Token} from '$lib/wallet/common';
+import {type Token} from '../common';
 export const wnd:Token = {  
     chainId: 420420421,
     type: "currency",
