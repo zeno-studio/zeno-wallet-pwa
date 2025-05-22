@@ -59,6 +59,9 @@ export const addElement = (store: string, data:object) => {
             request.onerror = () => console.error(request.error);
             transaction.oncomplete = () => console.log('data added successfully');
     };
+     open.onerror = () => {
+            console.error('IndexedDB open failed:', open.error);
+    };
 };
 
 export const editElement =(store: string, data:object) => {
@@ -71,6 +74,9 @@ export const editElement =(store: string, data:object) => {
             request.onerror = () => console.error(request.error);
             transaction.oncomplete = () => console.log('data edited successfully');
     };
+     open.onerror = () => {
+            console.error('IndexedDB open failed:', open.error);
+    };
 };
 
 
@@ -81,14 +87,18 @@ export const getElement = (store: string, key: string | number) => {
             let request!: IDBRequest;
             db = open.result;
             const transaction = db.transaction(store);
-                const objectStore = transaction.objectStore(store);
-                if (key === 'all') request = objectStore.getAll();
-                else request = objectStore.get(key);
-                request.onerror = () => resolve(null);
-                request.onsuccess = () => {
-                    const result = request.result;
-                    resolve(result !== undefined ? result : null); 
-                  };;       
+            const objectStore = transaction.objectStore(store);
+            if (key === 'all') request = objectStore.getAll();
+            else request = objectStore.get(key);
+            request.onerror = () => resolve(null);
+            request.onsuccess = () => {
+                const result = request.result;
+                resolve(result !== undefined ? result : null); 
+            };       
+        };
+        open.onerror = () => {
+            console.error('IndexedDB open failed:', open.error);
+            resolve(null);
         };
     });
 };
@@ -104,6 +114,9 @@ export const removeElement = (store: string, key: string|number) => {
         if (key === 'all') request = objectStore.clear();
         else request = objectStore.delete(key);
         request.onerror = () => console.error(request.error);
+    };
+    open.onerror = () => {
+            console.error('IndexedDB open failed:', open.error);
     };
 };
 

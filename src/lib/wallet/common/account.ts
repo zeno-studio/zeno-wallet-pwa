@@ -1,15 +1,5 @@
-import {
-	addElement,
-	getElement,
-	removeElement,
-	DB,
-	type Account,
-	type Vault,
-	type KeyringType,
-	type WalletBackupData,
-	type AddressType,
-	type AddressEntry,
-} from '$lib/wallet/common';
+import { addElement, getElement, DB } from '../common/indexedDB';
+import { type Account, type Vault, type KeyringType, type AddressType } from '../common/type';
 
 import { HDKey } from '@scure/bip32';
 import * as bip39 from '@scure/bip39';
@@ -43,17 +33,15 @@ export const packMn = (password: string, mn: string): boolean => {
 		name: 'zeno',
 		salt: bytesToHex(salt),
 		ciphertext: bytesToHex(ciphertext),
-		Version: 'v1',
-	};	
+		Version: 'v1'
+	};
 	try {
 		addElement(DB.Vault.name, store);
 		return true;
-	}
-	catch (e) {
+	} catch (e) {
 		return false;
 	}
 };
-	
 
 export const restoreMn = async (password: string, vaultName: string): Promise<string | null> => {
 	const vault = (await getElement(DB.Vault.name, vaultName)) as Vault;
@@ -63,21 +51,24 @@ export const restoreMn = async (password: string, vaultName: string): Promise<st
 		const ent = chacha.decrypt(hexToBytes(vault.ciphertext));
 		const mn = bip39.entropyToMnemonic(ent, wordlist);
 		return mn;
-	}
-	catch (e) {
+	} catch (e) {
 		return null;
 	}
 };
 
 export const isValidPassword = async (password: string): Promise<boolean> => {
 	const vault = (await getElement(DB.Vault.name, 'zeno')) as Vault;
-	const phrase = scrypt(password, hexToBytes(vault.salt), { N: 2 ** 16, r: 8, p: 1, dkLen: 32 }); // vault.salt, { N: 2 ** 16, r: 8, p: 1, dkLen: 32 });
+	if (!vault || !vault.salt) {
+        console.error('Vault or vault.salt is missing:', vault);
+        return false;
+    }
+    const salt = hexToBytes(vault.salt);
+	const phrase = scrypt(password, salt, { N: 2 ** 16, r: 8, p: 1, dkLen: 32 }); // vault.salt, { N: 2 ** 16, r: 8, p: 1, dkLen: 32 });
 	const chacha = managedNonce(xchacha)(phrase);
 	try {
 		if (chacha.decrypt(hexToBytes(vault.ciphertext))) return true;
 		return false;
-	}
-	catch (e) {
+	} catch (e) {
 		return false;
 	}
 };
@@ -87,23 +78,21 @@ export const isValidMn = (mn: string): boolean => {
 	return true;
 };
 
-export const createEvmAccount = (
-	index: number,
-	password: string,
-	mn?: string
-): boolean => {
+export const createEvmAccount = (index: number, password: string, mn?: string): boolean => {
 	mn = mn ?? bip39.generateMnemonic(wordlist, 128);
 	try {
 		packMn(password, mn);
 		deriveEvm(index, mn);
 		return true;
-	}
-	catch (e) {
+	} catch (e) {
 		return false;
 	}
 };
 
-export const deriveEvmAccount = async (index: number, password: string): Promise<Account | null> => {
+export const deriveEvmAccount = async (
+	index: number,
+	password: string
+): Promise<Account | null> => {
 	const mn = await restoreMn(password, `m/44'/60'/0'/0/${index - 1}`);
 	if (!mn) return null;
 	return deriveEvm(index, mn);
@@ -111,7 +100,7 @@ export const deriveEvmAccount = async (index: number, password: string): Promise
 export const deriveEvm = (index: number, mn: string): Account | null => {
 	if (!bip39.validateMnemonic(mn, wordlist) || !mn) return null;
 	else {
-		let newAccount: Account | null = null
+		let newAccount: Account | null = null;
 		const hdKey_ = HDKey.fromMasterSeed(bip39.mnemonicToSeedSync(mn));
 		const hdKey = hdKey_.derive(`m/44'/60'/0'/0/${index - 1}`);
 		if (hdKey.publicKey) {
@@ -123,12 +112,12 @@ export const deriveEvm = (index: number, mn: string): Account | null => {
 				address: addr.fromPublicKey(hdKey.publicKey),
 				addressType: 'EVM',
 				derivePath: `m/44'/60'/0'/0/${index - 1}`,
-				keyringType: 'secp256k1',
+				keyringType: 'secp256k1'
 			};
 			addElement(DB.Account.name, newAccount);
 			return newAccount;
 		}
-		return null
+		return null;
 	}
 };
 
@@ -143,17 +132,12 @@ export const createPolkadotAccount = (
 		packMn(password, mn);
 		derivePolkadot(index, type, mn);
 		return true;
-	}
-	catch (e) {
+	} catch (e) {
 		return false;
 	}
 };
 
-export const derivePolkadot = (
-	index: number,
-	type: KeyringType,
-	mn: string
-): Account | null => {
+export const derivePolkadot = (index: number, type: KeyringType, mn: string): Account | null => {
 	const miniSecret = entropyToMiniSecret(mnemonicToEntropy(mn));
 	let derive: DeriveFn;
 	if (type === 'secp256k1') {
@@ -165,7 +149,7 @@ export const derivePolkadot = (
 	} else {
 		return null;
 	}
-	const path = (index - 101) > 0 ? `//${index - 102}` : '';
+	const path = index - 101 > 0 ? `//${index - 102}` : '';
 	const pair = derive(path);
 	const pub = bytesToHex(pair.publicKey);
 	const newAccount: Account = {
@@ -176,13 +160,12 @@ export const derivePolkadot = (
 		isHidden: false,
 		addressType: 'POLKADOT',
 		derivePath: path,
-		keyringType: type,
+		keyringType: type
 	};
 	try {
 		addElement(DB.Account.name, newAccount);
 		return newAccount;
-	}
-	catch (e) {
+	} catch (e) {
 		return null;
 	}
 };
@@ -198,12 +181,7 @@ export const derivePolkadotAccount = async (
 	return derivePolkadot(index, type, mn);
 };
 
-
-
-
-
-
-export const detectAddressType=(address: string | null | undefined): AddressType =>{
+export const detectAddressType = (address: string | null | undefined): AddressType => {
 	if (address == null || address.trim() === '') {
 		return '';
 	}
@@ -218,4 +196,4 @@ export const detectAddressType=(address: string | null | undefined): AddressType
 	} catch {
 		return '';
 	}
-}
+};

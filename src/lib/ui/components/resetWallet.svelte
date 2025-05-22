@@ -19,7 +19,6 @@
 		const passwordCheckResult = (await checkPassword(password)) as signerResponseType | null;
 		if (passwordCheckResult?.data) {
 			localStorage.clear();
-
 			resetSuccess = await resetDB();
 			if (resetSuccess) {
 				closeModal();
@@ -111,6 +110,8 @@
 		padding: 1rem;
 		border-radius: 1.6rem;
 		background: var(--accent-blue-back);
+		margin-bottom: 3rem;
+		margin-top: 3rem;
 	}
 
 	.tip-icon {

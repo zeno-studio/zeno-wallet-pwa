@@ -9,10 +9,7 @@
 	import { getContext } from 'svelte';
 	import { type ModalContext } from '$lib/ui/ts';
 	import {
-		getElement,
-		DB,
 		type signerResponseType,
-		type Vault,
 		type Settings,
 		type Account,
 		type KeyringType
@@ -40,8 +37,7 @@
 	export const handleAddEvmAccount = async (password?: string) => {
 		let res: signerResponseType | null = null;
 		if (password) {
-			const vault = (await getElement(DB.Vault.name, 'zeno')) as Vault;
-			res = (await addEvmAccount(password, vault.salt)) as signerResponseType | null;
+			res = (await addEvmAccount(password)) as signerResponseType | null;
 		} else {
 			res = (await addEvmAccount()) as signerResponseType | null;
 		}
@@ -61,8 +57,7 @@
 	const handleAddPolkadotAccount = async (type: KeyringType,password?: string) => {
 		let res: signerResponseType | null = null;
 		if (password) {
-			const vault = (await getElement(DB.Vault.name, 'zeno')) as Vault;
-			res = (await addPolkadotAccount(type,password,vault.salt)) as signerResponseType | null;
+			res = (await addPolkadotAccount(type,password)) as signerResponseType | null;
 		} else {
 			res = (await addPolkadotAccount(type)) as signerResponseType | null;
 		}

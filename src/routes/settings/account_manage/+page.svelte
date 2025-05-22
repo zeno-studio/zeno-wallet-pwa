@@ -54,7 +54,7 @@
 	<button
 		onclick={async () => await checkModalList()}
 		class={{
-			'gray-button': exceed[0] === 1 || exceed[1] === 1 || exceed[2] === 1,
+			'bottom-button-grey ': exceed[0] === 1 || exceed[1] === 1 || exceed[2] === 1,
 			'bottom-button': exceed[0] === 0 && exceed[1] === 0 && exceed[2] === 0
 		}}
 	>
@@ -278,20 +278,5 @@
 		z-index: 200;
 		
 	}
-	.gray-button {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		background: var(--storm3);
-		color: #fff;
-		font-size: 1.6rem;
-		font-weight: 600;
-		height: 4.8rem;
-		border: none;
-		border-radius: 1.6rem;
-		box-sizing: border-box;
-		width: 100%;
-		padding: 1rem;
-		cursor: pointer;
-	}
+	
 </style>

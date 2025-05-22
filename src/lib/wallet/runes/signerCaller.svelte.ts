@@ -4,6 +4,15 @@ import {type KeyringType,} from '$lib/wallet/common';
 
 export const signer = new Signer();
 
+export const resetSigner = () => {
+	return new Promise((resolve) => {
+		signer.onmessage = (event) => {
+			resolve(event.data);
+		};
+		signer.postMessage({ method: 'resetSigner' });
+	});
+};
+
 
 export const checkIsLocked = () => {
 	return new Promise((resolve) => {
@@ -14,10 +23,6 @@ export const checkIsLocked = () => {
 	});
 };
 
-export const isLocked = () => {
-		signer.postMessage({ method: 'isLocked' });
-
-};
 
 export const lockSigner = () => {
 	return new Promise((resolve) => {
@@ -70,18 +75,9 @@ export const queryTimer = () => {
 	});
 };
 
-export const query = () => {
 
-		signer.postMessage({ method: 'queryTimer' });
-	
-};
 
-// test function need delete
-export const queryMid = () => {
-	signer.postMessage({ method: 'queryMid' });
-};
-
-export const addEvmAccount = (password?: string, salt?: string) => {
+export const addEvmAccount = (password?: string) => {
 	return new Promise((resolve) => {
 		signer.onmessage = (event) => {
 			resolve(event.data);
@@ -91,13 +87,12 @@ export const addEvmAccount = (password?: string, salt?: string) => {
 			argus: {
 				index: accountState.nextAccountIndex,
 				password: password ? password : '',
-				salt: salt ? salt : ''
 			}
 		});
 	});
 };
 
-export const addPolkadotAccount = (type: KeyringType, password?: string, salt?: string) => {
+export const addPolkadotAccount = (type: KeyringType, password?: string) => {
 	return new Promise((resolve) => {
 		signer.onmessage = (event) => {
 			resolve(event.data);
@@ -109,7 +104,6 @@ export const addPolkadotAccount = (type: KeyringType, password?: string, salt?: 
 				index: accountState.nextPolkadotIndex,
 				type: type,
 				password: password ? password : '',
-				salt: salt ? salt : ''
 			}
 		});
 	});
@@ -129,7 +123,7 @@ export const saveMidPass = (password: string,needRes:boolean) => {
 		signer.onmessage = (event) => {
 			resolve(event.data);
 		};
-		signer.postMessage({ method: 'isLocked', argus: { password: password,needRes:needRes } });
+		signer.postMessage({ method: 'saveMidPass', argus: { password: password,needRes:needRes } });
 	});
 };
 
@@ -147,4 +141,38 @@ export const changePassword = (oldPassword: string, newPassword: string) => {
 
 export const signTransaction = (argus: any) => {
 	signer.postMessage({ method: 'signEvmTx', argus });
+};
+
+
+// test function need delete
+export const queryMid = () => {
+	return new Promise((resolve) => {
+		signer.onmessage = (event) => {
+			resolve(event.data);
+		};
+		signer.postMessage({
+			method: 'queryMid',
+		});
+	});
+};
+export const getVault = () => {
+	return new Promise((resolve) => {
+		signer.onmessage = (event) => {
+			resolve(event.data);
+		};
+		signer.postMessage({
+			method: 'getVault',
+		});
+	});
+};
+
+export const reBuildMnPost = () => {
+	return new Promise((resolve) => {
+		signer.onmessage = (event) => {
+			resolve(event.data);
+		};
+		signer.postMessage({
+			method: 'reBuildMnPost',
+		});
+	});
 };

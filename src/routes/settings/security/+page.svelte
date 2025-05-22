@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { isSmallScreen } from '$lib/ui/ts';
-	import { Header, Modal,ChangePassword,ResetWallet } from '$lib/ui/components';
+	import { Header, Modal,ChangePassword,ResetWallet,RestoreMn } from '$lib/ui/components';
 	import { ArrowForward, ArrowBack } from '$lib/svg';
 	import { accountState, checkIsLocked,  } from '$lib/wallet/runes';
 	import {type signerResponseType} from '$lib/wallet/common';
@@ -11,7 +11,7 @@
 	let autolockModal = $state(false);
 	let resetWalletModal = $state(false);
 
-	const checkRestoreModal = async () => {
+	const checkAutolockModal = async () => {
 		const result = (await checkIsLocked()) as signerResponseType | null;
 		if (result?.data === false) {
 			needpass = 'neednot';
@@ -85,6 +85,10 @@
 
 
 	</div>
+
+	<Modal bind:modalName={restoreModal} mode="full" >
+		<RestoreMn />
+	</Modal>
 
 	<Modal bind:modalName={changePsModal} mode="full" >
 		<ChangePassword />

@@ -1,106 +1,169 @@
 <script lang="ts">
-	import {signer,isLocked ,query,queryTimer, checkIsLocked} from '$lib/wallet/runes';
-	import {restoreMn, type signerResponseType} from '$lib/wallet/common';
-	import {accountState} from '$lib/wallet/runes';
-	import {generateQRCodeSvg} from '$lib/ui/ts';
-	import { Toaster,Header,Footer } from '$lib/ui/components';
+	import {
+		lockSigner,
+		unLockSigner,
+		disableAutoLock,
+		checkPassword,
+		setTimer,
+		getVault,
+		queryMid,
+		queryTimer,
+		checkIsLocked,
+		reBuildMnPost,
+		changePassword ,
+		saveMidPass,
+		resetSigner,
+	} from '$lib/wallet/runes';
+	import {
+		restoreMn,
+		isValidPassword,
+		getElement,
+		DB,
+		type signerResponseType,
+		type Vault
+	} from '$lib/wallet/common';
+	import { Toaster, Header, Footer } from '$lib/ui/components';
 	import { toastState } from '$lib/ui/runes';
-	import {ANKR_KEY} from '$lib/wallet/common';
-	import { onMount } from 'svelte';
-	import { NftIcon,NftFilled } from '$lib/svg';
 
-let res: signerResponseType | null =  $state(null);
+	let res: any | null = $state(null);
 
-let signerResponse : signerResponseType | null = $state(null);
-signer.onmessage = (event) => {
-		signerResponse = event.data;
-	};
+	async function vault() {
+		const result = (await getVault()) as signerResponseType | null;
+		res = result?.data.salt;
+		console.log(result);
+	}
 
+	async function IsLocked() {
+		const result = (await checkIsLocked()) as signerResponseType | null;
+		res = result?.data;
+		console.log(result);
+	}
 
+	async function Mid() {
+		const result = (await queryMid()) as signerResponseType | null;
+		res = result?.data;
+		console.log(result);
+	}
 
+	async function Timer() {
+		const result = (await queryTimer()) as signerResponseType | null;
+		res = result?.data;
+		console.log(result);
+	}
 
-async function p() {
-	const result = (await checkIsLocked()) as signerResponseType | null;
+	async function lock() {
+		const result = (await lockSigner()) as signerResponseType | null;
+		res = result?.success;
+		console.log(result);
+	}
+	async function unLock() {
+		const result = (await unLockSigner('@Qian7855')) as signerResponseType | null;
+		res = result?.success;
+		console.log(result);
+	}
+	async function disAutoLock() {
+		const result = (await disableAutoLock()) as signerResponseType | null;
+		res = result?.data;
+		console.log(result);
+	}
+	async function disAutoLockps() {
+		const vault = (await getElement(DB.Vault.name, 'zeno')) as Vault;
+		const result = (await disableAutoLock('@Qian7855', vault.salt)) as signerResponseType | null;
+		res = result?.success;
+		console.log(result);
+	}
+	async function SetTime() {
+		const result = (await setTimer(30)) as signerResponseType | null;
+		res = result?.data;
+		console.log(result);
+	}
+	async function SetTimeps() {
+		const vault = (await getElement(DB.Vault.name, 'zeno')) as Vault;
+		const result = (await setTimer(30,'@Qian7855', vault.salt)) as signerResponseType | null;
+		res = result?.data;
+		console.log(result);
+	}
+async function reBuildMn() {
+		const result = (await reBuildMnPost()) as signerResponseType | null;
+		res = result?.data;
+		console.log(result);
+	}
+	async function CheckPassword() {
+		const result = (await checkPassword('@Qian7855')) as signerResponseType | null;
+		res = result?.data;
+		console.log(result);
+	}
 
-	console.log("result?.data");
-	
-}
-	
+	function testpassword() {
+		const result = isValidPassword('@Qian7855');
+		console.log(result);
+	}
+	async function changePs() {
+		const result = (await changePassword('#Qian7855','@Qian7855')) as signerResponseType | null;
+		res = result?.success;
+		console.log(result);
+	}
+	async function saveMid() {
+		const result = (await saveMidPass('@Qian7855',true)) as signerResponseType | null;
+		res = result?.success;
+		console.log(result);
+	}
 
- 
-function q() {
-	// signer.postMessage({ method: 'query', params: { id: 1 } });
-	signer.postMessage({ method: 'queryTimer' });
-	console.log(signerResponse);
-}
-
-p();
+async function reset() {
+		const result = (await resetSigner()) as signerResponseType | null;
+		res = result?.success;
+		console.log(result);
+	}
 </script>
 
-<Header />		
+<Header />
 <Toaster />
 
-	<div class="appBody">
-		<div><NftIcon   class="icon2A"/></div>
-		<div><NftFilled   class="icon3"/></div>
-		{signerResponse?.data}
-	
-	<button onclick={p } >结果：{res}</button>
-	<button onclick={q} >结果：{res}</button>
-	<div class="item">
-		<label for="pet-select">Choose a pet:</label>
-
-		<select name="pets" id="pet-select">
-		  <option value="">--Please choose an option--</option>
-		  <option value="dog">Dog</option>
-		  <option value="cat">Cat</option>
-		  <option value="hamster">Hamster</option>
-		  <option value="parrot">Parrot</option>
-		  <option value="spider">Spider</option>
-		  <option value="goldfish">Goldfish</option>
-		</select>
+<div class="appBody">
+	<div class="result">worker test:{res}</div>
+	<div class="test">
+		<button onclick={vault}>getVault</button>
+		<button onclick={IsLocked}>IsLocked</button>
+		<button onclick={Mid}>queryMid</button>
+		<button onclick={Timer}>queryTimer</button>
+		<button onclick={lock}>lockSigner</button>
+		<button onclick={unLock}>unLockSigner</button>
+		<button onclick={disAutoLock}>disAutoLock</button>
+		<button onclick={disAutoLockps}>disAutoLockps</button>
+		<button onclick={SetTime}>SetTime</button>
+		<button onclick={SetTimeps}>SetTimeps</button>
+		<button onclick={reBuildMn}>reBuildMn</button>
+		<button onclick={CheckPassword}>checkPassword</button>
+		<button onclick={testpassword}>testpassword</button>
+		<button onclick={changePs}>changePs</button>
+		<button onclick={saveMid}>saveMid</button>
+		<button onclick={reset}>reset</button>
 	</div>
+
 	<button onclick={() => toastState.add('title', 'message')}>toast</button>
 	<input type="file" />
-	<input type="file" capture='environment' accept="image/*" />
-
-	<details>
-		<summary>Details</summary>
-		Something small enough to escape casual notice.
-	  </details>
-	  
+	<input type="file" capture="environment" accept="image/*" />
 </div>
 
 <Footer />
 
-
-
 <style lang="postcss">
-		.appBody {
-	flex-direction: column;
-	height: 100%;
-	width: 95%;
-	max-width: 48rem;
-	padding: 6.4rem 1rem 0rem 1rem;
-}
-details {
-  border: 1px solid #aaa;
-  border-radius: 4px;
-  padding: 0.5em 0.5em 0;
-}
+	.appBody {
+		flex-direction: column;
+		height: 100%;
+		width: 95%;
+		max-width: 48rem;
+		padding: 6.4rem 1rem 0rem 1rem;
+	}
+	.result {
+		font-size: 2rem;
+	}
 
-summary {
-  font-weight: bold;
-  margin: -0.5em -0.5em 0;
-  padding: 0.5em;
-}
-
-details[open] {
-  padding: 0.5em;
-}
-
-details[open] summary {
-  border-bottom: 1px solid #aaa;
-  margin-bottom: 0.5em;
-}
+	.test {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+		height: 100%;
+		width: 100%;
+		gap: 1rem;
+	}
 </style>

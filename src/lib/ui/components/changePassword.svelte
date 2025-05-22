@@ -28,7 +28,7 @@
 		if (passwordCheckResult?.success) {
 			const changePasswordResult = (await changePassword(currentPassword, newPassword)) as signerResponseType | null;
 			if (changePasswordResult?.success) {
-				closeModal();
+				updatePageTitle(2, 'Change password success');
 			}
 		} else {
 			isValid = false;
@@ -49,8 +49,8 @@
 	});
 </script>
 
-<div class="step2">
-
+{#if currentPage() === 1}
+<div class="modal-body">
 	<div class="label2">Current Password:</div>
 	<div class="ps-container">
 		{#if passwordShow}
@@ -149,8 +149,16 @@
 			Submit</button
 		>
 	{/if}
+	</div>
+{/if}
 
-</div>
+{#if currentPage() === 2}
+<div class="modal-body">
+
+
+	<button class="submit" onclick={closeModal}>Close</button>
+	</div>
+	{/if}
 
 <style lang="postcss">
 	.label2 {
@@ -243,7 +251,7 @@
 		margin-left: 1rem;
 	}
 
-	.step2 {
+	.modal-body {
 		width: 100%;
 		height: 100%;
 		display: flex;
