@@ -3,19 +3,20 @@
 	import { CopyIcon } from '$lib/svg';
 	import { accountState } from '$lib/wallet/runes';
 	import { page } from '$app/state';
-	import { generateQRCodeSvg } from '$lib/ui/ts';
+	import { generateQRCodeSvg, downloadQRCodeAsPNG } from '$lib/ui/ts';
 	import { Header } from '$lib/ui/components';
-	let qrcode = $derived(() => {
+
+	let qrcode = $derived.by(async () => {
 		if (!accountState.currentAccount?.address) return '';
-		return generateQRCodeSvg(
+		return await generateQRCodeSvg(
 			accountState.currentAccount.address,
 			{
 				size: 300,
 				color: '#000000',
-				radius: 0.3,
-				border: 2 
+				radius: 0.25,
+				border: 2
 			},
-			{ image: '/favicon.svg' }
+			{ image: '/favicon-r.svg' }
 		);
 	});
 
@@ -29,8 +30,9 @@
 		}, 2000);
 	}
 
-	function downloadSvg() {
-		const blob = new Blob([qrcode()], { type: 'image/svg+xml' });
+	async function downloadSvg() {
+		const svg = await qrcode;
+		const blob = new Blob([svg], { type: 'image/svg+xml' });
 		const url = URL.createObjectURL(blob);
 		const link = document.createElement('a');
 		link.href = url;
@@ -40,7 +42,13 @@
 		document.body.removeChild(link);
 		URL.revokeObjectURL(url);
 	}
+
+	async function downloadPNG() {
+		const svg = await qrcode;
+		await downloadQRCodeAsPNG(svg, {size: 600});
+	}
 </script>
+
 <Header />
 <div class="appBody" class:active={isSmallScreen.current}>
 	<div class="item-container2">
@@ -78,7 +86,11 @@
 			</div>
 		{:else}
 			<div class="qr">
-				{@html qrcode()}
+				{#await qrcode then qr}
+					{@html qr}
+				{:catch error}
+					<div>Error loading QR code: {error.message}</div>
+				{/await}
 			</div>
 
 			<div>
@@ -86,7 +98,7 @@
 			</div>
 
 			<div>
-				<button class="share-l" onclick={downloadSvg}> Share Qrcode </button>
+				<button class="share-l" onclick={downloadPNG}> Share Qrcode </button>
 
 				<button
 					class="share-r"
@@ -127,7 +139,6 @@
 	}
 	.active {
 		padding: 8.4rem 1rem 0rem 1rem;
-
 	}
 	.item-container {
 		gap: 1rem;
