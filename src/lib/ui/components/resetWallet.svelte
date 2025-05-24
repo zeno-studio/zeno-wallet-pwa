@@ -16,8 +16,8 @@
 	let password = $state<string | null>(null);
 
 	const handleResetwallet = async (password: string) => {
-		const passwordCheckResult = (await checkPassword(password)) as signerResponseType | null;
-		if (passwordCheckResult?.data) {
+		const res = (await checkPassword(password)) as signerResponseType | null;
+		if (res?.data) {
 			localStorage.clear();
 			resetSuccess = await resetDB();
 			if (resetSuccess) {

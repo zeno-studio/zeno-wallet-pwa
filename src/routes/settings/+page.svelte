@@ -50,7 +50,7 @@
 					{@html generateAvatar(accountState.currentAccount?.address ?? '')}
 					{/if}
 					{#if accountState.currentAccount?.addressType === 'POLKADOT'}
-						<img class="chain-logo" src="/token/dot.svg" alt="" />
+						<img class="chain-logo" src="/token/DOT.svg" alt="" />
 					{/if}
 				</div>
 				<span class="label-m" style="font-weight: 600">{accountState.currentAccount?.name} </span>

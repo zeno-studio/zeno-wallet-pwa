@@ -127,7 +127,7 @@
 
 				<button class="token-lable">
 					<div class="item-l">
-						<img src="/token/dot.svg" alt="" class="token-icon" />
+						<img src="/token/DOT.svg" alt="" class="token-icon" />
 					</div>
 					<div class="token-detail">
 						<span>Polkadot</span>
@@ -170,7 +170,7 @@
 
 			<div class="item-l">
 				<button class="button-open"><img src="/token/eth.svg" alt="" class="token-icon" /></button>
-				<button class="button-open"><img src="/token/dot.svg" alt="" class="token-icon" /></button>
+				<button class="button-open"><img src="/token/DOT.svg" alt="" class="token-icon" /></button>
 			</div>
 			<div class="token-list">
 				<div class="item-l">
@@ -181,7 +181,7 @@
 
 			<button class="token-lable">
 				<div class="item-l">
-					<img src="/token/dot.svg" alt="" class="token-icon" />
+					<img src="/token/DOT.svg" alt="" class="token-icon" />
 				</div>
 				<div class="token-detail">
 					<span>Polkadot</span>

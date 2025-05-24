@@ -245,11 +245,11 @@
 		justify-content: center;
 		align-items: center;
 		color: #fff;
-		font-size: 1.8rem;
+		font-size: 1.6rem;
 		font-weight: 600;
 		height: 4.8rem;
 		border: none;
-		border-radius: 2.4rem;
+		border-radius: 1.6rem;
 		background: var(--primary);
 		box-sizing: border-box;
 		width: 100%;
@@ -264,11 +264,11 @@
 		justify-content: center;
 		align-items: center;
 		color: var(--text);
-		font-size: 1.8rem;
+		font-size: 1.6rem;
 		font-weight: 600;
 		height: 4.8rem;
 		border: 1px solid var(--border);
-		border-radius: 2.4rem;
+		border-radius: 1.6rem;
 		background: var(--bg3);
 		box-sizing: border-box;
 		width: 100%;
