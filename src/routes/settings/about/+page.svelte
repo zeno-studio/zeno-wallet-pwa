@@ -16,7 +16,6 @@
 				<ArrowBack class="icon2A" />
 			</a>About
 		</div>
-		<div class="setting-dividing2"></div>
 		<!-- Version -->
 		<div class="version">
 			<div class="item">
@@ -94,7 +93,6 @@
 		justify-content: flex-start;
 		align-items: center;
 		color: var(--text);
-		margin-top: 5rem;
 		margin-bottom: 1rem;
 	}
 	.item {
