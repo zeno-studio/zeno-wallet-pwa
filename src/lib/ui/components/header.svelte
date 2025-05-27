@@ -66,10 +66,7 @@
 					have no account
 				{:else}
 					<div class="avatar">
-						{@html generateAvatar(accountState.currentAccount?.address!, 22)}
-						{#if accountState.currentAccount?.addressType === 'POLKADOT'}
-							<img class="chain-logo" src="/chain/polkadot.svg" alt="" />
-						{/if}
+						{@html generateAvatar(accountState.currentAccount?.address!, 22)}	
 					</div>
 					{name}
 					<ArrowDown class="icon16A" />
@@ -96,9 +93,7 @@
 					onclick={() => selectedAccount(account.accountIndex)}
 				>
 					<div class="avatar-drop">{@html generateAvatar(account.address, 33)}
-						{#if account.addressType === 'POLKADOT'}
-							<img class="chain-logo2" src="/chain/polkadot.svg" alt="" />
-						{/if}
+
 					</div>
 
 					<div

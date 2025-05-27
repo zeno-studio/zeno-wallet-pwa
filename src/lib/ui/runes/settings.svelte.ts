@@ -22,7 +22,7 @@ export const createSettings = async () => {
 		accountState.isBackup = data.isBackup;
 		accountState.currentAccountIndex = data.currentAccountIndex;
 		accountState.nextAccountIndex = data.nextAccountIndex;
-		accountState.nextPolkadotIndex = data.nextPolkadotIndex;
+		accountState.nextPQAccountIndex = data.nextPQAccountIndex;
 		await accountState.getAccountList();
 
 		// intialize currency

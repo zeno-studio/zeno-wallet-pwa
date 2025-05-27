@@ -37,8 +37,6 @@
 		"@noble/curves": "^1.9.1",
 		"@noble/hashes": "^1.8.0",
 		"@polkadot-api/descriptors": "file:.papi\\descriptors",
-		"@polkadot-labs/hdkd": "^0.0.11",
-		"@polkadot-labs/hdkd-helpers": "^0.0.11",
 		"@scure/bip32": "^1.7.0",
 		"@scure/bip39": "^1.6.0",
 		"@sveltejs/adapter-static": "^3.0.8",

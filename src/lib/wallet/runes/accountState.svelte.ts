@@ -5,7 +5,7 @@ class AccountState {
     isBackup = $state(false);
     currentAccountIndex = $state(0);
     nextAccountIndex = $state(1);
-    nextPolkadotIndex = $state(101);
+    nextPQAccountIndex = $state(101);
     accountList = $state<Account[]>([]);
     editingAccountIndex = $state(0);
     editingAccount = $derived.by(() => {

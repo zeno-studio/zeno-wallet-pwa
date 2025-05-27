@@ -81,4 +81,6 @@ export { default as TelegramIcon} from "./telegram.svelte";
 export { default as TrashIcon} from "./trash.svelte";
 export { default as UpIcon} from "./up.svelte";
 export { default as UpDownIcon} from "./up-down.svelte";
+export { default as VerifiedIcon} from "./verified.svelte";
+export { default as VerifiedFilled} from "./verified-filled.svelte";
 export { default as XIcon} from "./x.svelte";

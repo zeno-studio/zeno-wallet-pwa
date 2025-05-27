@@ -29,7 +29,7 @@
 			exceed[1] = 1;
 			return;
 		}
-		if (accountState.nextPolkadotIndex > 200) {
+		if (accountState.nextPQAccountIndex > 200) {
 			exceed[2] = 1;
 			return;
 		}
@@ -65,7 +65,7 @@
 			Too many times to add Ethereum account
 		{/if}
 		{#if exceed[2] === 1}
-			Too many times to add Polkadot account
+			Too many times to add Post-quantum account
 		{/if}
 		{#if exceed[0] === 0 && exceed[1] === 0 && exceed[2] === 0}
 			Add new account

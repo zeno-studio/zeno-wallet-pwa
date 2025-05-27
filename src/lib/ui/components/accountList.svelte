@@ -53,9 +53,6 @@
 					>
 						<div class="avatar">
 							{@html generateAvatar(account.address)}
-							{#if account.addressType === 'POLKADOT'}
-								<img class="chain-logo" src="/chain/polkadot.svg" alt="" />
-							{/if}
 						</div>
 						<div class="content">
 							<div
@@ -102,9 +99,6 @@
 						<div class="avatar">
 							{@html generateAvatar(account.address)}
 
-							{#if account.addressType === 'POLKADOT'}
-								<img class="chain-logo" src="/chain/polkadot.svg" alt="" />
-							{/if}
 						</div>
 						<div class="content">
 							<div class="label-m" style="font-weight: 600;"

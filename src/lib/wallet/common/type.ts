@@ -12,7 +12,7 @@ export type Settings = {
 	locale: string;
 	currentAccountIndex: number;
 	nextAccountIndex: number;
-	nextPolkadotIndex: number;
+	nextPQAccountIndex: number;
 	autoLock: boolean;
 	autoLockTimer: number;
 	activeApps: App[];
@@ -28,7 +28,7 @@ export const defaultSettings: Settings = {
 	locale: 'en',
 	currentAccountIndex: 0,
 	nextAccountIndex: 1,
-	nextPolkadotIndex: 101,
+	nextPQAccountIndex: 101,
 	autoLock: true,
 	autoLockTimer: 15, // in minutes
 	activeApps: [],
@@ -41,9 +41,9 @@ export const defaultSettings: Settings = {
 
 export type AccessStatus = 'APPROVED' | 'DENIED';
 export type HexString = `0x${string}`;
-export type AddressType = 'EVM' | 'POLKADOT' | '';
-export type KeyringType = 'secp256k1' | 'ed25519' | 'sr25519';
-export type AccountType = 'local' | 'passkey' | 'hardware';
+export type AddressType = 'EVM' | 'POLKADOT' | 'POST-QUANTUM'|'';
+export type KeyringType = 'secp256k1' | 'ed25519' | 'sr25519'|'secp256r1'|'';
+export type AccountType = 'local' | 'passkey' | 'hardware'|'';
 
 export interface Account {
 	name: string;
@@ -94,25 +94,6 @@ export interface Vault {
 // symmetric: 'XChaCha20-Poly1305-managedNonce'
 
 
-// {
-// 	"version": 3,
-// 	"id": "uuid-string",
-// 	"address": "0x...",
-// 	"crypto": {
-// 	  "cipher": "aes-128-ctr",
-// 	  "ciphertext": "encrypted-private-key",
-// 	  "cipherparams": { "iv": "initialization-vector" },
-// 	  "kdf": "pbkdf2",
-// 	  "kdfparams": {
-// 		"c": 262144,
-// 		"dklen": 32,
-// 		"prf": "hmac-sha256",
-// 		"salt": "random-salt"
-// 	  },
-// 	  "mac": "message-authentication-code"
-// 	}
-//   }
-
 export interface Chain {
 	chainId: number;
 	name: string;
@@ -156,7 +137,7 @@ export type Token = {
 
 export type TxParticipant = {
 	address: string;
-	network: string;
+	chainId: number;
 };
 
 export interface Tx {
