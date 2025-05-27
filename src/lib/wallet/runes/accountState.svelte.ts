@@ -1,5 +1,4 @@
 import { DB, editElement, removeElement,getElement,type Settings,type Account} from '$lib/wallet/common';
-import { goto } from '$app/navigation';
 
 class AccountState {
     isBackup = $state(false);
@@ -31,7 +30,6 @@ class AccountState {
         }
         this.accountList = this.accountList.filter(a => a.accountIndex !== this.editingAccountIndex);
         this.setCurrentAccountIndex(this.accountList[0].accountIndex);
-        goto('/#/setting/account_manage');
     }
 
     async getAccountList() {

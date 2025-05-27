@@ -1,5 +1,10 @@
 import Signer from '$lib/wallet/worker/signer.ts?worker';
 import { accountState } from '$lib/wallet/runes';
+import {
+		type signerResponseType,
+		type Settings,
+		type Account,
+	} from '$lib/wallet/common';
 
 export const signer = new Signer();
 
@@ -41,26 +46,25 @@ export const unLockSigner = (password: string) => {
 	});
 };
 
-export const disableAutoLock = (password?: string, salt?: string) => {
+export const disableAutoLock = () => {
 	return new Promise((resolve) => {
 		signer.onmessage = (event) => {
 			resolve(event.data);
 		};
 		signer.postMessage({
 			method: 'disableAutoLock',
-			argus: { password: password ? password : '', salt: salt ? salt : '' }
 		});
 	});
 };
 
-export const setTimer = (time: number, password?: string, salt?: string) => {
+export const setTimer = (time: number) => {
 	return new Promise((resolve) => {
 		signer.onmessage = (event) => {
 			resolve(event.data);
 		};
 		signer.postMessage({
 			method: 'setTimer',
-			argus: { time: time, password: password ? password : '', salt: salt ? salt : '' }
+			argus: { time: time}
 		});
 	});
 };
@@ -76,7 +80,7 @@ export const queryTimer = () => {
 
 
 
-export const addEvmAccount = (password?: string) => {
+export const addEvmAccount = () => {
 	return new Promise((resolve) => {
 		signer.onmessage = (event) => {
 			resolve(event.data);
@@ -85,11 +89,25 @@ export const addEvmAccount = (password?: string) => {
 			method: 'addEvmAccount',
 			argus: {
 				index: accountState.nextAccountIndex,
-				password: password ? password : '',
 			}
 		});
 	});
 };
+
+export const handleAddEvmAccount = async () => {
+		let res: signerResponseType | null = null;
+		res = (await addEvmAccount()) as signerResponseType | null;
+		if (res?.success === true) {
+			const settings = JSON.parse(localStorage.getItem('settings')!) as Settings;
+			const newAccount = res.data as Account;
+			accountState.accountList = [...accountState.accountList, newAccount];
+			accountState.currentAccountIndex = settings.nextAccountIndex;
+			accountState.nextAccountIndex++;
+			settings.currentAccountIndex = settings.nextAccountIndex;
+			settings.nextAccountIndex++;
+			localStorage.setItem('settings', JSON.stringify(settings));
+		}
+	};
 
 
 export const checkPassword = (password: string) => {

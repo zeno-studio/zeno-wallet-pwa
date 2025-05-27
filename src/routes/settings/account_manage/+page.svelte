@@ -7,7 +7,7 @@
 		Modal,
 		Header
 	} from '$lib/ui/components';
-	import { accountState, checkIsLocked } from '$lib/wallet/runes';
+	import { accountState, checkIsLocked ,handleAddEvmAccount} from '$lib/wallet/runes';
 	import { isSmallScreen } from '$lib/ui/ts';
 	import { metadata } from '$lib/ui/runes';
 	import { ArrowBack } from '$lib/svg';
@@ -36,7 +36,7 @@
 		const result = (await checkIsLocked()) as signerResponseType;
 		if (result?.data === false) {
 			needpass = 'neednot';
-			addModal = true;
+			handleAddEvmAccount();
 		}
 
 		if (result?.data === true) {

@@ -33,16 +33,16 @@ onmessage = ({ data }) => {
 			unLockSigner(data.argus.password);
 			break;
 		case 'setTimer':
-			setTimer(data.argus.time, data.argus.password);
+			setTimer(data.argus.time);
 			break;
 		case 'disableAutoLock':
-			disableAutoLock(data.argus.password);
+			disableAutoLock();
 			break;
 		case 'queryTimer':
 			postMessage({ success: true, data: timeout / (60 * 1000) });
 			break;
 		case 'addEvmAccount':
-			addEvmAccount(data.argus.index, data.argus.password);
+			addEvmAccount(data.argus.index);
 			break;
 		case 'reBuildMn':
 			reBuildMn();
@@ -80,7 +80,7 @@ const resetSigner = () => {
 	timeout = 1000 * 60 * 15;
 	midpass.fill(0);
 	postMessage({ success: true });
-}
+};
 
 const lockSigner = () => {
 	isLocked = true;
@@ -95,12 +95,12 @@ const unLockSigner = async (password: string) => {
 		return;
 	}
 	if (isLocked) {
-		saveMidPass(password, false);
+		await saveMidPass(password, false);
 	}
 	postMessage({ success: true });
 };
 
-const setTimer = (time: number, password: string) => {
+const setTimer = (time: number) => {
 	if (time === 0) {
 		timeout = 0;
 		isAutoLock = true;
@@ -109,9 +109,6 @@ const setTimer = (time: number, password: string) => {
 		postMessage({ success: true });
 	} else {
 		timeout = time * 60 * 1000;
-		if (password) {
-			saveMidPass(password, false);
-		}
 		isAutoLock = true;
 		setTimeout(() => {
 			isLocked = true;
@@ -123,16 +120,8 @@ const setTimer = (time: number, password: string) => {
 	}
 };
 
-const disableAutoLock = (password: string) => {
+const disableAutoLock = () => {
 	isAutoLock = false;
-	if (password) {
-		saveMidPass(password, false);
-	}
-	if (midpass.every((byte) => byte === 0)) {
-		isLocked = true;
-	} else {
-		isLocked = false;
-	}
 	postMessage({ success: true });
 };
 
@@ -183,52 +172,18 @@ const reBuildMn = async (): Promise<string> => {
 	return mn;
 };
 
-const addEvmAccount = async (index: number, password: string) => {
-	if (password) {
-		const vault = (await getElement(DB.Vault.name, 'zeno')) as Vault;
-		const phrase = scrypt(password, hexToBytes(vault.salt), { N: 2 ** 16, r: 8, p: 1, dkLen: 32 });
-		const chacha = managedNonce(xchacha)(phrase);
-		try {
-			const ent = chacha.decrypt(hexToBytes(vault.ciphertext));
-			const mn = bip39.entropyToMnemonic(ent, wordlist);
-			midpass = phrase;
-			isLocked = false;
-			if (isAutoLock) {
-				setTimeout(() => {
-					isLocked = true;
-				}, timeout);
-				setTimeout(() => {
-					midpass.fill(0);
-				}, timeout + 60000);
-			}
-			const newAccount = deriveEvm(index, mn);
-			if (newAccount) postMessage({ success: true, data: newAccount });
-			else postMessage({ success: false });
-		} catch (e) {
-			postMessage({
-				success: false,
-				error: 'Invalid password'
-			});
-			return;
-		}
-	}
-	if (!password && !isLocked) {
+const addEvmAccount = async (index: number) => {
 		const mn = await reBuildMn();
 		const newAccount = deriveEvm(index, mn);
 		if (newAccount) postMessage({ success: true, data: newAccount });
 		else postMessage({ success: false });
-	}
-	if (!password && isLocked) {
-		postMessage({
-			success: false,
-			error: 'Wallet is locked'
-		});
-	}
 };
-
 
 const checkPassword = async (password: string) => {
 	const isValid = await isValidPassword(password);
+	if (isValid) {
+		await saveMidPass(password, false);
+	}
 	postMessage({ success: true, data: isValid });
 };
 
@@ -239,8 +194,7 @@ const changePassword = async (oldPassword: string, newPassword: string) => {
 	removeElement(DB.Vault.name, 'zeno');
 	const ischanged = packMn(newPassword, mnemonic);
 	if (ischanged) {
-		const newVault = (await getElement(DB.Vault.name, 'zeno')) as Vault;
-		saveMidPass(newPassword, false);
+		await saveMidPass(newPassword, false);
 		postMessage({ success: true });
 	} else {
 		postMessage({ success: false, error: 'Failed to change password' });
@@ -278,7 +232,7 @@ const signEvmTx = async (tx: any, account: Account, password?: string, salt?: st
 		});
 	}
 	if (isLocked && ps !== undefined && s !== undefined) {
-		saveMidPass(ps, false);
+		await saveMidPass(ps, false);
 		const mn = await reBuildMn();
 		signEvmTransaction(tx, account, mn);
 	}
@@ -294,7 +248,7 @@ const signEvmTx = async (tx: any, account: Account, password?: string, salt?: st
 		ps !== undefined &&
 		s !== undefined
 	) {
-		saveMidPass(ps, false);
+		await saveMidPass(ps, false);
 		const mn = await reBuildMn();
 		signEvmTransaction(tx, account, mn);
 	}

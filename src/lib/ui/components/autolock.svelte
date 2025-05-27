@@ -1,9 +1,6 @@
 <script lang="ts">
 	import { EyeIcon, EyeOffIcon, AlertTriangle,CheckIcon} from '$lib/svg';
 	import {
-		getElement,
-		DB,
-		type Vault,
 		type Settings,
 		type signerResponseType
 	} from '$lib/wallet/common';
@@ -13,9 +10,8 @@
 
 	const { isModalOpen, closeModal, updatePageTitle, currentPage } =
 		getContext<ModalContext>('modal');
-
+	
 	const timers = [
-		{ label: 'Disable remember password', value: 0 },
 		{ label: '5 minute', value: 5 },
 		{ label: '10 minute', value: 10 },
 		{ label: '15 minute', value: 15 },
@@ -55,14 +51,10 @@
 		}
 	};
 
-	const handleDisableAutoLock = async (password?: string) => {
+	const handleDisableAutoLock = async () => {
 		let res: signerResponseType | null = null;
-		if (password) {
-			const vault = (await getElement(DB.Vault.name, 'zeno')) as Vault;
-			res = (await disableAutoLock(password, vault.salt)) as signerResponseType;
-		}else {
 			res = (await disableAutoLock()) as signerResponseType;
-		}
+
 		if (res?.success === true) {
 			const settings = JSON.parse(localStorage.getItem('settings')!) as Settings;
 			settings.autoLock = false;
@@ -71,14 +63,10 @@
 		}
 	};
 
-	const handleSetTimer = async (time: number,password?: string) => {
+	const handleSetTimer = async (time: number) => {
 		let res: signerResponseType | null = null;
-		if (password) {
-			const vault = (await getElement(DB.Vault.name, 'zeno')) as Vault;
-			res = (await setTimer(time, password, vault.salt)) as signerResponseType;
-		} else {
 			res = (await setTimer(time)) as signerResponseType;
-		}
+	
 		if (res?.success === true) {
 			const settings = JSON.parse(localStorage.getItem('settings')!) as Settings;
 			settings.autoLockTimer = time;
@@ -99,6 +87,7 @@ $effect(() => {
 		}
 	});
 </script>
+
 
 {#if isLocked === true}
 	{#if currentPage() === 1}
@@ -144,41 +133,6 @@ $effect(() => {
 			{#each timers as timer}
 				<button
 					class="item-button"
-					onclick={() => handleSetTimer(timer.value, password!)}
-				>
-					<div class="item-l">
-						{timer.label}
-					</div>
-
-					<div class="item-r" >
-						{#if timer.value === generalState.autoLockTimer}
-							<CheckIcon class="icon2A" />
-						{/if}
-					</div>
-				</button>
-			{/each}
-			<button
-					class="item-button"
-					onclick={() => handleDisableAutoLock(password!)}
-				>
-					<div class="item-l">
-						Disable auto-lock
-					</div>
-
-					<div class="item-r" >
-						{#if  generalState.isAutoLock === false}
-							<CheckIcon class="icon2A" />
-						{/if}
-					</div>
-				</button>
-		</div>
-	{/if}
-{:else if isLocked === false}
-	{#if currentPage() === 1}
-		<div class="container">
-			{#each timers as timer}
-				<button
-					class="item-button"
 					onclick={() => handleSetTimer(timer.value)}
 				>
 					<div class="item-l">
@@ -186,7 +140,8 @@ $effect(() => {
 					</div>
 
 					<div class="item-r" >
-						{#if timer.value === generalState.autoLockTimer}
+
+						{#if timer.value === generalState.autoLockTimer && generalState.isAutoLock}
 							<CheckIcon class="icon2S" />
 						{/if}
 					</div>
@@ -207,6 +162,43 @@ $effect(() => {
 					</div>
 				</button>
 		</div>
+			<button class="submit" onclick={closeModal}> Close </button>
+	{/if}
+{:else if isLocked === false}
+	{#if currentPage() === 1}
+		<div class="container">
+			{#each timers as timer}
+				<button
+					class="item-button"
+					onclick={() => handleSetTimer(timer.value)}
+				>
+					<div class="item-l">
+						{timer.label}
+					</div>
+
+					<div class="item-r" >
+						{#if timer.value === generalState.autoLockTimer && generalState.isAutoLock}
+							<CheckIcon class="icon2S" />
+						{/if}
+					</div>
+				</button>
+			{/each}
+			<button
+					class="item-button"
+					onclick={() => handleDisableAutoLock()}
+				>
+					<div class="item-l">
+						Disable auto-lock
+					</div>
+
+					<div class="item-r" >
+						{#if  generalState.isAutoLock === false}
+							<CheckIcon class="icon2S" />
+						{/if}
+					</div>
+				</button>
+		</div>
+		<button class="submit" onclick={closeModal}> Close </button>
 	{/if}
 {/if}
 
