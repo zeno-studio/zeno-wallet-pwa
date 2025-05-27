@@ -2,7 +2,6 @@
 	import {
 		checkPassword,
 		addEvmAccount,
-		addPolkadotAccount,
 		accountState
 	} from '$lib/wallet/runes';
 	import { EyeIcon, EyeOffIcon } from '$lib/svg';
@@ -20,17 +19,12 @@
 	updatePageTitle(1, 'Add New Account');
 
 	let { needpass } = $props();
-	let type = $state('EVM');
 	let password = $state<string | null>(null);
 	let passwordShow = $state(false);
 	let isValidPs = $state<boolean | null>(null);
 
 	const handleAddAccount = async () => {
-		if (type === 'EVM') {
-			handleAddEvmAccount();
-		} else if (type === 'POLKADOT') {
-			handleAddPolkadotAccount('sr25519');
-		}
+		handleAddEvmAccount();
 		closeModal();
 	};
 
@@ -54,40 +48,13 @@
 		}
 	};
 
-	const handleAddPolkadotAccount = async (type: KeyringType,password?: string) => {
-		let res: signerResponseType | null = null;
-		if (password) {
-			res = (await addPolkadotAccount(type,password)) as signerResponseType | null;
-		} else {
-			res = (await addPolkadotAccount(type)) as signerResponseType | null;
-		}
-		
-		try {
-			if (res?.success === true) {
-				const settings = JSON.parse(localStorage.getItem('settings')!) as Settings;
-				const newAccount = res.data as Account;
-				accountState.accountList = [...accountState.accountList, newAccount];
-				accountState.currentAccountIndex = settings.nextPolkadotIndex;
-				accountState.nextPolkadotIndex++;
-				settings.currentAccountIndex = settings.nextPolkadotIndex;
-				settings.nextPolkadotIndex++;
-				localStorage.setItem('settings', JSON.stringify(settings));
-			}
-		} catch (e) {
-			console.error('Error when adding new account', e);
-		}
-	};
+	
 
 	const checkPasswordAndAdd = async (ps: string) => {
 		const result = (await checkPassword(ps)) as signerResponseType | null;
 		if (result?.data === true) {
 			isValidPs = true;
-			if (type === 'EVM') {
-				handleAddEvmAccount(ps);
-			}
-			if (type === 'POLKADOT') {
-				handleAddPolkadotAccount('sr25519',ps);
-			}
+			handleAddEvmAccount(ps);
 			closeModal();
 		} else {
 			isValidPs = false;
@@ -144,18 +111,7 @@
 		{/if}
 	</div>
 
-	<div class="label-m" style="margin: 2rem;font-weight: 600;">Choose Account Type</div>
-	<div class="radio">
-		<label class="radio-label">
-			<input type="radio" bind:group={type} value="EVM" />
-			ETHEREUM
-		</label>
 
-		<label class="radio-label">
-			<input type="radio" bind:group={type} value="POLKADOT" />
-			POLKADOT
-		</label>
-	</div>
 
 	{#if password === null}
 		<button class="start"> input your password</button>
@@ -167,18 +123,7 @@
 {/if}
 
 {#if needpass === 'neednot'}
-	<div class="label-m" style="margin: 2rem;font-weight: 600;">Choose Account Type</div>
-	<div class="radio">
-		<label class="radio-label">
-			<input type="radio" bind:group={type} value="EVM" />
-			ETHEREUM
-		</label>
 
-		<label class="radio-label">
-			<input type="radio" bind:group={type} value="POLKADOT" />
-			POLKADOT
-		</label>
-	</div>
 	<button class="start" onclick={handleAddAccount}>Submit</button>
 {/if}
 

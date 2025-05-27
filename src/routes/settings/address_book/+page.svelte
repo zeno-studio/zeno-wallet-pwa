@@ -130,9 +130,7 @@
 		{#if !account.isHidden}
 			<button class="addressList1" onclick={() => gotoAccountDetail(account)}>
 				<div class="avatar">{@html generateAvatar(account.address)}
-					{#if account.addressType === 'POLKADOT'}
-						<img class="chain-logo" src="/token/DOT.svg" alt="" />
-					{/if}
+
 				</div>
 				<div class="content">
 					<span class="label-name">{account.name} </span>

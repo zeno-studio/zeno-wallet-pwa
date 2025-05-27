@@ -1,6 +1,6 @@
 import { type KeyringType, type Vault, type Account } from '../common/type';
 import { initDB, getElement, removeElement, DB } from '../common/indexedDB';
-import { deriveEvm, derivePolkadot, isValidPassword, packMn, restoreMn } from '../common/account';
+import { deriveEvm, isValidPassword, packMn, restoreMn } from '../common/account';
 import { scrypt } from '@noble/hashes/scrypt';
 import { hexToBytes } from '@noble/ciphers/utils';
 import { managedNonce } from '@noble/ciphers/webcrypto';
@@ -43,9 +43,6 @@ onmessage = ({ data }) => {
 			break;
 		case 'addEvmAccount':
 			addEvmAccount(data.argus.index, data.argus.password);
-			break;
-		case 'addPolkadotAccount':
-			addPolkadotAccount(data.argus.index, data.argus.type, data.argus.password);
 			break;
 		case 'reBuildMn':
 			reBuildMn();
@@ -229,48 +226,6 @@ const addEvmAccount = async (index: number, password: string) => {
 	}
 };
 
-const addPolkadotAccount = async (index: number, type: KeyringType, password: string) => {
-	if (password) {
-		const vault = (await getElement(DB.Vault.name, 'zeno')) as Vault;
-		const phrase = scrypt(password, hexToBytes(vault.salt), { N: 2 ** 16, r: 8, p: 1, dkLen: 32 });
-		const chacha = managedNonce(xchacha)(phrase);
-		try {
-			const ent = chacha.decrypt(hexToBytes(vault.ciphertext));
-			const mn = bip39.entropyToMnemonic(ent, wordlist);
-			midpass = phrase;
-			isLocked = false;
-			if (isAutoLock) {
-				setTimeout(() => {
-					isLocked = true;
-				}, timeout);
-				setTimeout(() => {
-					midpass.fill(0);
-				}, timeout + 60000);
-			}
-			const newAccount = derivePolkadot(index, type, mn);
-			if (newAccount) postMessage({ success: true, data: newAccount });
-			else postMessage({ success: false });
-		} catch (e) {
-			postMessage({
-				success: false,
-				error: 'Invalid password'
-			});
-			return;
-		}
-	}
-	if (!password && !isLocked) {
-		const mn = await reBuildMn();
-		const newAccount = derivePolkadot(index, type, mn);
-		if (newAccount) postMessage({ success: true, data: newAccount });
-		else postMessage({ success: false });
-	}
-	if (!password && isLocked) {
-		postMessage({
-			success: false,
-			error: 'Wallet is locked'
-		});
-	}
-};
 
 const checkPassword = async (password: string) => {
 	const isValid = await isValidPassword(password);

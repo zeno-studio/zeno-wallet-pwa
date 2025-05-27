@@ -30,18 +30,18 @@
 		}, 2000);
 	}
 
-	async function downloadSvg() {
-		const svg = await qrcode;
-		const blob = new Blob([svg], { type: 'image/svg+xml' });
-		const url = URL.createObjectURL(blob);
-		const link = document.createElement('a');
-		link.href = url;
-		link.download = 'qrcode.svg';
-		document.body.appendChild(link);
-		link.click();
-		document.body.removeChild(link);
-		URL.revokeObjectURL(url);
-	}
+	// async function downloadSvg() {
+	// 	const svg = await qrcode;
+	// 	const blob = new Blob([svg], { type: 'image/svg+xml' });
+	// 	const url = URL.createObjectURL(blob);
+	// 	const link = document.createElement('a');
+	// 	link.href = url;
+	// 	link.download = 'qrcode.svg';
+	// 	document.body.appendChild(link);
+	// 	link.click();
+	// 	document.body.removeChild(link);
+	// 	URL.revokeObjectURL(url);
+	// }
 
 	async function downloadPNG() {
 		const svg = await qrcode;

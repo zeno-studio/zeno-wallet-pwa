@@ -1,7 +1,6 @@
 <script lang="ts">
 	import {
 		createEvmAccount,
-		createPolkadotAccount,
 		isValidMn,
 		type Settings
 	} from '$lib/wallet/common';
@@ -16,7 +15,6 @@
 
 	updatePageTitle(1, 'Notifications');
 
-	let type = $state('EVM');
 	let pasted = $state(false);
 	let terms = $state(false);
 	let password = $state<string | null>(null);
@@ -79,7 +77,6 @@
 
 	const importAccount = async (ps: string, mn: string) => {
 		const settings = JSON.parse(localStorage.getItem('settings')!) as Settings;
-		if (type === 'EVM') {
 			try {
 				if (createEvmAccount(1, ps, mn)) {
 					accountState.nextAccountIndex++;
@@ -94,23 +91,6 @@
 			} catch (e) {
 				console.error('Error when importing account', e);
 			}
-		}
-		if (type === 'POLKADOT') {
-			try {
-				if (createPolkadotAccount(101, ps, 'sr25519', mn)) {
-					accountState.nextPolkadotIndex++;
-					accountState.currentAccountIndex = 101;
-					await accountState.getAccountList();
-					settings.currentAccountIndex = 101;
-					settings.nextPolkadotIndex++;
-					localStorage.setItem('settings', JSON.stringify(settings));
-					saveMidPass(ps,false);
-					closeModal();
-				}
-			} catch (e) {
-				console.error('Error when importing account', e);
-			}
-		}
 	};
 
 	$effect(() => {
@@ -121,7 +101,6 @@
 			mn = null;
 			mnValid = null;
 			terms = false;
-			type = 'EVM';
 		}
 	});
 </script>
@@ -150,18 +129,7 @@
 			</div>
 		</div>
 
-		<div class="label-m" style="margin: 2rem;font-weight: 600;">Choose Account Type</div>
-		<div class="radio">
-			<label class="radio-label">
-				<input type="radio" bind:group={type} value="EVM" />
-				ETHEREUM
-			</label>
-
-			<label class="radio-label">
-				<input type="radio" bind:group={type} value="POLKADOT" />
-				POLKADOT
-			</label>
-		</div>
+		
 		<button class="start" onclick={() => updatePageTitle(2, 'Import Recovery Phrase')}
 			>Continue</button
 		>

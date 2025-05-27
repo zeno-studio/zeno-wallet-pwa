@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { createEvmAccount, createPolkadotAccount, type Settings } from '$lib/wallet/common';
+	import { createEvmAccount,type Settings } from '$lib/wallet/common';
 	import { EyeIcon, EyeOffIcon, AlertTriangle} from '$lib/svg';
 	import { checkPasswordStrength } from '$lib/ui/ts';
 	import { accountState, saveMidPass } from '$lib/wallet/runes';
@@ -11,7 +11,6 @@
 
 	updatePageTitle(1, 'Notifications');
 
-	let type = $state('EVM');
 	let terms = $state(false);
 	let password = $state<string | null>(null);
 	let password2 = $state<string | null>(null);
@@ -42,30 +41,9 @@
 		}
 	};
 
-	const createPolkadot = async (password: string) => {
-		const settings = JSON.parse(localStorage.getItem('settings')!) as Settings;
-		try {
-			if (createPolkadotAccount(101, password, 'sr25519')) {
-				accountState.currentAccountIndex = 101;
-				accountState.nextPolkadotIndex++;
-				await accountState.getAccountList();
-				settings.currentAccountIndex = 101;
-				settings.nextPolkadotIndex++;
-				localStorage.setItem('settings', JSON.stringify(settings));
-				saveMidPass(password,false);
-				closeModal();
-			}
-		} catch (e) {
-			console.error('Error when creating account', e);
-		}
-	};
-
+	
 	const handleCreate = () => {
-		if (type === 'EVM') {
 			createEvm(password!);
-		} else if (type === 'POLKADOT') {
-			createPolkadot(password!);
-		}
 	};
 
 	$effect(() => {
@@ -103,18 +81,7 @@
 			</div>
 		</div>
 
-		<div class="label-m" style="margin: 2rem;font-weight: 600;">Choose Account Type</div>
-		<div class="radio">
-			<label class="radio-label">
-				<input type="radio" bind:group={type} value="EVM" />
-				ETHEREUM
-			</label>
-
-			<label class="radio-label">
-				<input type="radio" bind:group={type} value="POLKADOT" />
-				POLKADOT
-			</label>
-		</div>
+	
 		<button class="start" onclick={() => updatePageTitle(2, 'Set Your Password')}>Continue</button>
 	</div>
 {/if}

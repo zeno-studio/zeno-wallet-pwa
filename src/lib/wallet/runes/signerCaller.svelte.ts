@@ -1,6 +1,5 @@
 import Signer from '$lib/wallet/worker/signer.ts?worker';
 import { accountState } from '$lib/wallet/runes';
-import {type KeyringType,} from '$lib/wallet/common';
 
 export const signer = new Signer();
 
@@ -92,22 +91,6 @@ export const addEvmAccount = (password?: string) => {
 	});
 };
 
-export const addPolkadotAccount = (type: KeyringType, password?: string) => {
-	return new Promise((resolve) => {
-		signer.onmessage = (event) => {
-			resolve(event.data);
-		};
-
-		signer.postMessage({
-			method: 'addPolkadotAccount',
-			argus: {
-				index: accountState.nextPolkadotIndex,
-				type: type,
-				password: password ? password : '',
-			}
-		});
-	});
-};
 
 export const checkPassword = (password: string) => {
 	return new Promise((resolve) => {
