@@ -8,7 +8,7 @@ export const MAX_CUSTOM_SLIPPAGE_TOLERANCE = 20
 
 export const PVM_ADDRESSID20_SUFFIX = "eeeeeeeeeeeeeeeeeeeeeeee"
 
-export const ANKR_KEY="ccf92c089ee0f80ae00b09422c6f8f37af5da1eea54754feb7122ea70f7fee23"
+export const ANKR_API_KEY="ccf92c089ee0f80ae00b09422c6f8f37af5da1eea54754feb7122ea70f7fee23"
 
 
 

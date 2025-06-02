@@ -2,7 +2,7 @@ import { type Chain } from '$lib/wallet/common';
 
 export const westend: Chain = {
 	chainId: 420420421,
-	name: 'Westend',
+	name: 'Westend Asset Hub',
 	nativeCurrency: { name: 'wnd', symbol: 'WND', decimals: 18 },
 	rpcUrls: {
 		http: {
@@ -153,7 +153,7 @@ export const sepolia: Chain = {
   testnet: true,
 };
 
-export const DefaultChains :Chain[] = [ethereum,arbitrum, base, bsc, optimism, polygon, sonic];
+export const DefaultChains :Chain[] = [ethereum,arbitrum, base, bsc, optimism, polygon];
 
 export const DefaultTestnetChains:Chain[] =[westend,sepolia]
 

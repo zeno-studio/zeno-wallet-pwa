@@ -85,7 +85,6 @@
 			<ArrowBack class="icon2A" />
 		</a>Account Information
 	</div>
-	<div class="setting-dividing2"></div>
 
 	<div class="item-container2">
 		<div class="avatar">

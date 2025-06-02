@@ -1,14 +1,10 @@
 import { DB, type Chain, type Settings } from '$lib/wallet/common';
 import { getElement, addElement, editElement, DefaultChains } from '$lib/wallet/common';
 
-
-
-export const AdditionalChains = new Map<number, Chain>([]);
-
 class ChainState {
 	currentFiat = $state<string>("USD");
 	currentCurrency = $state<string>("ETH");
-	currentChain = $state<Chain | null>(null);
+	currentChain = $state<Chain |null>(null);
 	Chains = $state<Chain[]>(DefaultChains);
 
 	setFiat(currency: string) {
@@ -47,6 +43,7 @@ class ChainState {
 		if (!this.currentChain) {
 			throw new Error("No chain selected");
 		}
+	
 		const rpcUrls = this.currentChain.rpcUrls;
 		switch (type) {
 			case "http":

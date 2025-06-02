@@ -25,8 +25,8 @@ const config = {
 			directives: {
 			  'script-src': ['self'],
 			  'style-src': ['self', 'unsafe-inline'],
-			  'img-src': ['self', 'data:'],
 			  'object-src': ['none'],
+			  'img-src': ['self', 'data:', 'https:'],
 			}
 		  },
 		router: {
