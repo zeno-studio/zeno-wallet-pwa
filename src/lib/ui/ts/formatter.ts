@@ -53,3 +53,9 @@ export const cutString = (str: string, maxLength: number) => {
   return str;
 }
 
+export const stringToNumber=(str: string,decimal :number): number =>{
+    const num = parseFloat(str);
+    return isNaN(num) ? 0 : Number(num.toFixed(decimal));
+}
+
+

@@ -19,6 +19,38 @@
 
 <div class="list-container">
 	{#if currentPage()=== 1}
+	<div class="chainList">
+				<div
+					class="entry"
+					class:selected={!chainState.currentChain}
+					onclick={() => chainState.setCurrentChain(0)}
+					onkeydown={(e) => {
+						if (e.key === 'Enter' || e.key === ' ') {
+							e.preventDefault();
+							{
+								() => chainState.setCurrentChain(0);
+							}
+						}
+					}}
+					role="button"
+					tabindex="0"
+				>
+					<div class="avatar">
+						<img class="chain-logo" src={'/chain/0.svg'} alt="" />
+					</div>
+					<div class="content">
+						<div
+							class="label-m"
+							class:selected2={!chainState.currentChain}
+							style="font-weight: 600;"
+						>
+							All chains
+						</div>
+						
+					</div>
+			
+				</div>
+			</div>
 		{#each chainState.Chains as chain}
 			<div class="chainList">
 				<div

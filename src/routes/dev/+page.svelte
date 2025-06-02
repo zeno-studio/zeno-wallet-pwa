@@ -10,9 +10,9 @@
 		queryTimer,
 		checkIsLocked,
 		reBuildMnPost,
-		changePassword ,
+		changePassword,
 		saveMidPass,
-		resetSigner,
+		resetSigner
 	} from '$lib/wallet/runes';
 	import {
 		restoreMn,
@@ -24,8 +24,17 @@
 	} from '$lib/wallet/common';
 	import { Toaster, Header, Footer } from '$lib/ui/components';
 	import { toastState } from '$lib/ui/runes';
+	import {
+		DefaultChains,
+		getAddressBalances,
+		mapAnkrChainName,
+	} from '$lib/wallet/common';
+	import { accountState,chainState } from '$lib/wallet/runes';
+	import { AnkrProvider,type Blockchain,type GetAccountBalanceReply } from '@ankr.com/ankr.js';
 
 	let res: any | null = $state(null);
+
+	let balanceRes: GetAccountBalanceReply | null = $state(null);
 
 	async function vault() {
 		const result = (await getVault()) as signerResponseType | null;
@@ -68,7 +77,7 @@
 	}
 	async function disAutoLockps() {
 		const vault = (await getElement(DB.Vault.name, 'zeno')) as Vault;
-		const result = (await disableAutoLock('@Qian7855', vault.salt)) as signerResponseType | null;
+		const result = (await disableAutoLock()) as signerResponseType | null;
 		res = result?.success;
 		console.log(result);
 	}
@@ -79,11 +88,11 @@
 	}
 	async function SetTimeps() {
 		const vault = (await getElement(DB.Vault.name, 'zeno')) as Vault;
-		const result = (await setTimer(30,'@Qian7855', vault.salt)) as signerResponseType | null;
+		const result = (await setTimer(30)) as signerResponseType | null;
 		res = result?.data;
 		console.log(result);
 	}
-async function reBuildMn() {
+	async function reBuildMn() {
 		const result = (await reBuildMnPost()) as signerResponseType | null;
 		res = result?.data;
 		console.log(result);
@@ -99,21 +108,34 @@ async function reBuildMn() {
 		console.log(result);
 	}
 	async function changePs() {
-		const result = (await changePassword('#Qian7855','@Qian7855')) as signerResponseType | null;
+		const result = (await changePassword('#Qian7855', '@Qian7855')) as signerResponseType | null;
 		res = result?.success;
 		console.log(result);
 	}
 	async function saveMid() {
-		const result = (await saveMidPass('@Qian7855',true)) as signerResponseType | null;
+		const result = (await saveMidPass('@Qian7855', true)) as signerResponseType | null;
 		res = result?.success;
 		console.log(result);
 	}
 
-async function reset() {
+	async function reset() {
 		const result = (await resetSigner()) as signerResponseType | null;
 		res = result?.success;
 		console.log(result);
 	}
+
+
+		
+
+$effect(async() => {
+	if (chainState.currentChain === null) {
+		balanceRes = await getAddressBalances(DefaultChains, accountState.currentAccount?.address ?? '')?? null;
+	}
+
+balanceRes = await getAddressBalances([chainState.currentChain], accountState.currentAccount?.address ?? '')?? null;
+});
+
+
 </script>
 
 <Header />
@@ -139,11 +161,29 @@ async function reset() {
 		<button onclick={saveMid}>saveMid</button>
 		<button onclick={reset}>reset</button>
 	</div>
+	<div>{mapAnkrChainName(DefaultChains)}</div>
 
 	<button onclick={() => toastState.add('title', 'message')}>toast</button>
 	<input type="file" />
 	<input type="file" capture="environment" accept="image/*" />
+	{#if !balanceRes}
+		<div>LOADING</div>
+	{/if}
+{#if balanceRes}
+	{#each balanceRes.assets as asset}
+	<img src={asset.thumbnail} alt="">
+
+		<div>{asset.thumbnail} </div>
+		<div>{asset.tokenSymbol}</div>
+		<div>{asset.balance}</div>
+	{/each}
+{#if balanceRes.assets.length === 0}
+		<div>No assets found</div>
+	{/if}
+{/if}
 </div>
+
+
 
 <Footer />
 
