@@ -38,3 +38,5 @@ export const rub: Fiat = {
 
 export const DefaultFiats = [usd, eur, gbp, jpy, cny, krw];
 
+
+

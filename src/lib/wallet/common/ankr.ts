@@ -17,23 +17,34 @@ export const getAddressBalances = async (chains: Chain[],address:string) => {
 
 export const mapAnkrChainName = (chains: Chain[]): Blockchain[] => {
     // Example implementation: map Chain objects to their blockchain name property
-    return chains.map(chain => {
+    const result: Blockchain[] = [];
+    for (const chain of chains) {
+        if (!chain) {
+            throw new Error("Chain is null or undefined");
+        }
         switch (chain.name) {
             case 'Ethereum':
-                return 'eth' as Blockchain;
+                result.push('eth' as Blockchain);
+                break;
             case 'BNB Smart Chain':
-                return 'bsc' as Blockchain;;
+                result.push('bsc' as Blockchain);
+                break;
             case 'Base':
-                return 'base' as Blockchain;
+                result.push('base' as Blockchain);
+                break;
             case 'Arbitrum One':
-                return 'arbitrum' as Blockchain;
+                result.push('arbitrum' as Blockchain);
+                break;
             case 'Polygon':
-                return 'polygon' as Blockchain;
+                result.push('polygon' as Blockchain);
+                break;
             case 'OP Mainnet':
-                return 'optimism' as Blockchain; 
+                result.push('optimism' as Blockchain);
+                break;
             default:
                 throw new Error(`Unknown chain name: ${chain.name}`);
         }
-    });
+    }
+    return result;
 }
 

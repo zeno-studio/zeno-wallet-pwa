@@ -126,6 +126,15 @@ export type Fiat = {
 	symbol: string;
 }
 
+export interface FiatRate {
+	EUR:number;
+	GBP:number;
+	JPY:number;
+	CNY:number;
+	KRW:number;
+	RUB:number;
+}
+
 export type Token = {
 	chainId: number;
 	type: 'currency' | 'erc-20' | 'erc-777' | 'erc-1155' | "other";
