@@ -1,19 +1,19 @@
 <script lang="ts">
 	import { DefaultFiats, DefaultCurrencies } from '$lib/wallet/common';
-	import { chainState } from '$lib/wallet/runes';
+	import { generalState} from '$lib/wallet/runes';
 	import { CheckIcon } from '$lib/svg';
 </script>
 
 <div class="container">
 	<div class="label1">Fiat</div>
 	{#each [...DefaultFiats] as fiat}
-		<button class="item-button" onclick={() => chainState.setFiat(fiat.name)}>
+		<button class="item-button" onclick={() => generalState.setFiat(fiat.name)}>
 			<img class="img24" src={`/fiat/${fiat.name}.svg`} alt="" />
 			<div class="item-l">
 				{fiat.name}
 			</div>
 			<div class="item-r">
-				{#if fiat.name === chainState.currentFiat}
+				{#if fiat.name === generalState.currentFiat}
 					<CheckIcon class="icon2S" />
 				{/if}
 			</div>
@@ -22,13 +22,13 @@
 
 	<div class="label1">Crypto Currency</div>
 	{#each [...DefaultCurrencies] as currency}
-		<button class="item-button" onclick={() => chainState.setCurrency(currency)}>
+		<button class="item-button" onclick={() => generalState.setCurrency(currency)}>
 			<img class="img24" src={`/token/${currency}.svg`} alt="" />
 			<div class="item-l">
 				{currency}
 			</div>
 			<div class="item-r">
-				{#if currency === chainState.currentCurrency}
+				{#if currency === generalState.currentCurrency}
 					<CheckIcon class="icon2S" />
 				{/if}
 			</div>

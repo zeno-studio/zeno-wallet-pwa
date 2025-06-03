@@ -3,7 +3,9 @@ import { getElement, addElement, editElement, DefaultChains } from '$lib/wallet/
 
 class ChainState {
 	currentFiat = $state<string>("USD");
+	currentFiatPrice = $state<number|null>(null);
 	currentCurrency = $state<string>("ETH");
+	currentCurrencyPrice = $state<number|null>(null);
 	currentChain = $state<Chain |null>(null);
 	Chains = $state<Chain[]>(DefaultChains);
 
