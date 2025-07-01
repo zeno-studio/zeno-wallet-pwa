@@ -127,12 +127,20 @@ export type Fiat = {
 }
 
 export interface FiatRate {
+	timestamp: number;
 	EUR:number;
 	GBP:number;
 	JPY:number;
 	CNY:number;
 	KRW:number;
 	RUB:number;
+}
+
+export interface CurrencyPrice {
+	timestamp: number;
+	BTC:number;
+	ETH:number;
+	DOT:number;
 }
 
 export type Token = {

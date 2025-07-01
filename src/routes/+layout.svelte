@@ -3,7 +3,8 @@
 	import { createSettings } from '$lib/ui/runes';
 	import { initDB } from '$lib/wallet/common';
 	import { metadata } from '$lib/ui/runes';
-	import {Modal} from '$lib/ui/components';
+	import { Modal } from '$lib/ui/components';
+	import { forexWs, updateCurrencyPirce } from '$lib/wallet/common';
 
 	initDB();
 	createSettings();
@@ -42,7 +43,9 @@
 	const appleTouchIcon = '/apple-touch-icon.png';
 
 	detectSWUpdate();
-
+	forexWs();
+	setInterval(updateCurrencyPirce, 60 * 60 * 1000);
+	updateCurrencyPirce();
 </script>
 
 <noscript>You need to enable JavaScript to run this app.</noscript>
@@ -64,21 +67,17 @@
 	<title>{metadata.title} {metadata.description}</title>
 </svelte:head>
 
-<main class="main" >
+<main class="main">
 	{@render children()}
 </main>
 
-
-
-
-			
-<Modal bind:modalName={isUpdateModalOpen} mode="half" >
-<div class="title">Update Available</div>
-			<div class="content">A new version of the app is available. Would you like to update now?</div>
-			<div class="btn-container">
-				<button class="btn-later" onclick={updateLater}>Update Later</button>
-				<button class="btn-now" onclick={updateNow}>Update Now</button>
-			</div>
+<Modal bind:modalName={isUpdateModalOpen} mode="half">
+	<div class="title">Update Available</div>
+	<div class="content">A new version of the app is available. Would you like to update now?</div>
+	<div class="btn-container">
+		<button class="btn-later" onclick={updateLater}>Update Later</button>
+		<button class="btn-now" onclick={updateNow}>Update Now</button>
+	</div>
 </Modal>
 
 <style lang="postcss">
@@ -94,7 +93,7 @@
 		z-index: 0;
 	}
 
-	.content{
+	.content {
 		display: flex;
 		font-size: 1.4rem;
 		width: 80%;
@@ -125,7 +124,6 @@
 		height: 6rem;
 		margin-bottom: 0.8rem;
 		border-radius: 1.6rem;
-
 	}
 	.btn-later {
 		display: flex;
@@ -143,6 +141,5 @@
 		margin-bottom: 0.8rem;
 		border-radius: 1.6rem;
 		border: 1px solid var(--bg3);
-	
 	}
 </style>

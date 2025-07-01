@@ -24,9 +24,12 @@
 	} from '$lib/wallet/common';
 	import { Toaster, Header, Footer } from '$lib/ui/components';
 	import { toastState } from '$lib/ui/runes';
-	import { DefaultChains, getAddressBalances, mapAnkrChainName ,rpcIntervalMs,getForex} from '$lib/wallet/common';
+	import { DefaultChains, getAddressBalances, mapAnkrChainName ,rpcIntervalMs} from '$lib/wallet/common';
 	import { accountState, chainState ,generalState} from '$lib/wallet/runes';
 	import { AnkrProvider, type Blockchain, type GetAccountBalanceReply } from '@ankr.com/ankr.js';
+
+
+
 
 	let res: any | null = $state(null);
 
@@ -139,12 +142,7 @@
 		return () => clearInterval(intervalId);
 	});
 
-	const updateFiatRate= async() =>{
-		const date = await getForex();
-		if (date) generalState.fiatRate = date
-	}
 
-	updateFiatRate();
 
 
 </script>
