@@ -1,4 +1,4 @@
-import { type Settings, type FiatRate } from '$lib/wallet/common';
+import { type Settings, type FiatRate,type CurrencyPrice } from '$lib/wallet/common';
 
 class GeneralState {
 	autoLockTimer = $state(15);
@@ -7,7 +7,7 @@ class GeneralState {
 	currentFiat = $state<string>('USD');
 	fiatRate = $state<FiatRate | null>(null);
 	currentCurrency = $state<string>('ETH');
-	currencyPrice = $state<number | null>(null);
+	currencyPrice = $state<CurrencyPrice | null>(null);
 	setFiat(currency: string) {
 		this.currentFiat = currency;
 		const settings = localStorage.getItem('settings');
