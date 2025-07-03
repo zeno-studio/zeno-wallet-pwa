@@ -33,7 +33,7 @@ export const forexWs = () => {
 				KRW: forexData.data.rates.KRW,
 				RUB: forexData.data.rates.RUB
 			};
-			console.log('Forex Data:', generalState.fiatRate);
+			// console.log('Forex Data:', generalState.fiatRate);
 		} catch (error) {
 			console.error('Error parsing message:', error);
 		}
@@ -79,5 +79,5 @@ export const updateCurrencyPirce = async () => {
 		ETH: parseFloat(data[1].price),
 		DOT: parseFloat(data[2].price)
 	};
-	console.log(generalState.currencyPrice);
+	// console.log(generalState.currencyPrice);
 };

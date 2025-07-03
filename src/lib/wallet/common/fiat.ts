@@ -5,27 +5,27 @@ export const usd: Fiat = {
 	symbol: '$',
 };
 
-const eur: Fiat = {
+export const eur: Fiat = {
 	name: 'EUR',
 	symbol: '€',
 };
 
-const gbp: Fiat = {
+export const gbp: Fiat = {
 	name: 'GBP',
 	symbol: '£',
 };
 
-const jpy: Fiat = {
+export const jpy: Fiat = {
 	name: 'JPY',
 	symbol: '¥',
 };
 
-const cny: Fiat = {
+export const cny: Fiat = {
 	name: 'CNY',
 	symbol: '¥',
 };
 
-const krw: Fiat = {
+export const krw: Fiat = {
 	name: 'KRW',
 	symbol: '₩',
 };

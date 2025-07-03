@@ -8,6 +8,7 @@ export * from "./fiat";
 export * from "./backup";
 export * from "./ankr";
 export * from "./forex";
+export * from "./balance";
 
 
 
