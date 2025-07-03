@@ -7,15 +7,15 @@
 		Modal,
 		Header
 	} from '$lib/ui/components';
-	import { accountState, checkIsLocked ,handleAddEvmAccount} from '$lib/wallet/runes';
+	import { accountState, checkIsLocked, handleAddEvmAccount } from '$lib/wallet/runes';
 	import { isSmallScreen } from '$lib/ui/ts';
 	import { metadata } from '$lib/ui/runes';
 	import { ArrowBack } from '$lib/svg';
-	import {type signerResponseType} from '$lib/wallet/common';
+	import { type signerResponseType } from '$lib/wallet/common';
 
 	metadata.title = 'Settings';
 	metadata.description = 'Settings';
-	let needpass = $state<'' | 'neednot' | 'need'>('');
+
 	let exceed = $state<number[]>([0, 0, 0]);
 	let addModal = $state(false);
 	let createModal = $state(false);
@@ -35,14 +35,12 @@
 		}
 		const result = (await checkIsLocked()) as signerResponseType;
 		if (result?.data === false) {
-			needpass = 'neednot';
 			handleAddEvmAccount();
 		}
 
 		if (result?.data === true) {
-			needpass = 'need';
 			addModal = true;
-	};
+		}
 	};
 </script>
 
@@ -85,9 +83,7 @@
 	{/if}
 
 	{#if accountState.accountList.length === 0}
-		<div class="none-account">
-			Please Create or Import an Account
-		</div>
+		<div class="none-account">Please Create or Import an Account</div>
 	{:else}
 		<div class="account-container">
 			<AccountList />
@@ -97,7 +93,9 @@
 	{#if isSmallScreen.current}
 		{#if accountState.accountList.length === 0}
 			<div class="bottomB-s">
-				<button class="bottom-button-grey" onclick={() => (createModal = true)}> Create account </button>
+				<button class="bottom-button-grey" onclick={() => (createModal = true)}>
+					Create account
+				</button>
 				<button class="bottom-button" onclick={() => (importModal = true)}> Import account </button>
 			</div>
 		{:else if accountState.accountList.length > 0}
@@ -108,7 +106,9 @@
 	{#if !isSmallScreen.current}
 		{#if accountState.accountList.length === 0}
 			<div class="bottomB">
-				<button class="bottom-button-grey" onclick={() => (createModal = true)}> Create account </button>
+				<button class="bottom-button-grey" onclick={() => (createModal = true)}>
+					Create account
+				</button>
 				<button class="bottom-button" onclick={() => (importModal = true)}> Import account </button>
 			</div>
 		{:else if accountState.accountList.length > 0}
@@ -120,11 +120,11 @@
 </div>
 
 <Modal bind:modalName={addModal} mode="half">
-	<AddAccount {needpass} />
+	<AddAccount />
 </Modal>
 
 <Modal bind:modalName={importModal} mode="half">
-	<ImportAccount/>
+	<ImportAccount />
 </Modal>
 
 <Modal bind:modalName={createModal} mode="half">
@@ -276,7 +276,5 @@
 		cursor: pointer;
 		outline: none;
 		z-index: 200;
-		
 	}
-	
 </style>

@@ -7,13 +7,13 @@
 <div class="container">
 	<div class="label1">Fiat</div>
 	{#each [...DefaultFiats] as fiat}
-		<button class="item-button" onclick={() => generalState.setFiat(fiat.name)}>
+		<button class="item-button" onclick={() => generalState.setFiat(fiat)}>
 			<img class="img24" src={`/fiat/${fiat.name}.svg`} alt="" />
 			<div class="item-l">
 				{fiat.name}
 			</div>
 			<div class="item-r">
-				{#if fiat.name === generalState.currentFiat}
+				{#if fiat.name === generalState.currentFiat.name}
 					<CheckIcon class="icon2S" />
 				{/if}
 			</div>
