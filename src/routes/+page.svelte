@@ -5,7 +5,9 @@
 		Footer,
 		Header,
 		Modal,
-		ChainSelector
+		ChainSelector,
+		NftBalance,
+		Activity 
 	} from '$lib/ui/components';
 	import {
 		ReceiveIcon,
@@ -18,13 +20,13 @@
 	} from '$lib/svg';
 	import { accountState, chainState, generalState } from '$lib/wallet/runes';
 	import { metadata } from '$lib/ui/runes';
-	import { AnkrProvider, type Blockchain, type GetAccountBalanceReply } from '@ankr.com/ankr.js';
+	import { type GetAccountBalanceReply } from '@ankr.com/ankr.js';
 	import {
 		DefaultChains,
-		getAddressBalances,
+		getTokenBalances,
 		rpcIntervalMs,
 		getBalanceByFiat,
-		getBalanceByCurrency
+		getBalanceByCurrency,
 	} from '$lib/wallet/common';
 
 	let tab = $state<'token' | 'nft' | 'activity'>('token');
@@ -43,14 +45,14 @@
 				return;
 			}
 			if (chainState.currentChain === null) {
-				const result = await getAddressBalances(
+				const result = await getTokenBalances(
 					DefaultChains,
 					accountState.currentAccount?.address 
 				);
 				balanceRes = result ?? null;
 				console.log(result.totalBalanceUsd);
 			} else {
-				const result = await getAddressBalances(
+				const result = await getTokenBalances(
 					[chainState.currentChain],
 					accountState.currentAccount?.address
 				);
@@ -174,7 +176,7 @@
 						</div>
 						<div class="token-entry-right">
 							<div class="address">{getBalanceByFiat(Number(asset.balanceUsd))}</div>
-							<div>sdfd</div>
+							<div>{getBalanceByFiat(Number(asset.tokenPrice))}</div>
 						</div>
 					</div>	
 		{/each}
@@ -183,9 +185,9 @@
 
 
 		{:else if tab === 'nft'}
-			<div class="tab-panel">Content for Tab 2</div>
+			<NftBalance/>
 		{:else if tab === 'activity'}
-			<div class="tab-panel">Content for Tab 3</div>
+			<Activity/>
 		{/if}
 	</div>
 </div>
@@ -209,7 +211,7 @@
 		height: 100%;
 		width: 95%;
 		max-width: 48rem;
-		padding: 6.4rem 1rem 0rem 1rem;
+		padding: 6.4rem 1rem 8rem 1rem;
 	}
 
 	.item-container3 {
@@ -249,6 +251,7 @@
 		padding: 0px;
 		margin-bottom: 1rem;
 	}
+
 	.menu1 {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));

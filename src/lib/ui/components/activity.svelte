@@ -9,10 +9,11 @@
 		rpcIntervalMsNft,
 		getBalanceByFiat,
 		getNftBalances,
-		mapAnkrChainNameToLocal
+		mapAnkrChainNameToLocal,
+        getData
 	} from '$lib/wallet/common';
 
-	let nftRes: GetNFTsByOwnerReply  | null = $state(null);
+	let nftRes: any  | null = $state(null);
 
 
 	// const nftFilterByChain = () => {
@@ -31,19 +32,19 @@
 				return;
 			}
 			if (chainState.currentChain === null) {
-				const result = await getNftBalances(
+				const result = await  getData(
 					DefaultChains,
 					accountState.currentAccount?.address
 				);
 				nftRes = result ?? null;
-				console.log(result.assets);
+				console.log(result);
 			} else {
-				const result = await getNftBalances(
+				const result = await getData(
 					[chainState.currentChain],
 					accountState.currentAccount?.address
 				);
 				nftRes = result ?? null;
-				console.log(result.assets);
+				console.log(result);
 			}
 		};
 
@@ -56,7 +57,7 @@
 </script>
 
 <div class="grid-container">
-	{#each nftRes?.assets ?? [] as asset}
+	{#each nftRes?.transactions ?? [] as asset}
 			<div class="nft-container">
 				<img class="thumbnail" src={asset.imageUrl} alt={asset.collectionName} />
 			</div>	
