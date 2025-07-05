@@ -24,7 +24,7 @@
 	} from '$lib/wallet/common';
 	import { Toaster, Header, Footer } from '$lib/ui/components';
 	import { toastState } from '$lib/ui/runes';
-	import { DefaultChains, getAddressBalances, mapAnkrChainName ,rpcIntervalMs} from '$lib/wallet/common';
+	import { DefaultChains, getTokenBalances, mapLocalChainNameToAnkr ,rpcIntervalMs} from '$lib/wallet/common';
 	import { accountState, chainState ,generalState} from '$lib/wallet/runes';
 	import { AnkrProvider, type Blockchain, type GetAccountBalanceReply } from '@ankr.com/ankr.js';
 
@@ -124,23 +124,7 @@
 	}
 
 
-	$effect(() => {
-		const fetchBalances = async () => {
-			if (chainState.currentChain === null) {
-				const result = await getAddressBalances(DefaultChains, accountState.currentAccount?.address ?? '');
-				balanceRes = result ?? null;
-			} else {
-				const result = await getAddressBalances([chainState.currentChain], accountState.currentAccount?.address ?? '');
-				balanceRes = result ?? null;
-			}
-		};
-		
-		fetchBalances().catch(console.error);
-		const intervalId = setInterval(async () => {
-			fetchBalances().catch(console.error);
-		}, rpcIntervalMs);
-		return () => clearInterval(intervalId);
-	});
+
 
 
 
@@ -170,27 +154,14 @@
 		<button onclick={saveMid}>saveMid</button>
 		<button onclick={reset}>reset</button>
 	</div>
-	<div>{mapAnkrChainName(DefaultChains)}</div>
+
 
 	<button onclick={() => toastState.add('title', 'message')}>toast</button>
 	<input type="file" />
 	<input type="file" capture="environment" accept="image/*" />
-	<div>{generalState.fiatRate?.KRW}</div>
-	{#if !balanceRes}
-		<div>LOADING</div>
-	{/if}
-	{#if balanceRes}
-		{#each balanceRes.assets as asset}
-			<img src={asset.thumbnail} alt="" />
 
-			<div>{asset.thumbnail}</div>
-			<div>{asset.tokenSymbol}</div>
-			<div>{asset.balance}</div>
-		{/each}
-		{#if balanceRes.assets.length === 0}
-			<div>No assets found</div>
-		{/if}
-	{/if}
+	
+
 </div>
 
 <Footer />

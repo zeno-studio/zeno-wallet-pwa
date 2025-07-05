@@ -20,6 +20,8 @@ export { default as ResetWallet } from "./resetWallet.svelte";
 export { default as AutoLock } from "./autolock.svelte";
 export { default as RestoreMn } from "./restoreMn.svelte";
 export { default as FileLoad } from "./fileLoad.svelte";
+export { default as NftBalance } from "./nftBalace.svelte";
+export { default as Activity } from "./activity.svelte";
 
 
 
