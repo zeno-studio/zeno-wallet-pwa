@@ -1,8 +1,12 @@
 <script lang="ts">
-	
 	import { accountState, chainState, generalState } from '$lib/wallet/runes';
 	import { metadata } from '$lib/ui/runes';
-	import { AnkrProvider, type Blockchain, type GetNFTsByOwnerReply,type Nft } from '@ankr.com/ankr.js';
+	import {
+		AnkrProvider,
+		type Blockchain,
+		type GetNFTsByOwnerReply,
+		type Nft
+	} from '@ankr.com/ankr.js';
 	import {
 		DefaultChains,
 		getTokenBalances,
@@ -11,18 +15,24 @@
 		getNftBalances,
 		mapAnkrChainNameToLocal
 	} from '$lib/wallet/common';
+	import { page } from '$app/state';
 
-	let nftRes: GetNFTsByOwnerReply  | null = $state(null);
+	let nftRes: Nft[] | null = $state(null);
+	let nftByChain = $derived.by(() => {
+		if (chainState.currentChain === null) {
+			return nftRes ?? [];
+			}
+		const nfts = nftRes?.filter(asset => mapAnkrChainNameToLocal(asset.blockchain) === chainState.currentChain?.name);
+		return nfts ?? [];
+	});
+	let loading = $state(false);
 
-
-	// const nftFilterByChain = () => {
-	// 	nftByChain = (nftRes?.assets ?? []).filter((asset) => {
-	// 		if (chainState.currentChain?.name === mapAnkrChainNameToLocal(asset.blockchain)) {
-	// 			nftByChain = [...nftByChain, asset];
-	// 		}
-	// 	});
-	// };
-
+	const getNftThumbnail = (asset: Nft) => {
+		if (!asset.imageUrl) {
+			return "";
+		} 
+		return asset.imageUrl;	
+	};
 
 	$effect(() => {
 		const fetchBalances = async () => {
@@ -30,20 +40,22 @@
 				nftRes = null;
 				return;
 			}
-			if (chainState.currentChain === null) {
-				const result = await getNftBalances(
-					DefaultChains,
-					accountState.currentAccount?.address
-				);
-				nftRes = result ?? null;
-				console.log(result.assets);
-			} else {
-				const result = await getNftBalances(
-					[chainState.currentChain],
-					accountState.currentAccount?.address
-				);
-				nftRes = result ?? null;
-				console.log(result.assets);
+			loading = true;
+			nftRes = [];
+			let nextPageToken = '';
+
+			try {
+				do {
+					const result: GetNFTsByOwnerReply = await getNftBalances(
+						DefaultChains,
+						accountState.currentAccount?.address,
+						nextPageToken
+					);
+					nftRes = [...nftRes, ...(result.assets ?? [])];
+					nextPageToken = result.nextPageToken ?? '';
+				} while (nextPageToken !== '');
+			} finally {
+				loading = false;
 			}
 		};
 
@@ -56,12 +68,12 @@
 </script>
 
 <div class="grid-container">
-	{#each nftRes?.assets ?? [] as asset}
-			<div class="nft-container">
-				<img class="thumbnail" src={asset.imageUrl} alt={asset.collectionName} />
-			</div>	
+	{#each nftByChain  ?? [] as asset}
+		<div class="nft-container">
+			<img class="thumbnail" src={getNftThumbnail(asset)} alt="" />
+		</div>
 	{/each}
-	</div>
+</div>
 
 <style>
 	/* balance */
@@ -92,13 +104,10 @@
 		gap: 1rem;
 	}
 
-
 	.thumbnail {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
 		border-radius: 2rem;
 	}
-
-
 </style>

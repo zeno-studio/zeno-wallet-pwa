@@ -15,6 +15,8 @@
 		updatePageTitle(2, chainState.currentChain!.name);
 	}
 
+	
+
 </script>
 
 <div class="list-container">

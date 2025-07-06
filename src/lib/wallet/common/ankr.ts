@@ -10,15 +10,16 @@ export const getTokenBalances = async (chains: Chain[], address: string) => {
 	return await ankrAdvancedApiProvider.getAccountBalance({
 		blockchain: mapLocalChainNameToAnkr(chains),
 		walletAddress: address,
-		pageSize: 50
+		nativeFirst: true,
 	});
 };
 
-export const getNftBalances = async (chains: Chain[], address: string) => {
+export const getNftBalances = async (chains: Chain[], address: string,pageToken:string) => {
 	return await ankrAdvancedApiProvider.getNFTsByOwner({
 		blockchain: mapLocalChainNameToAnkr(chains),
 		walletAddress: address,
-		pageSize: 50
+		pageSize: 50,
+		pageToken: pageToken,
 	});
 };
 
