@@ -7,6 +7,12 @@ class ChainState {
 	currentCurrency = $state<string>("ETH");
 	currentCurrencyPrice = $state<number|null>(null);
 	currentChain = $state<Chain |null>(null);
+	currentChainId = $derived.by(() => {
+		if (this.currentChain === null) {
+			return 0;
+		}
+		return this.currentChain.chainId;
+	})
 	Chains = $state<Chain[]>(DefaultChains);
 
 	setFiat(currency: string) {

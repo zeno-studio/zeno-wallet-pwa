@@ -27,6 +27,7 @@
 		rpcIntervalMs,
 		getBalanceByFiat,
 		getBalanceByCurrency,
+		mapAnkrChainNameToLocal
 	} from '$lib/wallet/common';
 
 	let tab = $state<'token' | 'nft' | 'activity'>('token');
@@ -37,6 +38,15 @@
 	let importModal = $state(false);
 
 	let balanceRes: GetAccountBalanceReply | null = $state(null);
+	let balanceByChain = $derived.by(() => {
+		if (chainState.currentChain === null) {
+			return balanceRes?.assets ?? [];
+			}
+		const balance=balanceRes?.assets.filter(asset => mapAnkrChainNameToLocal(asset.blockchain) === chainState.currentChain?.name);
+		return balance ?? [];
+	});
+
+	
 
 	$effect(() => {
 		const fetchBalances = async () => {
@@ -44,20 +54,11 @@
 				balanceRes = null;
 				return;
 			}
-			if (chainState.currentChain === null) {
-				const result = await getTokenBalances(
+			const result = await getTokenBalances(
 					DefaultChains,
 					accountState.currentAccount?.address 
 				);
 				balanceRes = result ?? null;
-				console.log(result.totalBalanceUsd);
-			} else {
-				const result = await getTokenBalances(
-					[chainState.currentChain],
-					accountState.currentAccount?.address
-				);
-				balanceRes = result ?? null;
-			}
 		};
 
 		fetchBalances().catch(console.error);
@@ -152,7 +153,7 @@
 				modalOpen = true;
 			}}
 		>
-			<img class="icon-chain" src="/chain/polkadot.svg" alt="" />
+			<img class="icon-chain" src = {`/chain/${chainState.currentChainId}.svg`} alt="" />
 			<ArrowDown class="icon2A" />
 		</button>
 	</div>
@@ -163,7 +164,7 @@
 		
 			
 		<div class="tokenList">
-{#each balanceRes?.assets ?? [] as asset }
+{#each balanceByChain ?? [] as asset }
 			<div class="token-entry">
 						<div class="token-thumbnail">
 						<img class="thumbnail" src={asset.thumbnail} alt={asset.tokenSymbol} /> 
@@ -326,6 +327,7 @@
 		cursor: pointer;
 		margin-left: 0.4rem;
 		margin-right: 1rem;
+		border-radius: 50%;
 		padding: 0;
 	}
 	.bottom-button {

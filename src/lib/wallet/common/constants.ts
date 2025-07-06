@@ -11,7 +11,7 @@ export const PVM_ADDRESSID20_SUFFIX = "eeeeeeeeeeeeeeeeeeeeeeee"
 export const ANKR_API_KEY="ccf92c089ee0f80ae00b09422c6f8f37af5da1eea54754feb7122ea70f7fee23"
 export const OPENEXCHANGERATES_API_KEY="4c7f2dedfd23435a8dd373b1f798278b"
 
-export const rpcIntervalMs = 12000 // 12 seconds
+export const rpcIntervalMs = 30000 // 30 seconds
 export const rpcIntervalMsNft = 1000*60 // 1 minute
 
 // 这是一个 (ed|sr)25510 派生地址
