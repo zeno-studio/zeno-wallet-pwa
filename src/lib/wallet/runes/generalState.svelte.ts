@@ -1,4 +1,12 @@
-import { usd, type Settings, type Fiat ,type FiatRate,type CurrencyPrice } from '$lib/wallet/common';
+import {
+	usd,
+	DefaultChains,
+	type Settings,
+	type Fiat,
+	type FiatRate,
+	type CurrencyPrice,
+	type Chain
+} from '$lib/wallet/common';
 
 class GeneralState {
 	autoLockTimer = $state(15);
@@ -8,6 +16,13 @@ class GeneralState {
 	fiatRate = $state<FiatRate | null>(null);
 	currentCurrency = $state<string>('ETH');
 	currencyPrice = $state<CurrencyPrice | null>(null);
+	currentChain = $state<Chain | null>(null);
+	currentChainId = $derived.by(() => {
+		if (this.currentChain === null) {
+			return 0;
+		}
+		return this.currentChain.chainId;
+	});
 	setFiat(fiat: Fiat) {
 		this.currentFiat = fiat;
 		const settings = localStorage.getItem('settings');
@@ -25,6 +40,10 @@ class GeneralState {
 			data.currency = currency;
 			localStorage.setItem('settings', JSON.stringify(data));
 		}
+	}
+	setCurrentChain(Id: number) {
+		const chain = DefaultChains.find((e) => e.chainId === Id);
+		this.currentChain = chain ?? null;
 	}
 }
 

@@ -7,7 +7,7 @@
 		Modal,
 		ChainSelector,
 		NftBalance,
-		Activity 
+		ActivityRemote
 	} from '$lib/ui/components';
 	import {
 		ReceiveIcon,
@@ -16,14 +16,15 @@
 		UpIcon,
 		UpDownIcon,
 		DollarIcon,
-		BridgeIcon
+		BridgeIcon,
+		Loading
 	} from '$lib/svg';
-	import { accountState, chainState, generalState } from '$lib/wallet/runes';
+	import { accountState, generalState } from '$lib/wallet/runes';
 	import { metadata } from '$lib/ui/runes';
 	import { type GetAccountBalanceReply } from '@ankr.com/ankr.js';
 	import {
 		DefaultChains,
-		getTokenBalances,
+		getTokenBalancesByAnkr,
 		rpcIntervalMs,
 		getBalanceByFiat,
 		getBalanceByCurrency,
@@ -36,17 +37,18 @@
 	let modalOpen = $state(false);
 	let createModal = $state(false);
 	let importModal = $state(false);
+	let loading = $state(false);
 
 	let balanceRes: GetAccountBalanceReply | null = $state(null);
 	let balanceByChain = $derived.by(() => {
-		if (chainState.currentChain === null) {
+		if (generalState.currentChain === null) {
 			return balanceRes?.assets ?? [];
-			}
-		const balance=balanceRes?.assets.filter(asset => mapAnkrChainNameToLocal(asset.blockchain) === chainState.currentChain?.name);
+		}
+		const balance = balanceRes?.assets.filter(
+			(asset) => mapAnkrChainNameToLocal(asset.blockchain) === generalState.currentChain?.name
+		);
 		return balance ?? [];
 	});
-
-	
 
 	$effect(() => {
 		const fetchBalances = async () => {
@@ -54,11 +56,10 @@
 				balanceRes = null;
 				return;
 			}
-			const result = await getTokenBalances(
-					DefaultChains,
-					accountState.currentAccount?.address 
-				);
-				balanceRes = result ?? null;
+			loading = true;
+			const result = await getTokenBalancesByAnkr(DefaultChains, accountState.currentAccount?.address);
+			balanceRes = result ?? null;
+			loading = false;
 		};
 
 		fetchBalances().catch(console.error);
@@ -72,9 +73,7 @@
 <Header />
 <div class="appBody">
 	{#if !balanceRes}
-		<div class="item-container3">
-			
-		</div>
+		<div class="item-container3"></div>
 	{:else}
 		<div class="item-container3">
 			<div class="balance">
@@ -153,25 +152,25 @@
 				modalOpen = true;
 			}}
 		>
-			<img class="icon-chain" src = {`/chain/${chainState.currentChainId}.svg`} alt="" />
+			<img class="icon-chain" src={`/chain/${generalState.currentChainId}.svg`} alt="" />
 			<ArrowDown class="icon2A" />
 		</button>
 	</div>
 
 	<div class="item-container2">
 		{#if tab === 'token'}
-
-		
-			
-		<div class="tokenList">
-{#each balanceByChain ?? [] as asset }
-			<div class="token-entry">
+			<div class="tokenList">
+				{#if loading}
+					<div class="loading"><Loading class="icon3B" /></div>
+				{/if}
+				{#each balanceByChain ?? [] as asset}
+					<div class="token-entry">
 						<div class="token-thumbnail">
-						<img class="thumbnail" src={asset.thumbnail} alt={asset.tokenSymbol} /> 
+							<img class="thumbnail" src={asset.thumbnail} alt={asset.tokenSymbol} />
 						</div>
 						<div class="content">
 							<div class="label-m">
-							{asset.tokenSymbol}
+								{asset.tokenSymbol}
 							</div>
 							<div class="address">{asset.balance}</div>
 						</div>
@@ -179,16 +178,13 @@
 							<div class="address">{getBalanceByFiat(Number(asset.balanceUsd))}</div>
 							<div>{getBalanceByFiat(Number(asset.tokenPrice))}</div>
 						</div>
-					</div>	
-		{/each}
-				
-		</div>
-
-
+					</div>
+				{/each}
+			</div>
 		{:else if tab === 'nft'}
-			<NftBalance/>
+			<NftBalance />
 		{:else if tab === 'activity'}
-			<Activity/>
+			<ActivityRemote />
 		{/if}
 	</div>
 </div>
@@ -213,6 +209,14 @@
 		width: 95%;
 		max-width: 48rem;
 		padding: 6.4rem 1rem 8rem 1rem;
+	}
+
+	.loading {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		height: 5rem;
 	}
 
 	.item-container3 {
@@ -469,7 +473,7 @@
 		border-radius: 1.6rem;
 		cursor: pointer;
 		outline: none;
-	
+
 		&:active {
 			transform: translateY(1px);
 		}
@@ -487,7 +491,6 @@
 		background: none;
 		cursor: pointer;
 		margin-right: 1rem;
-
 	}
 
 	.token-thumbnail {
@@ -503,11 +506,11 @@
 		background-color: #fff;
 	}
 
-.thumbnail{
-	width: 4rem;
-	height: 4rem;
-	border-radius: 50%;
-}
+	.thumbnail {
+		width: 4rem;
+		height: 4rem;
+		border-radius: 50%;
+	}
 
 	.content {
 		display: flex;
@@ -515,6 +518,4 @@
 		align-items: flex-start;
 		width: 100%;
 	}
-
-
 </style>

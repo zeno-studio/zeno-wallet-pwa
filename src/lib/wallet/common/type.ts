@@ -7,37 +7,7 @@ export type App = {
 	chain: number[];
 };
 
-export type Settings = {
-	darkMode: boolean;
-	locale: string;
-	currentAccountIndex: number;
-	nextAccountIndex: number;
-	nextPQAccountIndex: number;
-	autoLock: boolean;
-	autoLockTimer: number;
-	activeApps: App[];
-	hiddenApps: App[];
-	hiddenChains: number[];
-	currency: string;
-	fiat: string;
-	isBackup: boolean;
-};
 
-export const defaultSettings: Settings = {
-	darkMode: false,
-	locale: 'en',
-	currentAccountIndex: 0,
-	nextAccountIndex: 1,
-	nextPQAccountIndex: 101,
-	autoLock: true,
-	autoLockTimer: 15, // in minutes
-	activeApps: [],
-	hiddenApps: [],
-	hiddenChains: [],
-	currency: 'ETH',
-	fiat: 'USD',
-	isBackup: false,
-};
 
 export type AccessStatus = 'APPROVED' | 'DENIED';
 export type HexString = `0x${string}`;
@@ -102,22 +72,15 @@ export interface Chain {
 		symbol: string;
 		decimals: number;
 	};
-	rpcUrls: {
-		http: {
-			public: string;
-			custom?: string;
-		};
-		webSocket?: {
-			public?: string;
-			custom?: string;
-		};
-	};
+	http1: string;
+	http2?: string;
+	wss1?: string;
+	wss2?: string;
 	blockExplorers: string;
 	multicall3?: {
 		address: string;
 		blockCreated: number;
 	};
-	contracts?: any;
 	testnet: boolean;
 }
 
@@ -190,3 +153,36 @@ export interface MessagePayload {
 	error?: string;
 	event?: string;
 }
+
+
+export type Settings = {
+	darkMode: boolean;
+	locale: string;
+	currentAccountIndex: number;
+	nextAccountIndex: number;
+	nextPQAccountIndex: number;
+	autoLock: boolean;
+	autoLockTimer: number;
+	activeApps: App[];
+	hiddenApps: App[];
+	hiddenChains: number[];
+	currency: string;
+	fiat: string;
+	isBackup: boolean;
+};
+
+export const defaultSettings: Settings = {
+	darkMode: false,
+	locale: 'en',
+	currentAccountIndex: 0,
+	nextAccountIndex: 1,
+	nextPQAccountIndex: 101,
+	autoLock: true,
+	autoLockTimer: 15, // in minutes
+	activeApps: [],
+	hiddenApps: [],
+	hiddenChains: [],
+	currency: 'ETH',
+	fiat: 'USD',
+	isBackup: false,
+};

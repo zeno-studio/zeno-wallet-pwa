@@ -14,8 +14,8 @@ export const forexWs = () => {
 	// 连接成功
 	socket.onopen = () => {
 		isConnected = true;
-     reconnectAttempts = 0; // 重置重连计数
-      reconnectInterval = 1000; // 重置重连间隔
+		reconnectAttempts = 0; // 重置重连计数
+		reconnectInterval = 1000; // 重置重连间隔
 		console.log('Connected to WebSocket server');
 	};
 
@@ -48,25 +48,25 @@ export const forexWs = () => {
 	// 连接关闭
 	socket.onclose = () => {
 		isConnected = false;
-    attemptReconnect();
+		attemptReconnect();
 		console.log('WebSocket connection closed');
 	};
 };
 
- function attemptReconnect() {
-    if (reconnectAttempts < maxReconnectAttempts) {
-      reconnectAttempts += 1;
+function attemptReconnect() {
+	if (reconnectAttempts < maxReconnectAttempts) {
+		reconnectAttempts += 1;
 
-      setTimeout(() => {
-        forexWs();
-      }, reconnectInterval);
-      
-      reconnectInterval *= 2; 
-    } else {
-      console.error('Max reconnect attempts reached. Giving up.');
-      isConnected = false;
-    }
-  }
+		setTimeout(() => {
+			forexWs();
+		}, reconnectInterval);
+
+		reconnectInterval *= 2;
+	} else {
+		console.error('Max reconnect attempts reached. Giving up.');
+		isConnected = false;
+	}
+}
 
 export const updateCurrencyPirce = async () => {
 	const res = await fetch(

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { PinIcon, SearchIcon, StarIcon } from '$lib/svg';
-	import { accountState, chainState } from '$lib/wallet/runes';
+	import { accountState, generalState } from '$lib/wallet/runes';
 	import { ethereumTonkens} from '$lib/wallet/common';
 
 </script>

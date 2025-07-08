@@ -1,8 +1,9 @@
 import {
 	type Settings,
 	defaultSettings,
+	DefaultFiats
 } from '$lib/wallet/common';
-import { accountState, chainState,setTimer, generalState } from '$lib/wallet/runes';
+import { accountState,setTimer, generalState } from '$lib/wallet/runes';
 import { userlocale, getLanguage, availableLanguages } from '$lib/ui/runes';
 import {} from '$lib/wallet/runes';
 
@@ -26,8 +27,10 @@ export const createSettings = async () => {
 		await accountState.getAccountList();
 
 		// intialize currency
-		chainState.currentCurrency = data.currency;
-		chainState.currentFiat = data.fiat;
+		generalState.currentCurrency = data.currency;
+		const foundFiat = DefaultFiats.find(
+			(fiat) => fiat.name === data.fiat);
+		generalState.currentFiat = foundFiat ?? DefaultFiats[0];
 
 		// intialize locale
 		userlocale.locale = data.locale;
@@ -49,6 +52,5 @@ export const createSettings = async () => {
 			const newSettings = { ...defaultSettings, locale: 'en' };
 			localStorage.setItem('settings', JSON.stringify(newSettings));
 		}
-		chainState.initChains() 
 	}
 };

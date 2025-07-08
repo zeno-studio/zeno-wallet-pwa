@@ -58,4 +58,37 @@ export const stringToNumber=(str: string,decimal :number): number =>{
     return isNaN(num) ? 0 : Number(num.toFixed(decimal));
 }
 
+export const hexStringToNumber=(hexString:string): number => {
+  // 验证输入是否为字符串且以 '0x' 开头
+  if (typeof hexString !== 'string' || !hexString.startsWith('0x')) {
+    throw new Error('Input must be a string starting with "0x"');
+  }
+
+  // 移除 '0x' 前缀并尝试转换为数字
+  const hexValue = hexString.slice(2);
+  if (!hexValue.match(/^[0-9a-fA-F]+$/)) {
+    throw new Error('Invalid hex string: contains non-hex characters');
+  }
+
+  // 使用 parseInt 将十六进制字符串转换为数字
+  const number = parseInt(hexValue, 16);
+
+  // 验证转换结果是否有效
+  if (isNaN(number)) {
+    throw new Error('Failed to convert hex string to number');
+  }
+
+  return number;
+}
+
+export const hexStringToBigInt=(hexString: string): bigint =>{
+  if (typeof hexString !== 'string' || !hexString.startsWith('0x')) {
+    throw new Error('Input must be a string starting with "0x"');
+  }
+  const hexValue = hexString.slice(2);
+  if (!hexValue.match(/^[0-9a-fA-F]+$/)) {
+    throw new Error('Invalid hex string: contains non-hex characters');
+  }
+  return BigInt(`0x${hexValue}`);
+}
 
