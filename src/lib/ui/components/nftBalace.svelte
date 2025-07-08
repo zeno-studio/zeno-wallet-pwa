@@ -1,28 +1,23 @@
 <script lang="ts">
-	import { accountState, chainState, generalState } from '$lib/wallet/runes';
-	import { metadata } from '$lib/ui/runes';
+	import { accountState, generalState } from '$lib/wallet/runes';
 	import {
-		AnkrProvider,
-		type Blockchain,
 		type GetNFTsByOwnerReply,
 		type Nft
 	} from '@ankr.com/ankr.js';
 	import {
 		DefaultChains,
-		getTokenBalances,
 		rpcIntervalMsNft,
-		getBalanceByFiat,
-		getNftBalances,
+		getNftBalancesByAnkr,
 		mapAnkrChainNameToLocal
 	} from '$lib/wallet/common';
-	import { page } from '$app/state';
+	import {Loading} from '$lib/svg';
 
 	let nftRes: Nft[] | null = $state(null);
 	let nftByChain = $derived.by(() => {
-		if (chainState.currentChain === null) {
+		if (generalState.currentChain === null) {
 			return nftRes ?? [];
 			}
-		const nfts = nftRes?.filter(asset => mapAnkrChainNameToLocal(asset.blockchain) === chainState.currentChain?.name);
+		const nfts = nftRes?.filter(asset => mapAnkrChainNameToLocal(asset.blockchain) === generalState.currentChain?.name);
 		return nfts ?? [];
 	});
 	let loading = $state(false);
@@ -46,7 +41,7 @@
 
 			try {
 				do {
-					const result: GetNFTsByOwnerReply = await getNftBalances(
+					const result: GetNFTsByOwnerReply = await getNftBalancesByAnkr(
 						DefaultChains,
 						accountState.currentAccount?.address,
 						nextPageToken
@@ -68,6 +63,10 @@
 </script>
 
 <div class="grid-container">
+
+	{#if loading}
+		<div class="loading"><Loading class="icon3B" /></div>
+	{/if}
 	{#each nftByChain  ?? [] as asset}
 		<div class="nft-container">
 			<img class="thumbnail" src={getNftThumbnail(asset)} alt="" />
@@ -76,6 +75,13 @@
 </div>
 
 <style>
+	.loading {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		height: 5rem;
+	}
 	/* balance */
 	.tokenList {
 		display: flex;

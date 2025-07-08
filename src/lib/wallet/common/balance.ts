@@ -1,4 +1,4 @@
-import { accountState, chainState ,generalState} from '$lib/wallet/runes';
+import { generalState} from '$lib/wallet/runes';
 
 export type FiatName = 'EUR' | 'GBP' | 'JPY' | 'CNY' | 'KRW' | 'RUB';
 export type CurrencyName = 'BTC' | 'ETH' | 'DOT';

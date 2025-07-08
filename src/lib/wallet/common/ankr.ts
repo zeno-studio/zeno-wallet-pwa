@@ -6,24 +6,24 @@ import { ANKR_API_KEY, DefaultChains, type Chain } from '$lib/wallet/common';
 const ankrAdvancedApiProvider = new AnkrProvider(`https://rpc.ankr.com/multichain/${ANKR_API_KEY}`);
 
 // Get token balances of address with USD prices among multiple chains
-export const getTokenBalances = async (chains: Chain[], address: string) => {
+export const getTokenBalancesByAnkr = async (chains: Chain[], address: string) => {
 	return await ankrAdvancedApiProvider.getAccountBalance({
 		blockchain: mapLocalChainNameToAnkr(chains),
 		walletAddress: address,
-		nativeFirst: true,
+		nativeFirst: true
 	});
 };
 
-export const getNftBalances = async (chains: Chain[], address: string,pageToken:string) => {
+export const getNftBalancesByAnkr = async (chains: Chain[], address: string, pageToken: string) => {
 	return await ankrAdvancedApiProvider.getNFTsByOwner({
 		blockchain: mapLocalChainNameToAnkr(chains),
 		walletAddress: address,
 		pageSize: 50,
-		pageToken: pageToken,
+		pageToken: pageToken
 	});
 };
 
-export const getTxData = async (hash: string) => {
+export const getTxByHashByAnkr = async (hash: string) => {
 	return await ankrAdvancedApiProvider.getTransactionsByHash({
 		transactionHash: hash,
 		decodeTxData: true
@@ -88,31 +88,58 @@ export const mapAnkrChainNameToLocal = (chain: Blockchain): string => {
 };
 
 
-
-export const getData=async(chains: Chain[], address: string)=> {
-  try {
-    const response = await fetch(`https://rpc.ankr.com/multichain/${ANKR_API_KEY}`, {
-	method: 'POST',
-	headers: {
-		'Content-Type': 'application/x-www-form-urlencoded'
-	},
-	body: JSON.stringify({
-		id: 1,
-		jsonrpc: '2.0',
-		method: 'ankr_getTransactionsByAddress',
-		params: {
-			blockchain: mapLocalChainNameToAnkr(chains),
-			address: address,
-		}
-	})
-});
-    if (!response.ok) {
-      throw new Error(`Response status: ${response.status}`);
+export	type ankrActivityReply = {
+        transactions: [
+            {
+                blockHash: string,
+                blockNumber: string,
+                blockchain: string,
+                cumulativeGasUsed: string,
+                from: string,
+                gas: string,
+                gasPrice: string,
+                gasUsed: string,
+                hash: string,
+                input: string,
+                nonce: string,
+                r: string,
+                s: string,
+                status: string,
+                timestamp: string,
+                to: string,
+                transactionIndex: string,
+                type: string,
+                v: string,
+                value: string
+            }
+        ]
     }
 
-    const json = await response.json();
-    console.log(json);
-  } catch (error) {
-    console.error(error.message);
-  }
-}
+export const getActivityByAnkr = async (chains: Chain[], address: string,days:number) => {
+	try {
+		const response = await fetch(`https://rpc.ankr.com/multichain/${ANKR_API_KEY}`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				id: 1,
+				jsonrpc: '2.0',
+				method: 'ankr_getTransactionsByAddress',
+				params: {
+					blockchain: mapLocalChainNameToAnkr(chains),
+					address: address,
+					fromTimestamp: Math.floor((Date.now() - days * 24 * 60 * 60 * 1000) / 1000) // last 30 days
+				}
+			})
+		});
+		if (!response.ok) {
+			throw new Error(`Response status: ${response.status}`);
+		}
+
+		const json = await response.json();
+		return json.result as ankrActivityReply ?? null;
+	} catch (error) {
+		console.error(error.message);
+	}
+};
