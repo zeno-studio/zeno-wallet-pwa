@@ -92,3 +92,46 @@ export const hexStringToBigInt=(hexString: string): bigint =>{
   return BigInt(`0x${hexValue}`);
 }
 
+export const timeAgo=(timestamp: number): string =>{
+   try {
+    const pastTime = new Date(timestamp * 1000);
+    if (isNaN(pastTime.getTime())) {
+      return "Invalid timestamp";
+    }
+    const now = new Date();
+    const deltaMs = now.getTime() - pastTime.getTime();
+    const secondsPerMinute = 60;
+    const secondsPerHour = secondsPerMinute * 60;
+    const secondsPerDay = secondsPerHour * 24;
+    const secondsPerMonth = secondsPerDay * 30; 
+    const secondsPerYear = secondsPerDay * 365; 
+
+    const totalSeconds = Math.floor(deltaMs / 1000);
+
+    if (totalSeconds < 0) {
+      return "Future timestamp";
+    }
+
+    if (totalSeconds >= secondsPerYear) {
+      const years = Math.floor(totalSeconds / secondsPerYear);
+      return `${years} year${years > 1 ? "s" : ""} ago`;
+    } else if (totalSeconds >= secondsPerMonth) {
+      const months = Math.floor(totalSeconds / secondsPerMonth);
+      return `${months} month${months > 1 ? "s" : ""} ago`;
+    } else if (totalSeconds >= secondsPerDay) {
+      const days = Math.floor(totalSeconds / secondsPerDay);
+      return `${days} day${days > 1 ? "s" : ""} ago`;
+    } else if (totalSeconds >= secondsPerHour) {
+      const hours = Math.floor(totalSeconds / secondsPerHour);
+      return `${hours} hour${hours > 1 ? "s" : ""} ago`;
+    } else if (totalSeconds >= secondsPerMinute) {
+      const minutes = Math.floor(totalSeconds / secondsPerMinute);
+      return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
+    } else {
+      return `${totalSeconds} second${totalSeconds !== 1 ? "s" : ""} ago`;
+    }
+  } catch (error) {
+    return "Invalid timestamp";
+  }
+}
+
