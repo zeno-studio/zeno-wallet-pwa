@@ -9,6 +9,9 @@ export const getBalanceByFiat = (balances:number) => {
     } else {
         const fiat = generalState.currentFiat.name as FiatName;
         const fiatRate = generalState.fiatRate ?? null;
+        if (!fiatRate) {
+            return "not available";
+        }
         if (fiatRate && fiatRate[fiat]) {    
             return (balances * fiatRate[fiat]).toFixed(2);
         }
@@ -20,12 +23,13 @@ export const getBalanceByFiat = (balances:number) => {
 export const getBalanceByCurrency = (balances:number) => {
         const currency = generalState.currentCurrency as CurrencyName;
         const prices = generalState.currencyPrice ?? null;
+        if (!prices) {
+            return "not available";
+        }
         if (prices && prices[currency]) {    
             const currencyPrice = prices[currency].toFixed(0);
             const bit = currencyPrice.toString().length+1;
             return (balances / prices[currency]).toFixed(bit);
         }
-        return "not available"; 
-  
 }
   

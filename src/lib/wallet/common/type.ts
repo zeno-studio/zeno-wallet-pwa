@@ -113,6 +113,20 @@ export type Token = {
 	symbol: string;
 	name: string;
 	contract?: string;
+	balance?: number;
+};
+
+export type Nft = {
+	chainId: number;
+	type: 'erc-721' | 'erc-1155' | "other";
+	decimals: number;
+	symbol: string;
+	name: string;
+	tokenId: string;
+	contract: string;
+	tokenUri?: string;
+	quntity?: number;
+	metadata?: string;
 };
 
 export type TxParticipant = {
@@ -120,17 +134,24 @@ export type TxParticipant = {
 	chainId: number;
 };
 
+
 export interface Tx {
 	sender: TxParticipant;
 	recipient: TxParticipant;
 	hash: string;
 }
 
-export interface TransferResult {
-	isShowTxResult: boolean;
-	isTxSuccess: boolean;
-	txError?: Array<string>;
-}
+export type Activity = {
+	timestamp: number;
+	type: 'send' | 'receive' | 'call contract' | 'cross chain'|'other';
+	value: number;
+	currency: string;
+	sender: TxParticipant;
+	recipient: TxParticipant;
+	txHash?: string;
+	status?: 'Pending' | 'Confirmed' | 'Failed';
+};
+
 
 export type WalletBackupData = {
 	vaults: Vault[];

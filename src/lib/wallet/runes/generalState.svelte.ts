@@ -5,8 +5,11 @@ import {
 	type Fiat,
 	type FiatRate,
 	type CurrencyPrice,
-	type Chain
+	type Chain,
+	type Token,
+	type Nft,
 } from '$lib/wallet/common';
+
 
 class GeneralState {
 	autoLockTimer = $state(15);
@@ -17,6 +20,9 @@ class GeneralState {
 	currentCurrency = $state<string>('ETH');
 	currencyPrice = $state<CurrencyPrice | null>(null);
 	currentChain = $state<Chain | null>(null);
+	queryToken = $state<Token| null>(null);
+	queryNft = $state<Nft| null>(null);
+	queryActivity = $state<string>('');
 	currentChainId = $derived.by(() => {
 		if (this.currentChain === null) {
 			return 0;

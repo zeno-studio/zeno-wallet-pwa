@@ -1,14 +1,10 @@
 <script lang="ts">
 	
 	import { accountState, generalState} from '$lib/wallet/runes';
-	import { metadata } from '$lib/ui/runes';
 	import { type Blockchain, } from '@ankr.com/ankr.js';
 	import {
 		DefaultChains,
-		getTokenBalancesByAnkr,
 		rpcIntervalMsNft,
-		getBalanceByFiat,
-		getNftBalancesByAnkr,
 		mapAnkrChainNameToLocal,
         getActivityByAnkr,
 		type ankrActivityReply
@@ -22,10 +18,10 @@ let activityByChain = $derived.by(() => {
 		if (generalState.currentChain === null) {
 			return activityRes?.transactions ?? [];
 		}
-		const balance = activityRes?.transactions.filter(
+		const activity = activityRes?.transactions.filter(
 			(transaction) => mapAnkrChainNameToLocal(transaction.blockchain as Blockchain) === generalState.currentChain?.name
 		);
-		return balance ?? [];
+		return activity ?? [];
 	});
 
 	
@@ -61,7 +57,7 @@ let activityByChain = $derived.by(() => {
 	{#if loading}
 					<div class="loading"><Loading class="icon3B" /></div>
 	{/if}
-	{#each activityRes?.transactions ?? [] as transaction}
+	{#each activityByChain ?? [] as transaction}
 		<div class="token-entry">
 						<div class="token-thumbnail">
 						
