@@ -9,6 +9,7 @@ export * from "./backup";
 export * from "./ankr";
 export * from "./forex";
 export * from "./balance";
+export * from "./functionSelector";
 
 
 

@@ -22,7 +22,7 @@
 		type signerResponseType,
 		type Vault
 	} from '$lib/wallet/common';
-	import { Toaster, Header, Footer } from '$lib/ui/components';
+	import { Toaster, Header, Footer,PriceChart } from '$lib/ui/components';
 	import { toastState } from '$lib/ui/runes';
 	import { DefaultChains, getTokenBalancesByAnkr, mapLocalChainNameToAnkr ,rpcIntervalMs} from '$lib/wallet/common';
 	import { accountState, generalState} from '$lib/wallet/runes';
@@ -135,6 +135,7 @@
 <Toaster />
 
 <div class="appBody">
+	<PriceChart />
 	<div class="result">worker test:{res}</div>
 	<div class="test">
 		<button onclick={vault}>getVault</button>

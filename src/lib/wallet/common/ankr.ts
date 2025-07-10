@@ -1,6 +1,6 @@
 // npm install @ankr.com/ankr.js
 import { AnkrProvider, type Blockchain, type GetAccountBalanceReply } from '@ankr.com/ankr.js';
-import { ANKR_API_KEY, DefaultChains, type Chain } from '$lib/wallet/common';
+import { ANKR_API_KEY, DefaultChains,functionSelectors,contractMetadata, type Chain } from '$lib/wallet/common';
 
 // Setup provider AnkrProvider
 const ankrAdvancedApiProvider = new AnkrProvider(`https://rpc.ankr.com/multichain/${ANKR_API_KEY}`);
@@ -141,9 +141,8 @@ export const mapAnkrChainNameToChainId = (chain: Blockchain): number => {
 	}
 };
 
-export type ankrActivityReply = {
-	transactions: [
-		{
+
+export type ankrActivity = {
 			blockHash: string;
 			blockNumber: string;
 			blockchain: string;
@@ -165,7 +164,9 @@ export type ankrActivityReply = {
 			v: string;
 			value: string;
 		}
-	];
+
+		export type ankrActivityReply = {
+	transactions:ankrActivity[] ;
 };
 
 export const getActivityByAnkr = async (chains: Chain[], address: string, days: number) => {
@@ -197,3 +198,89 @@ export const getActivityByAnkr = async (chains: Chain[], address: string, days: 
 		console.error(error.message);
 	}
 };
+
+
+export const parseAnkrActivities=async (activities: ankrActivity[]): Promise<
+  Array<{
+    hash: string;
+    type: string;
+    description: string;
+    signature?: string;
+    standard?: string;
+  }>
+> =>{
+  const results: Array<{
+    hash: string;
+    type: string;
+    description: string;
+    signature?: string;
+    standard?: string;
+  }> = [];
+
+  for (const activity of activities) {
+    const { input, value, to, hash } = activity;
+
+    // 步骤 1：判断 Native Transfer
+    if (value !== '0x0' && (!input || input === '0x')) {
+      results.push({
+        hash,
+        type: 'Native Transfer',
+        description: `Transfer ${parseInt(value, 16) / 1e18} ${activity.blockchain.toUpperCase()} to ${to}`
+      });
+      continue;
+    }
+
+    // 步骤 2：处理 Execute Contract
+    if (!input || input === '0x') {
+      results.push({
+        hash,
+        type: 'Contract Call',
+        description: 'Unknown contract call'
+      });
+      continue;
+    }
+
+    const selector = input.slice(0, 10); // 提取前 4 字节
+    const matches = functionSelectors.filter(item => item.selector === selector);
+
+    if (!matches.length) {
+      results.push({
+        hash,
+        type: 'Contract Call',
+        description: 'Unknown contract call'
+      });
+      continue;
+    }
+
+    // 步骤 3：检查 to 地址的合约类型
+    let standard = 'Unknown';
+    const contractInfo = contractMetadata[to.toLowerCase()];
+    if (contractInfo) {
+      standard = contractInfo.standard;
+    } else {
+      // 可选：链上查询 supportsInterface（需要 Web3 实例）
+      // 为了简化，这里假设未知合约优先 ERC-20
+    }
+
+    // 步骤 4：处理重复选择器
+    const match = matches.find(m => m.standard === standard) || matches[0];
+    let description = match.description;
+
+    // 步骤 5：针对 ERC-20 转账，解析金额和代币
+    if (match.standard === 'ERC-20' && selector === '0xa9059cbb' && contractInfo?.decimals && contractInfo?.symbol) {
+      // 解析 transfer(address,uint256) 的参数
+      const params = web3.eth.abi.decodeParameters(['address', 'uint256'], input.slice(10));
+      const amount = Number(params[1]) / 10 ** contractInfo.decimals;
+      description = `Transfer ${amount.toFixed(2)} ${contractInfo.symbol} to ${params[0]}`;
+    }
+
+    results.push({
+      hash,
+      type: `${match.standard} ${match.description.split(' ')[0]}`,
+      description,
+      signature: match.signature,
+      standard: match.standard
+    });
+  }
+
+  return results;}
