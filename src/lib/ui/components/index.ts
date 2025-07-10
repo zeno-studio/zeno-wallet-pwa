@@ -22,6 +22,7 @@ export { default as RestoreMn } from "./restoreMn.svelte";
 export { default as FileLoad } from "./fileLoad.svelte";
 export { default as NftBalance } from "./nftBalace.svelte";
 export { default as ActivityRemote } from "./activityRemote.svelte";
+export { default as PriceChart } from "./priceChart.svelte";
 
 
 

@@ -38,6 +38,8 @@
 	let createModal = $state(false);
 	let importModal = $state(false);
 	let loading = $state(false);
+	let showZeroBalance = $state(false);
+	let showBalance = $state(true);
 
 	let balanceRes: GetAccountBalanceReply | null = $state(null);
 	let balanceByChain = $derived.by(() => {

@@ -122,3 +122,9 @@ export const baseTonkens = new Set<Token> ([
 
 export const DefaultCurrencies = ["BTC","ETH","DOT"];
 
+export const contractMetadata: Record<string, { standard: string; symbol?: string; decimals?: number }> = {
+  "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48": { standard: "ERC-20", symbol: "USDC", decimals: 6 }, // USDC
+  "0xdac17f958d2ee523a2206206994597c13d831ec7": { standard: "ERC-20", symbol: "USDT", decimals: 6 }, // USDT
+  // 添加更多合约（如 ERC-721 的 Bored Ape Yacht Club 等）
+};
+
