@@ -71,6 +71,7 @@ export { default as ScanIcon } from "./scan.svelte";
 export { default as ScanFocus } from "./scan-focus.svelte";
 export { default as SearchIcon } from "./search.svelte";
 export { default as SettingIcon } from "./setting.svelte";
+export { default as Setting2Icon } from "./setting2.svelte";
 export { default as SettingFilled } from "./setting-filled.svelte";
 export { default as ShareIcon } from "./share.svelte";
 export { default as SpinnerIcon} from "./spinner.svelte";
