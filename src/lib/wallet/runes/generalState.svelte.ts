@@ -20,9 +20,9 @@ class GeneralState {
 	currentCurrency = $state<string>('ETH');
 	currencyPrice = $state<CurrencyPrice | null>(null);
 	currentChain = $state<Chain | null>(null);
-	queryToken = $state<Token| null>(null);
-	queryNft = $state<Nft| null>(null);
-	queryActivity = $state<string>('');
+	showZeroBalance = $state(true);
+	showBalance = $state(true);
+
 	currentChainId = $derived.by(() => {
 		if (this.currentChain === null) {
 			return 0;

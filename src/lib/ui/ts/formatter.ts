@@ -53,9 +53,9 @@ export const cutString = (str: string, maxLength: number) => {
   return str;
 }
 
-export const stringToNumber=(str: string,decimal :number): number =>{
+export const stringParseFloat=(str: string): number =>{
     const num = parseFloat(str);
-    return isNaN(num) ? 0 : Number(num.toFixed(decimal));
+    return isNaN(num) ? 0 : num;
 }
 
 export const hexStringToNumber=(hexString:string): number => {
@@ -135,3 +135,48 @@ export const timeAgo=(timestamp: number): string =>{
   }
 }
 
+type ColorSet = {
+  background: string;
+  color: string;
+}
+
+
+export const getRandomColor=(set: ColorSet[] ) =>{
+  if (!set || set.length > 0) {
+ const randomIndex = Math.floor(Math.random() * set.length);
+  return set[randomIndex];
+  }
+ 
+}
+
+
+export const colorSets:ColorSet[] = [
+  {background: 'rgba(241, 186, 0, 0.1)', color: 'rgba(255, 182, 72, 1)'},
+  {background: 'rgba(18, 205, 217, 0.1)', color : 'rgba(18, 205, 217, 1)'},
+  {background: 'rgba(34, 176, 125, 0.1)', color : 'rgba(34, 176, 125, 1)'},
+  {background: 'rgba(181, 72, 198, 0.1)', color : 'rgba(181, 72, 198, 1)'},
+  {background: 'rgba(50, 167, 226, 0.1)', color : 'rgba(50, 167, 226, 1)'},
+  {background: 'rgba(253, 86, 141, 0.1)', color : 'rgba(253, 86, 141, 1)'},
+  {background: 'rgba(255, 135, 0, 0.1)', color : 'rgba(255, 135, 0, 1)'},
+]
+
+
+export const decimalAdjust = (type: 'round' | 'floor' | 'ceil', value: number, exp: number) => {
+  if (!["round", "floor", "ceil"].includes(type)) {
+    throw new TypeError(
+      "The type of decimal adjustment must be one of 'round', 'floor', or 'ceil'.",
+    );
+  }
+  exp = Number(exp);
+  value = Number(value);
+  if (exp % 1 !== 0 || Number.isNaN(value)) {
+    return NaN;
+  } else if (exp === 0) {
+    return Math[type](value);
+  }
+  const [magnitude, exponent = "0"] = value.toString().split("e");
+  const adjustedValue = Math[type](Number(`${magnitude}e${Number(exponent) - exp}`));
+  // Shift back
+  const [newMagnitude, newExponent = "0"] = adjustedValue.toString().split("e");
+  return Number(`${newMagnitude}e${Number(newExponent) + exp}`);
+}
