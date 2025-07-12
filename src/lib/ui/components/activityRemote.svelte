@@ -1,47 +1,59 @@
 <script lang="ts">
-	
-	import { accountState, generalState} from '$lib/wallet/runes';
-	import { type Blockchain, } from '@ankr.com/ankr.js';
+	import { accountState, generalState,queriedData } from '$lib/wallet/runes';
+	import { type Blockchain } from '$lib/wallet/provider';
+	import { DefaultChains, rpcIntervalMsNft } from '$lib/wallet/common';
 	import {
-		DefaultChains,
-		rpcIntervalMsNft,
 		mapAnkrChainNameToLocal,
-        getActivityByAnkr,
-		type ankrActivityReply
-	} from '$lib/wallet/common';
-	import {Loading} from '$lib/svg';
+		getActivityByAnkr,
+		type Transaction
+	} from '$lib/wallet/provider';
+	import { Loading } from '$lib/svg';
 
-let loading = $state(false);
-	let activityRes: ankrActivityReply | null = $state(null);
+	let loading = $state(false);
+	let days = $state(365); // Default to last 365 days
 
-let activityByChain = $derived.by(() => {
+	let activityByChain = $derived.by(() => {
 		if (generalState.currentChain === null) {
-			return activityRes?.transactions ?? [];
+			return queriedData.ankrActivities ?? [];
 		}
-		const activity = activityRes?.transactions.filter(
-			(transaction) => mapAnkrChainNameToLocal(transaction.blockchain as Blockchain) === generalState.currentChain?.name
+		const activity = queriedData.ankrActivities?.filter(
+			(transaction) =>
+				mapAnkrChainNameToLocal(transaction.blockchain as Blockchain) ===
+				generalState.currentChain?.name
 		);
 		return activity ?? [];
 	});
 
-	
-
-
 	$effect(() => {
 		const fetchBalances = async () => {
 			if (!accountState.currentAccount) {
-				activityRes = null;
+				queriedData.ankrActivities = null;
 				return;
 			}
 			loading = true;
-			const result = await  getActivityByAnkr(
-			DefaultChains,
-			accountState.currentAccount?.address,
-			360
-			);
-			activityRes = result ?? null;
-			loading = false;
-		}
+			let activities:Transaction[] = [];
+			let nextPageToken = '';
+
+			try {
+				do {
+					const result = await getActivityByAnkr(
+						DefaultChains,
+						accountState.currentAccount?.address,
+						days,
+						nextPageToken
+					);
+					if (result) {
+						activities = [...activities, ...(result.transactions ?? [])];
+						nextPageToken = result.nextPageToken ?? '';
+					} else {
+						nextPageToken = '';
+					}
+				} while (nextPageToken !== '');
+			} finally {
+				loading = false;
+				queriedData.ankrActivities = activities;
+			}
+		};
 
 		fetchBalances().catch(console.error);
 		const intervalId = setInterval(async () => {
@@ -49,34 +61,27 @@ let activityByChain = $derived.by(() => {
 		}, rpcIntervalMsNft);
 		return () => clearInterval(intervalId);
 	});
-
-	
 </script>
 
 <div class="item-container2">
 	{#if loading}
-					<div class="loading"><Loading class="icon3B" /></div>
+		<div class="loading"><Loading class="icon3B" /></div>
 	{/if}
 	{#each activityByChain ?? [] as transaction}
 		<div class="token-entry">
-						<div class="token-thumbnail">
-						
-						</div>
-						<div class="content">
-							<div class="label-m">
-								{transaction.from}
-							</div>
-							<div class="label-m">
-								{transaction.to}
-							</div>
-						
-						</div>
-						<div class="token-entry-right">
-							<div class="address">{transaction.input}</div>
-						</div>
-					</div>
-
-		
+			<div class="token-thumbnail"></div>
+			<div class="content">
+				<div class="label-m">
+					{transaction.from}
+				</div>
+				<div class="label-m">
+					{transaction.to}
+				</div>
+			</div>
+			<div class="token-entry-right">
+				<div class="address">{transaction.input}</div>
+			</div>
+		</div>
 	{/each}
 </div>
 

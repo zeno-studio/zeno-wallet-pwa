@@ -7,7 +7,9 @@
 		Modal,
 		ChainSelector,
 		NftBalance,
-		ActivityRemote
+		ActivityRemote,
+		TokenDetail,
+		TokenSetting
 	} from '$lib/ui/components';
 	import {
 		ReceiveIcon,
@@ -17,19 +19,25 @@
 		UpDownIcon,
 		DollarIcon,
 		BridgeIcon,
-		Loading
+		Loading,
+		Setting2Icon
 	} from '$lib/svg';
 	import { accountState, generalState } from '$lib/wallet/runes';
 	import { metadata } from '$lib/ui/runes';
-	import { type GetAccountBalanceReply } from '@ankr.com/ankr.js';
 	import {
 		DefaultChains,
-		getTokenBalancesByAnkr,
 		rpcIntervalMs,
 		getBalanceByFiat,
 		getBalanceByCurrency,
-		mapAnkrChainNameToLocal
+		getQuntityByPrice
 	} from '$lib/wallet/common';
+	import {
+		mapAnkrChainNameToLocal,
+		getTokenBalancesByAnkr,
+		type GetAccountBalanceReply,
+		type Balance
+	} from '$lib/wallet/provider';
+	import { getFirstAndLast, getRandomColor, colorSets } from '$lib/ui/ts';
 
 	let tab = $state<'token' | 'nft' | 'activity'>('token');
 	metadata.title = 'Assets';
@@ -37,19 +45,28 @@
 	let modalOpen = $state(false);
 	let createModal = $state(false);
 	let importModal = $state(false);
+	let tokenModal = $state(false);
+	let tokenSettingModal = $state(false);
 	let loading = $state(false);
-	let showZeroBalance = $state(false);
-	let showBalance = $state(true);
+
+	let background = 'rgba(255, 182, 72, 1)';
 
 	let balanceRes: GetAccountBalanceReply | null = $state(null);
 	let balanceByChain = $derived.by(() => {
+		let totalBalance: number;
+		let assets: Balance[];
 		if (generalState.currentChain === null) {
-			return balanceRes?.assets ?? [];
+			totalBalance = Number(balanceRes?.totalBalanceUsd ?? '0');
+			assets = balanceRes?.assets ?? [];
+		} else {
+			assets =
+				balanceRes?.assets.filter(
+					(asset) => mapAnkrChainNameToLocal(asset.blockchain) === generalState.currentChain?.name
+				) ?? [];
+			totalBalance = assets.reduce((total, item) => total + (Number(item.balanceUsd) || 0), 0);
 		}
-		const balance = balanceRes?.assets.filter(
-			(asset) => mapAnkrChainNameToLocal(asset.blockchain) === generalState.currentChain?.name
-		);
-		return balance ?? [];
+
+		return { totalBalance, assets };
 	});
 
 	$effect(() => {
@@ -59,7 +76,10 @@
 				return;
 			}
 			loading = true;
-			const result = await getTokenBalancesByAnkr(DefaultChains, accountState.currentAccount?.address);
+			const result = await getTokenBalancesByAnkr(
+				DefaultChains,
+				accountState.currentAccount?.address
+			);
 			balanceRes = result ?? null;
 			loading = false;
 		};
@@ -79,10 +99,10 @@
 	{:else}
 		<div class="item-container3">
 			<div class="balance">
-				{generalState.currentFiat.symbol}{getBalanceByFiat(Number(balanceRes.totalBalanceUsd))}
+				{generalState.currentFiat.symbol}{getBalanceByFiat(balanceByChain.totalBalance)}
 			</div>
 			<div class="balance2">
-				{getBalanceByCurrency(Number(balanceRes.totalBalanceUsd))}{generalState.currentCurrency}
+				{getBalanceByCurrency(Number(balanceByChain.totalBalance))}{generalState.currentCurrency}
 			</div>
 		</div>
 	{/if}
@@ -162,25 +182,59 @@
 	<div class="item-container2">
 		{#if tab === 'token'}
 			<div class="tokenList">
-				{#if loading}
+				{#if loading && !balanceByChain}
 					<div class="loading"><Loading class="icon3B" /></div>
 				{/if}
-				{#each balanceByChain ?? [] as asset}
-					<div class="token-entry">
-						<div class="token-thumbnail">
-							<img class="thumbnail" src={asset.thumbnail} alt={asset.tokenSymbol} />
-						</div>
-						<div class="content">
-							<div class="label-m">
-								{asset.tokenSymbol}
+				{#each balanceByChain.assets ?? [] as asset}
+					{#if generalState.showZeroBalance}
+						<button class="token-entry" onclick={() => (tokenModal = true)}>
+							<div class="token-thumbnail">
+								{#if !asset.thumbnail}
+									<div
+										class="token-nothumbnail"
+										style:background={getRandomColor(colorSets)?.background ?? 'none'}
+										style:color={getRandomColor(colorSets)?.color ?? 'none'}
+									>
+										{getFirstAndLast(asset.tokenSymbol)}
+									</div>
+								{:else}
+									<img class="thumbnail" src={asset.thumbnail} alt={asset.tokenSymbol} />
+								{/if}
 							</div>
-							<div class="address">{asset.balance}</div>
+							<div class="content">
+								<div class="token-symbol">
+									{asset.tokenSymbol}
+								</div>
+								<div class="token-price">
+									{getQuntityByPrice(Number(asset.balance), Number(asset.tokenPrice))}
+								</div>
+							</div>
+							<div class="token-entry-right">
+								<div class="token-balance">
+									{generalState.currentFiat.symbol}{getBalanceByFiat(Number(asset.balanceUsd))}
+								</div>
+								<div class="token-price">
+									{generalState.currentFiat.symbol}{getBalanceByFiat(Number(asset.tokenPrice))}
+								</div>
+							</div>
+						</button>
+					{:else if Number(asset.balanceUsd) > 0.01}
+						<div class="token-entry">
+							<div class="token-thumbnail">
+								<img class="thumbnail" src={asset.thumbnail} alt={asset.tokenSymbol} />
+							</div>
+							<div class="content">
+								<div class="token-symbol">
+									{asset.tokenSymbol}
+								</div>
+								<div class="address">{asset.balance}</div>
+							</div>
+							<div class="token-entry-right">
+								<div class="token-balance">{getBalanceByFiat(Number(asset.balanceUsd))}</div>
+								<div class="token-balance">{getBalanceByFiat(Number(asset.tokenPrice))}</div>
+							</div>
 						</div>
-						<div class="token-entry-right">
-							<div class="address">{getBalanceByFiat(Number(asset.balanceUsd))}</div>
-							<div>{getBalanceByFiat(Number(asset.tokenPrice))}</div>
-						</div>
-					</div>
+					{/if}
 				{/each}
 			</div>
 		{:else if tab === 'nft'}
@@ -189,6 +243,13 @@
 			<ActivityRemote />
 		{/if}
 	</div>
+
+	{#if !balanceRes || balanceRes.assets.length === 0}
+		<div class="loading">No NFTs found</div>
+	{/if}
+	<button class="setting" onclick={() => (tokenSettingModal = true)}>
+		<Setting2Icon class="icon24A" />
+	</button>
 </div>
 <Footer />
 
@@ -202,6 +263,14 @@
 
 <Modal bind:modalName={modalOpen} mode="full">
 	<ChainSelector />
+</Modal>
+
+<Modal bind:modalName={tokenModal} mode="full">
+	<TokenDetail />
+</Modal>
+
+<Modal bind:modalName={tokenSettingModal} mode="half">
+	<TokenSetting />
 </Modal>
 
 <style lang="postcss">
@@ -387,10 +456,6 @@
 		margin-bottom: 1rem;
 	}
 
-	.tab-panel {
-		padding: 1rem;
-	}
-
 	/* tab */
 	.tabs {
 		display: flex;
@@ -480,11 +545,12 @@
 			transform: translateY(1px);
 		}
 	}
+
 	.token-entry-right {
 		position: absolute;
 		display: flex;
 		flex-direction: column;
-		align-items: center;
+		align-items: flex-end;
 		justify-content: center;
 		right: 1rem;
 		width: 3.5rem;
@@ -505,7 +571,6 @@
 		margin-right: 2rem;
 		border-radius: 50%;
 		padding: 0px;
-		background-color: #fff;
 	}
 
 	.thumbnail {
@@ -514,10 +579,42 @@
 		border-radius: 50%;
 	}
 
+	.token-nothumbnail {
+		width: 4rem;
+		height: 4rem;
+		border-radius: 50%;
+		border: none;
+		font-size: 1.6rem;
+		font-weight: 600;
+	}
+
+	.token-balance {
+		font-size: 1.4rem;
+		color: var(--color);
+	}
+	.token-price {
+		font-size: 1.2rem;
+		color: var(--text);
+	}
+
+	.token-symbol {
+		font-size: 1.4rem;
+		color: var(--color);
+	}
 	.content {
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
 		width: 100%;
+	}
+	.setting {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		padding: 2rem;
+		background: none;
+		border: none;
+		color: var(--text);
 	}
 </style>

@@ -12,10 +12,10 @@
 		reBuildMnPost,
 		changePassword,
 		saveMidPass,
-		resetSigner
+		resetSigner,
+		smoldot 
 	} from '$lib/wallet/runes';
 	import {
-		restoreMn,
 		isValidPassword,
 		getElement,
 		DB,
@@ -24,16 +24,12 @@
 	} from '$lib/wallet/common';
 	import { Toaster, Header, Footer,PriceChart } from '$lib/ui/components';
 	import { toastState } from '$lib/ui/runes';
-	import { DefaultChains, getTokenBalancesByAnkr, mapLocalChainNameToAnkr ,rpcIntervalMs} from '$lib/wallet/common';
-	import { accountState, generalState} from '$lib/wallet/runes';
-	import { AnkrProvider, type Blockchain, type GetAccountBalanceReply } from '@ankr.com/ankr.js';
 
 
 
 
 	let res: any | null = $state(null);
 
-	let balanceRes: GetAccountBalanceReply | null = $state(null);
 
 	async function vault() {
 		const result = (await getVault()) as signerResponseType | null;
@@ -123,10 +119,7 @@
 		console.log(result);
 	}
 
-
-
-
-
+smoldot
 
 
 </script>

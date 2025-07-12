@@ -1,6 +1,8 @@
-import { OPENEXCHANGERATES_API_KEY } from '$lib/wallet/common';
+
 import { type FiatRate } from '$lib/wallet/common';
 import { generalState } from '$lib/wallet/runes';
+
+
 
 // 初始化 WebSocket 连接
 let socket;

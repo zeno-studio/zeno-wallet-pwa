@@ -4,7 +4,7 @@
 	import { initDB } from '$lib/wallet/common';
 	import { metadata } from '$lib/ui/runes';
 	import { Modal } from '$lib/ui/components';
-	import { forexWs, updateCurrencyPirce } from '$lib/wallet/common';
+	import { forexWs, updateCurrencyPirce } from '$lib/wallet/provider';
 
 	initDB();
 	createSettings();
